@@ -15,6 +15,13 @@ A high-performance WhatsApp Web library built on [Baileys](https://github.com/Wh
 - [Socket Config Notes](#socket-config-notes)
 - [Saving & Restoring Sessions](#saving--restoring-sessions)
 - [Handling Events](#handling-events)
+- [Anti-Ban System](#anti-ban-system)
+  - [RateLimiter](#ratelimiter--throttle-outbound-messages)
+  - [WarmUp](#warmup--gradual-daily-limit-increase-for-new-numbers)
+  - [HealthMonitor](#healthmonitor--detect-ban-risk)
+  - [TimelockGuard](#timelockguard--handle-wa-463-reachout-blocks)
+  - [PresenceChoreographer](#presencechoreographer--human-like-typing-simulation)
+  - [wrapSocket](#wrapsocket--apply-all-anti-ban-layers-at-once)
 - [Sending Messages](#sending-messages)
   - [Text & Basic](#text--basic)
   - [Buttons & Interactive](#buttons--interactive)
@@ -157,27 +164,141 @@ sock.ev.on('creds.update', saveCreds)
 
 ## Handling Events
 
+### Messages
+
 ```js
-// New/updated messages
+// New or received messages
 sock.ev.on('messages.upsert', ({ messages, type }) => { })
 
-// Message updates (read receipts, reactions, edits)
+// Status updates (read receipts, delivery, edits, reactions)
 sock.ev.on('messages.update', updates => { })
 
-// Chat list updates
-sock.ev.on('chats.update', chats => { })
+// Message deleted / cleared
+sock.ev.on('messages.delete', ({ keys }) => { })
 
-// Contacts
+// Media decryption key update
+sock.ev.on('messages.media-update', updates => { })
+
+// Reaction on a message
+sock.ev.on('messages.reaction', reactions => { })
+
+// Comment on a message
+sock.ev.on('message.comment', ({ message, comment }) => { })
+
+// Message quarantined by WA
+sock.ev.on('message.quarantined', ({ message }) => { })
+
+// Poll — new option added
+sock.ev.on('poll.add-option', ({ key, senderTimestampMs }) => { })
+```
+
+### Chats & Contacts
+
+```js
+sock.ev.on('chats.upsert', chats => { })
+sock.ev.on('chats.update', chats => { })
+sock.ev.on('chats.delete', ids => { })
+sock.ev.on('chats.lock', ({ id, locked }) => { })
+
+sock.ev.on('contacts.upsert', contacts => { })
 sock.ev.on('contacts.update', contacts => { })
 
-// Group participant changes
+// Blocklist changed
+sock.ev.on('blocklist.update', ({ blocklist, type }) => { })
+```
+
+### Groups
+
+```js
+sock.ev.on('groups.upsert', groups => { })
+sock.ev.on('groups.update', updates => { })
 sock.ev.on('group-participants.update', ({ id, participants, action }) => { })
 
-// Presence (typing, online)
-sock.ev.on('presence.update', ({ id, presences }) => { })
+// Someone requested to join
+sock.ev.on('group.join-request', ({ id, participant, action }) => { })
 
-// Connection state
-sock.ev.on('connection.update', ({ connection, qr, lastDisconnect }) => { })
+// Member tag / mention update
+sock.ev.on('group.member-tag.update', ({ id, participant }) => { })
+```
+
+### Newsletters
+
+```js
+sock.ev.on('newsletter-settings.update', update => { })
+sock.ev.on('newsletter-participants.update', update => { })
+sock.ev.on('newsletter.reaction', update => { })
+sock.ev.on('newsletter.view', update => { })
+sock.ev.on('newsletter.live-update', update => { })
+sock.ev.on('newsletter.pin', update => { })
+sock.ev.on('newsletter.invite', update => { })
+```
+
+### Connection & Auth
+
+```js
+sock.ev.on('connection.update', ({ connection, qr, lastDisconnect, isOnline, reachoutTimeLock }) => { })
+sock.ev.on('creds.update', saveCreds)
+
+// Security alert (e.g. linked device removed)
+sock.ev.on('security.alert', data => { })
+
+// Identity key change for a contact
+sock.ev.on('identity.update', ({ jid }) => { })
+
+// Server config received
+sock.ev.on('server.config', config => { })
+```
+
+### Calls
+
+```js
+sock.ev.on('call', calls => { })
+sock.ev.on('call.scheduled', ({ call }) => { })
+sock.ev.on('call.schedule-cancelled', ({ call }) => { })
+```
+
+### Labels
+
+```js
+sock.ev.on('labels.edit', ({ label }) => { })
+sock.ev.on('labels.association', ({ association, type }) => { })
+sock.ev.on('labels.reorder', ({ labelIds }) => { })
+```
+
+### Presence & Devices
+
+```js
+sock.ev.on('presence.update', ({ id, presences }) => { })
+sock.ev.on('devices.update', ({ id, devices, isSelf }) => { })
+```
+
+### Bot / Meta AI
+
+```js
+sock.ev.on('bot.feedback', ({ message }) => { })
+sock.ev.on('bot.stop-generation', ({ message }) => { })
+sock.ev.on('bot.welcome-request', ({ message }) => { })
+sock.ev.on('bot.psi-metadata', ({ message }) => { })
+sock.ev.on('bot.query-fanout', ({ message }) => { })
+sock.ev.on('bot.media-collection', ({ message }) => { })
+sock.ev.on('bot.memu-onboarding', ({ message }) => { })
+```
+
+### Sync & Settings
+
+```js
+sock.ev.on('messaging-history.set', ({ chats, contacts, messages, isLatest }) => { })
+sock.ev.on('messaging-history.status', ({ progress, hasMore }) => { })
+sock.ev.on('settings.update', ({ setting, value }) => { })
+sock.ev.on('lid-mapping.update', ({ lid, pn }) => { })
+sock.ev.on('status.psa', ({ message }) => { })
+sock.ev.on('status.mention', ({ message }) => { })
+sock.ev.on('media.notify', ({ message }) => { })
+sock.ev.on('reminder.update', ({ message }) => { })
+sock.ev.on('payment.split', ({ message }) => { })
+sock.ev.on('payment.reminder', ({ message }) => { })
+sock.ev.on('cloud.thread.control', ({ message }) => { })
+sock.ev.on('galaxy.flow.completed', ({ message }) => { })
 ```
 
 ### Decrypt Poll Votes
@@ -196,6 +317,111 @@ sock.ev.on('messages.update', async updates => {
         }
     }
 })
+```
+
+---
+
+## Anti-Ban System
+
+Import from `baron-baileys-v2/src/antiban.js`:
+
+```js
+const {
+    AntiBan, RateLimiter, WarmUp, HealthMonitor,
+    TimelockGuard, ReplyRatioGuard, ContactGraphWarmer,
+    PresenceChoreographer, PostReconnectThrottle,
+    RetryReasonTracker, LidResolver, JidCanonicalizer,
+    MessageQueue, Scheduler, wrapSocket
+} = require('baron-baileys-v2/src/antiban')
+```
+
+### RateLimiter — throttle outbound messages
+
+```js
+const limiter = new RateLimiter({
+    maxPerMinute: 8,
+    maxPerHour: 200,
+    maxPerDay: 1500,
+    minDelayMs: 1500,
+    maxDelayMs: 5000,
+    newChatDelayMs: 3000
+})
+
+const delay = await limiter.getDelay(jid, text)
+if (delay === -1) return // blocked
+if (delay > 0) await sleep(delay)
+
+await sock.sendMessage(jid, { text })
+limiter.record(jid, text)
+```
+
+### WarmUp — gradual daily limit increase for new numbers
+
+```js
+const warmup = new WarmUp({ warmUpDays: 7, day1Limit: 20, growthFactor: 1.8 })
+
+if (!warmup.canSend()) return
+await sock.sendMessage(jid, { text })
+warmup.record()
+
+console.log(warmup.getStatus())
+// { phase: 'warming', day: 2, todayLimit: 36, todaySent: 12, progress: 28 }
+```
+
+### HealthMonitor — detect ban risk
+
+```js
+const health = new HealthMonitor({ autoPauseAt: 'high' })
+
+sock.ev.on('connection.update', ({ connection, lastDisconnect }) => {
+    if (connection === 'close') health.recordDisconnect(lastDisconnect?.error)
+    if (connection === 'open') health.recordReconnect()
+})
+
+const status = health.getStatus()
+// { risk: 'low'|'medium'|'high'|'critical', score, recommendation, stats }
+
+if (health.isPaused()) return // auto-pauses at configured risk level
+```
+
+### TimelockGuard — handle WA 463 reachout blocks
+
+```js
+const guard = new TimelockGuard()
+
+// Feed connection.update events
+sock.ev.on('connection.update', ({ reachoutTimeLock }) => {
+    if (reachoutTimeLock) guard.onTimelockUpdate(reachoutTimeLock)
+})
+
+// Check before sending to new contacts
+const { allowed, reason } = guard.canSend(jid)
+if (!allowed) return console.log(reason)
+```
+
+### PresenceChoreographer — human-like typing simulation
+
+```js
+const choreo = new PresenceChoreographer({
+    enabled: true,
+    typingWPM: 45,
+    enableCircadianRhythm: true,
+    timezone: 'Europe/Berlin'
+})
+
+const plan = choreo.computeTypingPlan(text.length)
+await choreo.executeTypingPlan(sock, jid, plan)
+await sock.sendMessage(jid, { text })
+```
+
+### wrapSocket — apply all anti-ban layers at once
+
+```js
+const { wrapSocket, resolveConfig, PRESETS } = require('baron-baileys-v2/src/antiban')
+
+const wrappedSock = wrapSocket(sock, resolveConfig(PRESETS.SAFE))
+// All outbound sendMessage calls are now automatically rate-limited,
+// presence-simulated, and timelock-aware.
 ```
 
 ---
