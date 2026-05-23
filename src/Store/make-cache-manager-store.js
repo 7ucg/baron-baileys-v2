@@ -38,15 +38,17 @@ const makeCacheManagerAuthState = async (store, sessionKey) => {
 	const removeData = async file => {
 		try {
 			return await databaseConn.del(defaultKey(file))
-		} catch (_a) {
-			logger_1.default.error(`Error removing ${file} from session ${sessionKey}`)
+		} catch (err) {
+			logger_1.default.error({ err }, `Error removing ${file} from session ${sessionKey}`)
 		}
 	}
 	const clearState = async () => {
 		try {
 			const result = await databaseConn.store.keys(`${sessionKey}*`)
 			await Promise.all(result.map(async key => await databaseConn.del(key)))
-		} catch (err) {}
+		} catch (err) {
+			logger_1.default.warn({ err }, 'clearState failed')
+		}
 	}
 	const creds = (await readData('creds')) || (0, Utils_1.initAuthCreds)()
 	return {

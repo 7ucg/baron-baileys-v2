@@ -269,7 +269,7 @@ const decodeDecompressedBinaryNode = (buffer, opts, indexRef = { index: 0 }) => 
 				return readPacked8(tag)
 			default:
 				// Unknown tag — token table may be outdated (new WA protocol version)
-				console.log(`[WABinary] unknown string tag 0x${tag.toString(16)} — token table outdated?`)
+				process.stderr.write(`[WABinary] unknown string tag 0x${tag.toString(16)} — token table outdated?\n`)
 				return ''
 		}
 	}
@@ -285,13 +285,13 @@ const decodeDecompressedBinaryNode = (buffer, opts, indexRef = { index: 0 }) => 
 		const dict = DOUBLE_BYTE_TOKENS[index1]
 		if (!dict) {
 			// Unknown dictionary — token table may be outdated (new WA protocol version)
-			console.log(`[WABinary] unknown double-byte token dict ${index1} — token table outdated?`)
+			process.stderr.write(`[WABinary] unknown double-byte token dict ${index1} — token table outdated?\n`)
 			return ''
 		}
 		const value = dict[index2]
 		if (typeof value === 'undefined') {
 			// Unknown token in known dictionary — token table may be outdated
-			console.log(`[WABinary] unknown double-byte token dict=${index1} idx=${index2} — token table outdated?`)
+			process.stderr.write(`[WABinary] unknown double-byte token dict=${index1} idx=${index2} — token table outdated?\n`)
 			return ''
 		}
 		return value

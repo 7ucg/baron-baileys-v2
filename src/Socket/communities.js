@@ -69,11 +69,10 @@ const makeCommunitiesSocket = config => {
 		const groupNode = (0, WABinary_1.getBinaryNodeChild)(node, 'group')
 		if (groupNode) {
 			try {
-				logger_1.default.info({ groupNode }, 'groupNode')
 				const metadata = await sock.groupMetadata(`${groupNode.attrs.id}@g.us`)
 				return metadata ? metadata : Optional.empty()
 			} catch (error) {
-				console.error('Error parsing group metadata:', error)
+				logger_1.default.error({ error }, 'Error fetching community group metadata')
 				return Optional.empty()
 			}
 		}

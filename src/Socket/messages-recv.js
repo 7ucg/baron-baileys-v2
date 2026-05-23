@@ -801,7 +801,9 @@ const makeMessagesRecvSocket = config => {
 					}
 					normalized.push(JSON.stringify(parsed))
 					continue
-				} catch {}
+				} catch (err) {
+					logger.debug({ err, entry }, 'failed to normalize stub parameter JSON')
+				}
 			}
 			normalized.push(entry)
 		}
@@ -1459,7 +1461,9 @@ const makeMessagesRecvSocket = config => {
 						if (secret) {
 							;(0, Utils_1.setBotMessageSecret)(targetId, secret)
 						}
-					} catch {}
+					} catch (err) {
+						logger.debug({ err, targetId }, 'failed to retrieve message secret for msmsg')
+					}
 				}
 			}
 		}

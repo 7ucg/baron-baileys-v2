@@ -12,11 +12,7 @@ const createLidPnDebug = logger => {
 		if (!enabled) {
 			return
 		}
-		if (logger?.debug) {
-			logger.debug({ ...payload, phase }, 'lid->pn normalization trace')
-		} else {
-			console.log('[lid->pn]', phase, payload)
-		}
+		logger?.debug({ ...payload, phase }, 'lid->pn normalization trace')
 	}
 }
 

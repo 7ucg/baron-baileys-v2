@@ -182,7 +182,7 @@ const makeInMemoryStore = config => {
 					labelAssociations.delete(association)
 					break
 				default:
-					console.error(`unknown operation type [${type}]`)
+					logger.error({ type }, 'unknown label association operation type')
 			}
 		})
 		ev.on('presence.update', ({ id, presences: update }) => {
