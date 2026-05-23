@@ -11,7 +11,6 @@ const node_cache_1 = __importDefault(require('@cacheable/node-cache'))
 const async_hooks_1 = require('async_hooks')
 const async_mutex_1 = require('async-mutex')
 const crypto_1 = require('crypto')
-const uuid_1 = require('uuid')
 const p_queue_1 = __importDefault(require('p-queue'))
 const Defaults_1 = require('../Defaults')
 const crypto_2 = require('./crypto')
@@ -292,8 +291,8 @@ const initAuthCreds = () => {
 		accountSettings: {
 			unarchiveChats: false
 		},
-		deviceId: Buffer.from((0, uuid_1.v4)().replace(/-/g, ''), 'hex').toString('base64url'),
-		phoneId: (0, uuid_1.v4)(),
+		deviceId: Buffer.from((0, crypto_1.randomUUID)().replace(/-/g, ''), 'hex').toString('base64url'),
+		phoneId: (0, crypto_1.randomUUID)(),
 		identityId: (0, crypto_1.randomBytes)(20),
 		backupToken: (0, crypto_1.randomBytes)(20),
 		registration: {},
