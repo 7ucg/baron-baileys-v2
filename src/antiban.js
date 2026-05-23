@@ -159,7 +159,8 @@ var RateLimiter = class {
 		} else {
 			delay = this.jitter(this.config.minDelayMs, this.config.maxDelayMs)
 		}
-		if (!this.knownChats.has(recipient)) {
+		const isInterop = recipient.endsWith('@interop')
+		if (!this.knownChats.has(recipient) || isInterop) {
 			delay += this.jitter(this.config.newChatDelayMs * 0.5, this.config.newChatDelayMs)
 		}
 		const timeSinceLast = now - this.lastMessageTime
@@ -380,6 +381,10 @@ var HealthMonitor = class {
 			this.events.push({ type: 'loggedOut', timestamp: Date.now(), detail: reasonStr })
 			this.lastBadEventTime = Date.now()
 			this.lastEventWasSevere = true
+		} else if (reasonStr === '463') {
+			this.events.push({ type: 'reachoutTimelocked', timestamp: Date.now(), detail: reasonStr })
+			this.lastBadEventTime = Date.now()
+			this.lastEventWasSevere = false
 		} else {
 			this.events.push({ type: 'disconnect', timestamp: Date.now(), detail: reasonStr })
 			this.lastBadEventTime = Date.now()
@@ -2395,13 +2400,13 @@ var StateManager = class {
 			const raw = fs.readFileSync(this.path, 'utf-8')
 			const parsed = JSON.parse(raw)
 			if (parsed.version !== 3) {
-				console.warn('[baileys-antiban] WARN: corrupt state file or version mismatch, starting fresh')
+				process.stderr.write('[baileys-antiban] WARN: corrupt state file or version mismatch, starting fresh\n')
 				return null
 			}
 			return parsed
 		} catch {
 			if (fs.existsSync(this.path)) {
-				console.warn('[baileys-antiban] WARN: corrupt state file, starting fresh')
+				process.stderr.write('[baileys-antiban] WARN: corrupt state file, starting fresh\n')
 			}
 			return null
 		}
@@ -2445,7 +2450,7 @@ var StateManager = class {
 		try {
 			fs.writeFileSync(this.path, JSON.stringify(toSave, null, 2), 'utf-8')
 		} catch (err) {
-			console.warn(`[baileys-antiban] WARN: failed to write state to ${this.path}:`, err)
+			process.stderr.write(`[baileys-antiban] WARN: failed to write state to ${this.path}: ${err}\n`)
 		}
 	}
 }
@@ -2490,9 +2495,7 @@ function isLegacyConfig(cfg) {
 	)
 }
 function mapLegacyToFlat(legacy) {
-	console.warn(
-		'[baileys-antiban] DEPRECATED: Nested config (v2 style) detected. Migrate to flat config: new AntiBan({ maxPerMinute: 8 }). See: https://github.com/kobie3717/baileys-antiban#migration'
-	)
+	process.stderr.write('[baileys-antiban] DEPRECATED: Nested config (v2 style) detected. Migrate to flat config: new AntiBan({ maxPerMinute: 8 }).\n')
 	const flat = {}
 	if (legacy.rateLimiter?.maxPerMinute !== void 0) flat.maxPerMinute = legacy.rateLimiter.maxPerMinute
 	if (legacy.rateLimiter?.maxPerHour !== void 0) flat.maxPerHour = legacy.rateLimiter.maxPerHour
@@ -2549,6 +2552,7 @@ var AntiBan = class {
 			}
 		}
 		this.logging = cfg.logging ?? true
+		this._log = (msg) => { if (this.logging) process.stdout.write(`[baileys-antiban] ${msg}\n`) }
 		this.rateLimiter = new RateLimiter({
 			maxPerMinute: cfg.maxPerMinute,
 			maxPerHour: cfg.maxPerHour,
@@ -2575,14 +2579,10 @@ var AntiBan = class {
 			autoPauseAt: cfg.autoPauseAt,
 			...(legacyPassthrough?.health || {}),
 			onRiskChange: status => {
-				if (this.logging) {
-					const emoji = { low: '\u{1F7E2}', medium: '\u{1F7E1}', high: '\u{1F7E0}', critical: '\u{1F534}' }
-					console.log(
-						`[baileys-antiban] ${emoji[status.risk]} Risk level: ${status.risk.toUpperCase()} (score: ${status.score})`
-					)
-					console.log(`[baileys-antiban] ${status.recommendation}`)
-					status.reasons.forEach(r => console.log(`[baileys-antiban]   \u2192 ${r}`))
-				}
+				const emoji = { low: '\u{1F7E2}', medium: '\u{1F7E1}', high: '\u{1F7E0}', critical: '\u{1F534}' }
+				this._log(`${emoji[status.risk]} Risk level: ${status.risk.toUpperCase()} (score: ${status.score})`)
+				this._log(status.recommendation)
+				status.reasons.forEach(r => this._log(`  \u2192 ${r}`))
 				legacyPassthrough?.health?.onRiskChange?.(status)
 			}
 		})
@@ -2590,17 +2590,11 @@ var AntiBan = class {
 			...(legacyPassthrough?.timelock || {}),
 			onTimelockDetected: state => {
 				this.health.recordReachoutTimelock(state.enforcementType)
-				if (this.logging) {
-					console.log(
-						`[baileys-antiban] REACHOUT TIMELOCKED \u2014 ${state.enforcementType || 'unknown'}, expires ${state.expiresAt?.toISOString() || 'unknown'}`
-					)
-				}
+				this._log(`REACHOUT TIMELOCKED \u2014 ${state.enforcementType || 'unknown'}, expires ${state.expiresAt?.toISOString() || 'unknown'}`)
 				legacyPassthrough?.timelock?.onTimelockDetected?.(state)
 			},
 			onTimelockLifted: state => {
-				if (this.logging) {
-					console.log(`[baileys-antiban] Timelock lifted \u2014 resuming new contact messages`)
-				}
+				this._log('Timelock lifted \u2014 resuming new contact messages')
 				legacyPassthrough?.timelock?.onTimelockLifted?.(state)
 			}
 		})
@@ -2610,9 +2604,7 @@ var AntiBan = class {
 		this.retryTrackerModule = new RetryReasonTracker({
 			...(legacyPassthrough?.retryTracker || {}),
 			onSpiral: (msgId, reason) => {
-				if (this.logging) {
-					console.log(`[baileys-antiban] \u26A0\uFE0F  Message ${msgId} stuck in retry spiral (${reason})`)
-				}
+				this._log(`\u26A0\uFE0F  Message ${msgId} stuck in retry spiral (${reason})`)
 				legacyPassthrough?.retryTracker?.onSpiral?.(msgId, reason)
 			}
 		})
@@ -2641,17 +2633,11 @@ var AntiBan = class {
 				badMacThreshold: legacyPassthrough.sessionStability.badMacThreshold,
 				badMacWindowMs: legacyPassthrough.sessionStability.badMacWindowMs,
 				onDegraded: stats => {
-					if (this.logging) {
-						console.log(
-							`[baileys-antiban] \u{1F534} SESSION DEGRADED \u2014 Bad MAC rate: ${stats.badMacCount} in last ${legacyPassthrough?.sessionStability?.badMacWindowMs || 6e4}ms`
-						)
-						console.log(`[baileys-antiban] Consider restarting session or switching to LID-based canonical form`)
-					}
+					this._log(`\u{1F534} SESSION DEGRADED \u2014 Bad MAC rate: ${stats.badMacCount} in last ${legacyPassthrough?.sessionStability?.badMacWindowMs || 6e4}ms`)
+					this._log('Consider restarting session or switching to LID-based canonical form')
 				},
 				onRecovered: () => {
-					if (this.logging) {
-						console.log(`[baileys-antiban] \u{1F7E2} SESSION RECOVERED \u2014 decrypt success rate improved`)
-					}
+					this._log('\u{1F7E2} SESSION RECOVERED \u2014 decrypt success rate improved')
 				}
 			}
 			this.sessionStabilityMonitor = new SessionHealthMonitor(healthConfig)
@@ -2665,9 +2651,7 @@ var AntiBan = class {
 		const healthStatus = this.health.getStatus()
 		if (this.health.isPaused()) {
 			this.stats.messagesBlocked++
-			if (this.logging) {
-				console.log(`[baileys-antiban] \u26D4 BLOCKED \u2014 health risk too high (${healthStatus.risk})`)
-			}
+			this._log(`\u26D4 BLOCKED \u2014 health risk too high (${healthStatus.risk})`)
 			return {
 				allowed: false,
 				delayMs: 0,
@@ -2678,9 +2662,7 @@ var AntiBan = class {
 		const timelockDecision = this.timelockGuard.canSend(recipient)
 		if (!timelockDecision.allowed) {
 			this.stats.messagesBlocked++
-			if (this.logging) {
-				console.log(`[baileys-antiban] TIMELOCKED \u2014 ${timelockDecision.reason}`)
-			}
+			this._log(`TIMELOCKED \u2014 ${timelockDecision.reason}`)
 			return {
 				allowed: false,
 				delayMs: 0,
@@ -2691,11 +2673,7 @@ var AntiBan = class {
 		if (!this.warmUp.canSend()) {
 			this.stats.messagesBlocked++
 			const warmUpStatus = this.warmUp.getStatus()
-			if (this.logging) {
-				console.log(
-					`[baileys-antiban] \u23F3 BLOCKED \u2014 warm-up day ${warmUpStatus.day}/${warmUpStatus.totalDays}, limit reached (${warmUpStatus.todaySent}/${warmUpStatus.todayLimit})`
-				)
-			}
+			this._log(`\u23F3 BLOCKED \u2014 warm-up day ${warmUpStatus.day}/${warmUpStatus.totalDays}, limit reached (${warmUpStatus.todaySent}/${warmUpStatus.todayLimit})`)
 			return {
 				allowed: false,
 				delayMs: 0,
@@ -2707,9 +2685,7 @@ var AntiBan = class {
 		const contactGraphDecision = this.contactGraphWarmer.canMessage(recipient)
 		if (!contactGraphDecision.allowed) {
 			this.stats.messagesBlocked++
-			if (this.logging) {
-				console.log(`[baileys-antiban] \u{1F4CA} BLOCKED \u2014 contact graph: ${contactGraphDecision.reason}`)
-			}
+			this._log(`\u{1F4CA} BLOCKED \u2014 contact graph: ${contactGraphDecision.reason}`)
 			return {
 				allowed: false,
 				delayMs: 0,
@@ -2720,9 +2696,7 @@ var AntiBan = class {
 		const replyRatioDecision = this.replyRatioGuard.beforeSend(recipient)
 		if (!replyRatioDecision.allowed) {
 			this.stats.messagesBlocked++
-			if (this.logging) {
-				console.log(`[baileys-antiban] \u{1F4AC} BLOCKED \u2014 reply ratio: ${replyRatioDecision.reason}`)
-			}
+			this._log(`\u{1F4AC} BLOCKED \u2014 reply ratio: ${replyRatioDecision.reason}`)
 			return {
 				allowed: false,
 				delayMs: 0,
@@ -2733,11 +2707,7 @@ var AntiBan = class {
 		const reconnectThrottleDecision = this.reconnectThrottleModule.beforeSend()
 		if (!reconnectThrottleDecision.allowed) {
 			this.stats.messagesBlocked++
-			if (this.logging) {
-				console.log(
-					`[baileys-antiban] \u{1F504} BLOCKED \u2014 reconnect throttle: ${reconnectThrottleDecision.reason}`
-				)
-			}
+			this._log(`\u{1F504} BLOCKED \u2014 reconnect throttle: ${reconnectThrottleDecision.reason}`)
 			return {
 				allowed: false,
 				delayMs: reconnectThrottleDecision.retryAfterMs || 0,
@@ -2761,18 +2731,14 @@ var AntiBan = class {
 				stats.lastDay >= groupLimits.maxPerDay
 			) {
 				this.stats.messagesBlocked++
-				if (this.logging) {
-					console.log(`[baileys-antiban] \u{1F6AB} BLOCKED \u2014 group rate limit exceeded for ${recipient}`)
-				}
+				this._log(`\u{1F6AB} BLOCKED \u2014 group rate limit exceeded for ${recipient}`)
 				return { allowed: false, delayMs: 0, reason: 'Group rate limit exceeded', health: healthStatus }
 			}
 		}
 		let delay = await this.rateLimiter.getDelay(recipient, content)
 		if (delay === -1) {
 			this.stats.messagesBlocked++
-			if (this.logging) {
-				console.log(`[baileys-antiban] \u{1F6AB} BLOCKED \u2014 rate limit or identical message spam`)
-			}
+			this._log(`\u{1F6AB} BLOCKED \u2014 rate limit or identical message spam`)
 			return {
 				allowed: false,
 				delayMs: 0,
@@ -2788,18 +2754,12 @@ var AntiBan = class {
 		const distractionCheck = this.presenceChoreographer.shouldPauseForDistraction()
 		if (distractionCheck.pause) {
 			delay += distractionCheck.durationMs
-			if (this.logging) {
-				console.log(
-					`[baileys-antiban] \u23F8\uFE0F  Distraction pause: +${Math.floor(distractionCheck.durationMs / 6e4)}min`
-				)
-			}
+			this._log(`\u23F8\uFE0F  Distraction pause: +${Math.floor(distractionCheck.durationMs / 6e4)}min`)
 		}
 		const offlineCheck = this.presenceChoreographer.shouldTakeOfflineGap()
 		if (offlineCheck.offline) {
 			delay += offlineCheck.durationMs
-			if (this.logging) {
-				console.log(`[baileys-antiban] \u{1F4F4} Offline gap: +${Math.floor(offlineCheck.durationMs / 6e4)}min`)
-			}
+			this._log(`\u{1F4F4} Offline gap: +${Math.floor(offlineCheck.durationMs / 6e4)}min`)
 		}
 		this.stats.totalDelayMs += delay
 		return {
@@ -2935,18 +2895,14 @@ var AntiBan = class {
 	 */
 	pause() {
 		this.health.setPaused(true)
-		if (this.logging) {
-			console.log('[baileys-antiban] \u23F8\uFE0F  Sending paused manually')
-		}
+		this._log('\u23F8\uFE0F  Sending paused manually')
 	}
 	/**
 	 * Resume sending
 	 */
 	resume() {
 		this.health.setPaused(false)
-		if (this.logging) {
-			console.log('[baileys-antiban] \u25B6\uFE0F  Sending resumed')
-		}
+		this._log('\u25B6\uFE0F  Sending resumed')
 	}
 	/**
 	 * Reset everything (use after a ban period)
@@ -2961,9 +2917,7 @@ var AntiBan = class {
 		this.retryTrackerModule.destroy()
 		this.reconnectThrottleModule.destroy()
 		this.stats = { messagesAllowed: 0, messagesBlocked: 0, totalDelayMs: 0 }
-		if (this.logging) {
-			console.log('[baileys-antiban] \u{1F504} Reset \u2014 starting fresh warm-up')
-		}
+		this._log('\u{1F504} Reset \u2014 starting fresh warm-up')
 	}
 	persistStateDebounced() {
 		if (!this.stateManager) return
@@ -3000,9 +2954,7 @@ var AntiBan = class {
 		this.jidCanonicalizerModule?.destroy()
 		this.lidResolverModule?.destroy()
 		this.sessionStabilityMonitor?.reset()
-		if (this.logging) {
-			console.log('[baileys-antiban] \u{1F9F9} Destroyed \u2014 all timers cleared')
-		}
+		this._log('\u{1F9F9} Destroyed \u2014 all timers cleared')
 	}
 }
 
@@ -3204,7 +3156,6 @@ function wrapSocket(sock, config, warmUpState, wrapOptions) {
 				if (update.connection === 'close') {
 					const reason = update.lastDisconnect?.error?.output?.statusCode || 'unknown'
 					antiban.onDisconnect(reason)
-					antiban.destroy()
 				}
 				if (update.connection === 'open') {
 					antiban.onReconnect()
@@ -3262,7 +3213,6 @@ function wrapSocket(sock, config, warmUpState, wrapOptions) {
 			if (update.connection === 'close') {
 				const reason = update.lastDisconnect?.error?.output?.statusCode || 'unknown'
 				antiban.onDisconnect(reason)
-				antiban.destroy()
 			}
 			if (update.connection === 'open') {
 				antiban.onReconnect()
@@ -3738,10 +3688,10 @@ ${data.reasons.map(r => `\u2022 ${r}`).join('\n')}`
 				body: JSON.stringify(payload)
 			})
 			if (!response.ok) {
-				console.error(`[baileys-antiban] Webhook failed: ${response.status}`)
+				process.stderr.write(`[baileys-antiban] Webhook failed: ${response.status}\n`)
 			}
 		} catch (err) {
-			console.error(`[baileys-antiban] Webhook error:`, err)
+			process.stderr.write(`[baileys-antiban] Webhook error: ${err}\n`)
 		}
 	}
 }
@@ -3844,24 +3794,23 @@ var Scheduler = class {
 }
 
 // stateAdapter.js
+var _fsPromises = require('fs/promises')
+var _fsSync = require('fs')
+var _path3 = require('path')
 var FileStateAdapter = class {
 	basePath
 	constructor(basePath) {
 		this.basePath = basePath
 	}
 	async save(key, state) {
-		const fs4 = await import('fs/promises')
-		const path3 = await import('path')
-		const filePath = path3.join(this.basePath, `${key}.json`)
-		await fs4.mkdir(this.basePath, { recursive: true })
-		await fs4.writeFile(filePath, JSON.stringify(state, null, 2), 'utf-8')
+		const filePath = _path3.join(this.basePath, `${key}.json`)
+		await _fsPromises.mkdir(this.basePath, { recursive: true })
+		await _fsPromises.writeFile(filePath, JSON.stringify(state, null, 2), 'utf-8')
 	}
 	async load(key) {
-		const fs4 = await import('fs/promises')
-		const path3 = await import('path')
-		const filePath = path3.join(this.basePath, `${key}.json`)
+		const filePath = _path3.join(this.basePath, `${key}.json`)
 		try {
-			const data = await fs4.readFile(filePath, 'utf-8')
+			const data = await _fsPromises.readFile(filePath, 'utf-8')
 			return JSON.parse(data)
 		} catch (err) {
 			if (err.code === 'ENOENT') return null
@@ -3869,19 +3818,16 @@ var FileStateAdapter = class {
 		}
 	}
 	async delete(key) {
-		const fs4 = await import('fs/promises')
-		const path3 = await import('path')
-		const filePath = path3.join(this.basePath, `${key}.json`)
+		const filePath = _path3.join(this.basePath, `${key}.json`)
 		try {
-			await fs4.unlink(filePath)
+			await _fsPromises.unlink(filePath)
 		} catch (err) {
 			if (err.code !== 'ENOENT') throw err
 		}
 	}
 	async list() {
-		const fs4 = await import('fs/promises')
 		try {
-			const files = await fs4.readdir(this.basePath)
+			const files = await _fsPromises.readdir(this.basePath)
 			return files.filter(f => f.endsWith('.json')).map(f => f.replace(/\.json$/, ''))
 		} catch (err) {
 			if (err.code === 'ENOENT') return []
@@ -4076,7 +4022,6 @@ function messageRecovery(sock, config) {
 	async function flushPersistence() {
 		if (!cfg.persistPath) return
 		try {
-			const fs4 = await import('fs/promises')
 			const data = {}
 			for (const [jid, entry] of lastSeen) {
 				data[jid] = {
@@ -4084,7 +4029,7 @@ function messageRecovery(sock, config) {
 					timestamp: entry.timestamp
 				}
 			}
-			await fs4.writeFile(cfg.persistPath, JSON.stringify(data, null, 2), 'utf-8')
+			await _fsPromises.writeFile(cfg.persistPath, JSON.stringify(data, null, 2), 'utf-8')
 		} catch (err) {
 			logger.error?.(`[messageRecovery] Failed to persist state: ${err.message}`)
 		}

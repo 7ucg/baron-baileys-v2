@@ -224,7 +224,7 @@ const uploadingNecessaryImages = async (images, waUploadToServer, timeoutMs = 30
 				fileEncSha256B64: sha,
 				timeoutMs
 			})
-			await fs_1.promises.unlink(filePath).catch(err => console.log('Error deleting temp file ', err))
+			await fs_1.promises.unlink(filePath).catch(() => {})
 			return { url: (0, messages_media_1.getUrlFromDirectPath)(directPath) }
 		})
 	)
