@@ -339,6 +339,7 @@ exports.generateMdTagPrefix = generateMdTagPrefix
 const STATUS_MAP = {
 	sender: index_js_1.proto.WebMessageInfo.Status.SERVER_ACK,
 	played: index_js_1.proto.WebMessageInfo.Status.PLAYED,
+	'played-self': index_js_1.proto.WebMessageInfo.Status.PLAYED,
 	read: index_js_1.proto.WebMessageInfo.Status.READ,
 	'read-self': index_js_1.proto.WebMessageInfo.Status.READ
 }

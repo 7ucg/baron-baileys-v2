@@ -29,7 +29,9 @@ var NewsletterReactionSetting
 var XWAPaths
 ;(function (XWAPaths) {
 	XWAPaths['xwa2_newsletter_create'] = 'xwa2_newsletter_create'
+	// stale, kept only for backwards references — server no longer returns these keys, use _followers/_admin_demote below
 	XWAPaths['xwa2_newsletter_subscribers'] = 'xwa2_newsletter_subscribers'
+	XWAPaths['xwa2_newsletter_followers'] = 'xwa2_newsletter_followers'
 	XWAPaths['xwa2_newsletter_view'] = 'xwa2_newsletter_view'
 	XWAPaths['xwa2_newsletter_metadata'] = 'xwa2_newsletter'
 	XWAPaths['xwa2_newsletter_admin_count'] = 'xwa2_newsletter_admin'
@@ -39,6 +41,7 @@ var XWAPaths
 	XWAPaths['xwa2_newsletter_unfollow'] = 'xwa2_newsletter_unfollow'
 	XWAPaths['xwa2_newsletter_change_owner'] = 'xwa2_newsletter_change_owner'
 	XWAPaths['xwa2_newsletter_demote'] = 'xwa2_newsletter_demote'
+	XWAPaths['xwa2_newsletter_admin_demote'] = 'xwa2_newsletter_admin_demote'
 	XWAPaths['xwa2_newsletter_delete_v2'] = 'xwa2_newsletter_delete_v2'
 	XWAPaths['xwa2_newsletter_join_v2'] = 'xwa2_newsletter_join_v2'
 	XWAPaths['xwa2_newsletter_leave_v2'] = 'xwa2_newsletter_leave_v2'
@@ -87,20 +90,22 @@ var XWAPaths
 var QueryIds
 ;(function (QueryIds) {
 	// Newsletter core
-	QueryIds['CREATE'] = '27009199332109318' // NewsletterCreate
+	// IDs below marked "verified 2026-07-19" were cross-checked against a live WA Web
+	// graphql module dump; the rest are unverified and may also be stale.
+	QueryIds['CREATE'] = '25149874324715067' // NewsletterCreate — verified 2026-07-19
 	QueryIds['CREATE_VERIFIED'] = '27777918425146464' // NewsletterCreateVerified
 	QueryIds['UPDATE_METADATA'] = '27150690864552229' // NewsletterMetadataUpdate
 	QueryIds['METADATA'] = '26629010453445271' // NewsletterMetadata
-	QueryIds['SUBSCRIBERS'] = '25646542368289354' // NewsletterFollowers
-	QueryIds['FOLLOW'] = '24658527423838739' // NewsletterJoin
-	QueryIds['LEAVE'] = '25758579043742316' // NewsletterLeave
-	QueryIds['UNFOLLOW'] = '26856957210673444' // NewsletterFollowing (used for unfollow path)
+	QueryIds['SUBSCRIBERS'] = '27472091235714801' // NewsletterFollowers — verified 2026-07-19
+	QueryIds['FOLLOW'] = '24404358912487870' // NewsletterJoin — verified 2026-07-19
+	QueryIds['LEAVE'] = '9767147403369991' // NewsletterLeave — verified 2026-07-19
+	QueryIds['UNFOLLOW'] = '9767147403369991' // NewsletterLeave (unfollow == leave) — verified 2026-07-19
 	QueryIds['MUTE'] = '25033614912931367' // NewsletterHide
 	QueryIds['UNMUTE'] = '24551592861177484' // NewsletterUnhide
 	QueryIds['ADMIN_COUNT'] = '27579307995002556' // NewslettersAdminCapabilitiesQuery
 	QueryIds['CHANGE_OWNER'] = '24737692515842078' // NewsletterChangeOwner
-	QueryIds['DEMOTE'] = '25054538847517281' // NewsletterAdminDemote
-	QueryIds['DELETE'] = '31838460859131915' // NewsletterDelete
+	QueryIds['DEMOTE'] = '9880997548630971' // NewsletterAdminDemote — verified 2026-07-19
+	QueryIds['DELETE'] = '30062808666639665' // NewsletterDelete — verified 2026-07-19
 	QueryIds['REACHOUT_TIMELOCK'] = '25627902213558773' // FetchReachoutTimelockQuery
 	QueryIds['MESSAGE_CAPPING_INFO'] = '37491736743758664' // XWA2MessageCappingInfoQuery
 	QueryIds['UPDATE_USER_SETTING'] = '24935528202764688' // NewsletterUpdateUserSetting

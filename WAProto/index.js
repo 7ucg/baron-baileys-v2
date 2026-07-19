@@ -70097,6 +70097,550 @@ $root.proto = (function() {
         return DecryptMessageOutput;
     })();
 
+    proto.DeriveMessageKeyInput = (function() {
+
+        /**
+         * Properties of a DeriveMessageKeyInput.
+         * @memberof proto
+         * @interface IDeriveMessageKeyInput
+         * @property {Uint8Array|null} [epochRootKey] DeriveMessageKeyInput epochRootKey
+         * @property {Uint8Array|null} [epochAnonId] DeriveMessageKeyInput epochAnonId
+         * @property {string|null} [threadId] DeriveMessageKeyInput threadId
+         */
+
+        /**
+         * Constructs a new DeriveMessageKeyInput.
+         * @memberof proto
+         * @classdesc Represents a DeriveMessageKeyInput.
+         * @implements IDeriveMessageKeyInput
+         * @constructor
+         * @param {proto.IDeriveMessageKeyInput=} [properties] Properties to set
+         */
+        function DeriveMessageKeyInput(properties) {
+            if (properties)
+                for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                    if (properties[keys[i]] != null)
+                        this[keys[i]] = properties[keys[i]];
+        }
+
+        /**
+         * DeriveMessageKeyInput epochRootKey.
+         * @member {Uint8Array|null|undefined} epochRootKey
+         * @memberof proto.DeriveMessageKeyInput
+         * @instance
+         */
+        DeriveMessageKeyInput.prototype.epochRootKey = null;
+
+        /**
+         * DeriveMessageKeyInput epochAnonId.
+         * @member {Uint8Array|null|undefined} epochAnonId
+         * @memberof proto.DeriveMessageKeyInput
+         * @instance
+         */
+        DeriveMessageKeyInput.prototype.epochAnonId = null;
+
+        /**
+         * DeriveMessageKeyInput threadId.
+         * @member {string|null|undefined} threadId
+         * @memberof proto.DeriveMessageKeyInput
+         * @instance
+         */
+        DeriveMessageKeyInput.prototype.threadId = null;
+
+        // OneOf field names bound to virtual getters and setters
+        var $oneOfFields;
+
+        // Virtual OneOf for proto3 optional field
+        Object.defineProperty(DeriveMessageKeyInput.prototype, "_epochRootKey", {
+            get: $util.oneOfGetter($oneOfFields = ["epochRootKey"]),
+            set: $util.oneOfSetter($oneOfFields)
+        });
+
+        // Virtual OneOf for proto3 optional field
+        Object.defineProperty(DeriveMessageKeyInput.prototype, "_epochAnonId", {
+            get: $util.oneOfGetter($oneOfFields = ["epochAnonId"]),
+            set: $util.oneOfSetter($oneOfFields)
+        });
+
+        // Virtual OneOf for proto3 optional field
+        Object.defineProperty(DeriveMessageKeyInput.prototype, "_threadId", {
+            get: $util.oneOfGetter($oneOfFields = ["threadId"]),
+            set: $util.oneOfSetter($oneOfFields)
+        });
+
+        /**
+         * Creates a new DeriveMessageKeyInput instance using the specified properties.
+         * @function create
+         * @memberof proto.DeriveMessageKeyInput
+         * @static
+         * @param {proto.IDeriveMessageKeyInput=} [properties] Properties to set
+         * @returns {proto.DeriveMessageKeyInput} DeriveMessageKeyInput instance
+         */
+        DeriveMessageKeyInput.create = function create(properties) {
+            return new DeriveMessageKeyInput(properties);
+        };
+
+        /**
+         * Encodes the specified DeriveMessageKeyInput message. Does not implicitly {@link proto.DeriveMessageKeyInput.verify|verify} messages.
+         * @function encode
+         * @memberof proto.DeriveMessageKeyInput
+         * @static
+         * @param {proto.IDeriveMessageKeyInput} message DeriveMessageKeyInput message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        DeriveMessageKeyInput.encode = function encode(message, writer) {
+            if (!writer)
+                writer = $Writer.create();
+            if (message.epochRootKey != null && Object.hasOwnProperty.call(message, "epochRootKey"))
+                writer.uint32(/* id 1, wireType 2 =*/10).bytes(message.epochRootKey);
+            if (message.epochAnonId != null && Object.hasOwnProperty.call(message, "epochAnonId"))
+                writer.uint32(/* id 2, wireType 2 =*/18).bytes(message.epochAnonId);
+            if (message.threadId != null && Object.hasOwnProperty.call(message, "threadId"))
+                writer.uint32(/* id 3, wireType 2 =*/26).string(message.threadId);
+            return writer;
+        };
+
+        /**
+         * Encodes the specified DeriveMessageKeyInput message, length delimited. Does not implicitly {@link proto.DeriveMessageKeyInput.verify|verify} messages.
+         * @function encodeDelimited
+         * @memberof proto.DeriveMessageKeyInput
+         * @static
+         * @param {proto.IDeriveMessageKeyInput} message DeriveMessageKeyInput message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        DeriveMessageKeyInput.encodeDelimited = function encodeDelimited(message, writer) {
+            return this.encode(message, writer).ldelim();
+        };
+
+        /**
+         * Decodes a DeriveMessageKeyInput message from the specified reader or buffer.
+         * @function decode
+         * @memberof proto.DeriveMessageKeyInput
+         * @static
+         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+         * @param {number} [length] Message length if known beforehand
+         * @returns {proto.DeriveMessageKeyInput} DeriveMessageKeyInput
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        DeriveMessageKeyInput.decode = function decode(reader, length, error) {
+            if (!(reader instanceof $Reader))
+                reader = $Reader.create(reader);
+            var end = length === undefined ? reader.len : reader.pos + length, message = new $root.proto.DeriveMessageKeyInput();
+            while (reader.pos < end) {
+                var tag = reader.uint32();
+                if (tag === error)
+                    break;
+                switch (tag >>> 3) {
+                case 1: {
+                        message.epochRootKey = reader.bytes();
+                        break;
+                    }
+                case 2: {
+                        message.epochAnonId = reader.bytes();
+                        break;
+                    }
+                case 3: {
+                        message.threadId = reader.string();
+                        break;
+                    }
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+                }
+            }
+            return message;
+        };
+
+        /**
+         * Decodes a DeriveMessageKeyInput message from the specified reader or buffer, length delimited.
+         * @function decodeDelimited
+         * @memberof proto.DeriveMessageKeyInput
+         * @static
+         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+         * @returns {proto.DeriveMessageKeyInput} DeriveMessageKeyInput
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        DeriveMessageKeyInput.decodeDelimited = function decodeDelimited(reader) {
+            if (!(reader instanceof $Reader))
+                reader = new $Reader(reader);
+            return this.decode(reader, reader.uint32());
+        };
+
+        /**
+         * Verifies a DeriveMessageKeyInput message.
+         * @function verify
+         * @memberof proto.DeriveMessageKeyInput
+         * @static
+         * @param {Object.<string,*>} message Plain object to verify
+         * @returns {string|null} `null` if valid, otherwise the reason why it is not
+         */
+        DeriveMessageKeyInput.verify = function verify(message) {
+            if (typeof message !== "object" || message === null)
+                return "object expected";
+            var properties = {};
+            if (message.epochRootKey != null && message.hasOwnProperty("epochRootKey")) {
+                properties._epochRootKey = 1;
+                if (!(message.epochRootKey && typeof message.epochRootKey.length === "number" || $util.isString(message.epochRootKey)))
+                    return "epochRootKey: buffer expected";
+            }
+            if (message.epochAnonId != null && message.hasOwnProperty("epochAnonId")) {
+                properties._epochAnonId = 1;
+                if (!(message.epochAnonId && typeof message.epochAnonId.length === "number" || $util.isString(message.epochAnonId)))
+                    return "epochAnonId: buffer expected";
+            }
+            if (message.threadId != null && message.hasOwnProperty("threadId")) {
+                properties._threadId = 1;
+                if (!$util.isString(message.threadId))
+                    return "threadId: string expected";
+            }
+            return null;
+        };
+
+        /**
+         * Creates a DeriveMessageKeyInput message from a plain object. Also converts values to their respective internal types.
+         * @function fromObject
+         * @memberof proto.DeriveMessageKeyInput
+         * @static
+         * @param {Object.<string,*>} object Plain object
+         * @returns {proto.DeriveMessageKeyInput} DeriveMessageKeyInput
+         */
+        DeriveMessageKeyInput.fromObject = function fromObject(object) {
+            if (object instanceof $root.proto.DeriveMessageKeyInput)
+                return object;
+            var message = new $root.proto.DeriveMessageKeyInput();
+            if (object.epochRootKey != null)
+                if (typeof object.epochRootKey === "string")
+                    $util.base64.decode(object.epochRootKey, message.epochRootKey = $util.newBuffer($util.base64.length(object.epochRootKey)), 0);
+                else if (object.epochRootKey.length >= 0)
+                    message.epochRootKey = object.epochRootKey;
+            if (object.epochAnonId != null)
+                if (typeof object.epochAnonId === "string")
+                    $util.base64.decode(object.epochAnonId, message.epochAnonId = $util.newBuffer($util.base64.length(object.epochAnonId)), 0);
+                else if (object.epochAnonId.length >= 0)
+                    message.epochAnonId = object.epochAnonId;
+            if (object.threadId != null)
+                message.threadId = String(object.threadId);
+            return message;
+        };
+
+        /**
+         * Creates a plain object from a DeriveMessageKeyInput message. Also converts values to other types if specified.
+         * @function toObject
+         * @memberof proto.DeriveMessageKeyInput
+         * @static
+         * @param {proto.DeriveMessageKeyInput} message DeriveMessageKeyInput
+         * @param {$protobuf.IConversionOptions} [options] Conversion options
+         * @returns {Object.<string,*>} Plain object
+         */
+        DeriveMessageKeyInput.toObject = function toObject(message, options) {
+            if (!options)
+                options = {};
+            var object = {};
+            if (message.epochRootKey != null && message.hasOwnProperty("epochRootKey")) {
+                object.epochRootKey = options.bytes === String ? $util.base64.encode(message.epochRootKey, 0, message.epochRootKey.length) : options.bytes === Array ? Array.prototype.slice.call(message.epochRootKey) : message.epochRootKey;
+                if (options.oneofs)
+                    object._epochRootKey = "epochRootKey";
+            }
+            if (message.epochAnonId != null && message.hasOwnProperty("epochAnonId")) {
+                object.epochAnonId = options.bytes === String ? $util.base64.encode(message.epochAnonId, 0, message.epochAnonId.length) : options.bytes === Array ? Array.prototype.slice.call(message.epochAnonId) : message.epochAnonId;
+                if (options.oneofs)
+                    object._epochAnonId = "epochAnonId";
+            }
+            if (message.threadId != null && message.hasOwnProperty("threadId")) {
+                object.threadId = message.threadId;
+                if (options.oneofs)
+                    object._threadId = "threadId";
+            }
+            return object;
+        };
+
+        /**
+         * Converts this DeriveMessageKeyInput to JSON.
+         * @function toJSON
+         * @memberof proto.DeriveMessageKeyInput
+         * @instance
+         * @returns {Object.<string,*>} JSON object
+         */
+        DeriveMessageKeyInput.prototype.toJSON = function toJSON() {
+            return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+        };
+
+        /**
+         * Gets the default type url for DeriveMessageKeyInput
+         * @function getTypeUrl
+         * @memberof proto.DeriveMessageKeyInput
+         * @static
+         * @param {string} [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+         * @returns {string} The default type url
+         */
+        DeriveMessageKeyInput.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
+            if (typeUrlPrefix === undefined) {
+                typeUrlPrefix = "type.googleapis.com";
+            }
+            return typeUrlPrefix + "/proto.DeriveMessageKeyInput";
+        };
+
+        return DeriveMessageKeyInput;
+    })();
+
+    proto.DeriveMessageKeyOutput = (function() {
+
+        /**
+         * Properties of a DeriveMessageKeyOutput.
+         * @memberof proto
+         * @interface IDeriveMessageKeyOutput
+         * @property {Uint8Array|null} [messageKey] DeriveMessageKeyOutput messageKey
+         * @property {string|null} [error] DeriveMessageKeyOutput error
+         */
+
+        /**
+         * Constructs a new DeriveMessageKeyOutput.
+         * @memberof proto
+         * @classdesc Represents a DeriveMessageKeyOutput.
+         * @implements IDeriveMessageKeyOutput
+         * @constructor
+         * @param {proto.IDeriveMessageKeyOutput=} [properties] Properties to set
+         */
+        function DeriveMessageKeyOutput(properties) {
+            if (properties)
+                for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                    if (properties[keys[i]] != null)
+                        this[keys[i]] = properties[keys[i]];
+        }
+
+        /**
+         * DeriveMessageKeyOutput messageKey.
+         * @member {Uint8Array|null|undefined} messageKey
+         * @memberof proto.DeriveMessageKeyOutput
+         * @instance
+         */
+        DeriveMessageKeyOutput.prototype.messageKey = null;
+
+        /**
+         * DeriveMessageKeyOutput error.
+         * @member {string|null|undefined} error
+         * @memberof proto.DeriveMessageKeyOutput
+         * @instance
+         */
+        DeriveMessageKeyOutput.prototype.error = null;
+
+        // OneOf field names bound to virtual getters and setters
+        var $oneOfFields;
+
+        // Virtual OneOf for proto3 optional field
+        Object.defineProperty(DeriveMessageKeyOutput.prototype, "_messageKey", {
+            get: $util.oneOfGetter($oneOfFields = ["messageKey"]),
+            set: $util.oneOfSetter($oneOfFields)
+        });
+
+        // Virtual OneOf for proto3 optional field
+        Object.defineProperty(DeriveMessageKeyOutput.prototype, "_error", {
+            get: $util.oneOfGetter($oneOfFields = ["error"]),
+            set: $util.oneOfSetter($oneOfFields)
+        });
+
+        /**
+         * Creates a new DeriveMessageKeyOutput instance using the specified properties.
+         * @function create
+         * @memberof proto.DeriveMessageKeyOutput
+         * @static
+         * @param {proto.IDeriveMessageKeyOutput=} [properties] Properties to set
+         * @returns {proto.DeriveMessageKeyOutput} DeriveMessageKeyOutput instance
+         */
+        DeriveMessageKeyOutput.create = function create(properties) {
+            return new DeriveMessageKeyOutput(properties);
+        };
+
+        /**
+         * Encodes the specified DeriveMessageKeyOutput message. Does not implicitly {@link proto.DeriveMessageKeyOutput.verify|verify} messages.
+         * @function encode
+         * @memberof proto.DeriveMessageKeyOutput
+         * @static
+         * @param {proto.IDeriveMessageKeyOutput} message DeriveMessageKeyOutput message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        DeriveMessageKeyOutput.encode = function encode(message, writer) {
+            if (!writer)
+                writer = $Writer.create();
+            if (message.messageKey != null && Object.hasOwnProperty.call(message, "messageKey"))
+                writer.uint32(/* id 1, wireType 2 =*/10).bytes(message.messageKey);
+            if (message.error != null && Object.hasOwnProperty.call(message, "error"))
+                writer.uint32(/* id 2, wireType 2 =*/18).string(message.error);
+            return writer;
+        };
+
+        /**
+         * Encodes the specified DeriveMessageKeyOutput message, length delimited. Does not implicitly {@link proto.DeriveMessageKeyOutput.verify|verify} messages.
+         * @function encodeDelimited
+         * @memberof proto.DeriveMessageKeyOutput
+         * @static
+         * @param {proto.IDeriveMessageKeyOutput} message DeriveMessageKeyOutput message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        DeriveMessageKeyOutput.encodeDelimited = function encodeDelimited(message, writer) {
+            return this.encode(message, writer).ldelim();
+        };
+
+        /**
+         * Decodes a DeriveMessageKeyOutput message from the specified reader or buffer.
+         * @function decode
+         * @memberof proto.DeriveMessageKeyOutput
+         * @static
+         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+         * @param {number} [length] Message length if known beforehand
+         * @returns {proto.DeriveMessageKeyOutput} DeriveMessageKeyOutput
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        DeriveMessageKeyOutput.decode = function decode(reader, length, error) {
+            if (!(reader instanceof $Reader))
+                reader = $Reader.create(reader);
+            var end = length === undefined ? reader.len : reader.pos + length, message = new $root.proto.DeriveMessageKeyOutput();
+            while (reader.pos < end) {
+                var tag = reader.uint32();
+                if (tag === error)
+                    break;
+                switch (tag >>> 3) {
+                case 1: {
+                        message.messageKey = reader.bytes();
+                        break;
+                    }
+                case 2: {
+                        message.error = reader.string();
+                        break;
+                    }
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+                }
+            }
+            return message;
+        };
+
+        /**
+         * Decodes a DeriveMessageKeyOutput message from the specified reader or buffer, length delimited.
+         * @function decodeDelimited
+         * @memberof proto.DeriveMessageKeyOutput
+         * @static
+         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+         * @returns {proto.DeriveMessageKeyOutput} DeriveMessageKeyOutput
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        DeriveMessageKeyOutput.decodeDelimited = function decodeDelimited(reader) {
+            if (!(reader instanceof $Reader))
+                reader = new $Reader(reader);
+            return this.decode(reader, reader.uint32());
+        };
+
+        /**
+         * Verifies a DeriveMessageKeyOutput message.
+         * @function verify
+         * @memberof proto.DeriveMessageKeyOutput
+         * @static
+         * @param {Object.<string,*>} message Plain object to verify
+         * @returns {string|null} `null` if valid, otherwise the reason why it is not
+         */
+        DeriveMessageKeyOutput.verify = function verify(message) {
+            if (typeof message !== "object" || message === null)
+                return "object expected";
+            var properties = {};
+            if (message.messageKey != null && message.hasOwnProperty("messageKey")) {
+                properties._messageKey = 1;
+                if (!(message.messageKey && typeof message.messageKey.length === "number" || $util.isString(message.messageKey)))
+                    return "messageKey: buffer expected";
+            }
+            if (message.error != null && message.hasOwnProperty("error")) {
+                properties._error = 1;
+                if (!$util.isString(message.error))
+                    return "error: string expected";
+            }
+            return null;
+        };
+
+        /**
+         * Creates a DeriveMessageKeyOutput message from a plain object. Also converts values to their respective internal types.
+         * @function fromObject
+         * @memberof proto.DeriveMessageKeyOutput
+         * @static
+         * @param {Object.<string,*>} object Plain object
+         * @returns {proto.DeriveMessageKeyOutput} DeriveMessageKeyOutput
+         */
+        DeriveMessageKeyOutput.fromObject = function fromObject(object) {
+            if (object instanceof $root.proto.DeriveMessageKeyOutput)
+                return object;
+            var message = new $root.proto.DeriveMessageKeyOutput();
+            if (object.messageKey != null)
+                if (typeof object.messageKey === "string")
+                    $util.base64.decode(object.messageKey, message.messageKey = $util.newBuffer($util.base64.length(object.messageKey)), 0);
+                else if (object.messageKey.length >= 0)
+                    message.messageKey = object.messageKey;
+            if (object.error != null)
+                message.error = String(object.error);
+            return message;
+        };
+
+        /**
+         * Creates a plain object from a DeriveMessageKeyOutput message. Also converts values to other types if specified.
+         * @function toObject
+         * @memberof proto.DeriveMessageKeyOutput
+         * @static
+         * @param {proto.DeriveMessageKeyOutput} message DeriveMessageKeyOutput
+         * @param {$protobuf.IConversionOptions} [options] Conversion options
+         * @returns {Object.<string,*>} Plain object
+         */
+        DeriveMessageKeyOutput.toObject = function toObject(message, options) {
+            if (!options)
+                options = {};
+            var object = {};
+            if (message.messageKey != null && message.hasOwnProperty("messageKey")) {
+                object.messageKey = options.bytes === String ? $util.base64.encode(message.messageKey, 0, message.messageKey.length) : options.bytes === Array ? Array.prototype.slice.call(message.messageKey) : message.messageKey;
+                if (options.oneofs)
+                    object._messageKey = "messageKey";
+            }
+            if (message.error != null && message.hasOwnProperty("error")) {
+                object.error = message.error;
+                if (options.oneofs)
+                    object._error = "error";
+            }
+            return object;
+        };
+
+        /**
+         * Converts this DeriveMessageKeyOutput to JSON.
+         * @function toJSON
+         * @memberof proto.DeriveMessageKeyOutput
+         * @instance
+         * @returns {Object.<string,*>} JSON object
+         */
+        DeriveMessageKeyOutput.prototype.toJSON = function toJSON() {
+            return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+        };
+
+        /**
+         * Gets the default type url for DeriveMessageKeyOutput
+         * @function getTypeUrl
+         * @memberof proto.DeriveMessageKeyOutput
+         * @static
+         * @param {string} [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+         * @returns {string} The default type url
+         */
+        DeriveMessageKeyOutput.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
+            if (typeUrlPrefix === undefined) {
+                typeUrlPrefix = "type.googleapis.com";
+            }
+            return typeUrlPrefix + "/proto.DeriveMessageKeyOutput";
+        };
+
+        return DeriveMessageKeyOutput;
+    })();
+
     proto.DeviceCapabilities = (function() {
 
         /**
@@ -74103,6 +74647,7 @@ $root.proto = (function() {
              * @property {boolean|null} [supportHatchHistory] HistorySyncConfig supportHatchHistory
              * @property {Array.<string>|null} [supportedBotChannelFbids] HistorySyncConfig supportedBotChannelFbids
              * @property {boolean|null} [supportInlineContacts] HistorySyncConfig supportInlineContacts
+             * @property {boolean|null} [supportNewsletter] HistorySyncConfig supportNewsletter
              */
 
             /**
@@ -74313,6 +74858,14 @@ $root.proto = (function() {
              */
             HistorySyncConfig.prototype.supportInlineContacts = null;
 
+            /**
+             * HistorySyncConfig supportNewsletter.
+             * @member {boolean|null|undefined} supportNewsletter
+             * @memberof proto.DeviceProps.HistorySyncConfig
+             * @instance
+             */
+            HistorySyncConfig.prototype.supportNewsletter = null;
+
             // OneOf field names bound to virtual getters and setters
             var $oneOfFields;
 
@@ -74454,6 +75007,12 @@ $root.proto = (function() {
                 set: $util.oneOfSetter($oneOfFields)
             });
 
+            // Virtual OneOf for proto3 optional field
+            Object.defineProperty(HistorySyncConfig.prototype, "_supportNewsletter", {
+                get: $util.oneOfGetter($oneOfFields = ["supportNewsletter"]),
+                set: $util.oneOfSetter($oneOfFields)
+            });
+
             /**
              * Creates a new HistorySyncConfig instance using the specified properties.
              * @function create
@@ -74527,6 +75086,8 @@ $root.proto = (function() {
                         writer.uint32(/* id 23, wireType 2 =*/186).string(message.supportedBotChannelFbids[i]);
                 if (message.supportInlineContacts != null && Object.hasOwnProperty.call(message, "supportInlineContacts"))
                     writer.uint32(/* id 24, wireType 0 =*/192).bool(message.supportInlineContacts);
+                if (message.supportNewsletter != null && Object.hasOwnProperty.call(message, "supportNewsletter"))
+                    writer.uint32(/* id 25, wireType 0 =*/200).bool(message.supportNewsletter);
                 return writer;
             };
 
@@ -74659,6 +75220,10 @@ $root.proto = (function() {
                         }
                     case 24: {
                             message.supportInlineContacts = reader.bool();
+                            break;
+                        }
+                    case 25: {
+                            message.supportNewsletter = reader.bool();
                             break;
                         }
                     default:
@@ -74819,6 +75384,11 @@ $root.proto = (function() {
                     if (typeof message.supportInlineContacts !== "boolean")
                         return "supportInlineContacts: boolean expected";
                 }
+                if (message.supportNewsletter != null && message.hasOwnProperty("supportNewsletter")) {
+                    properties._supportNewsletter = 1;
+                    if (typeof message.supportNewsletter !== "boolean")
+                        return "supportNewsletter: boolean expected";
+                }
                 return null;
             };
 
@@ -74887,6 +75457,8 @@ $root.proto = (function() {
                 }
                 if (object.supportInlineContacts != null)
                     message.supportInlineContacts = Boolean(object.supportInlineContacts);
+                if (object.supportNewsletter != null)
+                    message.supportNewsletter = Boolean(object.supportNewsletter);
                 return message;
             };
 
@@ -75024,6 +75596,11 @@ $root.proto = (function() {
                     object.supportInlineContacts = message.supportInlineContacts;
                     if (options.oneofs)
                         object._supportInlineContacts = "supportInlineContacts";
+                }
+                if (message.supportNewsletter != null && message.hasOwnProperty("supportNewsletter")) {
+                    object.supportNewsletter = message.supportNewsletter;
+                    if (options.oneofs)
+                        object._supportNewsletter = "supportNewsletter";
                 }
                 return object;
             };
@@ -94554,6 +95131,7 @@ $root.proto = (function() {
          * @property {proto.IEncryptMessageInput|null} [encryptMessageInput] LabyrinthWaCommand encryptMessageInput
          * @property {proto.IDecryptMessageInput|null} [decryptMessageInput] LabyrinthWaCommand decryptMessageInput
          * @property {proto.IOrfThreadIdInput|null} [orfThreadIdInput] LabyrinthWaCommand orfThreadIdInput
+         * @property {proto.IDeriveMessageKeyInput|null} [deriveMessageKeyInput] LabyrinthWaCommand deriveMessageKeyInput
          */
 
         /**
@@ -94603,17 +95181,25 @@ $root.proto = (function() {
          */
         LabyrinthWaCommand.prototype.orfThreadIdInput = null;
 
+        /**
+         * LabyrinthWaCommand deriveMessageKeyInput.
+         * @member {proto.IDeriveMessageKeyInput|null|undefined} deriveMessageKeyInput
+         * @memberof proto.LabyrinthWaCommand
+         * @instance
+         */
+        LabyrinthWaCommand.prototype.deriveMessageKeyInput = null;
+
         // OneOf field names bound to virtual getters and setters
         var $oneOfFields;
 
         /**
          * LabyrinthWaCommand commandInput.
-         * @member {"createBackupInput"|"encryptMessageInput"|"decryptMessageInput"|"orfThreadIdInput"|undefined} commandInput
+         * @member {"createBackupInput"|"encryptMessageInput"|"decryptMessageInput"|"orfThreadIdInput"|"deriveMessageKeyInput"|undefined} commandInput
          * @memberof proto.LabyrinthWaCommand
          * @instance
          */
         Object.defineProperty(LabyrinthWaCommand.prototype, "commandInput", {
-            get: $util.oneOfGetter($oneOfFields = ["createBackupInput", "encryptMessageInput", "decryptMessageInput", "orfThreadIdInput"]),
+            get: $util.oneOfGetter($oneOfFields = ["createBackupInput", "encryptMessageInput", "decryptMessageInput", "orfThreadIdInput", "deriveMessageKeyInput"]),
             set: $util.oneOfSetter($oneOfFields)
         });
 
@@ -94649,6 +95235,8 @@ $root.proto = (function() {
                 $root.proto.DecryptMessageInput.encode(message.decryptMessageInput, writer.uint32(/* id 3, wireType 2 =*/26).fork()).ldelim();
             if (message.orfThreadIdInput != null && Object.hasOwnProperty.call(message, "orfThreadIdInput"))
                 $root.proto.OrfThreadIdInput.encode(message.orfThreadIdInput, writer.uint32(/* id 4, wireType 2 =*/34).fork()).ldelim();
+            if (message.deriveMessageKeyInput != null && Object.hasOwnProperty.call(message, "deriveMessageKeyInput"))
+                $root.proto.DeriveMessageKeyInput.encode(message.deriveMessageKeyInput, writer.uint32(/* id 5, wireType 2 =*/42).fork()).ldelim();
             return writer;
         };
 
@@ -94699,6 +95287,10 @@ $root.proto = (function() {
                     }
                 case 4: {
                         message.orfThreadIdInput = $root.proto.OrfThreadIdInput.decode(reader, reader.uint32());
+                        break;
+                    }
+                case 5: {
+                        message.deriveMessageKeyInput = $root.proto.DeriveMessageKeyInput.decode(reader, reader.uint32());
                         break;
                     }
                 default:
@@ -94775,6 +95367,16 @@ $root.proto = (function() {
                         return "orfThreadIdInput." + error;
                 }
             }
+            if (message.deriveMessageKeyInput != null && message.hasOwnProperty("deriveMessageKeyInput")) {
+                if (properties.commandInput === 1)
+                    return "commandInput: multiple values";
+                properties.commandInput = 1;
+                {
+                    var error = $root.proto.DeriveMessageKeyInput.verify(message.deriveMessageKeyInput);
+                    if (error)
+                        return "deriveMessageKeyInput." + error;
+                }
+            }
             return null;
         };
 
@@ -94809,6 +95411,11 @@ $root.proto = (function() {
                 if (typeof object.orfThreadIdInput !== "object")
                     throw TypeError(".proto.LabyrinthWaCommand.orfThreadIdInput: object expected");
                 message.orfThreadIdInput = $root.proto.OrfThreadIdInput.fromObject(object.orfThreadIdInput);
+            }
+            if (object.deriveMessageKeyInput != null) {
+                if (typeof object.deriveMessageKeyInput !== "object")
+                    throw TypeError(".proto.LabyrinthWaCommand.deriveMessageKeyInput: object expected");
+                message.deriveMessageKeyInput = $root.proto.DeriveMessageKeyInput.fromObject(object.deriveMessageKeyInput);
             }
             return message;
         };
@@ -94845,6 +95452,11 @@ $root.proto = (function() {
                 object.orfThreadIdInput = $root.proto.OrfThreadIdInput.toObject(message.orfThreadIdInput, options);
                 if (options.oneofs)
                     object.commandInput = "orfThreadIdInput";
+            }
+            if (message.deriveMessageKeyInput != null && message.hasOwnProperty("deriveMessageKeyInput")) {
+                object.deriveMessageKeyInput = $root.proto.DeriveMessageKeyInput.toObject(message.deriveMessageKeyInput, options);
+                if (options.oneofs)
+                    object.commandInput = "deriveMessageKeyInput";
             }
             return object;
         };
@@ -109090,6 +109702,7 @@ $root.proto = (function() {
              * @property {string|null} [deeplinkPayload] Call deeplinkPayload
              * @property {proto.IMessageContextInfo|null} [messageContextInfo] Call messageContextInfo
              * @property {number|null} [callEntryPoint] Call callEntryPoint
+             * @property {string|null} [callReason] Call callReason
              */
 
             /**
@@ -109195,6 +109808,14 @@ $root.proto = (function() {
              */
             Call.prototype.callEntryPoint = null;
 
+            /**
+             * Call callReason.
+             * @member {string|null|undefined} callReason
+             * @memberof proto.Message.Call
+             * @instance
+             */
+            Call.prototype.callReason = null;
+
             // OneOf field names bound to virtual getters and setters
             var $oneOfFields;
 
@@ -109264,6 +109885,12 @@ $root.proto = (function() {
                 set: $util.oneOfSetter($oneOfFields)
             });
 
+            // Virtual OneOf for proto3 optional field
+            Object.defineProperty(Call.prototype, "_callReason", {
+                get: $util.oneOfGetter($oneOfFields = ["callReason"]),
+                set: $util.oneOfSetter($oneOfFields)
+            });
+
             /**
              * Creates a new Call instance using the specified properties.
              * @function create
@@ -109310,6 +109937,8 @@ $root.proto = (function() {
                     $root.proto.MessageContextInfo.encode(message.messageContextInfo, writer.uint32(/* id 10, wireType 2 =*/82).fork()).ldelim();
                 if (message.callEntryPoint != null && Object.hasOwnProperty.call(message, "callEntryPoint"))
                     writer.uint32(/* id 11, wireType 0 =*/88).uint32(message.callEntryPoint);
+                if (message.callReason != null && Object.hasOwnProperty.call(message, "callReason"))
+                    writer.uint32(/* id 12, wireType 2 =*/98).string(message.callReason);
                 return writer;
             };
 
@@ -109388,6 +110017,10 @@ $root.proto = (function() {
                         }
                     case 11: {
                             message.callEntryPoint = reader.uint32();
+                            break;
+                        }
+                    case 12: {
+                            message.callReason = reader.string();
                             break;
                         }
                     default:
@@ -109487,6 +110120,11 @@ $root.proto = (function() {
                     if (!$util.isInteger(message.callEntryPoint))
                         return "callEntryPoint: integer expected";
                 }
+                if (message.callReason != null && message.hasOwnProperty("callReason")) {
+                    properties._callReason = 1;
+                    if (!$util.isString(message.callReason))
+                        return "callReason: string expected";
+                }
                 return null;
             };
 
@@ -109539,6 +110177,8 @@ $root.proto = (function() {
                 }
                 if (object.callEntryPoint != null)
                     message.callEntryPoint = object.callEntryPoint >>> 0;
+                if (object.callReason != null)
+                    message.callReason = String(object.callReason);
                 return message;
             };
 
@@ -109609,6 +110249,11 @@ $root.proto = (function() {
                     object.callEntryPoint = message.callEntryPoint;
                     if (options.oneofs)
                         object._callEntryPoint = "callEntryPoint";
+                }
+                if (message.callReason != null && message.hasOwnProperty("callReason")) {
+                    object.callReason = message.callReason;
+                    if (options.oneofs)
+                        object._callReason = "callReason";
                 }
                 return object;
             };
@@ -155441,6 +156086,7 @@ $root.proto = (function() {
              * @property {proto.IAIMetadataOperation|null} [aiMetadataOperation] ProtocolMessage aiMetadataOperation
              * @property {proto.Message.IMarkAsVerifiedAction|null} [markAsVerifiedAction] ProtocolMessage markAsVerifiedAction
              * @property {proto.ICoexStateSync|null} [coexStateSync] ProtocolMessage coexStateSync
+             * @property {proto.Message.ISyncRequestMutationRetry|null} [syncRequestMutationRetry] ProtocolMessage syncRequestMutationRetry
              */
 
             /**
@@ -155698,6 +156344,14 @@ $root.proto = (function() {
              */
             ProtocolMessage.prototype.coexStateSync = null;
 
+            /**
+             * ProtocolMessage syncRequestMutationRetry.
+             * @member {proto.Message.ISyncRequestMutationRetry|null|undefined} syncRequestMutationRetry
+             * @memberof proto.Message.ProtocolMessage
+             * @instance
+             */
+            ProtocolMessage.prototype.syncRequestMutationRetry = null;
+
             // OneOf field names bound to virtual getters and setters
             var $oneOfFields;
 
@@ -155881,6 +156535,12 @@ $root.proto = (function() {
                 set: $util.oneOfSetter($oneOfFields)
             });
 
+            // Virtual OneOf for proto3 optional field
+            Object.defineProperty(ProtocolMessage.prototype, "_syncRequestMutationRetry", {
+                get: $util.oneOfGetter($oneOfFields = ["syncRequestMutationRetry"]),
+                set: $util.oneOfSetter($oneOfFields)
+            });
+
             /**
              * Creates a new ProtocolMessage instance using the specified properties.
              * @function create
@@ -155965,6 +156625,8 @@ $root.proto = (function() {
                     $root.proto.Message.MarkAsVerifiedAction.encode(message.markAsVerifiedAction, writer.uint32(/* id 32, wireType 2 =*/258).fork()).ldelim();
                 if (message.coexStateSync != null && Object.hasOwnProperty.call(message, "coexStateSync"))
                     $root.proto.CoexStateSync.encode(message.coexStateSync, writer.uint32(/* id 33, wireType 2 =*/266).fork()).ldelim();
+                if (message.syncRequestMutationRetry != null && Object.hasOwnProperty.call(message, "syncRequestMutationRetry"))
+                    $root.proto.Message.SyncRequestMutationRetry.encode(message.syncRequestMutationRetry, writer.uint32(/* id 34, wireType 2 =*/274).fork()).ldelim();
                 return writer;
             };
 
@@ -156121,6 +156783,10 @@ $root.proto = (function() {
                             message.coexStateSync = $root.proto.CoexStateSync.decode(reader, reader.uint32());
                             break;
                         }
+                    case 34: {
+                            message.syncRequestMutationRetry = $root.proto.Message.SyncRequestMutationRetry.decode(reader, reader.uint32());
+                            break;
+                        }
                     default:
                         reader.skipType(tag & 7);
                         break;
@@ -156202,6 +156868,7 @@ $root.proto = (function() {
                     case 35:
                     case 36:
                     case 37:
+                    case 38:
                         break;
                     }
                 }
@@ -156411,6 +157078,14 @@ $root.proto = (function() {
                             return "coexStateSync." + error;
                     }
                 }
+                if (message.syncRequestMutationRetry != null && message.hasOwnProperty("syncRequestMutationRetry")) {
+                    properties._syncRequestMutationRetry = 1;
+                    {
+                        var error = $root.proto.Message.SyncRequestMutationRetry.verify(message.syncRequestMutationRetry);
+                        if (error)
+                            return "syncRequestMutationRetry." + error;
+                    }
+                }
                 return null;
             };
 
@@ -156566,6 +157241,10 @@ $root.proto = (function() {
                 case 37:
                     message.type = 37;
                     break;
+                case "SYNC_REQUEST_MUTATION_RETRY":
+                case 38:
+                    message.type = 38;
+                    break;
                 }
                 if (object.ephemeralExpiration != null)
                     message.ephemeralExpiration = object.ephemeralExpiration >>> 0;
@@ -156705,6 +157384,11 @@ $root.proto = (function() {
                     if (typeof object.coexStateSync !== "object")
                         throw TypeError(".proto.Message.ProtocolMessage.coexStateSync: object expected");
                     message.coexStateSync = $root.proto.CoexStateSync.fromObject(object.coexStateSync);
+                }
+                if (object.syncRequestMutationRetry != null) {
+                    if (typeof object.syncRequestMutationRetry !== "object")
+                        throw TypeError(".proto.Message.ProtocolMessage.syncRequestMutationRetry: object expected");
+                    message.syncRequestMutationRetry = $root.proto.Message.SyncRequestMutationRetry.fromObject(object.syncRequestMutationRetry);
                 }
                 return message;
             };
@@ -156878,6 +157562,11 @@ $root.proto = (function() {
                     if (options.oneofs)
                         object._coexStateSync = "coexStateSync";
                 }
+                if (message.syncRequestMutationRetry != null && message.hasOwnProperty("syncRequestMutationRetry")) {
+                    object.syncRequestMutationRetry = $root.proto.Message.SyncRequestMutationRetry.toObject(message.syncRequestMutationRetry, options);
+                    if (options.oneofs)
+                        object._syncRequestMutationRetry = "syncRequestMutationRetry";
+                }
                 return object;
             };
 
@@ -156943,6 +157632,7 @@ $root.proto = (function() {
              * @property {number} AI_METADATA_OPERATION=35 AI_METADATA_OPERATION value
              * @property {number} MARK_AS_VERIFIED_ACTION=36 MARK_AS_VERIFIED_ACTION value
              * @property {number} COEX_STATE_SYNC=37 COEX_STATE_SYNC value
+             * @property {number} SYNC_REQUEST_MUTATION_RETRY=38 SYNC_REQUEST_MUTATION_RETRY value
              */
             ProtocolMessage.Type = (function() {
                 var valuesById = {}, values = Object.create(valuesById);
@@ -156978,6 +157668,7 @@ $root.proto = (function() {
                 values[valuesById[35] = "AI_METADATA_OPERATION"] = 35;
                 values[valuesById[36] = "MARK_AS_VERIFIED_ACTION"] = 36;
                 values[valuesById[37] = "COEX_STATE_SYNC"] = 37;
+                values[valuesById[38] = "SYNC_REQUEST_MUTATION_RETRY"] = 38;
                 return values;
             })();
 
@@ -165459,6 +166150,530 @@ $root.proto = (function() {
             };
 
             return StickerSyncRMRMessage;
+        })();
+
+        Message.SyncRequestMutationRetry = (function() {
+
+            /**
+             * Properties of a SyncRequestMutationRetry.
+             * @memberof proto.Message
+             * @interface ISyncRequestMutationRetry
+             * @property {Array.<proto.Message.SyncRequestMutationRetry.ICollection>|null} [collections] SyncRequestMutationRetry collections
+             * @property {number|null} [count] SyncRequestMutationRetry count
+             */
+
+            /**
+             * Constructs a new SyncRequestMutationRetry.
+             * @memberof proto.Message
+             * @classdesc Represents a SyncRequestMutationRetry.
+             * @implements ISyncRequestMutationRetry
+             * @constructor
+             * @param {proto.Message.ISyncRequestMutationRetry=} [properties] Properties to set
+             */
+            function SyncRequestMutationRetry(properties) {
+                this.collections = [];
+                if (properties)
+                    for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                        if (properties[keys[i]] != null)
+                            this[keys[i]] = properties[keys[i]];
+            }
+
+            /**
+             * SyncRequestMutationRetry collections.
+             * @member {Array.<proto.Message.SyncRequestMutationRetry.ICollection>} collections
+             * @memberof proto.Message.SyncRequestMutationRetry
+             * @instance
+             */
+            SyncRequestMutationRetry.prototype.collections = $util.emptyArray;
+
+            /**
+             * SyncRequestMutationRetry count.
+             * @member {number|null|undefined} count
+             * @memberof proto.Message.SyncRequestMutationRetry
+             * @instance
+             */
+            SyncRequestMutationRetry.prototype.count = null;
+
+            // OneOf field names bound to virtual getters and setters
+            var $oneOfFields;
+
+            // Virtual OneOf for proto3 optional field
+            Object.defineProperty(SyncRequestMutationRetry.prototype, "_count", {
+                get: $util.oneOfGetter($oneOfFields = ["count"]),
+                set: $util.oneOfSetter($oneOfFields)
+            });
+
+            /**
+             * Creates a new SyncRequestMutationRetry instance using the specified properties.
+             * @function create
+             * @memberof proto.Message.SyncRequestMutationRetry
+             * @static
+             * @param {proto.Message.ISyncRequestMutationRetry=} [properties] Properties to set
+             * @returns {proto.Message.SyncRequestMutationRetry} SyncRequestMutationRetry instance
+             */
+            SyncRequestMutationRetry.create = function create(properties) {
+                return new SyncRequestMutationRetry(properties);
+            };
+
+            /**
+             * Encodes the specified SyncRequestMutationRetry message. Does not implicitly {@link proto.Message.SyncRequestMutationRetry.verify|verify} messages.
+             * @function encode
+             * @memberof proto.Message.SyncRequestMutationRetry
+             * @static
+             * @param {proto.Message.ISyncRequestMutationRetry} message SyncRequestMutationRetry message or plain object to encode
+             * @param {$protobuf.Writer} [writer] Writer to encode to
+             * @returns {$protobuf.Writer} Writer
+             */
+            SyncRequestMutationRetry.encode = function encode(message, writer) {
+                if (!writer)
+                    writer = $Writer.create();
+                if (message.collections != null && message.collections.length)
+                    for (var i = 0; i < message.collections.length; ++i)
+                        $root.proto.Message.SyncRequestMutationRetry.Collection.encode(message.collections[i], writer.uint32(/* id 1, wireType 2 =*/10).fork()).ldelim();
+                if (message.count != null && Object.hasOwnProperty.call(message, "count"))
+                    writer.uint32(/* id 2, wireType 0 =*/16).uint32(message.count);
+                return writer;
+            };
+
+            /**
+             * Encodes the specified SyncRequestMutationRetry message, length delimited. Does not implicitly {@link proto.Message.SyncRequestMutationRetry.verify|verify} messages.
+             * @function encodeDelimited
+             * @memberof proto.Message.SyncRequestMutationRetry
+             * @static
+             * @param {proto.Message.ISyncRequestMutationRetry} message SyncRequestMutationRetry message or plain object to encode
+             * @param {$protobuf.Writer} [writer] Writer to encode to
+             * @returns {$protobuf.Writer} Writer
+             */
+            SyncRequestMutationRetry.encodeDelimited = function encodeDelimited(message, writer) {
+                return this.encode(message, writer).ldelim();
+            };
+
+            /**
+             * Decodes a SyncRequestMutationRetry message from the specified reader or buffer.
+             * @function decode
+             * @memberof proto.Message.SyncRequestMutationRetry
+             * @static
+             * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+             * @param {number} [length] Message length if known beforehand
+             * @returns {proto.Message.SyncRequestMutationRetry} SyncRequestMutationRetry
+             * @throws {Error} If the payload is not a reader or valid buffer
+             * @throws {$protobuf.util.ProtocolError} If required fields are missing
+             */
+            SyncRequestMutationRetry.decode = function decode(reader, length, error) {
+                if (!(reader instanceof $Reader))
+                    reader = $Reader.create(reader);
+                var end = length === undefined ? reader.len : reader.pos + length, message = new $root.proto.Message.SyncRequestMutationRetry();
+                while (reader.pos < end) {
+                    var tag = reader.uint32();
+                    if (tag === error)
+                        break;
+                    switch (tag >>> 3) {
+                    case 1: {
+                            if (!(message.collections && message.collections.length))
+                                message.collections = [];
+                            message.collections.push($root.proto.Message.SyncRequestMutationRetry.Collection.decode(reader, reader.uint32()));
+                            break;
+                        }
+                    case 2: {
+                            message.count = reader.uint32();
+                            break;
+                        }
+                    default:
+                        reader.skipType(tag & 7);
+                        break;
+                    }
+                }
+                return message;
+            };
+
+            /**
+             * Decodes a SyncRequestMutationRetry message from the specified reader or buffer, length delimited.
+             * @function decodeDelimited
+             * @memberof proto.Message.SyncRequestMutationRetry
+             * @static
+             * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+             * @returns {proto.Message.SyncRequestMutationRetry} SyncRequestMutationRetry
+             * @throws {Error} If the payload is not a reader or valid buffer
+             * @throws {$protobuf.util.ProtocolError} If required fields are missing
+             */
+            SyncRequestMutationRetry.decodeDelimited = function decodeDelimited(reader) {
+                if (!(reader instanceof $Reader))
+                    reader = new $Reader(reader);
+                return this.decode(reader, reader.uint32());
+            };
+
+            /**
+             * Verifies a SyncRequestMutationRetry message.
+             * @function verify
+             * @memberof proto.Message.SyncRequestMutationRetry
+             * @static
+             * @param {Object.<string,*>} message Plain object to verify
+             * @returns {string|null} `null` if valid, otherwise the reason why it is not
+             */
+            SyncRequestMutationRetry.verify = function verify(message) {
+                if (typeof message !== "object" || message === null)
+                    return "object expected";
+                var properties = {};
+                if (message.collections != null && message.hasOwnProperty("collections")) {
+                    if (!Array.isArray(message.collections))
+                        return "collections: array expected";
+                    for (var i = 0; i < message.collections.length; ++i) {
+                        var error = $root.proto.Message.SyncRequestMutationRetry.Collection.verify(message.collections[i]);
+                        if (error)
+                            return "collections." + error;
+                    }
+                }
+                if (message.count != null && message.hasOwnProperty("count")) {
+                    properties._count = 1;
+                    if (!$util.isInteger(message.count))
+                        return "count: integer expected";
+                }
+                return null;
+            };
+
+            /**
+             * Creates a SyncRequestMutationRetry message from a plain object. Also converts values to their respective internal types.
+             * @function fromObject
+             * @memberof proto.Message.SyncRequestMutationRetry
+             * @static
+             * @param {Object.<string,*>} object Plain object
+             * @returns {proto.Message.SyncRequestMutationRetry} SyncRequestMutationRetry
+             */
+            SyncRequestMutationRetry.fromObject = function fromObject(object) {
+                if (object instanceof $root.proto.Message.SyncRequestMutationRetry)
+                    return object;
+                var message = new $root.proto.Message.SyncRequestMutationRetry();
+                if (object.collections) {
+                    if (!Array.isArray(object.collections))
+                        throw TypeError(".proto.Message.SyncRequestMutationRetry.collections: array expected");
+                    message.collections = [];
+                    for (var i = 0; i < object.collections.length; ++i) {
+                        if (typeof object.collections[i] !== "object")
+                            throw TypeError(".proto.Message.SyncRequestMutationRetry.collections: object expected");
+                        message.collections[i] = $root.proto.Message.SyncRequestMutationRetry.Collection.fromObject(object.collections[i]);
+                    }
+                }
+                if (object.count != null)
+                    message.count = object.count >>> 0;
+                return message;
+            };
+
+            /**
+             * Creates a plain object from a SyncRequestMutationRetry message. Also converts values to other types if specified.
+             * @function toObject
+             * @memberof proto.Message.SyncRequestMutationRetry
+             * @static
+             * @param {proto.Message.SyncRequestMutationRetry} message SyncRequestMutationRetry
+             * @param {$protobuf.IConversionOptions} [options] Conversion options
+             * @returns {Object.<string,*>} Plain object
+             */
+            SyncRequestMutationRetry.toObject = function toObject(message, options) {
+                if (!options)
+                    options = {};
+                var object = {};
+                if (options.arrays || options.defaults)
+                    object.collections = [];
+                if (message.collections && message.collections.length) {
+                    object.collections = [];
+                    for (var j = 0; j < message.collections.length; ++j)
+                        object.collections[j] = $root.proto.Message.SyncRequestMutationRetry.Collection.toObject(message.collections[j], options);
+                }
+                if (message.count != null && message.hasOwnProperty("count")) {
+                    object.count = message.count;
+                    if (options.oneofs)
+                        object._count = "count";
+                }
+                return object;
+            };
+
+            /**
+             * Converts this SyncRequestMutationRetry to JSON.
+             * @function toJSON
+             * @memberof proto.Message.SyncRequestMutationRetry
+             * @instance
+             * @returns {Object.<string,*>} JSON object
+             */
+            SyncRequestMutationRetry.prototype.toJSON = function toJSON() {
+                return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+            };
+
+            /**
+             * Gets the default type url for SyncRequestMutationRetry
+             * @function getTypeUrl
+             * @memberof proto.Message.SyncRequestMutationRetry
+             * @static
+             * @param {string} [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+             * @returns {string} The default type url
+             */
+            SyncRequestMutationRetry.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
+                if (typeUrlPrefix === undefined) {
+                    typeUrlPrefix = "type.googleapis.com";
+                }
+                return typeUrlPrefix + "/proto.Message.SyncRequestMutationRetry";
+            };
+
+            SyncRequestMutationRetry.Collection = (function() {
+
+                /**
+                 * Properties of a Collection.
+                 * @memberof proto.Message.SyncRequestMutationRetry
+                 * @interface ICollection
+                 * @property {string|null} [name] Collection name
+                 * @property {number|Long|null} [storedSyncdVersion] Collection storedSyncdVersion
+                 */
+
+                /**
+                 * Constructs a new Collection.
+                 * @memberof proto.Message.SyncRequestMutationRetry
+                 * @classdesc Represents a Collection.
+                 * @implements ICollection
+                 * @constructor
+                 * @param {proto.Message.SyncRequestMutationRetry.ICollection=} [properties] Properties to set
+                 */
+                function Collection(properties) {
+                    if (properties)
+                        for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                            if (properties[keys[i]] != null)
+                                this[keys[i]] = properties[keys[i]];
+                }
+
+                /**
+                 * Collection name.
+                 * @member {string|null|undefined} name
+                 * @memberof proto.Message.SyncRequestMutationRetry.Collection
+                 * @instance
+                 */
+                Collection.prototype.name = null;
+
+                /**
+                 * Collection storedSyncdVersion.
+                 * @member {number|Long|null|undefined} storedSyncdVersion
+                 * @memberof proto.Message.SyncRequestMutationRetry.Collection
+                 * @instance
+                 */
+                Collection.prototype.storedSyncdVersion = null;
+
+                // OneOf field names bound to virtual getters and setters
+                var $oneOfFields;
+
+                // Virtual OneOf for proto3 optional field
+                Object.defineProperty(Collection.prototype, "_name", {
+                    get: $util.oneOfGetter($oneOfFields = ["name"]),
+                    set: $util.oneOfSetter($oneOfFields)
+                });
+
+                // Virtual OneOf for proto3 optional field
+                Object.defineProperty(Collection.prototype, "_storedSyncdVersion", {
+                    get: $util.oneOfGetter($oneOfFields = ["storedSyncdVersion"]),
+                    set: $util.oneOfSetter($oneOfFields)
+                });
+
+                /**
+                 * Creates a new Collection instance using the specified properties.
+                 * @function create
+                 * @memberof proto.Message.SyncRequestMutationRetry.Collection
+                 * @static
+                 * @param {proto.Message.SyncRequestMutationRetry.ICollection=} [properties] Properties to set
+                 * @returns {proto.Message.SyncRequestMutationRetry.Collection} Collection instance
+                 */
+                Collection.create = function create(properties) {
+                    return new Collection(properties);
+                };
+
+                /**
+                 * Encodes the specified Collection message. Does not implicitly {@link proto.Message.SyncRequestMutationRetry.Collection.verify|verify} messages.
+                 * @function encode
+                 * @memberof proto.Message.SyncRequestMutationRetry.Collection
+                 * @static
+                 * @param {proto.Message.SyncRequestMutationRetry.ICollection} message Collection message or plain object to encode
+                 * @param {$protobuf.Writer} [writer] Writer to encode to
+                 * @returns {$protobuf.Writer} Writer
+                 */
+                Collection.encode = function encode(message, writer) {
+                    if (!writer)
+                        writer = $Writer.create();
+                    if (message.name != null && Object.hasOwnProperty.call(message, "name"))
+                        writer.uint32(/* id 1, wireType 2 =*/10).string(message.name);
+                    if (message.storedSyncdVersion != null && Object.hasOwnProperty.call(message, "storedSyncdVersion"))
+                        writer.uint32(/* id 2, wireType 0 =*/16).uint64(message.storedSyncdVersion);
+                    return writer;
+                };
+
+                /**
+                 * Encodes the specified Collection message, length delimited. Does not implicitly {@link proto.Message.SyncRequestMutationRetry.Collection.verify|verify} messages.
+                 * @function encodeDelimited
+                 * @memberof proto.Message.SyncRequestMutationRetry.Collection
+                 * @static
+                 * @param {proto.Message.SyncRequestMutationRetry.ICollection} message Collection message or plain object to encode
+                 * @param {$protobuf.Writer} [writer] Writer to encode to
+                 * @returns {$protobuf.Writer} Writer
+                 */
+                Collection.encodeDelimited = function encodeDelimited(message, writer) {
+                    return this.encode(message, writer).ldelim();
+                };
+
+                /**
+                 * Decodes a Collection message from the specified reader or buffer.
+                 * @function decode
+                 * @memberof proto.Message.SyncRequestMutationRetry.Collection
+                 * @static
+                 * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+                 * @param {number} [length] Message length if known beforehand
+                 * @returns {proto.Message.SyncRequestMutationRetry.Collection} Collection
+                 * @throws {Error} If the payload is not a reader or valid buffer
+                 * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                 */
+                Collection.decode = function decode(reader, length, error) {
+                    if (!(reader instanceof $Reader))
+                        reader = $Reader.create(reader);
+                    var end = length === undefined ? reader.len : reader.pos + length, message = new $root.proto.Message.SyncRequestMutationRetry.Collection();
+                    while (reader.pos < end) {
+                        var tag = reader.uint32();
+                        if (tag === error)
+                            break;
+                        switch (tag >>> 3) {
+                        case 1: {
+                                message.name = reader.string();
+                                break;
+                            }
+                        case 2: {
+                                message.storedSyncdVersion = reader.uint64();
+                                break;
+                            }
+                        default:
+                            reader.skipType(tag & 7);
+                            break;
+                        }
+                    }
+                    return message;
+                };
+
+                /**
+                 * Decodes a Collection message from the specified reader or buffer, length delimited.
+                 * @function decodeDelimited
+                 * @memberof proto.Message.SyncRequestMutationRetry.Collection
+                 * @static
+                 * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+                 * @returns {proto.Message.SyncRequestMutationRetry.Collection} Collection
+                 * @throws {Error} If the payload is not a reader or valid buffer
+                 * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                 */
+                Collection.decodeDelimited = function decodeDelimited(reader) {
+                    if (!(reader instanceof $Reader))
+                        reader = new $Reader(reader);
+                    return this.decode(reader, reader.uint32());
+                };
+
+                /**
+                 * Verifies a Collection message.
+                 * @function verify
+                 * @memberof proto.Message.SyncRequestMutationRetry.Collection
+                 * @static
+                 * @param {Object.<string,*>} message Plain object to verify
+                 * @returns {string|null} `null` if valid, otherwise the reason why it is not
+                 */
+                Collection.verify = function verify(message) {
+                    if (typeof message !== "object" || message === null)
+                        return "object expected";
+                    var properties = {};
+                    if (message.name != null && message.hasOwnProperty("name")) {
+                        properties._name = 1;
+                        if (!$util.isString(message.name))
+                            return "name: string expected";
+                    }
+                    if (message.storedSyncdVersion != null && message.hasOwnProperty("storedSyncdVersion")) {
+                        properties._storedSyncdVersion = 1;
+                        if (!$util.isInteger(message.storedSyncdVersion) && !(message.storedSyncdVersion && $util.isInteger(message.storedSyncdVersion.low) && $util.isInteger(message.storedSyncdVersion.high)))
+                            return "storedSyncdVersion: integer|Long expected";
+                    }
+                    return null;
+                };
+
+                /**
+                 * Creates a Collection message from a plain object. Also converts values to their respective internal types.
+                 * @function fromObject
+                 * @memberof proto.Message.SyncRequestMutationRetry.Collection
+                 * @static
+                 * @param {Object.<string,*>} object Plain object
+                 * @returns {proto.Message.SyncRequestMutationRetry.Collection} Collection
+                 */
+                Collection.fromObject = function fromObject(object) {
+                    if (object instanceof $root.proto.Message.SyncRequestMutationRetry.Collection)
+                        return object;
+                    var message = new $root.proto.Message.SyncRequestMutationRetry.Collection();
+                    if (object.name != null)
+                        message.name = String(object.name);
+                    if (object.storedSyncdVersion != null)
+                        if ($util.Long)
+                            (message.storedSyncdVersion = $util.Long.fromValue(object.storedSyncdVersion)).unsigned = true;
+                        else if (typeof object.storedSyncdVersion === "string")
+                            message.storedSyncdVersion = parseInt(object.storedSyncdVersion, 10);
+                        else if (typeof object.storedSyncdVersion === "number")
+                            message.storedSyncdVersion = object.storedSyncdVersion;
+                        else if (typeof object.storedSyncdVersion === "object")
+                            message.storedSyncdVersion = new $util.LongBits(object.storedSyncdVersion.low >>> 0, object.storedSyncdVersion.high >>> 0).toNumber(true);
+                    return message;
+                };
+
+                /**
+                 * Creates a plain object from a Collection message. Also converts values to other types if specified.
+                 * @function toObject
+                 * @memberof proto.Message.SyncRequestMutationRetry.Collection
+                 * @static
+                 * @param {proto.Message.SyncRequestMutationRetry.Collection} message Collection
+                 * @param {$protobuf.IConversionOptions} [options] Conversion options
+                 * @returns {Object.<string,*>} Plain object
+                 */
+                Collection.toObject = function toObject(message, options) {
+                    if (!options)
+                        options = {};
+                    var object = {};
+                    if (message.name != null && message.hasOwnProperty("name")) {
+                        object.name = message.name;
+                        if (options.oneofs)
+                            object._name = "name";
+                    }
+                    if (message.storedSyncdVersion != null && message.hasOwnProperty("storedSyncdVersion")) {
+                        if (typeof message.storedSyncdVersion === "number")
+                            object.storedSyncdVersion = options.longs === String ? String(message.storedSyncdVersion) : message.storedSyncdVersion;
+                        else
+                            object.storedSyncdVersion = options.longs === String ? $util.Long.prototype.toString.call(message.storedSyncdVersion) : options.longs === Number ? new $util.LongBits(message.storedSyncdVersion.low >>> 0, message.storedSyncdVersion.high >>> 0).toNumber(true) : message.storedSyncdVersion;
+                        if (options.oneofs)
+                            object._storedSyncdVersion = "storedSyncdVersion";
+                    }
+                    return object;
+                };
+
+                /**
+                 * Converts this Collection to JSON.
+                 * @function toJSON
+                 * @memberof proto.Message.SyncRequestMutationRetry.Collection
+                 * @instance
+                 * @returns {Object.<string,*>} JSON object
+                 */
+                Collection.prototype.toJSON = function toJSON() {
+                    return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+                };
+
+                /**
+                 * Gets the default type url for Collection
+                 * @function getTypeUrl
+                 * @memberof proto.Message.SyncRequestMutationRetry.Collection
+                 * @static
+                 * @param {string} [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+                 * @returns {string} The default type url
+                 */
+                Collection.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
+                    if (typeUrlPrefix === undefined) {
+                        typeUrlPrefix = "type.googleapis.com";
+                    }
+                    return typeUrlPrefix + "/proto.Message.SyncRequestMutationRetry.Collection";
+                };
+
+                return Collection;
+            })();
+
+            return SyncRequestMutationRetry;
         })();
 
         Message.TemplateButtonReplyMessage = (function() {
@@ -176292,6 +177507,7 @@ $root.proto = (function() {
      * @property {number} COEX_V2_VERSION_ACTION=88 COEX_V2_VERSION_ACTION value
      * @property {number} WASA_ROOT_SECRET_ACTION=89 WASA_ROOT_SECRET_ACTION value
      * @property {number} BUBBLE_LOCK_MESSAGE_ACTION=90 BUBBLE_LOCK_MESSAGE_ACTION value
+     * @property {number} LABEL_SUBLIST_ACTION=91 LABEL_SUBLIST_ACTION value
      * @property {number} SHARE_OWN_PN=10001 SHARE_OWN_PN value
      * @property {number} BUSINESS_BROADCAST_ACTION=10002 BUSINESS_BROADCAST_ACTION value
      * @property {number} AI_THREAD_DELETE_ACTION=10003 AI_THREAD_DELETE_ACTION value
@@ -176382,6 +177598,7 @@ $root.proto = (function() {
         values[valuesById[88] = "COEX_V2_VERSION_ACTION"] = 88;
         values[valuesById[89] = "WASA_ROOT_SECRET_ACTION"] = 89;
         values[valuesById[90] = "BUBBLE_LOCK_MESSAGE_ACTION"] = 90;
+        values[valuesById[91] = "LABEL_SUBLIST_ACTION"] = 91;
         values[valuesById[10001] = "SHARE_OWN_PN"] = 10001;
         values[valuesById[10002] = "BUSINESS_BROADCAST_ACTION"] = 10002;
         values[valuesById[10003] = "AI_THREAD_DELETE_ACTION"] = 10003;
@@ -200454,6 +201671,7 @@ $root.proto = (function() {
          * @property {proto.SyncActionValue.ICoexV2VersionAction|null} [coexV2VersionAction] SyncActionValue coexV2VersionAction
          * @property {proto.SyncActionValue.IWASARootSecretAction|null} [wasaRootSecretAction] SyncActionValue wasaRootSecretAction
          * @property {proto.SyncActionValue.IBubbleLockMessageAction|null} [bubbleLockMessageAction] SyncActionValue bubbleLockMessageAction
+         * @property {proto.SyncActionValue.ILabelSublistAction|null} [labelSublistAction] SyncActionValue labelSublistAction
          */
 
         /**
@@ -201119,6 +202337,14 @@ $root.proto = (function() {
          */
         SyncActionValue.prototype.bubbleLockMessageAction = null;
 
+        /**
+         * SyncActionValue labelSublistAction.
+         * @member {proto.SyncActionValue.ILabelSublistAction|null|undefined} labelSublistAction
+         * @memberof proto.SyncActionValue
+         * @instance
+         */
+        SyncActionValue.prototype.labelSublistAction = null;
+
         // OneOf field names bound to virtual getters and setters
         var $oneOfFields;
 
@@ -201608,6 +202834,12 @@ $root.proto = (function() {
             set: $util.oneOfSetter($oneOfFields)
         });
 
+        // Virtual OneOf for proto3 optional field
+        Object.defineProperty(SyncActionValue.prototype, "_labelSublistAction", {
+            get: $util.oneOfGetter($oneOfFields = ["labelSublistAction"]),
+            set: $util.oneOfSetter($oneOfFields)
+        });
+
         /**
          * Creates a new SyncActionValue instance using the specified properties.
          * @function create
@@ -201794,6 +203026,8 @@ $root.proto = (function() {
                 $root.proto.SyncActionValue.WASARootSecretAction.encode(message.wasaRootSecretAction, writer.uint32(/* id 89, wireType 2 =*/714).fork()).ldelim();
             if (message.bubbleLockMessageAction != null && Object.hasOwnProperty.call(message, "bubbleLockMessageAction"))
                 $root.proto.SyncActionValue.BubbleLockMessageAction.encode(message.bubbleLockMessageAction, writer.uint32(/* id 90, wireType 2 =*/722).fork()).ldelim();
+            if (message.labelSublistAction != null && Object.hasOwnProperty.call(message, "labelSublistAction"))
+                $root.proto.SyncActionValue.LabelSublistAction.encode(message.labelSublistAction, writer.uint32(/* id 91, wireType 2 =*/730).fork()).ldelim();
             return writer;
         };
 
@@ -202152,6 +203386,10 @@ $root.proto = (function() {
                     }
                 case 90: {
                         message.bubbleLockMessageAction = $root.proto.SyncActionValue.BubbleLockMessageAction.decode(reader, reader.uint32());
+                        break;
+                    }
+                case 91: {
+                        message.labelSublistAction = $root.proto.SyncActionValue.LabelSublistAction.decode(reader, reader.uint32());
                         break;
                     }
                 default:
@@ -202835,6 +204073,14 @@ $root.proto = (function() {
                         return "bubbleLockMessageAction." + error;
                 }
             }
+            if (message.labelSublistAction != null && message.hasOwnProperty("labelSublistAction")) {
+                properties._labelSublistAction = 1;
+                {
+                    var error = $root.proto.SyncActionValue.LabelSublistAction.verify(message.labelSublistAction);
+                    if (error)
+                        return "labelSublistAction." + error;
+                }
+            }
             return null;
         };
 
@@ -203259,6 +204505,11 @@ $root.proto = (function() {
                     throw TypeError(".proto.SyncActionValue.bubbleLockMessageAction: object expected");
                 message.bubbleLockMessageAction = $root.proto.SyncActionValue.BubbleLockMessageAction.fromObject(object.bubbleLockMessageAction);
             }
+            if (object.labelSublistAction != null) {
+                if (typeof object.labelSublistAction !== "object")
+                    throw TypeError(".proto.SyncActionValue.labelSublistAction: object expected");
+                message.labelSublistAction = $root.proto.SyncActionValue.LabelSublistAction.fromObject(object.labelSublistAction);
+            }
             return message;
         };
 
@@ -203682,6 +204933,11 @@ $root.proto = (function() {
                 object.bubbleLockMessageAction = $root.proto.SyncActionValue.BubbleLockMessageAction.toObject(message.bubbleLockMessageAction, options);
                 if (options.oneofs)
                     object._bubbleLockMessageAction = "bubbleLockMessageAction";
+            }
+            if (message.labelSublistAction != null && message.hasOwnProperty("labelSublistAction")) {
+                object.labelSublistAction = $root.proto.SyncActionValue.LabelSublistAction.toObject(message.labelSublistAction, options);
+                if (options.oneofs)
+                    object._labelSublistAction = "labelSublistAction";
             }
             return object;
         };
@@ -214107,6 +215363,224 @@ $root.proto = (function() {
             };
 
             return LabelReorderingAction;
+        })();
+
+        SyncActionValue.LabelSublistAction = (function() {
+
+            /**
+             * Properties of a LabelSublistAction.
+             * @memberof proto.SyncActionValue
+             * @interface ILabelSublistAction
+             * @property {number|null} [subListId] LabelSublistAction subListId
+             */
+
+            /**
+             * Constructs a new LabelSublistAction.
+             * @memberof proto.SyncActionValue
+             * @classdesc Represents a LabelSublistAction.
+             * @implements ILabelSublistAction
+             * @constructor
+             * @param {proto.SyncActionValue.ILabelSublistAction=} [properties] Properties to set
+             */
+            function LabelSublistAction(properties) {
+                if (properties)
+                    for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                        if (properties[keys[i]] != null)
+                            this[keys[i]] = properties[keys[i]];
+            }
+
+            /**
+             * LabelSublistAction subListId.
+             * @member {number|null|undefined} subListId
+             * @memberof proto.SyncActionValue.LabelSublistAction
+             * @instance
+             */
+            LabelSublistAction.prototype.subListId = null;
+
+            // OneOf field names bound to virtual getters and setters
+            var $oneOfFields;
+
+            // Virtual OneOf for proto3 optional field
+            Object.defineProperty(LabelSublistAction.prototype, "_subListId", {
+                get: $util.oneOfGetter($oneOfFields = ["subListId"]),
+                set: $util.oneOfSetter($oneOfFields)
+            });
+
+            /**
+             * Creates a new LabelSublistAction instance using the specified properties.
+             * @function create
+             * @memberof proto.SyncActionValue.LabelSublistAction
+             * @static
+             * @param {proto.SyncActionValue.ILabelSublistAction=} [properties] Properties to set
+             * @returns {proto.SyncActionValue.LabelSublistAction} LabelSublistAction instance
+             */
+            LabelSublistAction.create = function create(properties) {
+                return new LabelSublistAction(properties);
+            };
+
+            /**
+             * Encodes the specified LabelSublistAction message. Does not implicitly {@link proto.SyncActionValue.LabelSublistAction.verify|verify} messages.
+             * @function encode
+             * @memberof proto.SyncActionValue.LabelSublistAction
+             * @static
+             * @param {proto.SyncActionValue.ILabelSublistAction} message LabelSublistAction message or plain object to encode
+             * @param {$protobuf.Writer} [writer] Writer to encode to
+             * @returns {$protobuf.Writer} Writer
+             */
+            LabelSublistAction.encode = function encode(message, writer) {
+                if (!writer)
+                    writer = $Writer.create();
+                if (message.subListId != null && Object.hasOwnProperty.call(message, "subListId"))
+                    writer.uint32(/* id 1, wireType 0 =*/8).int32(message.subListId);
+                return writer;
+            };
+
+            /**
+             * Encodes the specified LabelSublistAction message, length delimited. Does not implicitly {@link proto.SyncActionValue.LabelSublistAction.verify|verify} messages.
+             * @function encodeDelimited
+             * @memberof proto.SyncActionValue.LabelSublistAction
+             * @static
+             * @param {proto.SyncActionValue.ILabelSublistAction} message LabelSublistAction message or plain object to encode
+             * @param {$protobuf.Writer} [writer] Writer to encode to
+             * @returns {$protobuf.Writer} Writer
+             */
+            LabelSublistAction.encodeDelimited = function encodeDelimited(message, writer) {
+                return this.encode(message, writer).ldelim();
+            };
+
+            /**
+             * Decodes a LabelSublistAction message from the specified reader or buffer.
+             * @function decode
+             * @memberof proto.SyncActionValue.LabelSublistAction
+             * @static
+             * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+             * @param {number} [length] Message length if known beforehand
+             * @returns {proto.SyncActionValue.LabelSublistAction} LabelSublistAction
+             * @throws {Error} If the payload is not a reader or valid buffer
+             * @throws {$protobuf.util.ProtocolError} If required fields are missing
+             */
+            LabelSublistAction.decode = function decode(reader, length, error) {
+                if (!(reader instanceof $Reader))
+                    reader = $Reader.create(reader);
+                var end = length === undefined ? reader.len : reader.pos + length, message = new $root.proto.SyncActionValue.LabelSublistAction();
+                while (reader.pos < end) {
+                    var tag = reader.uint32();
+                    if (tag === error)
+                        break;
+                    switch (tag >>> 3) {
+                    case 1: {
+                            message.subListId = reader.int32();
+                            break;
+                        }
+                    default:
+                        reader.skipType(tag & 7);
+                        break;
+                    }
+                }
+                return message;
+            };
+
+            /**
+             * Decodes a LabelSublistAction message from the specified reader or buffer, length delimited.
+             * @function decodeDelimited
+             * @memberof proto.SyncActionValue.LabelSublistAction
+             * @static
+             * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+             * @returns {proto.SyncActionValue.LabelSublistAction} LabelSublistAction
+             * @throws {Error} If the payload is not a reader or valid buffer
+             * @throws {$protobuf.util.ProtocolError} If required fields are missing
+             */
+            LabelSublistAction.decodeDelimited = function decodeDelimited(reader) {
+                if (!(reader instanceof $Reader))
+                    reader = new $Reader(reader);
+                return this.decode(reader, reader.uint32());
+            };
+
+            /**
+             * Verifies a LabelSublistAction message.
+             * @function verify
+             * @memberof proto.SyncActionValue.LabelSublistAction
+             * @static
+             * @param {Object.<string,*>} message Plain object to verify
+             * @returns {string|null} `null` if valid, otherwise the reason why it is not
+             */
+            LabelSublistAction.verify = function verify(message) {
+                if (typeof message !== "object" || message === null)
+                    return "object expected";
+                var properties = {};
+                if (message.subListId != null && message.hasOwnProperty("subListId")) {
+                    properties._subListId = 1;
+                    if (!$util.isInteger(message.subListId))
+                        return "subListId: integer expected";
+                }
+                return null;
+            };
+
+            /**
+             * Creates a LabelSublistAction message from a plain object. Also converts values to their respective internal types.
+             * @function fromObject
+             * @memberof proto.SyncActionValue.LabelSublistAction
+             * @static
+             * @param {Object.<string,*>} object Plain object
+             * @returns {proto.SyncActionValue.LabelSublistAction} LabelSublistAction
+             */
+            LabelSublistAction.fromObject = function fromObject(object) {
+                if (object instanceof $root.proto.SyncActionValue.LabelSublistAction)
+                    return object;
+                var message = new $root.proto.SyncActionValue.LabelSublistAction();
+                if (object.subListId != null)
+                    message.subListId = object.subListId | 0;
+                return message;
+            };
+
+            /**
+             * Creates a plain object from a LabelSublistAction message. Also converts values to other types if specified.
+             * @function toObject
+             * @memberof proto.SyncActionValue.LabelSublistAction
+             * @static
+             * @param {proto.SyncActionValue.LabelSublistAction} message LabelSublistAction
+             * @param {$protobuf.IConversionOptions} [options] Conversion options
+             * @returns {Object.<string,*>} Plain object
+             */
+            LabelSublistAction.toObject = function toObject(message, options) {
+                if (!options)
+                    options = {};
+                var object = {};
+                if (message.subListId != null && message.hasOwnProperty("subListId")) {
+                    object.subListId = message.subListId;
+                    if (options.oneofs)
+                        object._subListId = "subListId";
+                }
+                return object;
+            };
+
+            /**
+             * Converts this LabelSublistAction to JSON.
+             * @function toJSON
+             * @memberof proto.SyncActionValue.LabelSublistAction
+             * @instance
+             * @returns {Object.<string,*>} JSON object
+             */
+            LabelSublistAction.prototype.toJSON = function toJSON() {
+                return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+            };
+
+            /**
+             * Gets the default type url for LabelSublistAction
+             * @function getTypeUrl
+             * @memberof proto.SyncActionValue.LabelSublistAction
+             * @static
+             * @param {string} [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+             * @returns {string} The default type url
+             */
+            LabelSublistAction.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
+                if (typeUrlPrefix === undefined) {
+                    typeUrlPrefix = "type.googleapis.com";
+                }
+                return typeUrlPrefix + "/proto.SyncActionValue.LabelSublistAction";
+            };
+
+            return LabelSublistAction;
         })();
 
         SyncActionValue.LidContactAction = (function() {
@@ -228923,6 +230397,7 @@ $root.proto = (function() {
                  * @property {string|null} [id] RootSecretEntry id
                  * @property {Uint8Array|null} [rootSecret] RootSecretEntry rootSecret
                  * @property {number|Long|null} [epoch] RootSecretEntry epoch
+                 * @property {proto.SyncActionValue.WASARootSecretAction.RootSecretEntry.Status|null} [status] RootSecretEntry status
                  */
 
                 /**
@@ -228964,6 +230439,14 @@ $root.proto = (function() {
                  */
                 RootSecretEntry.prototype.epoch = null;
 
+                /**
+                 * RootSecretEntry status.
+                 * @member {proto.SyncActionValue.WASARootSecretAction.RootSecretEntry.Status|null|undefined} status
+                 * @memberof proto.SyncActionValue.WASARootSecretAction.RootSecretEntry
+                 * @instance
+                 */
+                RootSecretEntry.prototype.status = null;
+
                 // OneOf field names bound to virtual getters and setters
                 var $oneOfFields;
 
@@ -228982,6 +230465,12 @@ $root.proto = (function() {
                 // Virtual OneOf for proto3 optional field
                 Object.defineProperty(RootSecretEntry.prototype, "_epoch", {
                     get: $util.oneOfGetter($oneOfFields = ["epoch"]),
+                    set: $util.oneOfSetter($oneOfFields)
+                });
+
+                // Virtual OneOf for proto3 optional field
+                Object.defineProperty(RootSecretEntry.prototype, "_status", {
+                    get: $util.oneOfGetter($oneOfFields = ["status"]),
                     set: $util.oneOfSetter($oneOfFields)
                 });
 
@@ -229015,6 +230504,8 @@ $root.proto = (function() {
                         writer.uint32(/* id 2, wireType 2 =*/18).bytes(message.rootSecret);
                     if (message.epoch != null && Object.hasOwnProperty.call(message, "epoch"))
                         writer.uint32(/* id 3, wireType 0 =*/24).int64(message.epoch);
+                    if (message.status != null && Object.hasOwnProperty.call(message, "status"))
+                        writer.uint32(/* id 4, wireType 0 =*/32).int32(message.status);
                     return writer;
                 };
 
@@ -229061,6 +230552,10 @@ $root.proto = (function() {
                             }
                         case 3: {
                                 message.epoch = reader.int64();
+                                break;
+                            }
+                        case 4: {
+                                message.status = reader.int32();
                                 break;
                             }
                         default:
@@ -229114,6 +230609,16 @@ $root.proto = (function() {
                         if (!$util.isInteger(message.epoch) && !(message.epoch && $util.isInteger(message.epoch.low) && $util.isInteger(message.epoch.high)))
                             return "epoch: integer|Long expected";
                     }
+                    if (message.status != null && message.hasOwnProperty("status")) {
+                        properties._status = 1;
+                        switch (message.status) {
+                        default:
+                            return "status: enum value expected";
+                        case 0:
+                        case 1:
+                            break;
+                        }
+                    }
                     return null;
                 };
 
@@ -229145,6 +230650,22 @@ $root.proto = (function() {
                             message.epoch = object.epoch;
                         else if (typeof object.epoch === "object")
                             message.epoch = new $util.LongBits(object.epoch.low >>> 0, object.epoch.high >>> 0).toNumber();
+                    switch (object.status) {
+                    default:
+                        if (typeof object.status === "number") {
+                            message.status = object.status;
+                            break;
+                        }
+                        break;
+                    case "INACTIVE":
+                    case 0:
+                        message.status = 0;
+                        break;
+                    case "ACTIVE":
+                    case 1:
+                        message.status = 1;
+                        break;
+                    }
                     return message;
                 };
 
@@ -229179,6 +230700,11 @@ $root.proto = (function() {
                         if (options.oneofs)
                             object._epoch = "epoch";
                     }
+                    if (message.status != null && message.hasOwnProperty("status")) {
+                        object.status = options.enums === String ? $root.proto.SyncActionValue.WASARootSecretAction.RootSecretEntry.Status[message.status] === undefined ? message.status : $root.proto.SyncActionValue.WASARootSecretAction.RootSecretEntry.Status[message.status] : message.status;
+                        if (options.oneofs)
+                            object._status = "status";
+                    }
                     return object;
                 };
 
@@ -229207,6 +230733,20 @@ $root.proto = (function() {
                     }
                     return typeUrlPrefix + "/proto.SyncActionValue.WASARootSecretAction.RootSecretEntry";
                 };
+
+                /**
+                 * Status enum.
+                 * @name proto.SyncActionValue.WASARootSecretAction.RootSecretEntry.Status
+                 * @enum {number}
+                 * @property {number} INACTIVE=0 INACTIVE value
+                 * @property {number} ACTIVE=1 ACTIVE value
+                 */
+                RootSecretEntry.Status = (function() {
+                    var valuesById = {}, values = Object.create(valuesById);
+                    values[valuesById[0] = "INACTIVE"] = 0;
+                    values[valuesById[1] = "ACTIVE"] = 1;
+                    return values;
+                })();
 
                 return RootSecretEntry;
             })();
@@ -246530,6 +248070,56 @@ $root.proto = (function() {
     })();
 
     /**
+     * DataChannelMessage_MessageScope enum.
+     * @name proto.DataChannelMessage_MessageScope
+     * @enum {number}
+     * @property {number} MESSAGE_SCOPE_UNSPECIFIED=0 MESSAGE_SCOPE_UNSPECIFIED value
+     * @property {number} MESSAGE_SCOPE_RELAY_READABLE=1 MESSAGE_SCOPE_RELAY_READABLE value
+     * @property {number} MESSAGE_SCOPE_END_TO_END=2 MESSAGE_SCOPE_END_TO_END value
+     */
+    proto.DataChannelMessage_MessageScope = (function() {
+        var valuesById = {}, values = Object.create(valuesById);
+        values[valuesById[0] = "MESSAGE_SCOPE_UNSPECIFIED"] = 0;
+        values[valuesById[1] = "MESSAGE_SCOPE_RELAY_READABLE"] = 1;
+        values[valuesById[2] = "MESSAGE_SCOPE_END_TO_END"] = 2;
+        return values;
+    })();
+
+    /**
+     * DataChannelMessage_MessageType enum.
+     * @name proto.DataChannelMessage_MessageType
+     * @enum {number}
+     * @property {number} MESSAGE_TYPE_UNSPECIFIED=0 MESSAGE_TYPE_UNSPECIFIED value
+     * @property {number} MESSAGE_TYPE_DATA=1 MESSAGE_TYPE_DATA value
+     * @property {number} MESSAGE_TYPE_CONTROL=2 MESSAGE_TYPE_CONTROL value
+     */
+    proto.DataChannelMessage_MessageType = (function() {
+        var valuesById = {}, values = Object.create(valuesById);
+        values[valuesById[0] = "MESSAGE_TYPE_UNSPECIFIED"] = 0;
+        values[valuesById[1] = "MESSAGE_TYPE_DATA"] = 1;
+        values[valuesById[2] = "MESSAGE_TYPE_CONTROL"] = 2;
+        return values;
+    })();
+
+    /**
+     * DataChannelMessage_RoutingMode enum.
+     * @name proto.DataChannelMessage_RoutingMode
+     * @enum {number}
+     * @property {number} ROUTING_MODE_UNSPECIFIED=0 ROUTING_MODE_UNSPECIFIED value
+     * @property {number} ROUTING_MODE_RELAY_ONLY=1 ROUTING_MODE_RELAY_ONLY value
+     * @property {number} ROUTING_MODE_SELECTIVE_FORWARD=2 ROUTING_MODE_SELECTIVE_FORWARD value
+     * @property {number} ROUTING_MODE_BROADCAST=3 ROUTING_MODE_BROADCAST value
+     */
+    proto.DataChannelMessage_RoutingMode = (function() {
+        var valuesById = {}, values = Object.create(valuesById);
+        values[valuesById[0] = "ROUTING_MODE_UNSPECIFIED"] = 0;
+        values[valuesById[1] = "ROUTING_MODE_RELAY_ONLY"] = 1;
+        values[valuesById[2] = "ROUTING_MODE_SELECTIVE_FORWARD"] = 2;
+        values[valuesById[3] = "ROUTING_MODE_BROADCAST"] = 3;
+        return values;
+    })();
+
+    /**
      * RekeyKeyType enum.
      * @name proto.RekeyKeyType
      * @enum {number}
@@ -249779,6 +251369,461 @@ $root.proto = (function() {
         };
 
         return BwaStream;
+    })();
+
+    proto.DataChannelMessage = (function() {
+
+        /**
+         * Properties of a DataChannelMessage.
+         * @memberof proto
+         * @interface IDataChannelMessage
+         * @property {number|null} [fromPid] DataChannelMessage fromPid
+         * @property {Array.<number>|null} [recipientPids] DataChannelMessage recipientPids
+         * @property {proto.DataChannelMessage_RoutingMode|null} [routingMode] DataChannelMessage routingMode
+         * @property {proto.DataChannelMessage_MessageScope|null} [scope] DataChannelMessage scope
+         * @property {proto.DataChannelMessage_MessageType|null} [messageType] DataChannelMessage messageType
+         * @property {Uint8Array|null} [payload] DataChannelMessage payload
+         * @property {number|null} [transactionId] DataChannelMessage transactionId
+         */
+
+        /**
+         * Constructs a new DataChannelMessage.
+         * @memberof proto
+         * @classdesc Represents a DataChannelMessage.
+         * @implements IDataChannelMessage
+         * @constructor
+         * @param {proto.IDataChannelMessage=} [properties] Properties to set
+         */
+        function DataChannelMessage(properties) {
+            this.recipientPids = [];
+            if (properties)
+                for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                    if (properties[keys[i]] != null)
+                        this[keys[i]] = properties[keys[i]];
+        }
+
+        /**
+         * DataChannelMessage fromPid.
+         * @member {number} fromPid
+         * @memberof proto.DataChannelMessage
+         * @instance
+         */
+        DataChannelMessage.prototype.fromPid = 0;
+
+        /**
+         * DataChannelMessage recipientPids.
+         * @member {Array.<number>} recipientPids
+         * @memberof proto.DataChannelMessage
+         * @instance
+         */
+        DataChannelMessage.prototype.recipientPids = $util.emptyArray;
+
+        /**
+         * DataChannelMessage routingMode.
+         * @member {proto.DataChannelMessage_RoutingMode} routingMode
+         * @memberof proto.DataChannelMessage
+         * @instance
+         */
+        DataChannelMessage.prototype.routingMode = 0;
+
+        /**
+         * DataChannelMessage scope.
+         * @member {proto.DataChannelMessage_MessageScope} scope
+         * @memberof proto.DataChannelMessage
+         * @instance
+         */
+        DataChannelMessage.prototype.scope = 0;
+
+        /**
+         * DataChannelMessage messageType.
+         * @member {proto.DataChannelMessage_MessageType} messageType
+         * @memberof proto.DataChannelMessage
+         * @instance
+         */
+        DataChannelMessage.prototype.messageType = 0;
+
+        /**
+         * DataChannelMessage payload.
+         * @member {Uint8Array} payload
+         * @memberof proto.DataChannelMessage
+         * @instance
+         */
+        DataChannelMessage.prototype.payload = $util.newBuffer([]);
+
+        /**
+         * DataChannelMessage transactionId.
+         * @member {number} transactionId
+         * @memberof proto.DataChannelMessage
+         * @instance
+         */
+        DataChannelMessage.prototype.transactionId = 0;
+
+        /**
+         * Creates a new DataChannelMessage instance using the specified properties.
+         * @function create
+         * @memberof proto.DataChannelMessage
+         * @static
+         * @param {proto.IDataChannelMessage=} [properties] Properties to set
+         * @returns {proto.DataChannelMessage} DataChannelMessage instance
+         */
+        DataChannelMessage.create = function create(properties) {
+            return new DataChannelMessage(properties);
+        };
+
+        /**
+         * Encodes the specified DataChannelMessage message. Does not implicitly {@link proto.DataChannelMessage.verify|verify} messages.
+         * @function encode
+         * @memberof proto.DataChannelMessage
+         * @static
+         * @param {proto.IDataChannelMessage} message DataChannelMessage message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        DataChannelMessage.encode = function encode(message, writer) {
+            if (!writer)
+                writer = $Writer.create();
+            if (message.fromPid != null && Object.hasOwnProperty.call(message, "fromPid"))
+                writer.uint32(/* id 1, wireType 0 =*/8).uint32(message.fromPid);
+            if (message.recipientPids != null && message.recipientPids.length) {
+                writer.uint32(/* id 2, wireType 2 =*/18).fork();
+                for (var i = 0; i < message.recipientPids.length; ++i)
+                    writer.uint32(message.recipientPids[i]);
+                writer.ldelim();
+            }
+            if (message.routingMode != null && Object.hasOwnProperty.call(message, "routingMode"))
+                writer.uint32(/* id 3, wireType 0 =*/24).int32(message.routingMode);
+            if (message.scope != null && Object.hasOwnProperty.call(message, "scope"))
+                writer.uint32(/* id 4, wireType 0 =*/32).int32(message.scope);
+            if (message.messageType != null && Object.hasOwnProperty.call(message, "messageType"))
+                writer.uint32(/* id 5, wireType 0 =*/40).int32(message.messageType);
+            if (message.payload != null && Object.hasOwnProperty.call(message, "payload"))
+                writer.uint32(/* id 6, wireType 2 =*/50).bytes(message.payload);
+            if (message.transactionId != null && Object.hasOwnProperty.call(message, "transactionId"))
+                writer.uint32(/* id 7, wireType 0 =*/56).uint32(message.transactionId);
+            return writer;
+        };
+
+        /**
+         * Encodes the specified DataChannelMessage message, length delimited. Does not implicitly {@link proto.DataChannelMessage.verify|verify} messages.
+         * @function encodeDelimited
+         * @memberof proto.DataChannelMessage
+         * @static
+         * @param {proto.IDataChannelMessage} message DataChannelMessage message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        DataChannelMessage.encodeDelimited = function encodeDelimited(message, writer) {
+            return this.encode(message, writer).ldelim();
+        };
+
+        /**
+         * Decodes a DataChannelMessage message from the specified reader or buffer.
+         * @function decode
+         * @memberof proto.DataChannelMessage
+         * @static
+         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+         * @param {number} [length] Message length if known beforehand
+         * @returns {proto.DataChannelMessage} DataChannelMessage
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        DataChannelMessage.decode = function decode(reader, length, error) {
+            if (!(reader instanceof $Reader))
+                reader = $Reader.create(reader);
+            var end = length === undefined ? reader.len : reader.pos + length, message = new $root.proto.DataChannelMessage();
+            while (reader.pos < end) {
+                var tag = reader.uint32();
+                if (tag === error)
+                    break;
+                switch (tag >>> 3) {
+                case 1: {
+                        message.fromPid = reader.uint32();
+                        break;
+                    }
+                case 2: {
+                        if (!(message.recipientPids && message.recipientPids.length))
+                            message.recipientPids = [];
+                        if ((tag & 7) === 2) {
+                            var end2 = reader.uint32() + reader.pos;
+                            while (reader.pos < end2)
+                                message.recipientPids.push(reader.uint32());
+                        } else
+                            message.recipientPids.push(reader.uint32());
+                        break;
+                    }
+                case 3: {
+                        message.routingMode = reader.int32();
+                        break;
+                    }
+                case 4: {
+                        message.scope = reader.int32();
+                        break;
+                    }
+                case 5: {
+                        message.messageType = reader.int32();
+                        break;
+                    }
+                case 6: {
+                        message.payload = reader.bytes();
+                        break;
+                    }
+                case 7: {
+                        message.transactionId = reader.uint32();
+                        break;
+                    }
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+                }
+            }
+            return message;
+        };
+
+        /**
+         * Decodes a DataChannelMessage message from the specified reader or buffer, length delimited.
+         * @function decodeDelimited
+         * @memberof proto.DataChannelMessage
+         * @static
+         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+         * @returns {proto.DataChannelMessage} DataChannelMessage
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        DataChannelMessage.decodeDelimited = function decodeDelimited(reader) {
+            if (!(reader instanceof $Reader))
+                reader = new $Reader(reader);
+            return this.decode(reader, reader.uint32());
+        };
+
+        /**
+         * Verifies a DataChannelMessage message.
+         * @function verify
+         * @memberof proto.DataChannelMessage
+         * @static
+         * @param {Object.<string,*>} message Plain object to verify
+         * @returns {string|null} `null` if valid, otherwise the reason why it is not
+         */
+        DataChannelMessage.verify = function verify(message) {
+            if (typeof message !== "object" || message === null)
+                return "object expected";
+            if (message.fromPid != null && message.hasOwnProperty("fromPid"))
+                if (!$util.isInteger(message.fromPid))
+                    return "fromPid: integer expected";
+            if (message.recipientPids != null && message.hasOwnProperty("recipientPids")) {
+                if (!Array.isArray(message.recipientPids))
+                    return "recipientPids: array expected";
+                for (var i = 0; i < message.recipientPids.length; ++i)
+                    if (!$util.isInteger(message.recipientPids[i]))
+                        return "recipientPids: integer[] expected";
+            }
+            if (message.routingMode != null && message.hasOwnProperty("routingMode"))
+                switch (message.routingMode) {
+                default:
+                    return "routingMode: enum value expected";
+                case 0:
+                case 1:
+                case 2:
+                case 3:
+                    break;
+                }
+            if (message.scope != null && message.hasOwnProperty("scope"))
+                switch (message.scope) {
+                default:
+                    return "scope: enum value expected";
+                case 0:
+                case 1:
+                case 2:
+                    break;
+                }
+            if (message.messageType != null && message.hasOwnProperty("messageType"))
+                switch (message.messageType) {
+                default:
+                    return "messageType: enum value expected";
+                case 0:
+                case 1:
+                case 2:
+                    break;
+                }
+            if (message.payload != null && message.hasOwnProperty("payload"))
+                if (!(message.payload && typeof message.payload.length === "number" || $util.isString(message.payload)))
+                    return "payload: buffer expected";
+            if (message.transactionId != null && message.hasOwnProperty("transactionId"))
+                if (!$util.isInteger(message.transactionId))
+                    return "transactionId: integer expected";
+            return null;
+        };
+
+        /**
+         * Creates a DataChannelMessage message from a plain object. Also converts values to their respective internal types.
+         * @function fromObject
+         * @memberof proto.DataChannelMessage
+         * @static
+         * @param {Object.<string,*>} object Plain object
+         * @returns {proto.DataChannelMessage} DataChannelMessage
+         */
+        DataChannelMessage.fromObject = function fromObject(object) {
+            if (object instanceof $root.proto.DataChannelMessage)
+                return object;
+            var message = new $root.proto.DataChannelMessage();
+            if (object.fromPid != null)
+                message.fromPid = object.fromPid >>> 0;
+            if (object.recipientPids) {
+                if (!Array.isArray(object.recipientPids))
+                    throw TypeError(".proto.DataChannelMessage.recipientPids: array expected");
+                message.recipientPids = [];
+                for (var i = 0; i < object.recipientPids.length; ++i)
+                    message.recipientPids[i] = object.recipientPids[i] >>> 0;
+            }
+            switch (object.routingMode) {
+            default:
+                if (typeof object.routingMode === "number") {
+                    message.routingMode = object.routingMode;
+                    break;
+                }
+                break;
+            case "ROUTING_MODE_UNSPECIFIED":
+            case 0:
+                message.routingMode = 0;
+                break;
+            case "ROUTING_MODE_RELAY_ONLY":
+            case 1:
+                message.routingMode = 1;
+                break;
+            case "ROUTING_MODE_SELECTIVE_FORWARD":
+            case 2:
+                message.routingMode = 2;
+                break;
+            case "ROUTING_MODE_BROADCAST":
+            case 3:
+                message.routingMode = 3;
+                break;
+            }
+            switch (object.scope) {
+            default:
+                if (typeof object.scope === "number") {
+                    message.scope = object.scope;
+                    break;
+                }
+                break;
+            case "MESSAGE_SCOPE_UNSPECIFIED":
+            case 0:
+                message.scope = 0;
+                break;
+            case "MESSAGE_SCOPE_RELAY_READABLE":
+            case 1:
+                message.scope = 1;
+                break;
+            case "MESSAGE_SCOPE_END_TO_END":
+            case 2:
+                message.scope = 2;
+                break;
+            }
+            switch (object.messageType) {
+            default:
+                if (typeof object.messageType === "number") {
+                    message.messageType = object.messageType;
+                    break;
+                }
+                break;
+            case "MESSAGE_TYPE_UNSPECIFIED":
+            case 0:
+                message.messageType = 0;
+                break;
+            case "MESSAGE_TYPE_DATA":
+            case 1:
+                message.messageType = 1;
+                break;
+            case "MESSAGE_TYPE_CONTROL":
+            case 2:
+                message.messageType = 2;
+                break;
+            }
+            if (object.payload != null)
+                if (typeof object.payload === "string")
+                    $util.base64.decode(object.payload, message.payload = $util.newBuffer($util.base64.length(object.payload)), 0);
+                else if (object.payload.length >= 0)
+                    message.payload = object.payload;
+            if (object.transactionId != null)
+                message.transactionId = object.transactionId >>> 0;
+            return message;
+        };
+
+        /**
+         * Creates a plain object from a DataChannelMessage message. Also converts values to other types if specified.
+         * @function toObject
+         * @memberof proto.DataChannelMessage
+         * @static
+         * @param {proto.DataChannelMessage} message DataChannelMessage
+         * @param {$protobuf.IConversionOptions} [options] Conversion options
+         * @returns {Object.<string,*>} Plain object
+         */
+        DataChannelMessage.toObject = function toObject(message, options) {
+            if (!options)
+                options = {};
+            var object = {};
+            if (options.arrays || options.defaults)
+                object.recipientPids = [];
+            if (options.defaults) {
+                object.fromPid = 0;
+                object.routingMode = options.enums === String ? "ROUTING_MODE_UNSPECIFIED" : 0;
+                object.scope = options.enums === String ? "MESSAGE_SCOPE_UNSPECIFIED" : 0;
+                object.messageType = options.enums === String ? "MESSAGE_TYPE_UNSPECIFIED" : 0;
+                if (options.bytes === String)
+                    object.payload = "";
+                else {
+                    object.payload = [];
+                    if (options.bytes !== Array)
+                        object.payload = $util.newBuffer(object.payload);
+                }
+                object.transactionId = 0;
+            }
+            if (message.fromPid != null && message.hasOwnProperty("fromPid"))
+                object.fromPid = message.fromPid;
+            if (message.recipientPids && message.recipientPids.length) {
+                object.recipientPids = [];
+                for (var j = 0; j < message.recipientPids.length; ++j)
+                    object.recipientPids[j] = message.recipientPids[j];
+            }
+            if (message.routingMode != null && message.hasOwnProperty("routingMode"))
+                object.routingMode = options.enums === String ? $root.proto.DataChannelMessage_RoutingMode[message.routingMode] === undefined ? message.routingMode : $root.proto.DataChannelMessage_RoutingMode[message.routingMode] : message.routingMode;
+            if (message.scope != null && message.hasOwnProperty("scope"))
+                object.scope = options.enums === String ? $root.proto.DataChannelMessage_MessageScope[message.scope] === undefined ? message.scope : $root.proto.DataChannelMessage_MessageScope[message.scope] : message.scope;
+            if (message.messageType != null && message.hasOwnProperty("messageType"))
+                object.messageType = options.enums === String ? $root.proto.DataChannelMessage_MessageType[message.messageType] === undefined ? message.messageType : $root.proto.DataChannelMessage_MessageType[message.messageType] : message.messageType;
+            if (message.payload != null && message.hasOwnProperty("payload"))
+                object.payload = options.bytes === String ? $util.base64.encode(message.payload, 0, message.payload.length) : options.bytes === Array ? Array.prototype.slice.call(message.payload) : message.payload;
+            if (message.transactionId != null && message.hasOwnProperty("transactionId"))
+                object.transactionId = message.transactionId;
+            return object;
+        };
+
+        /**
+         * Converts this DataChannelMessage to JSON.
+         * @function toJSON
+         * @memberof proto.DataChannelMessage
+         * @instance
+         * @returns {Object.<string,*>} JSON object
+         */
+        DataChannelMessage.prototype.toJSON = function toJSON() {
+            return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+        };
+
+        /**
+         * Gets the default type url for DataChannelMessage
+         * @function getTypeUrl
+         * @memberof proto.DataChannelMessage
+         * @static
+         * @param {string} [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+         * @returns {string} The default type url
+         */
+        DataChannelMessage.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
+            if (typeUrlPrefix === undefined) {
+                typeUrlPrefix = "type.googleapis.com";
+            }
+            return typeUrlPrefix + "/proto.DataChannelMessage";
+        };
+
+        return DataChannelMessage;
     })();
 
     proto.E2eRekeyPayload = (function() {

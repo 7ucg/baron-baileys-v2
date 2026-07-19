@@ -641,7 +641,11 @@ const makeChatsSocket = config => {
 	const updateProfileName = async name => {
 		await chatModify({ pushNameSetting: name }, '')
 	}
-	const fetchBlocklist = async () => {
+	// dhash: previously-seen blocklist delta-hash, for incremental sync — server returns
+	// the current dhash unconditionally, and a fresh list only when it doesn't match.
+	// Confirmed from live capture: content is null for a full fetch, or a single
+	// <item dhash="..."/> child for the incremental check — never a <blocklist/> child.
+	const fetchBlocklist = async (dhash = null) => {
 		const result = await query({
 			tag: 'iq',
 			attrs: {
@@ -649,7 +653,7 @@ const makeChatsSocket = config => {
 				to: WABinary_1.S_WHATSAPP_NET,
 				type: 'get'
 			},
-			content: [{ tag: 'blocklist', attrs: {} }]
+			content: dhash ? [{ tag: 'item', attrs: { dhash } }] : null
 		})
 		const listNode = (0, WABinary_1.getBinaryNodeChild)(result, 'list')
 		const jids = (0, WABinary_1.getBinaryNodeChildren)(listNode, 'item').map(n => n.attrs.jid)
@@ -676,32 +680,47 @@ const makeChatsSocket = config => {
 		})
 	}
 	const getBusinessProfile = async jid => {
-		const results = await query({
-			tag: 'iq',
-			attrs: {
-				to: 's.whatsapp.net',
-				xmlns: 'w:biz',
-				type: 'get'
-			},
-			content: [
-				{
-					tag: 'business_profile',
-					attrs: { v: '244' },
-					content: [
-						{
-							tag: 'profile',
-							attrs: { jid }
-						}
-					]
+		// Confirmed from live capture: business_profile uses v="116" (not "244"), and
+		// verified_name is always its own separate w:biz iq — { jid } attr, no xmlns
+		// child attr — never bundled into the business_profile request.
+		const [results, verifiedNameResult] = await Promise.all([
+			query({
+				tag: 'iq',
+				attrs: {
+					to: 's.whatsapp.net',
+					xmlns: 'w:biz',
+					type: 'get'
 				},
-				{
-					tag: 'verified_name',
-					attrs: { xmlns: 'w:biz:verified_name' }
-				}
-			]
-		})
+				content: [
+					{
+						tag: 'business_profile',
+						attrs: { v: '116' },
+						content: [
+							{
+								tag: 'profile',
+								attrs: { jid }
+							}
+						]
+					}
+				]
+			}),
+			query({
+				tag: 'iq',
+				attrs: {
+					to: 's.whatsapp.net',
+					xmlns: 'w:biz',
+					type: 'get'
+				},
+				content: [
+					{
+						tag: 'verified_name',
+						attrs: { jid }
+					}
+				]
+			})
+		])
 		// Parse verified_name certificate if present in the response
-		const verifiedNameNode = (0, WABinary_1.getBinaryNodeChild)(results, 'verified_name')
+		const verifiedNameNode = (0, WABinary_1.getBinaryNodeChild)(verifiedNameResult, 'verified_name')
 		let verifiedNameCert
 		if (verifiedNameNode) {
 			const certNode = (0, WABinary_1.getBinaryNodeChild)(verifiedNameNode, 'certificate')
@@ -986,7 +1005,9 @@ const makeChatsSocket = config => {
 	 * type = "avatar"  for the avatar variant (no query attr, confirmed from interop logs)
 	 */
 	const profilePictureUrl = async (jid, type = 'preview', timeoutMs) => {
-		const picAttrs = type === 'image' ? { type, query: 'url' } : { type }
+		// Confirmed from live capture: query="url" is always present, for both
+		// "preview" and "image" — not image-only as previously assumed.
+		const picAttrs = { type, query: 'url' }
 		const baseContent = [{ tag: 'picture', attrs: picAttrs }]
 		// WA Web only includes tctoken for user JIDs (not groups/newsletters)
 		// and never for own profile pic (Chat model for self has no tcToken).
@@ -1696,12 +1717,18 @@ const makeChatsSocket = config => {
 	/**
 	 * Fetch AB-test (abt) props from server.
 	 * Mirrors ABPropsProtocolHelper — protocol 1 or 2, optional hash/refresh_id/group.
+	 * Confirmed from live capture: group-scoped queries send only { group }, never combined
+	 * with protocol/hash/refresh_id; the account-level default protocol is "1", not "2".
 	 */
-	const fetchABProps = async (protocol = '2', hash = '', refreshId = null, group = null) => {
-		const propAttrs = { protocol }
-		if (hash) propAttrs.hash = hash
-		if (refreshId != null) propAttrs.refresh_id = String(refreshId)
-		if (group != null) propAttrs.group = String(group)
+	const fetchABProps = async (protocol = '1', hash = '', refreshId = null, group = null) => {
+		const propAttrs =
+			group != null
+				? { group: String(group) }
+				: {
+						protocol,
+						...(hash ? { hash } : {}),
+						...(refreshId != null ? { refresh_id: String(refreshId) } : {})
+					}
 		const result = await query({
 			tag: 'iq',
 			attrs: { to: WABinary_1.S_WHATSAPP_NET, xmlns: 'abt', type: 'get' },
@@ -1714,16 +1741,19 @@ const makeChatsSocket = config => {
 	/**
 	 * Remove a companion (linked) device from the account.
 	 * Mirrors CompanionDeviceRemovalJob — xmlns="md", child tag "remove-companion-device".
-	 * reason: "user_initiated" | "server_initiated" | any WA-defined reason string.
+	 * jid: full device JID of the companion to remove (e.g. "1234567890:5@s.whatsapp.net").
+	 * reason: "user_initiated" | "unknown_companion" | any WA-defined reason string.
+	 * Confirmed from live capture — the previous { platform, id: keyIndex } attrs never
+	 * identified a device at all; the server needs the companion's full jid.
 	 */
-	const removeCompanionDevice = async (keyIndex, reason = 'user_initiated') => {
+	const removeCompanionDevice = async (jid, reason = 'user_initiated') => {
 		await query({
 			tag: 'iq',
 			attrs: { to: WABinary_1.S_WHATSAPP_NET, xmlns: 'md', type: 'set' },
 			content: [
 				{
 					tag: 'remove-companion-device',
-					attrs: { platform: 'true', reason, id: String(keyIndex) }
+					attrs: { jid, reason }
 				}
 			]
 		})

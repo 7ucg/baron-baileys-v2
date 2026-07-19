@@ -13,6 +13,7 @@ exports.generateWAMessage =
 const boom_1 = require('@hapi/boom')
 const crypto_1 = require('crypto')
 const fs_1 = require('fs')
+const lru_cache_1 = require('lru-cache')
 const WAProto_1 = require('../../WAProto/index.js')
 const Defaults_1 = require('../Defaults')
 const Types_1 = require('../Types')
@@ -24,6 +25,10 @@ const reporting_utils_1 = require('./reporting-utils')
 const jid_display_normalization_1 = require('./jid-display-normalization')
 const message_inspect_1 = require('./message-inspect')
 Object.assign(exports, message_inspect_1)
+// Group-invite thumbnails are fetched (IQ + HTTP GET) per generateWAMessage call;
+// caching the downloaded bytes avoids redownloading the same group picture when
+// the same invite is sent to many recipients in a burst.
+const groupInviteThumbnailCache = new lru_cache_1.LRUCache({ max: 100, ttl: 5 * 60 * 1000 })
 const MIMETYPE_MAP = {
 	image: 'image/jpeg',
 	video: 'video/mp4',
@@ -679,15 +684,19 @@ const generateWAMessageContent = async (message, options) => {
 		m.groupInviteMessage.caption = message.groupInvite.text
 		m.groupInviteMessage.groupJid = message.groupInvite.jid
 		m.groupInviteMessage.groupName = message.groupInvite.subject
-		//TODO: use built-in interface and get disappearing mode info etc.
-		//TODO: cache / use store!?
 		if (options.getProfilePicUrl) {
-			const pfpUrl = await options.getProfilePicUrl(message.groupInvite.jid, 'preview')
-			if (pfpUrl) {
-				const resp = await fetch(pfpUrl, { method: 'GET', dispatcher: options?.options?.dispatcher })
-				if (resp.ok) {
-					const buf = Buffer.from(await resp.arrayBuffer())
-					m.groupInviteMessage.jpegThumbnail = buf
+			const cached = groupInviteThumbnailCache.get(message.groupInvite.jid)
+			if (cached) {
+				m.groupInviteMessage.jpegThumbnail = cached
+			} else {
+				const pfpUrl = await options.getProfilePicUrl(message.groupInvite.jid, 'preview')
+				if (pfpUrl) {
+					const resp = await fetch(pfpUrl, { method: 'GET', dispatcher: options?.options?.dispatcher })
+					if (resp.ok) {
+						const buf = Buffer.from(await resp.arrayBuffer())
+						m.groupInviteMessage.jpegThumbnail = buf
+						groupInviteThumbnailCache.set(message.groupInvite.jid, buf)
+					}
 				}
 			}
 		}

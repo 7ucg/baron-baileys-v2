@@ -14,11 +14,19 @@ class USyncDeviceProtocol {
 			}
 		}
 	}
-	getUserElement(/* user: USyncUser */) {
-		//TODO: Implement device phashing, ts and expectedTs
-		//TODO: if all are not present, return null <- current behavior
-		//TODO: otherwise return a node w tag 'devices' w those as attrs
-		return null
+	getUserElement(user) {
+		const { deviceHash, ts, expectedTs } = user
+		if (deviceHash == null && ts == null && expectedTs == null) {
+			return null
+		}
+		const attrs = {}
+		if (deviceHash != null) attrs.device_hash = deviceHash
+		if (ts != null) attrs.ts = String(ts)
+		if (expectedTs != null) attrs.expected_ts = String(expectedTs)
+		return {
+			tag: 'devices',
+			attrs
+		}
 	}
 	parser(node) {
 		const deviceList = []

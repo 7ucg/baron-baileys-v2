@@ -67,9 +67,18 @@ const makePrivacySocket = sock => {
 	 * Confirmed from C24403Akb.java — variables: { feature, setting }
 	 * dataPath: xwa2_privacy_feature_update
 	 *
-	 * Known features: "LAST_SEEN", "ONLINE", "PROFILE_PHOTO", "STATUS", "READ_RECEIPTS",
-	 *                 "GROUPS", "CALLS", "SCREENSHOT", "LIVE_LOCATION"
-	 * Known settings: "ALL", "CONTACTS", "CONTACT_BLACKLIST", "NONE"
+	 * Values are lowercase and case-sensitive on the wire (confirmed 2026-07-19 against
+	 * WASmaxInPrivacyEnums / WAWebPrivacySettings) — NOT the uppercase values this doc used to list.
+	 *
+	 * Known features: "last" (last seen), "online", "profile" (photo), "status", "readreceipts",
+	 *                 "groupadd" (who can add you to groups), "groupcreation", "calladd",
+	 *                 "defense" (anti-scraping), "messages", "linked_profiles", "cover_photo",
+	 *                 "dependentaccountmessages", "pix", "stickers"
+	 *                 (the last 6 are business-account-only)
+	 * Known settings: "all", "contacts", "contact_blacklist", "none" — most features.
+	 *                 "online" only accepts "all" | "match_last_seen".
+	 *                 "calladd" only accepts "all" | "contacts" | "known".
+	 *                 "defense" only accepts "off" | "on_standard".
 	 *
 	 * @param {string} feature - Privacy feature name
 	 * @param {string} setting - New value
@@ -141,8 +150,7 @@ const makePrivacySocket = sock => {
 	 *
 	 * @param {string} status - New status string
 	 */
-	const updateUserStatus = status =>
-		mexQuery({ status }, PRIVACY_MEX_IDS.UPDATE_USER_STATUS, 'xwa2_update_user_status')
+	const updateUserStatus = status => mexQuery({ status }, PRIVACY_MEX_IDS.UPDATE_USER_STATUS, 'xwa2_update_user_status')
 
 	/**
 	 * Fetch picture info for a user via MEX.
@@ -221,7 +229,11 @@ const makePrivacySocket = sock => {
 	 * @param {string} deviceName - Human-readable device name
 	 */
 	const addTrustedDevice = (deviceId, deviceName) =>
-		mexQuery({ device_id: deviceId, device_name: deviceName }, PRIVACY_MEX_IDS.ADD_TRUSTED_DEVICE, 'xwa2_add_trusted_device')
+		mexQuery(
+			{ device_id: deviceId, device_name: deviceName },
+			PRIVACY_MEX_IDS.ADD_TRUSTED_DEVICE,
+			'xwa2_add_trusted_device'
+		)
 
 	/**
 	 * Fetch list of trusted devices for the account via MEX.
@@ -239,11 +251,7 @@ const makePrivacySocket = sock => {
 	 * @param {string} [reason='USER_INITIATED']
 	 */
 	const untrustTrustedDevice = (deviceId, reason = 'USER_INITIATED') =>
-		mexQuery(
-			{ device_id: deviceId, reason },
-			PRIVACY_MEX_IDS.UNTRUST_TRUSTED_DEVICE,
-			'xwa2_untrust_trusted_device'
-		)
+		mexQuery({ device_id: deviceId, reason }, PRIVACY_MEX_IDS.UNTRUST_TRUSTED_DEVICE, 'xwa2_untrust_trusted_device')
 
 	/**
 	 * Delete a trusted device entirely via MEX.
@@ -326,11 +334,7 @@ const makePrivacySocket = sock => {
 	 * @param {string[]} jids - Business JIDs to check
 	 */
 	const bizIntegrityQuery = jids =>
-		mexQuery(
-			{ users: jids.map(jid => ({ jid })) },
-			PRIVACY_MEX_IDS.BIZ_INTEGRITY,
-			'xwa2_fetch_wa_users'
-		)
+		mexQuery({ users: jids.map(jid => ({ jid })) }, PRIVACY_MEX_IDS.BIZ_INTEGRITY, 'xwa2_fetch_wa_users')
 
 	/**
 	 * Set linked social profiles (FB/IG) via MEX.
@@ -407,8 +411,7 @@ const makePrivacySocket = sock => {
 	 *
 	 * @param {string} qrData - Raw QR code data string
 	 */
-	const qrCodeScan = qrData =>
-		mexQuery({ qr_data: qrData }, PRIVACY_MEX_IDS.QR_CODE_SCAN, 'xwa2_qr_code_scan')
+	const qrCodeScan = qrData => mexQuery({ qr_data: qrData }, PRIVACY_MEX_IDS.QR_CODE_SCAN, 'xwa2_qr_code_scan')
 
 	return {
 		...sock,

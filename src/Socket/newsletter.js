@@ -191,7 +191,7 @@ const makeNewsletterSocket = config => {
 			return executeWMexQuery(
 				{ newsletter_id: jid },
 				Types_1.QueryIds.SUBSCRIBERS,
-				Types_1.XWAPaths.xwa2_newsletter_subscribers
+				Types_1.XWAPaths.xwa2_newsletter_followers
 			)
 		},
 		newsletterMetadata: async (type, key) => {
@@ -212,13 +212,13 @@ const makeNewsletterSocket = config => {
 			return parseNewsletterMetadata(result)
 		},
 		newsletterFollow: jid => {
-			return executeWMexQuery({ newsletter_id: jid }, Types_1.QueryIds.FOLLOW, Types_1.XWAPaths.xwa2_newsletter_follow)
+			return executeWMexQuery({ newsletter_id: jid }, Types_1.QueryIds.FOLLOW, Types_1.XWAPaths.xwa2_newsletter_join_v2)
 		},
 		newsletterUnfollow: jid => {
 			return executeWMexQuery(
 				{ newsletter_id: jid },
 				Types_1.QueryIds.UNFOLLOW,
-				Types_1.XWAPaths.xwa2_newsletter_unfollow
+				Types_1.XWAPaths.xwa2_newsletter_leave_v2
 			)
 		},
 		newsletterMute: jid => {
@@ -365,7 +365,7 @@ const makeNewsletterSocket = config => {
 			await executeWMexQuery(
 				{ newsletter_id: jid, user_id: userJid },
 				Types_1.QueryIds.DEMOTE,
-				Types_1.XWAPaths.xwa2_newsletter_demote
+				Types_1.XWAPaths.xwa2_newsletter_admin_demote
 			)
 		},
 		newsletterDelete: async jid => {

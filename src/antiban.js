@@ -61,6 +61,7 @@ __export(index_exports, {
 	WebhookAlerts: () => WebhookAlerts,
 	applyFingerprint: () => applyFingerprint,
 	applyGroupMultiplier: () => applyGroupMultiplier,
+	buildContentSignature: () => buildContentSignature,
 	classifyDisconnect: () => classifyDisconnect,
 	createLidFirstResolver: () => createLidFirstResolver,
 	credsSnapshot: () => credsSnapshot,
@@ -117,11 +118,15 @@ var RateLimiter = class {
 	 * Calculate delay before next message can be sent.
 	 * Returns 0 if message can be sent immediately.
 	 * Returns -1 if message should be blocked entirely.
+	 *
+	 * @param dedupKey - optional signature used for identical-message detection instead
+	 *   of `content`. Callers that only pass extracted text (e.g. no-caption media)
+	 *   should supply a richer dedupKey so unrelated messages don't collide on ''.
 	 */
-	async getDelay(recipient, content) {
+	async getDelay(recipient, content, dedupKey) {
 		const now = Date.now()
 		this.cleanup(now)
-		const contentHash = this.hashContent(content)
+		const contentHash = this.hashContent(dedupKey !== undefined ? dedupKey : content)
 		const dayMessages = this.messages.filter(m => now - m.timestamp < TIME_CONSTANTS.MS_PER_DAY)
 		if (dayMessages.length >= this.config.maxPerDay) {
 			return -1
@@ -167,16 +172,16 @@ var RateLimiter = class {
 		if (timeSinceLast < this.config.minDelayMs) {
 			delay = Math.max(delay, this.config.minDelayMs - timeSinceLast)
 		}
-		const typingDelay = Math.min(content.length * 15, 2e3)
+		const typingDelay = Math.min((content?.length || 0) * 15, 2e3)
 		delay += this.jitter(typingDelay * 0.5, typingDelay)
 		return Math.round(delay)
 	}
 	/**
 	 * Record a sent message
 	 */
-	record(recipient, content) {
+	record(recipient, content, dedupKey) {
 		const now = Date.now()
-		const contentHash = this.hashContent(content)
+		const contentHash = this.hashContent(dedupKey !== undefined ? dedupKey : content)
 		const timeSinceLast = now - this.lastMessageTime
 		if (timeSinceLast > TIME_CONSTANTS.BURST_RESET_MS) {
 			this.burstCount = 0
@@ -2477,26 +2482,21 @@ function applyGroupMultiplier(limits, multiplier) {
 }
 
 // antiban.js
-function isLegacyConfig(cfg) {
+// Only rateLimiter/warmUp are true legacy duplicates — every field they carry has a
+// 1:1 flat equivalent (maxPerMinute, warmupDays, ...), so nesting them is pure v2-style
+// baggage worth migrating away from. health/timelock/replyRatio/contactGraph/presence/
+// retryTracker/reconnectThrottle/lidResolver/jidCanonicalizer/sessionStability are NOT
+// legacy: they configure guards with no flat equivalent (many sub-fields, callback hooks),
+// so nesting is their normal, permanent, supported shape — read directly off whatever
+// input object the caller passes, regardless of whether a preset/flat override is also present.
+const CORE_LEGACY_KEYS = ['rateLimiter', 'warmUp']
+function hasLegacyCoreNesting(cfg) {
 	if (typeof cfg !== 'object' || cfg === null) return false
-	return (
-		'rateLimiter' in cfg ||
-		'warmUp' in cfg ||
-		'health' in cfg ||
-		'timelock' in cfg ||
-		'replyRatio' in cfg ||
-		'contactGraph' in cfg ||
-		'presence' in cfg ||
-		'retryTracker' in cfg ||
-		'reconnectThrottle' in cfg ||
-		'lidResolver' in cfg ||
-		'jidCanonicalizer' in cfg ||
-		'sessionStability' in cfg
-	)
+	return CORE_LEGACY_KEYS.some(key => key in cfg)
 }
 function mapLegacyToFlat(legacy) {
 	process.stderr.write(
-		'[baileys-antiban] DEPRECATED: Nested config (v2 style) detected. Migrate to flat config: new AntiBan({ maxPerMinute: 8 }).\n'
+		'[baileys-antiban] DEPRECATED: nested { rateLimiter, warmUp } config detected. Migrate to flat fields: new AntiBan({ maxPerMinute: 8, warmupDays: 5 }). Flat top-level fields you also pass always take precedence.\n'
 	)
 	const flat = {}
 	if (legacy.rateLimiter?.maxPerMinute !== void 0) flat.maxPerMinute = legacy.rateLimiter.maxPerMinute
@@ -2508,7 +2508,6 @@ function mapLegacyToFlat(legacy) {
 	if (legacy.warmUp?.warmUpDays !== void 0) flat.warmupDays = legacy.warmUp.warmUpDays
 	if (legacy.warmUp?.day1Limit !== void 0) flat.day1Limit = legacy.warmUp.day1Limit
 	if (legacy.warmUp?.growthFactor !== void 0) flat.growthFactor = legacy.warmUp.growthFactor
-	if (legacy.logging !== void 0) flat.logging = legacy.logging
 	return flat
 }
 var AntiBan = class {
@@ -2533,18 +2532,29 @@ var AntiBan = class {
 		totalDelayMs: 0
 	}
 	constructor(input, warmUpStateArg) {
-		let flatConfig
-		let legacyPassthrough = null
 		let warmUpState = warmUpStateArg
-		if (isLegacyConfig(input)) {
-			legacyPassthrough = input
-			flatConfig = mapLegacyToFlat(legacyPassthrough)
-		} else {
-			flatConfig = {}
-			legacyPassthrough = null
-		}
-		const cfg = isLegacyConfig(input) ? resolveConfig(flatConfig) : resolveConfig(input)
+		// rawInput is whatever object the caller passed (preset string input has no
+		// guard-block config, so it resolves to {}) — every guard-specific override
+		// block below (rateLimiter, warmUp, health, timelock, replyRatio, ...) is read
+		// straight from it, regardless of preset/flat fields being present alongside.
+		const rawInput = typeof input === 'object' && input !== null ? input : {}
+		const legacyNested = hasLegacyCoreNesting(rawInput)
+		// Explicit top-level flat fields always win over values mapped from legacy nesting.
+		const flatMerged = legacyNested ? { ...mapLegacyToFlat(rawInput), ...rawInput } : rawInput
+		const cfg = typeof input === 'string' ? resolveConfig(input) : resolveConfig(flatMerged)
 		this.resolvedConfig = cfg
+		const rateLimiterOverrides = rawInput.rateLimiter || {}
+		const warmUpOverrides = rawInput.warmUp || {}
+		const healthOverrides = rawInput.health || {}
+		const timelockOverrides = rawInput.timelock || {}
+		const replyRatioCfg = rawInput.replyRatio
+		const contactGraphCfg = rawInput.contactGraph
+		const presenceCfg = rawInput.presence
+		const retryTrackerCfg = rawInput.retryTracker
+		const reconnectThrottleCfg = rawInput.reconnectThrottle
+		const lidResolverCfg = rawInput.lidResolver
+		const jidCanonicalizerCfg = rawInput.jidCanonicalizer
+		const sessionStabilityCfg = rawInput.sessionStability
 		let savedState = null
 		if (cfg.persist) {
 			this.stateManager = new StateManager(cfg.persist)
@@ -2564,7 +2574,7 @@ var AntiBan = class {
 			minDelayMs: cfg.minDelayMs,
 			maxDelayMs: cfg.maxDelayMs,
 			newChatDelayMs: cfg.newChatDelayMs,
-			...(legacyPassthrough?.rateLimiter || {})
+			...rateLimiterOverrides
 		})
 		if (savedState?.knownChats) {
 			this.rateLimiter.restoreKnownChats(savedState.knownChats)
@@ -2575,72 +2585,72 @@ var AntiBan = class {
 				day1Limit: cfg.day1Limit,
 				growthFactor: cfg.growthFactor,
 				inactivityThresholdHours: cfg.inactivityThresholdHours,
-				...(legacyPassthrough?.warmUp || {})
+				...warmUpOverrides
 			},
 			warmUpState
 		)
 		this.health = new HealthMonitor({
 			autoPauseAt: cfg.autoPauseAt,
-			...(legacyPassthrough?.health || {}),
+			...healthOverrides,
 			onRiskChange: status => {
 				const emoji = { low: '\u{1F7E2}', medium: '\u{1F7E1}', high: '\u{1F7E0}', critical: '\u{1F534}' }
 				this._log(`${emoji[status.risk]} Risk level: ${status.risk.toUpperCase()} (score: ${status.score})`)
 				this._log(status.recommendation)
 				status.reasons.forEach(r => this._log(`  \u2192 ${r}`))
-				legacyPassthrough?.health?.onRiskChange?.(status)
+				healthOverrides.onRiskChange?.(status)
 			}
 		})
 		this.timelockGuard = new TimelockGuard({
-			...(legacyPassthrough?.timelock || {}),
+			...timelockOverrides,
 			onTimelockDetected: state => {
 				this.health.recordReachoutTimelock(state.enforcementType)
 				this._log(
 					`REACHOUT TIMELOCKED \u2014 ${state.enforcementType || 'unknown'}, expires ${state.expiresAt?.toISOString() || 'unknown'}`
 				)
-				legacyPassthrough?.timelock?.onTimelockDetected?.(state)
+				timelockOverrides.onTimelockDetected?.(state)
 			},
 			onTimelockLifted: state => {
 				this._log('Timelock lifted \u2014 resuming new contact messages')
-				legacyPassthrough?.timelock?.onTimelockLifted?.(state)
+				timelockOverrides.onTimelockLifted?.(state)
 			}
 		})
-		this.replyRatioGuard = new ReplyRatioGuard(legacyPassthrough?.replyRatio)
-		this.contactGraphWarmer = new ContactGraphWarmer(legacyPassthrough?.contactGraph)
-		this.presenceChoreographer = new PresenceChoreographer(legacyPassthrough?.presence)
+		this.replyRatioGuard = new ReplyRatioGuard(replyRatioCfg)
+		this.contactGraphWarmer = new ContactGraphWarmer(contactGraphCfg)
+		this.presenceChoreographer = new PresenceChoreographer(presenceCfg)
 		this.retryTrackerModule = new RetryReasonTracker({
-			...(legacyPassthrough?.retryTracker || {}),
+			...(retryTrackerCfg || {}),
 			onSpiral: (msgId, reason) => {
 				this._log(`\u26A0\uFE0F  Message ${msgId} stuck in retry spiral (${reason})`)
-				legacyPassthrough?.retryTracker?.onSpiral?.(msgId, reason)
+				retryTrackerCfg?.onSpiral?.(msgId, reason)
 			}
 		})
 		this.reconnectThrottleModule = new PostReconnectThrottle({
-			...(legacyPassthrough?.reconnectThrottle || {}),
+			...(reconnectThrottleCfg || {}),
 			baselineRatePerMinute: () => this.rateLimiter.getStats().limits.perMinute
 		})
-		if (legacyPassthrough?.jidCanonicalizer?.enabled) {
-			if (legacyPassthrough.jidCanonicalizer.resolver) {
-				this.jidCanonicalizerModule = new JidCanonicalizer(legacyPassthrough.jidCanonicalizer)
-				this.lidResolverModule = legacyPassthrough.jidCanonicalizer.resolver
+		if (jidCanonicalizerCfg?.enabled) {
+			if (jidCanonicalizerCfg.resolver) {
+				this.jidCanonicalizerModule = new JidCanonicalizer(jidCanonicalizerCfg)
+				this.lidResolverModule = jidCanonicalizerCfg.resolver
 			} else {
-				const resolverConfig = legacyPassthrough.lidResolver || legacyPassthrough.jidCanonicalizer.resolverConfig
+				const resolverConfig = lidResolverCfg || jidCanonicalizerCfg.resolverConfig
 				const resolver = new LidResolver(resolverConfig)
 				this.lidResolverModule = resolver
 				this.jidCanonicalizerModule = new JidCanonicalizer({
-					...legacyPassthrough.jidCanonicalizer,
+					...jidCanonicalizerCfg,
 					resolver
 				})
 			}
-		} else if (legacyPassthrough?.lidResolver) {
-			this.lidResolverModule = new LidResolver(legacyPassthrough.lidResolver)
+		} else if (lidResolverCfg) {
+			this.lidResolverModule = new LidResolver(lidResolverCfg)
 		}
-		if (legacyPassthrough?.sessionStability?.enabled) {
+		if (sessionStabilityCfg?.enabled) {
 			const healthConfig = {
-				badMacThreshold: legacyPassthrough.sessionStability.badMacThreshold,
-				badMacWindowMs: legacyPassthrough.sessionStability.badMacWindowMs,
+				badMacThreshold: sessionStabilityCfg.badMacThreshold,
+				badMacWindowMs: sessionStabilityCfg.badMacWindowMs,
 				onDegraded: stats => {
 					this._log(
-						`\u{1F534} SESSION DEGRADED \u2014 Bad MAC rate: ${stats.badMacCount} in last ${legacyPassthrough?.sessionStability?.badMacWindowMs || 6e4}ms`
+						`\u{1F534} SESSION DEGRADED \u2014 Bad MAC rate: ${stats.badMacCount} in last ${sessionStabilityCfg.badMacWindowMs || 6e4}ms`
 					)
 					this._log('Consider restarting session or switching to LID-based canonical form')
 				},
@@ -2654,8 +2664,11 @@ var AntiBan = class {
 	/**
 	 * Check if a message can be sent and get required delay.
 	 * Call this BEFORE every sendMessage().
+	 *
+	 * @param dedupKey - optional richer signature for identical-message detection
+	 *   (see RateLimiter.getDelay). Falls back to hashing `content` if omitted.
 	 */
-	async beforeSend(recipient, content) {
+	async beforeSend(recipient, content, dedupKey) {
 		const healthStatus = this.health.getStatus()
 		if (this.health.isPaused()) {
 			this.stats.messagesBlocked++
@@ -2745,7 +2758,7 @@ var AntiBan = class {
 				return { allowed: false, delayMs: 0, reason: 'Group rate limit exceeded', health: healthStatus }
 			}
 		}
-		let delay = await this.rateLimiter.getDelay(recipient, content)
+		let delay = await this.rateLimiter.getDelay(recipient, content, dedupKey)
 		if (delay === -1) {
 			this.stats.messagesBlocked++
 			this._log(`\u{1F6AB} BLOCKED \u2014 rate limit or identical message spam`)
@@ -2782,8 +2795,8 @@ var AntiBan = class {
 	 * Record a successfully sent message.
 	 * Call this AFTER every successful sendMessage().
 	 */
-	afterSend(recipient, content) {
-		this.rateLimiter.record(recipient, content)
+	afterSend(recipient, content, dedupKey) {
+		this.rateLimiter.record(recipient, content, dedupKey)
 		this.warmUp.record()
 		this.replyRatioGuard.recordSent(recipient)
 		this.stats.messagesAllowed++
@@ -3153,132 +3166,180 @@ function getRetryReasonDescription(reason) {
 }
 
 // wrapper.js
+/**
+ * Cheap, stable-ish fingerprint for a media payload. Used only for identical-message
+ * spam detection, not for integrity — collisions are acceptable, false "different"
+ * results are not (they just mean a real repeat isn't deduped, which is safe).
+ */
+function mediaFingerprint(media) {
+	if (Buffer.isBuffer(media)) {
+		const len = media.length
+		const head = media.subarray(0, Math.min(24, len)).toString('hex')
+		const tail = len > 24 ? media.subarray(Math.max(24, len - 24)).toString('hex') : ''
+		return `buf:${len}:${head}:${tail}`
+	}
+	if (media && typeof media === 'object' && typeof media.url === 'string') {
+		return `url:${media.url}`
+	}
+	if (typeof media === 'string') {
+		return `str:${media}`
+	}
+	if (media && typeof media === 'object') {
+		// Stream or other unresolvable wrapper — no cheap stable fingerprint available.
+		// A per-call unique token means it's never deduped, which is the safe failure mode
+		// (a real repeat slips past the spam guard) rather than colliding unrelated media.
+		return `unresolvable:${Math.random().toString(36)}`
+	}
+	return 'none'
+}
+/**
+ * Build a signature covering the full range of Baileys message content shapes for
+ * identical-message spam detection. Plain text/caption extraction alone collapses
+ * every captionless image/video/document/sticker/location/contact/poll onto the
+ * same '' hash, which falsely flags bulk media sends as spam repeats. This folds
+ * in a type discriminator plus a cheap content fingerprint per shape instead.
+ */
+function buildContentSignature(content) {
+	if (!content || typeof content !== 'object') return String(content ?? '')
+	const parts = []
+	const text =
+		content.text ||
+		content.caption ||
+		content.image?.caption ||
+		content.video?.caption ||
+		content.document?.caption ||
+		''
+	if (text) parts.push(`text:${text}`)
+	if (content.image !== undefined) parts.push(`image:${mediaFingerprint(content.image)}`)
+	if (content.video !== undefined) parts.push(`video:${mediaFingerprint(content.video)}`)
+	if (content.audio !== undefined) parts.push(`audio:${mediaFingerprint(content.audio)}`)
+	if (content.sticker !== undefined) parts.push(`sticker:${mediaFingerprint(content.sticker)}`)
+	if (content.document !== undefined) {
+		parts.push(`document:${mediaFingerprint(content.document)}:${content.fileName || ''}`)
+	}
+	if (content.location) {
+		parts.push(`location:${content.location.degreesLatitude}:${content.location.degreesLongitude}`)
+	}
+	if (content.contacts) {
+		const vcards = content.contacts.contacts?.map(c => c.vcard).join('|') || JSON.stringify(content.contacts)
+		parts.push(`contacts:${vcards}`)
+	}
+	if (content.poll) {
+		parts.push(`poll:${content.poll.name}:${(content.poll.values || []).join(',')}`)
+	}
+	if (content.buttons) parts.push(`buttons:${JSON.stringify(content.buttons)}`)
+	if (content.templateButtons) parts.push(`template:${JSON.stringify(content.templateButtons)}`)
+	if (content.sections) parts.push(`sections:${JSON.stringify(content.sections)}`)
+	if (content.react) parts.push(`react:${content.react.text}:${content.react.key?.id || ''}`)
+	if (!parts.length) {
+		// Unknown/unmodeled content shape — don't silently collapse it onto '' either.
+		parts.push(`shape:${Object.keys(content).sort().join(',')}`)
+	}
+	return parts.join('|')
+}
 function wrapSocket(sock, config, warmUpState, wrapOptions) {
 	const antiban = new AntiBan(config, warmUpState)
 	const options = {
 		autoRespondToIncoming: false,
 		...wrapOptions
 	}
+	// Auto-reply timers and event-bridge listeners both outlive a single sendMessage
+	// call, so both need explicit teardown on antiban.destroy() — otherwise a
+	// reconnect that re-wraps the socket leaks listeners, and a destroyed socket can
+	// still fire a queued auto-reply send.
+	const pendingAutoReplyTimers = new Set()
+	const scheduleAutoReply = (jid, suggestedText) => {
+		const replyDelay = Math.floor(Math.random() * 12e3) + 3e3
+		const timer = setTimeout(async () => {
+			pendingAutoReplyTimers.delete(timer)
+			try {
+				await sock.sendMessage(jid, { text: suggestedText })
+			} catch (error) {}
+		}, replyDelay)
+		pendingAutoReplyTimers.add(timer)
+	}
+	const handleConnectionUpdate = update => {
+		if (update.connection === 'close') {
+			const reason = update.lastDisconnect?.error?.output?.statusCode || 'unknown'
+			antiban.onDisconnect(reason)
+		}
+		if (update.connection === 'open') {
+			antiban.onReconnect()
+		}
+		if (update.reachoutTimeLock) {
+			antiban.timelock.onTimelockUpdate({
+				isActive: update.reachoutTimeLock.isActive,
+				timeEnforcementEnds: update.reachoutTimeLock.timeEnforcementEnds,
+				enforcementType: update.reachoutTimeLock.enforcementType
+			})
+		}
+	}
+	const handleMessagesUpdate = updates => {
+		for (const update of updates) {
+			if (update?.update?.messageStubParameters) {
+				const params = update.update.messageStubParameters
+				if (params.includes(463) || params.includes('463')) {
+					antiban.timelock.record463Error()
+				}
+			}
+			antiban.retryTracker.onMessageUpdate(update)
+		}
+		antiban.jidCanonicalizer?.onMessageUpdate(updates)
+	}
+	const handleMessagesUpsert = upsert => {
+		const { messages } = upsert
+		antiban.jidCanonicalizer?.onIncomingEvent(upsert)
+		for (const msg of messages || []) {
+			const jid = msg.key?.remoteJid
+			if (!jid) continue
+			antiban.timelock.registerKnownChat(jid)
+			const isSelf = msg.key?.fromMe || false
+			if (isSelf) continue
+			const msgText =
+				msg.message?.conversation ||
+				msg.message?.extendedTextMessage?.text ||
+				msg.message?.imageMessage?.caption ||
+				msg.message?.videoMessage?.caption ||
+				''
+			const replySuggestion = antiban.onIncomingMessage(jid, msgText)
+			if (options.autoRespondToIncoming && replySuggestion.shouldReply && replySuggestion.suggestedText) {
+				scheduleAutoReply(jid, replySuggestion.suggestedText)
+			}
+		}
+	}
+	let stopEventBridge = () => {}
 	if (typeof sock.ev.process === 'function') {
-		sock.ev.process(async events => {
-			if (events['connection.update']) {
-				const update = events['connection.update']
-				if (update.connection === 'close') {
-					const reason = update.lastDisconnect?.error?.output?.statusCode || 'unknown'
-					antiban.onDisconnect(reason)
-				}
-				if (update.connection === 'open') {
-					antiban.onReconnect()
-				}
-				if (update.reachoutTimeLock) {
-					antiban.timelock.onTimelockUpdate({
-						isActive: update.reachoutTimeLock.isActive,
-						timeEnforcementEnds: update.reachoutTimeLock.timeEnforcementEnds,
-						enforcementType: update.reachoutTimeLock.enforcementType
-					})
-				}
-			}
-			if (events['messages.update']) {
-				const updates = events['messages.update']
-				for (const update of updates) {
-					if (update?.update?.messageStubParameters) {
-						const params = update.update.messageStubParameters
-						if (params.includes(463) || params.includes('463')) {
-							antiban.timelock.record463Error()
-						}
-					}
-					antiban.retryTracker.onMessageUpdate(update)
-				}
-				antiban.jidCanonicalizer?.onMessageUpdate(updates)
-			}
-			if (events['messages.upsert']) {
-				const { messages } = events['messages.upsert']
-				antiban.jidCanonicalizer?.onIncomingEvent(events['messages.upsert'])
-				for (const msg of messages || []) {
-					const jid = msg.key?.remoteJid
-					if (!jid) continue
-					antiban.timelock.registerKnownChat(jid)
-					const isSelf = msg.key?.fromMe || false
-					if (isSelf) continue
-					const msgText =
-						msg.message?.conversation ||
-						msg.message?.extendedTextMessage?.text ||
-						msg.message?.imageMessage?.caption ||
-						msg.message?.videoMessage?.caption ||
-						''
-					const replySuggestion = antiban.onIncomingMessage(jid, msgText)
-					if (options.autoRespondToIncoming && replySuggestion.shouldReply && replySuggestion.suggestedText) {
-						const replyDelay = Math.floor(Math.random() * 12e3) + 3e3
-						setTimeout(async () => {
-							try {
-								await sock.sendMessage(jid, { text: replySuggestion.suggestedText })
-							} catch (error) {}
-						}, replyDelay)
-					}
-				}
-			}
-		})
+		const processListener = async events => {
+			if (events['connection.update']) handleConnectionUpdate(events['connection.update'])
+			if (events['messages.update']) handleMessagesUpdate(events['messages.update'])
+			if (events['messages.upsert']) handleMessagesUpsert(events['messages.upsert'])
+		}
+		const maybeUnsubscribe = sock.ev.process(processListener)
+		if (typeof maybeUnsubscribe === 'function') {
+			stopEventBridge = maybeUnsubscribe
+		}
 	} else {
-		sock.ev.on('connection.update', update => {
-			if (update.connection === 'close') {
-				const reason = update.lastDisconnect?.error?.output?.statusCode || 'unknown'
-				antiban.onDisconnect(reason)
-			}
-			if (update.connection === 'open') {
-				antiban.onReconnect()
-			}
-			if (update.reachoutTimeLock) {
-				antiban.timelock.onTimelockUpdate({
-					isActive: update.reachoutTimeLock.isActive,
-					timeEnforcementEnds: update.reachoutTimeLock.timeEnforcementEnds,
-					enforcementType: update.reachoutTimeLock.enforcementType
-				})
-			}
-		})
-		sock.ev.on('messages.update', updates => {
-			for (const update of updates) {
-				if (update?.update?.messageStubParameters) {
-					const params = update.update.messageStubParameters
-					if (params.includes(463) || params.includes('463')) {
-						antiban.timelock.record463Error()
-					}
-				}
-				antiban.retryTracker.onMessageUpdate(update)
-			}
-			antiban.jidCanonicalizer?.onMessageUpdate(updates)
-		})
-		sock.ev.on('messages.upsert', upsert => {
-			const { messages } = upsert
-			antiban.jidCanonicalizer?.onIncomingEvent(upsert)
-			for (const msg of messages || []) {
-				const jid = msg.key?.remoteJid
-				if (!jid) continue
-				antiban.timelock.registerKnownChat(jid)
-				const isSelf = msg.key?.fromMe || false
-				if (isSelf) continue
-				const msgText =
-					msg.message?.conversation ||
-					msg.message?.extendedTextMessage?.text ||
-					msg.message?.imageMessage?.caption ||
-					msg.message?.videoMessage?.caption ||
-					''
-				const replySuggestion = antiban.onIncomingMessage(jid, msgText)
-				if (options.autoRespondToIncoming && replySuggestion.shouldReply && replySuggestion.suggestedText) {
-					const replyDelay = Math.floor(Math.random() * 12e3) + 3e3
-					setTimeout(async () => {
-						try {
-							await sock.sendMessage(jid, { text: replySuggestion.suggestedText })
-						} catch (error) {}
-					}, replyDelay)
-				}
-			}
-		})
+		sock.ev.on('connection.update', handleConnectionUpdate)
+		sock.ev.on('messages.update', handleMessagesUpdate)
+		sock.ev.on('messages.upsert', handleMessagesUpsert)
+		stopEventBridge = () => {
+			sock.ev.off('connection.update', handleConnectionUpdate)
+			sock.ev.off('messages.update', handleMessagesUpdate)
+			sock.ev.off('messages.upsert', handleMessagesUpsert)
+		}
 	}
 	const originalSendMessage = sock.sendMessage.bind(sock)
 	const wrappedSendMessage = async (jid, content, options2) => {
 		const canonicalJid = antiban.jidCanonicalizer?.canonicalizeTarget(jid) || jid
-		const text = content?.text || content?.caption || content?.image?.caption || ''
-		const decision = await antiban.beforeSend(canonicalJid, text)
+		const text =
+			content?.text ||
+			content?.caption ||
+			content?.image?.caption ||
+			content?.video?.caption ||
+			content?.document?.caption ||
+			''
+		const dedupKey = buildContentSignature(content)
+		const decision = await antiban.beforeSend(canonicalJid, text, dedupKey)
 		if (!decision.allowed) {
 			throw new Error(`[baileys-antiban] Message blocked: ${decision.reason}`)
 		}
@@ -3287,7 +3348,7 @@ function wrapSocket(sock, config, warmUpState, wrapOptions) {
 		}
 		try {
 			const result = await originalSendMessage(canonicalJid, content, options2)
-			antiban.afterSend(canonicalJid, text)
+			antiban.afterSend(canonicalJid, text, dedupKey)
 			antiban.timelock.registerKnownChat(canonicalJid)
 			if (result?.key?.id) {
 				antiban.retryTracker.clear(result.key.id)
@@ -3301,7 +3362,13 @@ function wrapSocket(sock, config, warmUpState, wrapOptions) {
 	const wrapped = Object.create(sock)
 	wrapped.sendMessage = wrappedSendMessage
 	wrapped.antiban = antiban
-	wrapped.antiban.destroy = antiban.destroy.bind(antiban)
+	const originalDestroy = antiban.destroy.bind(antiban)
+	wrapped.antiban.destroy = () => {
+		stopEventBridge()
+		for (const timer of pendingAutoReplyTimers) clearTimeout(timer)
+		pendingAutoReplyTimers.clear()
+		originalDestroy()
+	}
 	return wrapped
 }
 

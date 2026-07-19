@@ -387,7 +387,7 @@ const makeCommunitiesSocket = config => {
 		},
 		communityJoinApprovalMode: async (jid, mode) => {
 			await communityQuery(jid, 'set', [
-				{ tag: 'membership_approval_mode', attrs: {}, content: [{ tag: 'community_join', attrs: { state: mode } }] }
+				{ tag: 'membership_approval_mode', attrs: {}, content: [{ tag: 'group_join', attrs: { state: mode } }] }
 			])
 		},
 		/**
@@ -459,7 +459,11 @@ const makeCommunitiesSocket = config => {
 		 * @param {string} jid - Community JID
 		 */
 		communitySubgroupsMex: async jid => {
-			const result = await mexQuery({ group_input: { group_id: jid } }, COMMUNITY_MEX_QUERY_IDS.QUERY_SUBGROUPS, 'xwa2_group_query_by_id')
+			const result = await mexQuery(
+				{ group_input: { group_id: jid } },
+				COMMUNITY_MEX_QUERY_IDS.QUERY_SUBGROUPS,
+				'xwa2_group_query_by_id'
+			)
 			return result?.subgroups ?? result?.linked_groups ?? result?.sub_groups ?? result
 		},
 
@@ -547,25 +551,29 @@ const extractCommunityMetadata = result => {
 		addressingMode: (0, WABinary_1.getBinaryNodeChildString)(community, 'addressing_mode'),
 		linkLimit,
 		suspendAppealStatus: community.attrs.suspend_appeal_status || community.attrs.appeal_status || undefined,
-		allowMemberSuggestM3: community.attrs.parent_group_allow_member_suggest_existing_m3 === 'true'
-			? true
-			: community.attrs.parent_group_allow_member_suggest_existing_m3 === 'false'
-				? false
-				: undefined,
-		allowMemberSuggestM3ForAdmin: community.attrs.parent_group_allow_member_suggest_existing_m3_for_admin === 'true'
-			? true
-			: community.attrs.parent_group_allow_member_suggest_existing_m3_for_admin === 'false'
-				? false
-				: undefined,
+		allowMemberSuggestM3:
+			community.attrs.parent_group_allow_member_suggest_existing_m3 === 'true'
+				? true
+				: community.attrs.parent_group_allow_member_suggest_existing_m3 === 'false'
+					? false
+					: undefined,
+		allowMemberSuggestM3ForAdmin:
+			community.attrs.parent_group_allow_member_suggest_existing_m3_for_admin === 'true'
+				? true
+				: community.attrs.parent_group_allow_member_suggest_existing_m3_for_admin === 'false'
+					? false
+					: undefined,
 		subgroupPollInterval: community.attrs.improve_subgroup_activation_subgroup_poll_interval
 			? Number(community.attrs.improve_subgroup_activation_subgroup_poll_interval)
 			: undefined,
-		isGeneralSubgroup: community.attrs.general_subgroup != null
-			? community.attrs.general_subgroup === 'true' || community.attrs.general_subgroup === true
-			: undefined,
-		isHiddenSubgroup: community.attrs.hidden_subgroup != null
-			? community.attrs.hidden_subgroup === 'true' || community.attrs.hidden_subgroup === true
-			: undefined
+		isGeneralSubgroup:
+			community.attrs.general_subgroup != null
+				? community.attrs.general_subgroup === 'true' || community.attrs.general_subgroup === true
+				: undefined,
+		isHiddenSubgroup:
+			community.attrs.hidden_subgroup != null
+				? community.attrs.hidden_subgroup === 'true' || community.attrs.hidden_subgroup === true
+				: undefined
 	}
 	return metadata
 }

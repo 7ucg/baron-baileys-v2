@@ -3,6 +3,7 @@
 // Tests for antiban.js — RateLimiter, WarmUp, AntiBan, resolveConfig, PRESETS, ContentVariator.
 // No real WS connection needed — all logic is pure/stateful JS.
 
+const { EventEmitter } = require('events')
 const {
 	AntiBan,
 	RateLimiter,
@@ -13,6 +14,8 @@ const {
 	resolveConfig,
 	TimelockGuard,
 	PostReconnectThrottle,
+	buildContentSignature,
+	wrapSocket
 } = require('../src/antiban')
 
 // ── resolveConfig ─────────────────────────────────────────────────────────────
@@ -55,10 +58,17 @@ describe('resolveConfig', () => {
 
 describe('PRESETS', () => {
 	const required = [
-		'maxPerMinute', 'maxPerHour', 'maxPerDay',
-		'minDelayMs', 'maxDelayMs', 'newChatDelayMs',
-		'warmupDays', 'day1Limit', 'growthFactor',
-		'inactivityThresholdHours', 'autoPauseAt',
+		'maxPerMinute',
+		'maxPerHour',
+		'maxPerDay',
+		'minDelayMs',
+		'maxDelayMs',
+		'newChatDelayMs',
+		'warmupDays',
+		'day1Limit',
+		'growthFactor',
+		'inactivityThresholdHours',
+		'autoPauseAt'
 	]
 
 	for (const name of ['conservative', 'moderate', 'aggressive']) {
@@ -119,7 +129,7 @@ describe('RateLimiter', () => {
 			maxPerHour: 999,
 			maxPerDay: 999,
 			maxIdenticalMessages: 2,
-			identicalMessageWindowMs: 60000,
+			identicalMessageWindowMs: 60000
 		})
 		const jid = '491@s.whatsapp.net'
 		const text = 'same message'
@@ -138,10 +148,10 @@ describe('RateLimiter', () => {
 			maxPerDay: 999,
 			minDelayMs: 100,
 			maxDelayMs: 200,
-			newChatDelayMs: 5000,
+			newChatDelayMs: 5000
 		})
 		const jid = '491@s.whatsapp.net'
-		limiter.record(jid, 'first')   // marks jid as known
+		limiter.record(jid, 'first') // marks jid as known
 		const delay = await limiter.getDelay(jid, 'second')
 		// delay should not include newChatDelayMs (5000ms) for a known chat
 		expect(delay).toBeLessThan(4000)
@@ -166,7 +176,7 @@ describe('RateLimiter', () => {
 			maxPerDay: 999,
 			minDelayMs: 100,
 			maxDelayMs: 200,
-			newChatDelayMs: 5000,
+			newChatDelayMs: 5000
 		})
 		const jid = '491@s.whatsapp.net'
 		limiter.restoreKnownChats([jid])
@@ -205,7 +215,10 @@ describe('WarmUp', () => {
 	test('graduates after warmUpDays elapsed', () => {
 		// Simulate a startedAt 6 days ago so getCurrentDay() returns >= warmUpDays
 		const pastStart = Date.now() - 6 * 24 * 60 * 60 * 1000
-		const w = new WarmUp({ warmUpDays: 5, day1Limit: 30 }, { startedAt: pastStart, lastActiveAt: Date.now(), dailyCounts: [], graduated: false })
+		const w = new WarmUp(
+			{ warmUpDays: 5, day1Limit: 30 },
+			{ startedAt: pastStart, lastActiveAt: Date.now(), dailyCounts: [], graduated: false }
+		)
 		expect(w.canSend()).toBe(true)
 		const s = w.getStatus()
 		expect(s.phase).toBe('graduated')
@@ -229,7 +242,9 @@ describe('WarmUp', () => {
 
 	test('reset returns to fresh state', () => {
 		const w = new WarmUp({ warmUpDays: 5, day1Limit: 3 })
-		w.record(); w.record(); w.record()
+		w.record()
+		w.record()
+		w.record()
 		expect(w.canSend()).toBe(false)
 		w.reset()
 		expect(w.canSend()).toBe(true)
@@ -327,7 +342,7 @@ describe('PostReconnectThrottle', () => {
 			rampDurationMs: 60000,
 			rampSteps: 6,
 			initialRateMultiplier: 0.1,
-			baselineRatePerMinute: () => 1,
+			baselineRatePerMinute: () => 1
 		})
 		t.onReconnect()
 		t.beforeSend() // uses up the 1-per-minute allowance
@@ -341,7 +356,11 @@ describe('PostReconnectThrottle', () => {
 
 describe('AntiBan', () => {
 	const instances = []
-	const make = (...args) => { const ab = new AntiBan(...args); instances.push(ab); return ab }
+	const make = (...args) => {
+		const ab = new AntiBan(...args)
+		instances.push(ab)
+		return ab
+	}
 	afterAll(() => instances.forEach(ab => ab.destroy()))
 
 	test('constructs without throwing on preset string', () => {
@@ -448,7 +467,12 @@ describe('ContentVariator', () => {
 
 	test('customVariator is called when provided', () => {
 		const called = []
-		const v = new ContentVariator({ customVariator: (text, n) => { called.push(n); return text + n } })
+		const v = new ContentVariator({
+			customVariator: (text, n) => {
+				called.push(n)
+				return text + n
+			}
+		})
 		v.vary('test')
 		expect(called.length).toBe(1)
 	})
@@ -457,5 +481,180 @@ describe('ContentVariator', () => {
 		const v = new ContentVariator({ emojiPadding: true, zeroWidthChars: false, punctuationVariation: false })
 		const result = v.vary('hello')
 		expect(result.startsWith('hello')).toBe(true)
+	})
+})
+
+// ── buildContentSignature / identical-message dedup for non-text content ─────
+
+describe('buildContentSignature', () => {
+	test('two different captionless images produce different signatures', () => {
+		const sigA = buildContentSignature({ image: Buffer.from('image-bytes-one') })
+		const sigB = buildContentSignature({ image: Buffer.from('image-bytes-two') })
+		expect(sigA).not.toBe(sigB)
+	})
+
+	test('the same image buffer produces the same signature', () => {
+		const sigA = buildContentSignature({ image: Buffer.from('identical-bytes') })
+		const sigB = buildContentSignature({ image: Buffer.from('identical-bytes') })
+		expect(sigA).toBe(sigB)
+	})
+
+	test('caption is folded into the signature', () => {
+		const sigA = buildContentSignature({ image: Buffer.from('same'), caption: 'hello' })
+		const sigB = buildContentSignature({ image: Buffer.from('same'), caption: 'world' })
+		expect(sigA).not.toBe(sigB)
+	})
+
+	test('different media types never collide even with matching bytes', () => {
+		const sigA = buildContentSignature({ image: Buffer.from('xyz') })
+		const sigB = buildContentSignature({ video: Buffer.from('xyz') })
+		expect(sigA).not.toBe(sigB)
+	})
+
+	test('url-based media is fingerprinted by url', () => {
+		const sigA = buildContentSignature({ image: { url: 'https://example.com/a.jpg' } })
+		const sigB = buildContentSignature({ image: { url: 'https://example.com/b.jpg' } })
+		expect(sigA).not.toBe(sigB)
+	})
+
+	test('location messages are fingerprinted by coordinates', () => {
+		const sigA = buildContentSignature({ location: { degreesLatitude: 1, degreesLongitude: 2 } })
+		const sigB = buildContentSignature({ location: { degreesLatitude: 3, degreesLongitude: 4 } })
+		expect(sigA).not.toBe(sigB)
+	})
+
+	test('empty object does not collapse to the same signature as any real content', () => {
+		const sigEmpty = buildContentSignature({})
+		const sigImage = buildContentSignature({ image: Buffer.from('abc') })
+		expect(sigEmpty).not.toBe(sigImage)
+	})
+})
+
+describe('RateLimiter identical-message dedup with dedupKey', () => {
+	test('distinct captionless images are never blocked as identical', async () => {
+		const limiter = new RateLimiter({
+			maxPerMinute: 999,
+			maxPerHour: 999,
+			maxPerDay: 999,
+			maxIdenticalMessages: 2,
+			identicalMessageWindowMs: 60000
+		})
+		const jid = '491@s.whatsapp.net'
+		for (let i = 0; i < 5; i++) {
+			const dedupKey = buildContentSignature({ image: Buffer.from('unique-image-' + i) })
+			const delay = await limiter.getDelay(jid, '', dedupKey)
+			expect(delay).not.toBe(-1)
+			limiter.record(jid, '', dedupKey)
+		}
+	})
+
+	test('the same media sent repeatedly still trips the identical-message guard', async () => {
+		const limiter = new RateLimiter({
+			maxPerMinute: 999,
+			maxPerHour: 999,
+			maxPerDay: 999,
+			maxIdenticalMessages: 2,
+			identicalMessageWindowMs: 60000
+		})
+		const jid = '491@s.whatsapp.net'
+		const dedupKey = buildContentSignature({ image: Buffer.from('same-image-every-time') })
+		await limiter.getDelay(jid, '', dedupKey)
+		limiter.record(jid, '', dedupKey)
+		await limiter.getDelay(jid, '', dedupKey)
+		limiter.record(jid, '', dedupKey)
+		const delay = await limiter.getDelay(jid, '', dedupKey)
+		expect(delay).toBe(-1)
+	})
+
+	test('omitting dedupKey falls back to hashing content (backward compatible)', async () => {
+		const limiter = new RateLimiter({
+			maxPerMinute: 999,
+			maxPerHour: 999,
+			maxPerDay: 999,
+			maxIdenticalMessages: 2,
+			identicalMessageWindowMs: 60000
+		})
+		const jid = '491@s.whatsapp.net'
+		limiter.record(jid, 'same text')
+		limiter.record(jid, 'same text')
+		const delay = await limiter.getDelay(jid, 'same text')
+		expect(delay).toBe(-1)
+	})
+})
+
+// ── AntiBan advanced guard config (flat preset + guard blocks combined) ──────
+
+describe('AntiBan advanced guard config', () => {
+	const instances = []
+	const make = (...args) => {
+		const ab = new AntiBan(...args)
+		instances.push(ab)
+		return ab
+	}
+	afterAll(() => instances.forEach(ab => ab.destroy()))
+
+	test('advanced guards are disabled by default', () => {
+		const ab = make({ preset: 'aggressive' })
+		expect(ab.presence['config'].enabled).toBe(false)
+		expect(ab.replyRatio['config'].enabled).toBe(false)
+		expect(ab.contactGraph['config'].enabled).toBe(false)
+	})
+
+	test('preset + flat override + advanced guard config combine without discarding the preset', () => {
+		const ab = make({ preset: 'moderate', maxPerMinute: 20, presence: { enabled: true, enableTypingModel: true } })
+		expect(ab.resolvedConfig.maxPerMinute).toBe(20)
+		expect(ab.resolvedConfig.maxPerDay).toBe(PRESETS.moderate.maxPerDay)
+		expect(ab.presence['config'].enabled).toBe(true)
+	})
+
+	test('replyRatio config block enables the guard', () => {
+		const ab = make({ preset: 'moderate', replyRatio: { enabled: true, minRatio: 0.2 } })
+		expect(ab.replyRatio['config'].enabled).toBe(true)
+		expect(ab.replyRatio['config'].minRatio).toBe(0.2)
+	})
+
+	test('retryTracker config block enables the guard', () => {
+		const ab = make({ preset: 'moderate', retryTracker: { enabled: true, maxRetries: 7 } })
+		expect(ab.retryTracker['config'].enabled).toBe(true)
+		expect(ab.retryTracker['config'].maxRetries).toBe(7)
+	})
+
+	test('legacy nested rateLimiter/warmUp still works, and explicit flat fields win', () => {
+		const ab = make({ preset: 'conservative', maxPerMinute: 42, rateLimiter: { maxPerHour: 111 } })
+		expect(ab.resolvedConfig.maxPerMinute).toBe(42)
+		expect(ab.rateLimiter.config.maxPerHour).toBe(111)
+	})
+})
+
+// ── wrapSocket teardown ───────────────────────────────────────────────────────
+
+describe('wrapSocket', () => {
+	function makeMockSock() {
+		const ev = new EventEmitter()
+		return {
+			ev,
+			sendMessage: jest.fn(async () => ({ key: { id: 'msg1' } }))
+		}
+	}
+
+	test('destroy removes all event-bridge listeners', () => {
+		const sock = makeMockSock()
+		const wrapped = wrapSocket(sock, 'moderate')
+		expect(sock.ev.listenerCount('connection.update')).toBeGreaterThan(0)
+		expect(sock.ev.listenerCount('messages.update')).toBeGreaterThan(0)
+		expect(sock.ev.listenerCount('messages.upsert')).toBeGreaterThan(0)
+		wrapped.antiban.destroy()
+		expect(sock.ev.listenerCount('connection.update')).toBe(0)
+		expect(sock.ev.listenerCount('messages.update')).toBe(0)
+		expect(sock.ev.listenerCount('messages.upsert')).toBe(0)
+	})
+
+	test('wrapped sendMessage calls through to the original and records the send', async () => {
+		const sock = makeMockSock()
+		const wrapped = wrapSocket(sock, 'moderate')
+		const result = await wrapped.sendMessage('491@s.whatsapp.net', { text: 'hi' })
+		expect(result.key.id).toBe('msg1')
+		expect(sock.sendMessage).toHaveBeenCalled()
+		wrapped.antiban.destroy()
 	})
 })

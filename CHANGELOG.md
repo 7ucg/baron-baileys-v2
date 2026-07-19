@@ -1,5 +1,34 @@
 # Changelog
 
+## 2026-07-20
+
+Verified against a live WA session (real captured stanzas, not APK inference) plus a full sweep of leftover `// TODO` markers. Ports/fixes below are wire-confirmed unless noted.
+
+| Area | What changed |
+| --- | --- |
+| **Prekey upload** | `key_cipher_suite` attr no longer sent on `<key>`/`<skey>` for plain Curve25519 uploads — real traffic omits it entirely; was previously always set to `5`, which real clients never do. |
+| **abt props** | Default `protocol` corrected `2`→`1`. Group-scoped queries (`{ group }`) no longer combine with `protocol`/`hash`/`refresh_id` — real traffic sends `group` alone. |
+| **remove-companion-device** | Was sending `{ platform, id: keyIndex }` — no `jid` at all, so the server had no way to identify the device. Now sends `{ jid, reason }`, confirmed against live capture. Signature changed: `removeCompanionDevice(jid, reason)`, not `(keyIndex, reason)`. |
+| **Blocklist fetch** | Dropped the bogus `<blocklist/>` child; real `blocklist` get is either bare (full fetch) or `<item dhash="...">` (incremental). `fetchBlocklist(dhash?)` now supports both. |
+| **Business profile** | `v` corrected `244`→`116`. `verified_name` is its own separate `w:biz` query with `{ jid }`, not bundled into the `business_profile` request. |
+| **w:p keepalive** | Dropped the spurious `<ping/>` child — real traffic sends a bare iq. |
+| **Profile picture** | `query="url"` now sent for `preview` type too, not just `image`. |
+| **WAM buffer (`w:stats`)** | Added missing `type="set"` attribute. |
+| **Notifications** | Added handling for `contacts`, `disappearing_mode` (as its own top-level notification type, not just nested under `account_sync`), and `groups_dirty` (under `w:gp2`) — all were silently dropped. Fixed `devices` hash-only variant being misread as "device removed". Fixed `business`/`remove` child being ignored. `account_sync`/`blocklist` no longer loops over `<item>` children that don't exist on the wire — now triggers a real blocklist refetch. |
+| **Call / VoIP** | Audio/video codec attrs corrected (`codec` doesn't exist on the wire — real attrs are `enc`/`rate` for audio, `dec` for video). `<silence reason>` and `lightweight` offer attrs now captured. Group-call `group_info` roster (user/device/capability) is now parsed into `call.participants`, not discarded. `mute_v2`'s `call.muted` was reading nonexistent `muted`/`audio_muted` attrs — fixed to read the real `mute-state` attr. `group_update` was missing from stanza routing entirely (never acked, WhatsApp would keep redelivering it) — added. `CALL_STANZA_TAGS` in the ack builder brought back in sync with the two other call-tag lists. |
+| **Receipts** | Retry receipt's `<retry>` child had hardcoded `error="0"` — corrected to `error="1"` (confirmed on 1270/1273 real samples). `played-self` receipt type now maps to `PLAYED` status (was silently dropped). |
+| **Groups** | Ban detection used error code `403` (generic forbidden) instead of `402` (actual ban-list code) — bans were never detected. `capiCreatedGroup`/`appealStatus`/`isDefaultSubgroup`/`isGeneralSubgroup`/`isHiddenSubgroup` were reading attrs that are actually child tags — always `undefined`. `groupCreateSubgroup` now sends `<linked_parent jid>` child instead of a `parent_group_id` attribute. `groupSubGroupSuggestionsAction` now wraps `approve`/`reject`/`cancel` in `<sub_group_suggestions_action>` per the real request shape. `xwa2_group_set_property`→`xwa2_group_update_property` (stale MEX dataPath). |
+| **Communities** | `communityJoinApprovalMode` was sending tag `community_join` — real (and only) tag is `group_join`. |
+| **Newsletter** | `follow`/`unfollow`/`demote`/`subscribers` were using stale MEX dataPath keys and queryIds that no longer exist server-side (`xwa2_newsletter_follow`→`xwa2_newsletter_join_v2`, `_demote`→`_admin_demote`, `_subscribers`→`_followers`); all four previously threw on every call. |
+| **LID/PN mapping** | Group metadata, group-participant notifications, and message-send device lookups now feed learned LID↔PN pairs into `signalRepository.lidMapping` instead of computing and discarding them. |
+| **WAUSync** | `USyncDeviceProtocol.getUserElement` implemented (was a stub — device hash/ts/expectedTs never sent). New `USyncBackoff` module: per-protocol backoff honored before sending and set from server-reported errors, matching WA Web's `waitForBackoff`. `USyncQuery` now parses per-protocol `<error>`/`refresh` from the result node instead of discarding it. `pn_jid` attr added to `<user>` nodes; `USyncUser.validate()` added and actually enforced (was previously a no-op check). |
+| **`isRealMessage`** | Fixed dead branch: `CALL_MISSED_*` / `GROUP_PARTICIPANT_ADD` stub messages were never treated as real (an AND on content length gated a check meant to be an OR-style bypass for stub types) — missed-call and add-to-group events never surfaced in chat history. |
+| **Antiban** | Content-hash dedup no longer collapses every caption-less image/video/document/sticker onto the same empty-string hash (was flagging distinct media as spam repeats). Advanced guards (`presence`, `replyRatio`, `contactGraph`, `retryTracker`, `reconnectThrottle`, `lidResolver`/`jidCanonicalizer`, `sessionStability`) are now combinable with a `preset` + flat overrides in one config object — previously, including any of these keys silently discarded the preset and fell back to `moderate` defaults regardless of what was requested. Only `rateLimiter`/`warmUp` nesting remains deprecated (the two with real flat equivalents). `wrapSocket` teardown now actually removes its `sock.ev` listeners and clears pending auto-reply timers on `destroy()`. Default preset (when `antiban` isn't configured at all) is `aggressive`, not `moderate` as previously documented — doc corrected, not the code. |
+| **HistorySyncConfig** | Added missing proto field 25, `supportNewsletter`. |
+| **Privacy** | JSDoc corrected — real privacy feature/setting values are lowercase (`last`, `online`, `all`, `contacts`, `known`, ...), not the uppercase names previously documented; six business-account-only features (`cover_photo`, `dependentaccountmessages`, `pix`, `stickers`, `linked_profiles`, `messages`) documented. |
+
+---
+
 ## 2026-07-16
 
 | Area | What changed |

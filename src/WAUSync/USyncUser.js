@@ -34,5 +34,25 @@ class USyncUser {
 		this.tcToken = tcToken
 		return this
 	}
+	withPnJid(pnJid) {
+		this.pnJid = pnJid
+		return this
+	}
+	withDeviceHash(deviceHash) {
+		this.deviceHash = deviceHash
+		return this
+	}
+	withTs(ts) {
+		this.ts = ts
+		return this
+	}
+	withExpectedTs(expectedTs) {
+		this.expectedTs = expectedTs
+		return this
+	}
+	/** Ported from WAWebUsyncUser's validate() — a usync user needs at least one addressable field. */
+	validate() {
+		return !!(this.id || this.phone || this.username || this.pnJid)
+	}
 }
 exports.USyncUser = USyncUser

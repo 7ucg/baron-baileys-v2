@@ -23082,6 +23082,218 @@ export namespace proto {
         public static getTypeUrl(typeUrlPrefix?: string): string;
     }
 
+    /** Properties of a DeriveMessageKeyInput. */
+    interface IDeriveMessageKeyInput {
+
+        /** DeriveMessageKeyInput epochRootKey */
+        epochRootKey?: (Uint8Array|null);
+
+        /** DeriveMessageKeyInput epochAnonId */
+        epochAnonId?: (Uint8Array|null);
+
+        /** DeriveMessageKeyInput threadId */
+        threadId?: (string|null);
+    }
+
+    /** Represents a DeriveMessageKeyInput. */
+    class DeriveMessageKeyInput implements IDeriveMessageKeyInput {
+
+        /**
+         * Constructs a new DeriveMessageKeyInput.
+         * @param [properties] Properties to set
+         */
+        constructor(properties?: proto.IDeriveMessageKeyInput);
+
+        /** DeriveMessageKeyInput epochRootKey. */
+        public epochRootKey?: (Uint8Array|null);
+
+        /** DeriveMessageKeyInput epochAnonId. */
+        public epochAnonId?: (Uint8Array|null);
+
+        /** DeriveMessageKeyInput threadId. */
+        public threadId?: (string|null);
+
+        /**
+         * Creates a new DeriveMessageKeyInput instance using the specified properties.
+         * @param [properties] Properties to set
+         * @returns DeriveMessageKeyInput instance
+         */
+        public static create(properties?: proto.IDeriveMessageKeyInput): proto.DeriveMessageKeyInput;
+
+        /**
+         * Encodes the specified DeriveMessageKeyInput message. Does not implicitly {@link proto.DeriveMessageKeyInput.verify|verify} messages.
+         * @param message DeriveMessageKeyInput message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encode(message: proto.IDeriveMessageKeyInput, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Encodes the specified DeriveMessageKeyInput message, length delimited. Does not implicitly {@link proto.DeriveMessageKeyInput.verify|verify} messages.
+         * @param message DeriveMessageKeyInput message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encodeDelimited(message: proto.IDeriveMessageKeyInput, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Decodes a DeriveMessageKeyInput message from the specified reader or buffer.
+         * @param reader Reader or buffer to decode from
+         * @param [length] Message length if known beforehand
+         * @returns DeriveMessageKeyInput
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): proto.DeriveMessageKeyInput;
+
+        /**
+         * Decodes a DeriveMessageKeyInput message from the specified reader or buffer, length delimited.
+         * @param reader Reader or buffer to decode from
+         * @returns DeriveMessageKeyInput
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): proto.DeriveMessageKeyInput;
+
+        /**
+         * Verifies a DeriveMessageKeyInput message.
+         * @param message Plain object to verify
+         * @returns `null` if valid, otherwise the reason why it is not
+         */
+        public static verify(message: { [k: string]: any }): (string|null);
+
+        /**
+         * Creates a DeriveMessageKeyInput message from a plain object. Also converts values to their respective internal types.
+         * @param object Plain object
+         * @returns DeriveMessageKeyInput
+         */
+        public static fromObject(object: { [k: string]: any }): proto.DeriveMessageKeyInput;
+
+        /**
+         * Creates a plain object from a DeriveMessageKeyInput message. Also converts values to other types if specified.
+         * @param message DeriveMessageKeyInput
+         * @param [options] Conversion options
+         * @returns Plain object
+         */
+        public static toObject(message: proto.DeriveMessageKeyInput, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+        /**
+         * Converts this DeriveMessageKeyInput to JSON.
+         * @returns JSON object
+         */
+        public toJSON(): { [k: string]: any };
+
+        /**
+         * Gets the default type url for DeriveMessageKeyInput
+         * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+         * @returns The default type url
+         */
+        public static getTypeUrl(typeUrlPrefix?: string): string;
+    }
+
+    /** Properties of a DeriveMessageKeyOutput. */
+    interface IDeriveMessageKeyOutput {
+
+        /** DeriveMessageKeyOutput messageKey */
+        messageKey?: (Uint8Array|null);
+
+        /** DeriveMessageKeyOutput error */
+        error?: (string|null);
+    }
+
+    /** Represents a DeriveMessageKeyOutput. */
+    class DeriveMessageKeyOutput implements IDeriveMessageKeyOutput {
+
+        /**
+         * Constructs a new DeriveMessageKeyOutput.
+         * @param [properties] Properties to set
+         */
+        constructor(properties?: proto.IDeriveMessageKeyOutput);
+
+        /** DeriveMessageKeyOutput messageKey. */
+        public messageKey?: (Uint8Array|null);
+
+        /** DeriveMessageKeyOutput error. */
+        public error?: (string|null);
+
+        /**
+         * Creates a new DeriveMessageKeyOutput instance using the specified properties.
+         * @param [properties] Properties to set
+         * @returns DeriveMessageKeyOutput instance
+         */
+        public static create(properties?: proto.IDeriveMessageKeyOutput): proto.DeriveMessageKeyOutput;
+
+        /**
+         * Encodes the specified DeriveMessageKeyOutput message. Does not implicitly {@link proto.DeriveMessageKeyOutput.verify|verify} messages.
+         * @param message DeriveMessageKeyOutput message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encode(message: proto.IDeriveMessageKeyOutput, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Encodes the specified DeriveMessageKeyOutput message, length delimited. Does not implicitly {@link proto.DeriveMessageKeyOutput.verify|verify} messages.
+         * @param message DeriveMessageKeyOutput message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encodeDelimited(message: proto.IDeriveMessageKeyOutput, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Decodes a DeriveMessageKeyOutput message from the specified reader or buffer.
+         * @param reader Reader or buffer to decode from
+         * @param [length] Message length if known beforehand
+         * @returns DeriveMessageKeyOutput
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): proto.DeriveMessageKeyOutput;
+
+        /**
+         * Decodes a DeriveMessageKeyOutput message from the specified reader or buffer, length delimited.
+         * @param reader Reader or buffer to decode from
+         * @returns DeriveMessageKeyOutput
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): proto.DeriveMessageKeyOutput;
+
+        /**
+         * Verifies a DeriveMessageKeyOutput message.
+         * @param message Plain object to verify
+         * @returns `null` if valid, otherwise the reason why it is not
+         */
+        public static verify(message: { [k: string]: any }): (string|null);
+
+        /**
+         * Creates a DeriveMessageKeyOutput message from a plain object. Also converts values to their respective internal types.
+         * @param object Plain object
+         * @returns DeriveMessageKeyOutput
+         */
+        public static fromObject(object: { [k: string]: any }): proto.DeriveMessageKeyOutput;
+
+        /**
+         * Creates a plain object from a DeriveMessageKeyOutput message. Also converts values to other types if specified.
+         * @param message DeriveMessageKeyOutput
+         * @param [options] Conversion options
+         * @returns Plain object
+         */
+        public static toObject(message: proto.DeriveMessageKeyOutput, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+        /**
+         * Converts this DeriveMessageKeyOutput to JSON.
+         * @returns JSON object
+         */
+        public toJSON(): { [k: string]: any };
+
+        /**
+         * Gets the default type url for DeriveMessageKeyOutput
+         * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+         * @returns The default type url
+         */
+        public static getTypeUrl(typeUrlPrefix?: string): string;
+    }
+
     /** Properties of a DeviceCapabilities. */
     interface IDeviceCapabilities {
 
@@ -24456,6 +24668,9 @@ export namespace proto {
 
             /** HistorySyncConfig supportInlineContacts */
             supportInlineContacts?: (boolean|null);
+
+            /** HistorySyncConfig supportNewsletter */
+            supportNewsletter?: (boolean|null);
         }
 
         /** Represents a HistorySyncConfig. */
@@ -24538,6 +24753,9 @@ export namespace proto {
 
             /** HistorySyncConfig supportInlineContacts. */
             public supportInlineContacts?: (boolean|null);
+
+            /** HistorySyncConfig supportNewsletter. */
+            public supportNewsletter?: (boolean|null);
 
             /**
              * Creates a new HistorySyncConfig instance using the specified properties.
@@ -31034,6 +31252,9 @@ export namespace proto {
 
         /** LabyrinthWaCommand orfThreadIdInput */
         orfThreadIdInput?: (proto.IOrfThreadIdInput|null);
+
+        /** LabyrinthWaCommand deriveMessageKeyInput */
+        deriveMessageKeyInput?: (proto.IDeriveMessageKeyInput|null);
     }
 
     /** Represents a LabyrinthWaCommand. */
@@ -31057,8 +31278,11 @@ export namespace proto {
         /** LabyrinthWaCommand orfThreadIdInput. */
         public orfThreadIdInput?: (proto.IOrfThreadIdInput|null);
 
+        /** LabyrinthWaCommand deriveMessageKeyInput. */
+        public deriveMessageKeyInput?: (proto.IDeriveMessageKeyInput|null);
+
         /** LabyrinthWaCommand commandInput. */
-        public commandInput?: ("createBackupInput"|"encryptMessageInput"|"decryptMessageInput"|"orfThreadIdInput");
+        public commandInput?: ("createBackupInput"|"encryptMessageInput"|"decryptMessageInput"|"orfThreadIdInput"|"deriveMessageKeyInput");
 
         /**
          * Creates a new LabyrinthWaCommand instance using the specified properties.
@@ -35324,6 +35548,9 @@ export namespace proto {
 
             /** Call callEntryPoint */
             callEntryPoint?: (number|null);
+
+            /** Call callReason */
+            callReason?: (string|null);
         }
 
         /** Represents a Call. */
@@ -35367,6 +35594,9 @@ export namespace proto {
 
             /** Call callEntryPoint. */
             public callEntryPoint?: (number|null);
+
+            /** Call callReason. */
+            public callReason?: (string|null);
 
             /**
              * Creates a new Call instance using the specified properties.
@@ -50666,6 +50896,9 @@ export namespace proto {
 
             /** ProtocolMessage coexStateSync */
             coexStateSync?: (proto.ICoexStateSync|null);
+
+            /** ProtocolMessage syncRequestMutationRetry */
+            syncRequestMutationRetry?: (proto.Message.ISyncRequestMutationRetry|null);
         }
 
         /** Represents a ProtocolMessage. */
@@ -50766,6 +50999,9 @@ export namespace proto {
 
             /** ProtocolMessage coexStateSync. */
             public coexStateSync?: (proto.ICoexStateSync|null);
+
+            /** ProtocolMessage syncRequestMutationRetry. */
+            public syncRequestMutationRetry?: (proto.Message.ISyncRequestMutationRetry|null);
 
             /**
              * Creates a new ProtocolMessage instance using the specified properties.
@@ -50880,7 +51116,8 @@ export namespace proto {
                 CHAT_THEME_SETTING = 34,
                 AI_METADATA_OPERATION = 35,
                 MARK_AS_VERIFIED_ACTION = 36,
-                COEX_STATE_SYNC = 37
+                COEX_STATE_SYNC = 37,
+                SYNC_REQUEST_MUTATION_RETRY = 38
             }
         }
 
@@ -53650,6 +53887,215 @@ export namespace proto {
              * @returns The default type url
              */
             public static getTypeUrl(typeUrlPrefix?: string): string;
+        }
+
+        /** Properties of a SyncRequestMutationRetry. */
+        interface ISyncRequestMutationRetry {
+
+            /** SyncRequestMutationRetry collections */
+            collections?: (proto.Message.SyncRequestMutationRetry.ICollection[]|null);
+
+            /** SyncRequestMutationRetry count */
+            count?: (number|null);
+        }
+
+        /** Represents a SyncRequestMutationRetry. */
+        class SyncRequestMutationRetry implements ISyncRequestMutationRetry {
+
+            /**
+             * Constructs a new SyncRequestMutationRetry.
+             * @param [properties] Properties to set
+             */
+            constructor(properties?: proto.Message.ISyncRequestMutationRetry);
+
+            /** SyncRequestMutationRetry collections. */
+            public collections: proto.Message.SyncRequestMutationRetry.ICollection[];
+
+            /** SyncRequestMutationRetry count. */
+            public count?: (number|null);
+
+            /**
+             * Creates a new SyncRequestMutationRetry instance using the specified properties.
+             * @param [properties] Properties to set
+             * @returns SyncRequestMutationRetry instance
+             */
+            public static create(properties?: proto.Message.ISyncRequestMutationRetry): proto.Message.SyncRequestMutationRetry;
+
+            /**
+             * Encodes the specified SyncRequestMutationRetry message. Does not implicitly {@link proto.Message.SyncRequestMutationRetry.verify|verify} messages.
+             * @param message SyncRequestMutationRetry message or plain object to encode
+             * @param [writer] Writer to encode to
+             * @returns Writer
+             */
+            public static encode(message: proto.Message.ISyncRequestMutationRetry, writer?: $protobuf.Writer): $protobuf.Writer;
+
+            /**
+             * Encodes the specified SyncRequestMutationRetry message, length delimited. Does not implicitly {@link proto.Message.SyncRequestMutationRetry.verify|verify} messages.
+             * @param message SyncRequestMutationRetry message or plain object to encode
+             * @param [writer] Writer to encode to
+             * @returns Writer
+             */
+            public static encodeDelimited(message: proto.Message.ISyncRequestMutationRetry, writer?: $protobuf.Writer): $protobuf.Writer;
+
+            /**
+             * Decodes a SyncRequestMutationRetry message from the specified reader or buffer.
+             * @param reader Reader or buffer to decode from
+             * @param [length] Message length if known beforehand
+             * @returns SyncRequestMutationRetry
+             * @throws {Error} If the payload is not a reader or valid buffer
+             * @throws {$protobuf.util.ProtocolError} If required fields are missing
+             */
+            public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): proto.Message.SyncRequestMutationRetry;
+
+            /**
+             * Decodes a SyncRequestMutationRetry message from the specified reader or buffer, length delimited.
+             * @param reader Reader or buffer to decode from
+             * @returns SyncRequestMutationRetry
+             * @throws {Error} If the payload is not a reader or valid buffer
+             * @throws {$protobuf.util.ProtocolError} If required fields are missing
+             */
+            public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): proto.Message.SyncRequestMutationRetry;
+
+            /**
+             * Verifies a SyncRequestMutationRetry message.
+             * @param message Plain object to verify
+             * @returns `null` if valid, otherwise the reason why it is not
+             */
+            public static verify(message: { [k: string]: any }): (string|null);
+
+            /**
+             * Creates a SyncRequestMutationRetry message from a plain object. Also converts values to their respective internal types.
+             * @param object Plain object
+             * @returns SyncRequestMutationRetry
+             */
+            public static fromObject(object: { [k: string]: any }): proto.Message.SyncRequestMutationRetry;
+
+            /**
+             * Creates a plain object from a SyncRequestMutationRetry message. Also converts values to other types if specified.
+             * @param message SyncRequestMutationRetry
+             * @param [options] Conversion options
+             * @returns Plain object
+             */
+            public static toObject(message: proto.Message.SyncRequestMutationRetry, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+            /**
+             * Converts this SyncRequestMutationRetry to JSON.
+             * @returns JSON object
+             */
+            public toJSON(): { [k: string]: any };
+
+            /**
+             * Gets the default type url for SyncRequestMutationRetry
+             * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+             * @returns The default type url
+             */
+            public static getTypeUrl(typeUrlPrefix?: string): string;
+        }
+
+        namespace SyncRequestMutationRetry {
+
+            /** Properties of a Collection. */
+            interface ICollection {
+
+                /** Collection name */
+                name?: (string|null);
+
+                /** Collection storedSyncdVersion */
+                storedSyncdVersion?: (number|Long|null);
+            }
+
+            /** Represents a Collection. */
+            class Collection implements ICollection {
+
+                /**
+                 * Constructs a new Collection.
+                 * @param [properties] Properties to set
+                 */
+                constructor(properties?: proto.Message.SyncRequestMutationRetry.ICollection);
+
+                /** Collection name. */
+                public name?: (string|null);
+
+                /** Collection storedSyncdVersion. */
+                public storedSyncdVersion?: (number|Long|null);
+
+                /**
+                 * Creates a new Collection instance using the specified properties.
+                 * @param [properties] Properties to set
+                 * @returns Collection instance
+                 */
+                public static create(properties?: proto.Message.SyncRequestMutationRetry.ICollection): proto.Message.SyncRequestMutationRetry.Collection;
+
+                /**
+                 * Encodes the specified Collection message. Does not implicitly {@link proto.Message.SyncRequestMutationRetry.Collection.verify|verify} messages.
+                 * @param message Collection message or plain object to encode
+                 * @param [writer] Writer to encode to
+                 * @returns Writer
+                 */
+                public static encode(message: proto.Message.SyncRequestMutationRetry.ICollection, writer?: $protobuf.Writer): $protobuf.Writer;
+
+                /**
+                 * Encodes the specified Collection message, length delimited. Does not implicitly {@link proto.Message.SyncRequestMutationRetry.Collection.verify|verify} messages.
+                 * @param message Collection message or plain object to encode
+                 * @param [writer] Writer to encode to
+                 * @returns Writer
+                 */
+                public static encodeDelimited(message: proto.Message.SyncRequestMutationRetry.ICollection, writer?: $protobuf.Writer): $protobuf.Writer;
+
+                /**
+                 * Decodes a Collection message from the specified reader or buffer.
+                 * @param reader Reader or buffer to decode from
+                 * @param [length] Message length if known beforehand
+                 * @returns Collection
+                 * @throws {Error} If the payload is not a reader or valid buffer
+                 * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                 */
+                public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): proto.Message.SyncRequestMutationRetry.Collection;
+
+                /**
+                 * Decodes a Collection message from the specified reader or buffer, length delimited.
+                 * @param reader Reader or buffer to decode from
+                 * @returns Collection
+                 * @throws {Error} If the payload is not a reader or valid buffer
+                 * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                 */
+                public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): proto.Message.SyncRequestMutationRetry.Collection;
+
+                /**
+                 * Verifies a Collection message.
+                 * @param message Plain object to verify
+                 * @returns `null` if valid, otherwise the reason why it is not
+                 */
+                public static verify(message: { [k: string]: any }): (string|null);
+
+                /**
+                 * Creates a Collection message from a plain object. Also converts values to their respective internal types.
+                 * @param object Plain object
+                 * @returns Collection
+                 */
+                public static fromObject(object: { [k: string]: any }): proto.Message.SyncRequestMutationRetry.Collection;
+
+                /**
+                 * Creates a plain object from a Collection message. Also converts values to other types if specified.
+                 * @param message Collection
+                 * @param [options] Conversion options
+                 * @returns Plain object
+                 */
+                public static toObject(message: proto.Message.SyncRequestMutationRetry.Collection, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+                /**
+                 * Converts this Collection to JSON.
+                 * @returns JSON object
+                 */
+                public toJSON(): { [k: string]: any };
+
+                /**
+                 * Gets the default type url for Collection
+                 * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+                 * @returns The default type url
+                 */
+                public static getTypeUrl(typeUrlPrefix?: string): string;
+            }
         }
 
         /** Properties of a TemplateButtonReplyMessage. */
@@ -56812,6 +57258,7 @@ export namespace proto {
         COEX_V2_VERSION_ACTION = 88,
         WASA_ROOT_SECRET_ACTION = 89,
         BUBBLE_LOCK_MESSAGE_ACTION = 90,
+        LABEL_SUBLIST_ACTION = 91,
         SHARE_OWN_PN = 10001,
         BUSINESS_BROADCAST_ACTION = 10002,
         AI_THREAD_DELETE_ACTION = 10003
@@ -65403,6 +65850,9 @@ export namespace proto {
 
         /** SyncActionValue bubbleLockMessageAction */
         bubbleLockMessageAction?: (proto.SyncActionValue.IBubbleLockMessageAction|null);
+
+        /** SyncActionValue labelSublistAction */
+        labelSublistAction?: (proto.SyncActionValue.ILabelSublistAction|null);
     }
 
     /** Represents a SyncActionValue. */
@@ -65656,6 +66106,9 @@ export namespace proto {
 
         /** SyncActionValue bubbleLockMessageAction. */
         public bubbleLockMessageAction?: (proto.SyncActionValue.IBubbleLockMessageAction|null);
+
+        /** SyncActionValue labelSublistAction. */
+        public labelSublistAction?: (proto.SyncActionValue.ILabelSublistAction|null);
 
         /**
          * Creates a new SyncActionValue instance using the specified properties.
@@ -69716,6 +70169,103 @@ export namespace proto {
 
             /**
              * Gets the default type url for LabelReorderingAction
+             * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+             * @returns The default type url
+             */
+            public static getTypeUrl(typeUrlPrefix?: string): string;
+        }
+
+        /** Properties of a LabelSublistAction. */
+        interface ILabelSublistAction {
+
+            /** LabelSublistAction subListId */
+            subListId?: (number|null);
+        }
+
+        /** Represents a LabelSublistAction. */
+        class LabelSublistAction implements ILabelSublistAction {
+
+            /**
+             * Constructs a new LabelSublistAction.
+             * @param [properties] Properties to set
+             */
+            constructor(properties?: proto.SyncActionValue.ILabelSublistAction);
+
+            /** LabelSublistAction subListId. */
+            public subListId?: (number|null);
+
+            /**
+             * Creates a new LabelSublistAction instance using the specified properties.
+             * @param [properties] Properties to set
+             * @returns LabelSublistAction instance
+             */
+            public static create(properties?: proto.SyncActionValue.ILabelSublistAction): proto.SyncActionValue.LabelSublistAction;
+
+            /**
+             * Encodes the specified LabelSublistAction message. Does not implicitly {@link proto.SyncActionValue.LabelSublistAction.verify|verify} messages.
+             * @param message LabelSublistAction message or plain object to encode
+             * @param [writer] Writer to encode to
+             * @returns Writer
+             */
+            public static encode(message: proto.SyncActionValue.ILabelSublistAction, writer?: $protobuf.Writer): $protobuf.Writer;
+
+            /**
+             * Encodes the specified LabelSublistAction message, length delimited. Does not implicitly {@link proto.SyncActionValue.LabelSublistAction.verify|verify} messages.
+             * @param message LabelSublistAction message or plain object to encode
+             * @param [writer] Writer to encode to
+             * @returns Writer
+             */
+            public static encodeDelimited(message: proto.SyncActionValue.ILabelSublistAction, writer?: $protobuf.Writer): $protobuf.Writer;
+
+            /**
+             * Decodes a LabelSublistAction message from the specified reader or buffer.
+             * @param reader Reader or buffer to decode from
+             * @param [length] Message length if known beforehand
+             * @returns LabelSublistAction
+             * @throws {Error} If the payload is not a reader or valid buffer
+             * @throws {$protobuf.util.ProtocolError} If required fields are missing
+             */
+            public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): proto.SyncActionValue.LabelSublistAction;
+
+            /**
+             * Decodes a LabelSublistAction message from the specified reader or buffer, length delimited.
+             * @param reader Reader or buffer to decode from
+             * @returns LabelSublistAction
+             * @throws {Error} If the payload is not a reader or valid buffer
+             * @throws {$protobuf.util.ProtocolError} If required fields are missing
+             */
+            public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): proto.SyncActionValue.LabelSublistAction;
+
+            /**
+             * Verifies a LabelSublistAction message.
+             * @param message Plain object to verify
+             * @returns `null` if valid, otherwise the reason why it is not
+             */
+            public static verify(message: { [k: string]: any }): (string|null);
+
+            /**
+             * Creates a LabelSublistAction message from a plain object. Also converts values to their respective internal types.
+             * @param object Plain object
+             * @returns LabelSublistAction
+             */
+            public static fromObject(object: { [k: string]: any }): proto.SyncActionValue.LabelSublistAction;
+
+            /**
+             * Creates a plain object from a LabelSublistAction message. Also converts values to other types if specified.
+             * @param message LabelSublistAction
+             * @param [options] Conversion options
+             * @returns Plain object
+             */
+            public static toObject(message: proto.SyncActionValue.LabelSublistAction, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+            /**
+             * Converts this LabelSublistAction to JSON.
+             * @returns JSON object
+             */
+            public toJSON(): { [k: string]: any };
+
+            /**
+             * Gets the default type url for LabelSublistAction
              * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
              * @returns The default type url
              */
@@ -75231,6 +75781,9 @@ export namespace proto {
 
                 /** RootSecretEntry epoch */
                 epoch?: (number|Long|null);
+
+                /** RootSecretEntry status */
+                status?: (proto.SyncActionValue.WASARootSecretAction.RootSecretEntry.Status|null);
             }
 
             /** Represents a RootSecretEntry. */
@@ -75250,6 +75803,9 @@ export namespace proto {
 
                 /** RootSecretEntry epoch. */
                 public epoch?: (number|Long|null);
+
+                /** RootSecretEntry status. */
+                public status?: (proto.SyncActionValue.WASARootSecretAction.RootSecretEntry.Status|null);
 
                 /**
                  * Creates a new RootSecretEntry instance using the specified properties.
@@ -75327,6 +75883,15 @@ export namespace proto {
                  * @returns The default type url
                  */
                 public static getTypeUrl(typeUrlPrefix?: string): string;
+            }
+
+            namespace RootSecretEntry {
+
+                /** Status enum. */
+                enum Status {
+                    INACTIVE = 0,
+                    ACTIVE = 1
+                }
             }
         }
 
@@ -80020,6 +80585,28 @@ export namespace proto {
         public static getTypeUrl(typeUrlPrefix?: string): string;
     }
 
+    /** DataChannelMessage_MessageScope enum. */
+    enum DataChannelMessage_MessageScope {
+        MESSAGE_SCOPE_UNSPECIFIED = 0,
+        MESSAGE_SCOPE_RELAY_READABLE = 1,
+        MESSAGE_SCOPE_END_TO_END = 2
+    }
+
+    /** DataChannelMessage_MessageType enum. */
+    enum DataChannelMessage_MessageType {
+        MESSAGE_TYPE_UNSPECIFIED = 0,
+        MESSAGE_TYPE_DATA = 1,
+        MESSAGE_TYPE_CONTROL = 2
+    }
+
+    /** DataChannelMessage_RoutingMode enum. */
+    enum DataChannelMessage_RoutingMode {
+        ROUTING_MODE_UNSPECIFIED = 0,
+        ROUTING_MODE_RELAY_ONLY = 1,
+        ROUTING_MODE_SELECTIVE_FORWARD = 2,
+        ROUTING_MODE_BROADCAST = 3
+    }
+
     /** RekeyKeyType enum. */
     enum RekeyKeyType {
         REKEY_KEY_AUDIO = 0,
@@ -81361,6 +81948,139 @@ export namespace proto {
 
         /**
          * Gets the default type url for BwaStream
+         * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+         * @returns The default type url
+         */
+        public static getTypeUrl(typeUrlPrefix?: string): string;
+    }
+
+    /** Properties of a DataChannelMessage. */
+    interface IDataChannelMessage {
+
+        /** DataChannelMessage fromPid */
+        fromPid?: (number|null);
+
+        /** DataChannelMessage recipientPids */
+        recipientPids?: (number[]|null);
+
+        /** DataChannelMessage routingMode */
+        routingMode?: (proto.DataChannelMessage_RoutingMode|null);
+
+        /** DataChannelMessage scope */
+        scope?: (proto.DataChannelMessage_MessageScope|null);
+
+        /** DataChannelMessage messageType */
+        messageType?: (proto.DataChannelMessage_MessageType|null);
+
+        /** DataChannelMessage payload */
+        payload?: (Uint8Array|null);
+
+        /** DataChannelMessage transactionId */
+        transactionId?: (number|null);
+    }
+
+    /** Represents a DataChannelMessage. */
+    class DataChannelMessage implements IDataChannelMessage {
+
+        /**
+         * Constructs a new DataChannelMessage.
+         * @param [properties] Properties to set
+         */
+        constructor(properties?: proto.IDataChannelMessage);
+
+        /** DataChannelMessage fromPid. */
+        public fromPid: number;
+
+        /** DataChannelMessage recipientPids. */
+        public recipientPids: number[];
+
+        /** DataChannelMessage routingMode. */
+        public routingMode: proto.DataChannelMessage_RoutingMode;
+
+        /** DataChannelMessage scope. */
+        public scope: proto.DataChannelMessage_MessageScope;
+
+        /** DataChannelMessage messageType. */
+        public messageType: proto.DataChannelMessage_MessageType;
+
+        /** DataChannelMessage payload. */
+        public payload: Uint8Array;
+
+        /** DataChannelMessage transactionId. */
+        public transactionId: number;
+
+        /**
+         * Creates a new DataChannelMessage instance using the specified properties.
+         * @param [properties] Properties to set
+         * @returns DataChannelMessage instance
+         */
+        public static create(properties?: proto.IDataChannelMessage): proto.DataChannelMessage;
+
+        /**
+         * Encodes the specified DataChannelMessage message. Does not implicitly {@link proto.DataChannelMessage.verify|verify} messages.
+         * @param message DataChannelMessage message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encode(message: proto.IDataChannelMessage, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Encodes the specified DataChannelMessage message, length delimited. Does not implicitly {@link proto.DataChannelMessage.verify|verify} messages.
+         * @param message DataChannelMessage message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encodeDelimited(message: proto.IDataChannelMessage, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Decodes a DataChannelMessage message from the specified reader or buffer.
+         * @param reader Reader or buffer to decode from
+         * @param [length] Message length if known beforehand
+         * @returns DataChannelMessage
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): proto.DataChannelMessage;
+
+        /**
+         * Decodes a DataChannelMessage message from the specified reader or buffer, length delimited.
+         * @param reader Reader or buffer to decode from
+         * @returns DataChannelMessage
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): proto.DataChannelMessage;
+
+        /**
+         * Verifies a DataChannelMessage message.
+         * @param message Plain object to verify
+         * @returns `null` if valid, otherwise the reason why it is not
+         */
+        public static verify(message: { [k: string]: any }): (string|null);
+
+        /**
+         * Creates a DataChannelMessage message from a plain object. Also converts values to their respective internal types.
+         * @param object Plain object
+         * @returns DataChannelMessage
+         */
+        public static fromObject(object: { [k: string]: any }): proto.DataChannelMessage;
+
+        /**
+         * Creates a plain object from a DataChannelMessage message. Also converts values to other types if specified.
+         * @param message DataChannelMessage
+         * @param [options] Conversion options
+         * @returns Plain object
+         */
+        public static toObject(message: proto.DataChannelMessage, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+        /**
+         * Converts this DataChannelMessage to JSON.
+         * @returns JSON object
+         */
+        public toJSON(): { [k: string]: any };
+
+        /**
+         * Gets the default type url for DataChannelMessage
          * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
          * @returns The default type url
          */

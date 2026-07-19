@@ -39,14 +39,33 @@ class USyncQuery {
 			})
 		)
 		const queryResult = {
-			// TODO: implement errors etc.
+			errors: {},
+			refresh: {},
 			list: [],
 			sideList: []
 		}
 		const usyncNode = (0, WABinary_1.getBinaryNodeChild)(result, 'usync')
-		//TODO: implement error backoff, refresh etc.
-		//TODO: see if there are any errors in the result node
-		//const resultNode = getBinaryNodeChild(usyncNode, 'result')
+		// Each protocol's result child can carry either an <error code text backoff/>
+		// (caller should back off future queries for that protocol) or a refresh="n"
+		// attr (caller may cache the response for n seconds). Ported from WAWebUsync's
+		// usyncParser.
+		const resultNode = usyncNode ? (0, WABinary_1.getBinaryNodeChild)(usyncNode, 'result') : undefined
+		if (resultNode) {
+			for (const protocol of this.protocols) {
+				const protocolNode = (0, WABinary_1.getBinaryNodeChild)(resultNode, protocol.name)
+				if (!protocolNode) continue
+				const errorNode = (0, WABinary_1.getBinaryNodeChild)(protocolNode, 'error')
+				if (errorNode) {
+					queryResult.errors[protocol.name] = {
+						errorCode: errorNode.attrs.code ? +errorNode.attrs.code : undefined,
+						errorText: errorNode.attrs.text,
+						errorBackoff: errorNode.attrs.backoff ? +errorNode.attrs.backoff : undefined
+					}
+				} else if (protocolNode.attrs.refresh !== undefined) {
+					queryResult.refresh[protocol.name] = +protocolNode.attrs.refresh
+				}
+			}
+		}
 		const parseUserNodes = nodes => {
 			return nodes.reduce((acc, node) => {
 				const id = node?.attrs.jid
@@ -70,17 +89,15 @@ class USyncQuery {
 											// Also accept inline attrs format
 											const tokenVal = tokenNode?.content || content.attrs?.token
 											const modeTsVal =
-												modeTsNode?.content?.toString?.() ||
-												modeTsNode?.attrs?.value ||
-												content.attrs?.mode_ts ||
-												null
+												modeTsNode?.content?.toString?.() || modeTsNode?.attrs?.value || content.attrs?.mode_ts || null
 											if (tokenVal) {
 												return [
 													'privacy',
 													{
-														token: Buffer.isBuffer(tokenVal) || tokenVal instanceof Uint8Array
-															? Buffer.from(tokenVal)
-															: tokenVal,
+														token:
+															Buffer.isBuffer(tokenVal) || tokenVal instanceof Uint8Array
+																? Buffer.from(tokenVal)
+																: tokenVal,
 														modeTs: modeTsVal
 													}
 												]

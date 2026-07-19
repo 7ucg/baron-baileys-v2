@@ -251,12 +251,21 @@ const makeMessagesSocket = config => {
 			}
 		}
 		const query = new WAUSync_1.USyncQuery().withContext('message').withDeviceProtocol().withLIDProtocol()
+		// Attach any already-known LID inline on the <user> node for PN jids, so the
+		// LID/contact protocols can use it directly instead of round-tripping.
+		const pnJidsToFetch = toFetch.filter(jid => (0, WABinary_1.isPnUser)(jid) || (0, WABinary_1.isHostedPnUser)(jid))
+		const cachedLidPairs = pnJidsToFetch.length
+			? (await signalRepository.lidMapping.getLIDsForPNs(pnJidsToFetch)) || []
+			: []
+		const cachedLidByPn = new Map(cachedLidPairs.map(({ pn, lid }) => [pn, lid]))
 		for (const jid of toFetch) {
-			query.withUser(new WAUSync_1.USyncUser().withId(jid)) // todo: investigate - the idea here is that <user> should have an inline lid field with the lid being the pn equivalent
+			const syncUser = new WAUSync_1.USyncUser().withId(jid)
+			const cachedLid = cachedLidByPn.get(jid)
+			if (cachedLid) syncUser.withLid(cachedLid)
+			query.withUser(syncUser)
 		}
 		const result = await sock.executeUSyncQuery(query)
 		if (result) {
-			// TODO: LID MAP this stuff (lid protocol will now return lid with devices)
 			const lidResults = result.list.filter(a => !!a.lid)
 			if (lidResults.length > 0) {
 				logger.trace('Storing LID maps from device call')
@@ -615,7 +624,7 @@ const makeMessagesSocket = config => {
 				(0, Utils_1.normalizeMessageContent)(message)?.pinInChatMessage ||
 				(0, Utils_1.normalizeMessageContent)(message)?.reactionMessage
 			) {
-				extraAttrs['decrypt-fail'] = 'hide' // todo: expand for reactions and other types
+				extraAttrs['decrypt-fail'] = 'hide'
 			}
 			if (isGroupOrStatus && !isRetryResend) {
 				const [groupData, senderKeyMap] = await Promise.all([
@@ -1987,7 +1996,6 @@ const makeMessagesSocket = config => {
 							logger,
 							uploadImage: generateHighQualityLinkPreview ? waUploadToServer : undefined
 						}),
-					//TODO: CACHE
 					getProfilePicUrl: sock.profilePictureUrl,
 					getCallLink: sock.createCallLink,
 					newsletter: (0, WABinary_1.isJidNewsletter)(jid),

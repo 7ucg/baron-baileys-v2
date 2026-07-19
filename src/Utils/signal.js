@@ -53,8 +53,8 @@ const generateOrGetPreKeys = (creds, range) => {
 	}
 }
 exports.generateOrGetPreKeys = generateOrGetPreKeys
-// 0x05 = X25519/Curve25519 (standard Signal), 0x2a = Kyber-1024 (PQXDH)
-const KEY_CIPHER_SUITE_CURVE25519 = 0x05
+// cipherSuite: 0x05 = X25519/Curve25519 (standard Signal), 0x2a = Kyber-1024 (PQXDH) —
+// only pass it when mixing in a non-default cipher; omit for plain Curve25519 uploads.
 const xmppSignedPreKey = (key, cipherSuite) => ({
 	tag: 'skey',
 	attrs: cipherSuite !== undefined ? { key_cipher_suite: cipherSuite } : {},
@@ -180,8 +180,11 @@ const getNextPreKeysNode = async (state, count) => {
 			{ tag: 'registration', attrs: {}, content: (0, generics_1.encodeBigEndian)(creds.registrationId) },
 			{ tag: 'type', attrs: {}, content: Defaults_1.KEY_BUNDLE_TYPE },
 			{ tag: 'identity', attrs: {}, content: creds.signedIdentityKey.public },
-			{ tag: 'list', attrs: {}, content: Object.keys(preKeys).map(k => (0, exports.xmppPreKey)(preKeys[+k], +k, KEY_CIPHER_SUITE_CURVE25519)) },
-			(0, exports.xmppSignedPreKey)(creds.signedPreKey, KEY_CIPHER_SUITE_CURVE25519)
+			// key_cipher_suite is only sent when the bundle mixes in a non-default cipher
+			// (e.g. Kyber/PQXDH alongside Curve25519) — a plain Curve25519-only upload
+			// omits it entirely on real clients, confirmed against live capture.
+			{ tag: 'list', attrs: {}, content: Object.keys(preKeys).map(k => (0, exports.xmppPreKey)(preKeys[+k], +k)) },
+			(0, exports.xmppSignedPreKey)(creds.signedPreKey)
 		]
 	}
 	return { update, node }

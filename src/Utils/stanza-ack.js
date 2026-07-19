@@ -1,11 +1,33 @@
 'use strict'
 Object.defineProperty(exports, '__esModule', { value: true })
 exports.buildAckStanza = buildAckStanza
-// Standalone call stanzas use class="call" + type=<tag>, not class=<tag>
+// Standalone call stanzas use class="call" + type=<tag>, not class=<tag>.
+// Kept in sync with messages-recv.js's CALL_STATE_TAGS + CB: registration loop.
 const CALL_STANZA_TAGS = new Set([
-	'offer', 'offer_notice', 'terminate', 'accept', 'reject', 'preaccept',
-	'transport', 'video', 'duration', 'mute_v2', 'lobby', 'heartbeat',
-	'relaylatency', 'link_query', 'group_update'
+	'offer',
+	'offer_notice',
+	'terminate',
+	'accept',
+	'reject',
+	'preaccept',
+	'transport',
+	'video',
+	'duration',
+	'mute_v2',
+	'lobby',
+	'heartbeat',
+	'relaylatency',
+	'link_query',
+	'group_update',
+	'accept_ack',
+	'enc-rekey',
+	'enc_rekey',
+	'peer_state',
+	'group_info',
+	'video_state',
+	'video_state_ack',
+	'flow_control',
+	'waiting_room_request'
 ])
 /**
  * Builds an ACK stanza for a received node.

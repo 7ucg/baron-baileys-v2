@@ -192,14 +192,16 @@ const makeSocket = config => {
 		if (usyncQuery.protocols.length === 0) {
 			throw new boom_1.Boom('USyncQuery must have at least one protocol')
 		}
-		// todo: validate users, throw WARNING on no valid users
-		// variable below has only validated users
-		const validUsers = usyncQuery.users
+		const validUsers = usyncQuery.users.filter(user => (typeof user.validate === 'function' ? user.validate() : true))
+		if (!validUsers.length) {
+			logger.warn('a usync query must have at least one valid user')
+		}
 		const userNodes = validUsers.map(user => {
 			return {
 				tag: 'user',
 				attrs: {
-					jid: !user.phone ? user.id : undefined
+					jid: !user.phone ? user.id : undefined,
+					pn_jid: user.pnJid
 				},
 				content: usyncQuery.protocols.map(a => a.getUserElement(user)).filter(a => a !== null)
 			}
@@ -235,8 +237,17 @@ const makeSocket = config => {
 				}
 			]
 		}
+		await (0, WAUSync_1.waitForBackoff)(usyncQuery)
 		const result = await query(iq)
-		return usyncQuery.parseUSyncQueryResult(result)
+		const parsed = usyncQuery.parseUSyncQueryResult(result)
+		if (parsed?.errors) {
+			for (const [protocolName, err] of Object.entries(parsed.errors)) {
+				if (err?.errorBackoff) {
+					;(0, WAUSync_1.setProtocolBackoffMs)(protocolName, err.errorBackoff * 1000)
+				}
+			}
+		}
+		return parsed
 	}
 	const onWhatsApp = async (...phoneNumber) => {
 		let usyncQuery = new WAUSync_1.USyncQuery()
@@ -559,6 +570,8 @@ const makeSocket = config => {
 				void end(new boom_1.Boom('Connection was lost', { statusCode: Types_1.DisconnectReason.connectionLost }))
 			} else if (ws.isOpen) {
 				// if its all good, send a keep alive request
+				// Confirmed from live capture: the w:p keepalive iq has no child element
+				// at all — a bare <ping/> child doesn't appear in real traffic.
 				query({
 					tag: 'iq',
 					attrs: {
@@ -566,8 +579,7 @@ const makeSocket = config => {
 						to: WABinary_1.S_WHATSAPP_NET,
 						type: 'get',
 						xmlns: 'w:p'
-					},
-					content: [{ tag: 'ping', attrs: {} }]
+					}
 				}).catch(err => {
 					logger.error({ trace: err.stack }, 'error in sending keep alive')
 				})
@@ -683,7 +695,8 @@ const makeSocket = config => {
 			attrs: {
 				to: WABinary_1.S_WHATSAPP_NET,
 				id: generateMessageTag(),
-				xmlns: 'w:stats'
+				xmlns: 'w:stats',
+				type: 'set'
 			},
 			content: [
 				{
@@ -725,7 +738,9 @@ const makeSocket = config => {
 			void end(err)
 		}
 	})
-	const wamFlushInterval = setInterval(() => { void flushWAMEvents() }, 30_000)
+	const wamFlushInterval = setInterval(() => {
+		void flushWAMEvents()
+	}, 30_000)
 	ws.on('error', mapWebSocketError(end))
 	ws.on(
 		'close',

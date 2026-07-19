@@ -110,14 +110,17 @@ const cleanMessage = (message, meId, meLid) => {
 	}
 }
 exports.cleanMessage = cleanMessage
-// TODO: target:audit AUDIT THIS FUNCTION AGAIN
 const isRealMessage = message => {
+	// Stub-type system events (missed calls, participant-add) never carry message.message,
+	// so they must short-circuit here — gating them behind hasSomeContent below made this
+	// branch permanently dead (audited 2026-07-19).
+	if (REAL_MSG_STUB_TYPES.has(message.messageStubType) || REAL_MSG_REQ_ME_STUB_TYPES.has(message.messageStubType)) {
+		return true
+	}
 	const normalizedContent = (0, messages_1.normalizeMessageContent)(message.message)
 	const hasSomeContent = !!(0, messages_1.getContentType)(normalizedContent)
 	return (
-		(!!normalizedContent ||
-			REAL_MSG_STUB_TYPES.has(message.messageStubType) ||
-			REAL_MSG_REQ_ME_STUB_TYPES.has(message.messageStubType)) &&
+		!!normalizedContent &&
 		hasSomeContent &&
 		!normalizedContent?.protocolMessage &&
 		!normalizedContent?.reactionMessage &&
@@ -760,7 +763,7 @@ const processMessage = async (
 				const approvalMode = message.messageStubParameters?.[0]
 				emitGroupUpdate({ joinApprovalMode: approvalMode === 'on' })
 				break
-			case Types_1.WAMessageStubType.GROUP_MEMBERSHIP_JOIN_APPROVAL_REQUEST_NON_ADMIN_ADD: // TODO: Add other events
+			case Types_1.WAMessageStubType.GROUP_MEMBERSHIP_JOIN_APPROVAL_REQUEST_NON_ADMIN_ADD:
 				const participant = JSON.parse(message.messageStubParameters?.[0])
 				const action = message.messageStubParameters?.[1]
 				const method = message.messageStubParameters?.[2]

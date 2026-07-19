@@ -366,7 +366,9 @@ const makeMessagesRecvSocket = config => {
 							key: {
 								remoteJid: from,
 								id: child.attrs.message_id || child.attrs.server_id,
-								fromMe: false // TODO: is this really true though
+								// always false: this branch only runs for inbound plaintext newsletter posts,
+								// which always originate from the channel, never from us
+								fromMe: false
 							},
 							message: messageProto,
 							messageTimestamp: +child.attrs.t
@@ -869,8 +871,9 @@ const makeMessagesRecvSocket = config => {
 							id: node.attrs.id,
 							t: node.attrs.t,
 							v: '1',
-							// ADD ERROR FIELD
-							error: '0'
+							// Confirmed from live capture: real retry receipts carry error="1"
+							// in the overwhelming majority of samples (1270/1273); "0" never observed.
+							error: '1'
 						}
 					},
 					{
@@ -966,8 +969,21 @@ const makeMessagesRecvSocket = config => {
 			}
 		}
 	}
+	// Group participant nodes carry authoritative LID<->PN pairs (jid + phone_number/lid
+	// attrs). Persist them so PN<->LID resolution elsewhere doesn't need a usync round trip.
+	const storeParticipantLidPairs = participants => {
+		const pairs = []
+		for (const p of participants || []) {
+			if (p.phoneNumber) pairs.push({ lid: p.id, pn: p.phoneNumber })
+			else if (p.lid) pairs.push({ lid: p.lid, pn: p.id })
+		}
+		if (!pairs.length) return
+		signalRepository.lidMapping
+			.storeLIDPNMappings(pairs)
+			.catch(error => logger.debug({ error }, 'failed to store LID/PN mappings from group notification'))
+	}
 	const handleGroupNotification = (fullNode, child, msg) => {
-		// TODO: Support PN/LID (Here is only LID now)
+		// PN/LID: acting + affected participant already resolved below via participant_pn/lid attrs
 		const actingParticipantLid = fullNode.attrs.participant
 		const actingParticipantPn = fullNode.attrs.participant_pn
 		const actingParticipantUsername = fullNode.attrs.participant_username
@@ -981,6 +997,7 @@ const makeMessagesRecvSocket = config => {
 				msg.messageStubType = Types_1.WAMessageStubType.GROUP_CREATE
 				msg.messageStubParameters = [metadata.subject]
 				msg.key = { participant: metadata.owner, participantAlt: metadata.ownerPn }
+				storeParticipantLidPairs(metadata.participants)
 				ev.emit('chats.upsert', [
 					{
 						id: metadata.id,
@@ -1019,7 +1036,6 @@ const makeMessagesRecvSocket = config => {
 				const stubType = `GROUP_PARTICIPANT_${child.tag.toUpperCase()}`
 				msg.messageStubType = Types_1.WAMessageStubType[stubType]
 				const participants = (0, WABinary_1.getBinaryNodeChildren)(child, 'participant').map(({ attrs }) => {
-					// TODO: Store LID MAPPINGS
 					return {
 						id: attrs.jid,
 						phoneNumber:
@@ -1042,6 +1058,7 @@ const makeMessagesRecvSocket = config => {
 				) {
 					msg.messageStubType = Types_1.WAMessageStubType.GROUP_PARTICIPANT_LEAVE
 				}
+				storeParticipantLidPairs(participants)
 				msg.messageStubParameters = participants.map(a => JSON.stringify(a))
 				break
 			case 'subject':
@@ -1091,7 +1108,9 @@ const makeMessagesRecvSocket = config => {
 				break
 			case 'revoked_membership_requests':
 				const isDenied = (0, WABinary_1.areJidsSameUser)(affectedParticipantLid, actingParticipantLid)
-				// TODO: LIDMAPPING SUPPORT
+				if ((0, WABinary_1.isLidUser)(affectedParticipantLid) && (0, WABinary_1.isPnUser)(affectedParticipantPn)) {
+					storeParticipantLidPairs([{ id: affectedParticipantLid, phoneNumber: affectedParticipantPn }])
+				}
 				msg.messageStubType = Types_1.WAMessageStubType.GROUP_MEMBERSHIP_JOIN_APPROVAL_REQUEST_NON_ADMIN_ADD
 				msg.messageStubParameters = [
 					JSON.stringify({ lid: affectedParticipantLid, pn: affectedParticipantPn }),
@@ -1347,7 +1366,21 @@ const makeMessagesRecvSocket = config => {
 				await handleMexNotification(node)
 				break
 			case 'w:gp2':
-				// TODO: HANDLE PARTICIPANT_PN
+				if (child?.tag === 'groups_dirty') {
+					// Bulk "these groups are stale, refetch" signal — not a per-group stub message,
+					// so it doesn't go through handleGroupNotification (which assumes a single group).
+					const dirtyGroupJids = (0, WABinary_1.getBinaryNodeChildren)(child, 'group')
+						.map(g => g.attrs.jid)
+						.filter(Boolean)
+					if (dirtyGroupJids.length) {
+						ev.emit(
+							'groups.update',
+							dirtyGroupJids.map(jid => ({ id: jid }))
+						)
+					}
+					break
+				}
+				// PN/LID resolution for participant fields happens below via normalizeNotificationResult
 				const groupData = await getNotificationGroupData(node)
 				handleGroupNotification(node, child, result)
 
@@ -1361,10 +1394,16 @@ const makeMessagesRecvSocket = config => {
 				await handleEncryptNotification(node)
 				break
 			case 'devices': {
-				// child = <add> or <remove> — neither carries jid/lid, owner is node.attrs.from
+				// child = <add> or <remove> — neither carries jid/lid, owner is node.attrs.from.
+				// A third variant, <update hash="..."/>, carries no device list at all (just a
+				// device-list hash refresh) — don't misreport it as "removed nothing".
 				const addNode = (0, WABinary_1.getBinaryNodeChild)(node, 'add')
 				const removeNode = (0, WABinary_1.getBinaryNodeChild)(node, 'remove')
 				const changedNode = addNode || removeNode
+				if (!changedNode) {
+					logger.debug({ node }, 'devices hash refresh, no add/remove list to report')
+					break
+				}
 				const isAdded = !!addNode
 				const devices = (0, WABinary_1.getBinaryNodeChildren)(changedNode, 'device')
 				const deviceOwnerJid = from
@@ -1394,13 +1433,18 @@ const makeMessagesRecvSocket = config => {
 					await resyncAppState([name], false)
 				}
 				break
-			case 'picture':
+			case 'picture': {
 				const setPicture = (0, WABinary_1.getBinaryNodeChild)(node, 'set')
 				const delPicture = (0, WABinary_1.getBinaryNodeChild)(node, 'delete')
-				// TODO: WAJIDHASH stuff proper support inhouse
+				const pictureOwnerJid = (0, WABinary_1.jidNormalizedUser)(node?.attrs?.from)
+				if (!pictureOwnerJid) {
+					// a picture content hash is not a valid contact id — nothing usable to emit without "from"
+					logger.debug({ node }, 'picture notification missing "from", skipping contacts.update')
+					break
+				}
 				ev.emit('contacts.update', [
 					{
-						id: (0, WABinary_1.jidNormalizedUser)(node?.attrs?.from) || (setPicture || delPicture)?.attrs?.hash || '',
+						id: pictureOwnerJid,
 						imgUrl: setPicture ? 'changed' : 'removed'
 					}
 				])
@@ -1417,6 +1461,7 @@ const makeMessagesRecvSocket = config => {
 					}
 				}
 				break
+			}
 			case 'account_sync':
 				if (child.tag === 'disappearing_mode') {
 					const newDuration = +child.attrs.duration
@@ -1432,12 +1477,10 @@ const makeMessagesRecvSocket = config => {
 						}
 					})
 				} else if (child.tag === 'blocklist') {
-					const blocklists = (0, WABinary_1.getBinaryNodeChildren)(child, 'item')
-					for (const { attrs } of blocklists) {
-						const blocklist = [attrs.jid]
-						const type = attrs.action === 'block' ? 'add' : 'remove'
-						ev.emit('blocklist.update', { blocklist, type })
-					}
+					// Real wire shape is <blocklist action="modify" addressing_mode="lid"/> with
+					// no per-entry children — it's a "your blocklist changed, go refetch it" signal,
+					// not an inline diff. Re-fetch and let fetchBlocklist emit the refreshed list.
+					sock.fetchBlocklist().catch(error => logger.warn({ error }, 'failed to refresh blocklist after account_sync'))
 				} else if (child.tag === 'devices') {
 					// Full device-list sync: all linked devices + signed key-index-list.
 					// Sent when a device is added, removed, or key index changes.
@@ -1457,6 +1500,34 @@ const makeMessagesRecvSocket = config => {
 					})
 				}
 				break
+			case 'disappearing_mode': {
+				// Same payload as the account_sync-nested variant above, but WhatsApp also
+				// pushes it as its own top-level notification type on some accounts.
+				const newDuration = +child.attrs.duration
+				const timestamp = +child.attrs.t
+				logger.info({ newDuration }, 'updated account disappearing mode')
+				ev.emit('creds.update', {
+					accountSettings: {
+						...authState.creds.accountSettings,
+						defaultDisappearingMode: {
+							ephemeralExpiration: newDuration,
+							ephemeralSettingTimestamp: timestamp
+						}
+					}
+				})
+				break
+			}
+			case 'contacts': {
+				// <update jid="..."/> = single contact touched; <update hash="..."/> or a
+				// sibling <sync after="..."/> = list-level signal with no actionable jid.
+				const updateChild = (0, WABinary_1.getBinaryNodeChild)(node, 'update')
+				if (updateChild?.attrs?.jid) {
+					ev.emit('contacts.update', [{ id: (0, WABinary_1.jidNormalizedUser)(updateChild.attrs.jid) }])
+				} else {
+					logger.debug({ node }, 'contacts list changed (hash/sync signal), no per-contact jid to update')
+				}
+				break
+			}
 			case 'business':
 				if (child?.tag === 'privacy') {
 					// SMB privacy / data-sharing settings sync push
@@ -1488,6 +1559,12 @@ const makeMessagesRecvSocket = config => {
 							}
 						}
 					])
+				} else if (child?.tag === 'remove') {
+					// Business account downgraded/removed. <remove jid="..."/> names the account;
+					// <remove hash="..."/> is a list-level signal with no actionable jid.
+					if (child.attrs.jid) {
+						ev.emit('contacts.update', [{ id: (0, WABinary_1.jidNormalizedUser)(child.attrs.jid), isBusiness: false }])
+					}
 				}
 				break
 			case 'hosted':
@@ -2342,6 +2419,19 @@ const makeMessagesRecvSocket = config => {
 			}
 		}
 	}
+	// group_info roster: <group_info><user jid=.. state=.. user_pn=..><device jid=..
+	// platform=..><capability ver=../></device></user>...</group_info>. Baileys previously
+	// only kept the flat group_info-level attrs (call.payload), dropping the roster entirely.
+	const parseGroupCallRoster = groupInfoNode =>
+		(0, WABinary_1.getBinaryNodeChildren)(groupInfoNode, 'user').map(userNode => ({
+			jid: userNode.attrs.jid,
+			state: userNode.attrs.state,
+			userPn: userNode.attrs.user_pn,
+			devices: (0, WABinary_1.getBinaryNodeChildren)(userNode, 'device').map(d => ({
+				jid: d.attrs.jid,
+				platform: d.attrs.platform
+			}))
+		}))
 	const handleCall = async node => {
 		try {
 			const { attrs } = node
@@ -2370,13 +2460,25 @@ const makeMessagesRecvSocket = config => {
 			}
 			if (status === 'offer') {
 				const videoNode = (0, WABinary_1.getBinaryNodeChild)(infoChild, 'video')
-				const audioNode = (0, WABinary_1.getBinaryNodeChild)(infoChild, 'audio')
+				const audioNodes = (0, WABinary_1.getBinaryNodeChildren)(infoChild, 'audio')
+				const silenceNode = (0, WABinary_1.getBinaryNodeChild)(infoChild, 'silence')
 				call.isVideo = !!videoNode
 				call.isGroup = infoChild.attrs.type === 'group' || !!infoChild.attrs['group-jid']
 				call.groupJid = infoChild.attrs['group-jid']
-				// Extract negotiated codecs from offer child nodes
-				if (audioNode?.attrs?.codec) call.audioCodec = audioNode.attrs.codec
-				if (videoNode?.attrs?.codec) call.videoCodec = videoNode.attrs.codec
+				// lightweight=1 marks a silent/wave-style group ring (no full ringing UX expected)
+				call.isLightweight = infoChild.attrs.lightweight === '1'
+				if (silenceNode?.attrs?.reason) {
+					call.silenceReason = silenceNode.attrs.reason
+				}
+				// Wire attrs are "enc"/"rate" (audio) and "dec" (video) — not "codec".
+				// <audio> can repeat once per supported sample rate.
+				if (audioNodes.length) {
+					call.audioCodecs = audioNodes.map(n => ({ enc: n.attrs.enc, rate: n.attrs.rate ? +n.attrs.rate : undefined }))
+					call.audioCodec = audioNodes[0].attrs.enc
+				}
+				if (videoNode?.attrs?.dec) {
+					call.videoCodec = videoNode.attrs.dec
+				}
 				// Decrypt Signal-encrypted callKey from <enc> child
 				const encNode = (0, WABinary_1.getBinaryNodeChild)(infoChild, 'enc')
 				if (encNode?.content) {
@@ -2410,6 +2512,7 @@ const makeMessagesRecvSocket = config => {
 				call.state = stateChild?.attrs?.state || infoChild.attrs?.state
 			} else if (status === 'group_info') {
 				call.payload = infoChild.attrs
+				call.participants = parseGroupCallRoster(infoChild)
 			} else if (status === 'video_state') {
 				const vsChild = (0, WABinary_1.getBinaryNodeChild)(infoChild, 'video_state')
 				const enabledRaw = vsChild?.attrs?.enabled ?? infoChild.attrs?.enabled
@@ -2490,13 +2593,23 @@ const makeMessagesRecvSocket = config => {
 			}
 			if (status === 'offer') {
 				const videoNode = (0, WABinary_1.getBinaryNodeChild)(node, 'video')
-				const audioNode = (0, WABinary_1.getBinaryNodeChild)(node, 'audio')
+				const audioNodes = (0, WABinary_1.getBinaryNodeChildren)(node, 'audio')
+				const silenceNode = (0, WABinary_1.getBinaryNodeChild)(node, 'silence')
 				call.isVideo = !!videoNode
 				call.isGroup = attrs.type === 'group' || !!attrs['group-jid']
 				call.groupJid = attrs['group-jid']
-				// Extract negotiated codecs from offer child nodes
-				if (audioNode?.attrs?.codec) call.audioCodec = audioNode.attrs.codec
-				if (videoNode?.attrs?.codec) call.videoCodec = videoNode.attrs.codec
+				call.isLightweight = attrs.lightweight === '1'
+				if (silenceNode?.attrs?.reason) {
+					call.silenceReason = silenceNode.attrs.reason
+				}
+				// Wire attrs are "enc"/"rate" (audio) and "dec" (video) — not "codec".
+				if (audioNodes.length) {
+					call.audioCodecs = audioNodes.map(n => ({ enc: n.attrs.enc, rate: n.attrs.rate ? +n.attrs.rate : undefined }))
+					call.audioCodec = audioNodes[0].attrs.enc
+				}
+				if (videoNode?.attrs?.dec) {
+					call.videoCodec = videoNode.attrs.dec
+				}
 				if (callId) {
 					await callOfferCache.set(callId, call)
 				}
@@ -2513,6 +2626,7 @@ const makeMessagesRecvSocket = config => {
 				call.state = stateChild?.attrs?.state || attrs?.state
 			} else if (status === 'group_info') {
 				call.payload = attrs
+				call.participants = parseGroupCallRoster(node)
 			} else if (status === 'video_state') {
 				const vsChild = (0, WABinary_1.getBinaryNodeChild)(node, 'video_state')
 				const enabledRaw = vsChild?.attrs?.enabled ?? attrs?.enabled
@@ -2528,17 +2642,10 @@ const makeMessagesRecvSocket = config => {
 					}
 				}
 			} else if (status === 'mute') {
-				const muteChild = (0, WABinary_1.getBinaryNodeChild)(node, 'mute_v2')
-				const muteAttrs = muteChild?.attrs || node.attrs
-				const rawMuted = muteAttrs?.muted ?? muteAttrs?.audio_muted
-				call.muted = rawMuted === 'true' || rawMuted === '1' || rawMuted === true
-				const audioChild = muteChild
-					? (0, WABinary_1.getBinaryNodeChild)(muteChild, 'audio')
-					: (0, WABinary_1.getBinaryNodeChild)(node, 'audio')
-				if (audioChild?.attrs?.muted !== undefined) {
-					const am = audioChild.attrs.muted
-					call.muted = am === 'true' || am === '1' || am === true
-				}
+				// mute_v2 IS the top-level tag on real traffic (no wrapping/nested child) —
+				// attrs are { call-id, call-creator, mute-state: "0"|"1" }, never
+				// muted/audio_muted, and there's no nested <audio> child.
+				call.muted = node.attrs['mute-state'] === '1'
 			}
 			if (
 				callId &&
@@ -2693,7 +2800,11 @@ const makeMessagesRecvSocket = config => {
 		'heartbeat',
 		'relaylatency',
 		'link_query',
-		'waiting_room_request'
+		'waiting_room_request',
+		// Present in Utils/stanza-ack.js's CALL_STANZA_TAGS (ack builder already treats it as a
+		// call stanza) but was missing here — meant it was never routed/acked, so real traffic
+		// (confirmed via live capture) would just get redelivered forever.
+		'group_update'
 	]) {
 		ws.on('CB:' + callTag, node => {
 			nodelogger(node)

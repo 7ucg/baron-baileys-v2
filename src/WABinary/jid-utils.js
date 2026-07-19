@@ -288,7 +288,6 @@ const jidEncode = (user, server, device, agent) => {
 }
 exports.jidEncode = jidEncode
 const jidDecode = jid => {
-	// todo: investigate how to implement hosted ids in this case
 	const sepIdx = typeof jid === 'string' ? jid.indexOf('@') : -1
 	if (sepIdx < 0) {
 		return undefined
@@ -355,9 +354,7 @@ const isHostedLidUser = jid => jid?.endsWith('@hosted.lid')
 exports.isHostedLidUser = isHostedLidUser
 const botRegexp = /^1313555\d{4}$|^131655500\d{2}$/
 /** is the jid a bot — covers @bot wire domain and @c.us number patterns for WA-native bots */
-const isJidBot = jid =>
-	jid &&
-	((botRegexp.test(jid.split('@')[0]) && jid.endsWith('@c.us')) || jid.endsWith('@bot'))
+const isJidBot = jid => jid && ((botRegexp.test(jid.split('@')[0]) && jid.endsWith('@c.us')) || jid.endsWith('@bot'))
 exports.isJidBot = isJidBot
 const jidNormalizedUser = jid => {
 	const result = (0, exports.jidDecode)(jid)

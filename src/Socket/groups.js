@@ -46,12 +46,32 @@ const makeGroupsSocket = config => {
 			},
 			content
 		})
+	// Group metadata carries authoritative LID<->PN pairs for free (per-participant
+	// jid + phone_number/lid attrs). Persist them so the rest of the app can resolve
+	// PN<->LID without a separate usync round trip.
+	const persistParticipantLidMappings = async participantLists => {
+		const pairs = []
+		for (const participants of participantLists) {
+			for (const p of participants || []) {
+				if (p.phoneNumber) pairs.push({ lid: p.id, pn: p.phoneNumber })
+				else if (p.lid) pairs.push({ lid: p.lid, pn: p.id })
+			}
+		}
+		if (!pairs.length) return
+		try {
+			await sock.signalRepository.lidMapping.storeLIDPNMappings(pairs)
+		} catch (error) {
+			sock.logger?.warn?.({ error }, 'failed to store LID/PN mappings from group metadata')
+		}
+	}
 
 	const mexQuery = (variables, queryId, dataPath) =>
 		(0, mex_1.executeWMexQuery)(variables, queryId, dataPath, query, generateMessageTag)
 	const groupMetadata = async jid => {
 		const result = await groupQuery(jid, 'get', [{ tag: 'query', attrs: { request: 'interactive' } }])
-		return (0, exports.extractGroupMetadata)(result)
+		const metadata = (0, exports.extractGroupMetadata)(result)
+		persistParticipantLidMappings([metadata.participants]).catch(() => {})
+		return metadata
 	}
 	/**
 	 * Acknowledge a group. Ported from WhatsApp Web's WASmaxGroupsAcknowledgeGroupRPC
@@ -119,21 +139,29 @@ const makeGroupsSocket = config => {
 		await groupQuery(parentJid, 'set', [{ tag: 'sub_group_suggestion', attrs: {}, content: suggestion }])
 	}
 	/**
-	 * Approve or reject sub-group suggestions for a community. Ported from WhatsApp
-	 * Web's WASmaxGroupsSubGroupSuggestionsActionRPC. NOTE: untested against live WhatsApp.
+	 * Approve, reject, or cancel sub-group suggestions for a community. Ported from
+	 * WhatsApp Web's WASmaxGroupsSubGroupSuggestionsActionRPC.
+	 * approve/reject address suggestions by creator jid; cancel addresses them by
+	 * the suggested group's jid (WASmaxOutGroupsSubGroupSuggestionsActionRequest).
 	 * @param {string} parentJid community/parent group to address
-	 * @param {'approve' | 'reject'} action
-	 * @param {Array<{ creator: string, jid?: string }>} suggestions
+	 * @param {'approve' | 'reject' | 'cancel'} action
+	 * @param {Array<{ creator?: string, jid?: string }>} suggestions
 	 */
 	const groupSubGroupSuggestionsAction = async (parentJid, action, suggestions) => {
 		await groupQuery(parentJid, 'set', [
 			{
-				tag: action,
+				tag: 'sub_group_suggestions_action',
 				attrs: {},
-				content: suggestions.map(s => ({
-					tag: 'sub_group_suggestion',
-					attrs: { creator: s.creator, ...(s.jid ? { jid: s.jid } : {}) }
-				}))
+				content: [
+					{
+						tag: action,
+						attrs: {},
+						content: suggestions.map(s => ({
+							tag: 'sub_group_suggestion',
+							attrs: action === 'cancel' ? { jid: s.jid } : { creator: s.creator }
+						}))
+					}
+				]
 			}
 		])
 	}
@@ -169,8 +197,9 @@ const makeGroupsSocket = config => {
 				data[meta.id] = meta
 			}
 		}
-		// TODO: properly parse LID / PN DATA
-		sock.ev.emit('groups.update', Object.values(data))
+		const allGroups = Object.values(data)
+		persistParticipantLidMappings(allGroups.map(g => g.participants)).catch(() => {})
+		sock.ev.emit('groups.update', allGroups)
 		return data
 	}
 	sock.ws.on('CB:ib,,dirty', async node => {
@@ -414,8 +443,11 @@ const makeGroupsSocket = config => {
 			const result = await groupQuery('@g.us', 'set', [
 				{
 					tag: 'create',
-					attrs: { subject, key, parent_group_id: communityJid },
-					content: participants.map(jid => ({ tag: 'participant', attrs: { jid } }))
+					attrs: { subject, key },
+					content: [
+						...participants.map(jid => ({ tag: 'participant', attrs: { jid } })),
+						{ tag: 'linked_parent', attrs: { jid: communityJid } }
+					]
 				}
 			])
 			return (0, exports.extractGroupMetadata)(result)
@@ -490,15 +522,18 @@ const makeGroupsSocket = config => {
 		 * Fetch group info via MEX (richer than IQ — includes invite link, LID addressing, etc.)
 		 * @param {string} jid - Group JID
 		 */
-		groupQueryInfo: jid =>
-			mexQuery({ group_id: jid }, GROUP_MEX_QUERY_IDS.QUERY_INFO, 'xwa2_group_query_by_id'),
+		groupQueryInfo: jid => mexQuery({ group_id: jid }, GROUP_MEX_QUERY_IDS.QUERY_INFO, 'xwa2_group_query_by_id'),
 
 		/**
 		 * Fetch group info by invite code via MEX.
 		 * @param {string} code - Group invite code (without the link prefix)
 		 */
 		groupQueryInfoByCode: code =>
-			mexQuery({ group_input: { invite_code: code } }, GROUP_MEX_QUERY_IDS.QUERY_INFO_BY_CODE, 'xwa2_group_query_by_id'),
+			mexQuery(
+				{ group_input: { invite_code: code } },
+				GROUP_MEX_QUERY_IDS.QUERY_INFO_BY_CODE,
+				'xwa2_group_query_by_id'
+			),
 
 		/**
 		 * Fetch multiple groups at once via MEX.
@@ -575,7 +610,7 @@ const makeGroupsSocket = config => {
 		 * @param {*} value - Property value
 		 */
 		groupSetProperty: (jid, property, value) =>
-			mexQuery({ group_id: jid, [property]: value }, GROUP_MEX_QUERY_IDS.SET_PROPERTY, 'xwa2_group_set_property'),
+			mexQuery({ group_id: jid, [property]: value }, GROUP_MEX_QUERY_IDS.SET_PROPERTY, 'xwa2_group_update_property'),
 
 		/**
 		 * Reset a group's invite link via MEX (generates new code, invalidates old one).
@@ -658,8 +693,7 @@ const makeGroupsSocket = config => {
 		 * Query online status of users from PDP.
 		 * @param {string[]} jids - User JIDs
 		 */
-		queryOnlineStatus: jids =>
-			mexQuery({ jids }, GROUP_MEX_QUERY_IDS.QUERY_ONLINE_STATUS, 'xwa2_query_online_status'),
+		queryOnlineStatus: jids => mexQuery({ jids }, GROUP_MEX_QUERY_IDS.QUERY_ONLINE_STATUS, 'xwa2_query_online_status'),
 
 		/**
 		 * Query online status and last seen of users from PDP.
@@ -698,6 +732,11 @@ const extractGroupMetadata = result => {
 	const communityMemberAddGroupNode = (0, WABinary_1.getBinaryNodeChild)(group, 'allow_non_admin_sub_group_creation')
 	const subGroupVisibilityNode = (0, WABinary_1.getBinaryNodeChild)(group, 'sub_groups_list')
 	const membershipApprovalNode = (0, WABinary_1.getBinaryNodeChild)(group, 'membership_approval_mode')
+	const capiNode = (0, WABinary_1.getBinaryNodeChild)(group, 'capi')
+	const appealStatusNode = (0, WABinary_1.getBinaryNodeChild)(group, 'appeal_status')
+	const defaultSubGroupNode = (0, WABinary_1.getBinaryNodeChild)(group, 'default_sub_group')
+	const generalChatNode = (0, WABinary_1.getBinaryNodeChild)(group, 'general_chat')
+	const hiddenGroupNode = (0, WABinary_1.getBinaryNodeChild)(group, 'hidden_group')
 	const metadata = {
 		id: groupId,
 		notify: group.attrs.notify,
@@ -727,20 +766,23 @@ const extractGroupMetadata = result => {
 		isCommunityAnnounce: !!(0, WABinary_1.getBinaryNodeChild)(group, 'default_sub_group'),
 		joinApprovalMode: !!membershipApprovalNode,
 		memberAddMode,
-		memberShareHistoryMode: (0, WABinary_1.getBinaryNodeChildString)(group, 'member_share_group_history_mode') || undefined,
-			memberLinkMode: (0, WABinary_1.getBinaryNodeChildString)(group, 'member_link_mode') || undefined,
-			limitSharing: !!(0, WABinary_1.getBinaryNodeChild)(group, 'limit_sharing_enabled'),
-			communityMemberAddGroupMode: communityMemberAddGroupNode?.attrs.state || undefined,
-		capiCreatedGroup: group.attrs.capi_created === 'true' || undefined,
-		appealStatus: group.attrs.appeal_status || undefined,
+		memberShareHistoryMode:
+			(0, WABinary_1.getBinaryNodeChildString)(group, 'member_share_group_history_mode') || undefined,
+		memberLinkMode: (0, WABinary_1.getBinaryNodeChildString)(group, 'member_link_mode') || undefined,
+		limitSharing: !!(0, WABinary_1.getBinaryNodeChild)(group, 'limit_sharing_enabled'),
+		communityMemberAddGroupMode: communityMemberAddGroupNode?.attrs.state || undefined,
+		capiCreatedGroup: !!capiNode || undefined,
+		appealStatus: appealStatusNode?.attrs.type || undefined,
 		isSubGroupHidden: group.attrs.sub_group_visibility === 'hidden' || undefined,
 		membershipApprovalMode: group.attrs.membership_approval_mode || undefined,
 		joinPermissions: group.attrs.join_permissions || undefined,
-		isDefaultSubgroup: group.attrs.default_subgroup !== undefined ? true : undefined,
-		isGeneralSubgroup: group.attrs.general_subgroup !== undefined ? true : undefined,
-		isHiddenSubgroup: group.attrs.hidden_subgroup !== undefined ? true : undefined,
+		isDefaultSubgroup: !!defaultSubGroupNode || undefined,
+		isGeneralSubgroup: !!generalChatNode || undefined,
+		isHiddenSubgroup: !!hiddenGroupNode || undefined,
 		participants: (0, WABinary_1.getBinaryNodeChildren)(group, 'participant').map(({ attrs }) => {
-			// TODO: Store LID MAPPINGS
+			// extractGroupMetadata is sync and has no socket in scope to persist with;
+			// callers (groupMetadata, groupFetchAllParticipating) persist the LID/PN
+			// pairs surfaced here via persistParticipantLidMappings.
 			return {
 				id: attrs.jid,
 				phoneNumber:
@@ -752,12 +794,12 @@ const extractGroupMetadata = result => {
 				admin: attrs.type || null,
 				memberLabel: attrs.label || undefined,
 				memberLabelTimestamp: attrs.label_ts ? +attrs.label_ts : undefined,
-				isBanned: attrs.error === '403' || attrs.ban === 'true' || undefined,
+				isBanned: attrs.error === '402' || attrs.ban === 'true' || undefined,
 				uuid: attrs.uuid || attrs.participant_uuid || undefined
 			}
 		}),
 		bannedParticipants: (0, WABinary_1.getBinaryNodeChildren)(group, 'participant')
-			.filter(({ attrs }) => attrs.error === '403' || attrs.ban === 'true')
+			.filter(({ attrs }) => attrs.error === '402' || attrs.ban === 'true')
 			.map(({ attrs }) => ({
 				id: attrs.jid,
 				phoneNumber: attrs.phone_number || undefined,

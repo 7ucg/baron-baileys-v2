@@ -418,7 +418,11 @@ function append(
 					}
 				}
 			} else {
-				// TODO: add support
+				// Reserved for a whole-chat-clear variant ({ jid, all: true }); nothing in
+				// this codebase emits that shape today (the only emitter is chat-utils.js,
+				// always with `keys`), and the flush loop below only supports one payload
+				// per event name, so consolidating it properly needs that loop reworked
+				// first — not adding untested handling for a shape with no current caller.
 			}
 			break
 		case 'messages.reaction':

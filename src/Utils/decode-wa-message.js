@@ -64,12 +64,11 @@ const getDecryptionJid = async (sender, repository) => {
 }
 exports.getDecryptionJid = getDecryptionJid
 const storeMappingFromEnvelope = async (stanza, sender, repository, decryptionJid, logger) => {
-	// TODO: Handle hosted IDs
 	const { senderAlt } = (0, exports.extractAddressingContext)(stanza)
 	if (
 		senderAlt &&
-		(0, WABinary_1.isLidUser)(senderAlt) &&
-		(0, WABinary_1.isPnUser)(sender) &&
+		((0, WABinary_1.isLidUser)(senderAlt) || (0, WABinary_1.isHostedLidUser)(senderAlt)) &&
+		((0, WABinary_1.isPnUser)(sender) || (0, WABinary_1.isHostedPnUser)(sender)) &&
 		decryptionJid === sender
 	) {
 		try {
@@ -324,7 +323,8 @@ const decryptMessageNode = (stanza, meId, meLid, repository, logger) => {
 						}
 					}
 					if (tag === 'unavailable' && attrs.type === 'view_once') {
-						fullMessage.key.isViewOnce = true // TODO: remove from here and add a STUB TYPE
+						fullMessage.key.isViewOnce = true
+						fullMessage.messageStubType = WAProto_1.proto.WebMessageInfo.StubType.VIEWED_ONCE
 					}
 					if (attrs.count && tag === 'enc') {
 						fullMessage.retryCount = Number(attrs.count)
