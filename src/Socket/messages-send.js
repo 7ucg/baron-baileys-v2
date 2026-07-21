@@ -1983,6 +1983,7 @@ const makeMessagesSocket = config => {
 				}
 			} else {
 				let mediaHandle
+				const { ai, ...optionsWithoutAI } = options
 				const fullMsg = await (0, Utils_1.generateWAMessage)(jid, content, {
 					logger,
 					userJid,
@@ -2012,7 +2013,7 @@ const makeMessagesSocket = config => {
 					messageId: (0, Utils_1.generateMessageIDV2)(sock.user?.id),
 					// Pass persisted media AB props so feature-flagged upload/download paths work.
 					mediaAbProps: authState.creds.mediaAbProps,
-					...options
+					...optionsWithoutAI
 				})
 				if (!mediaHandle) {
 					const msgContent = fullMsg.message
@@ -2082,7 +2083,7 @@ const makeMessagesSocket = config => {
 					statusJidList: options.statusJidList,
 					statusPrivacy: options.statusPrivacy,
 					additionalNodes,
-					AI: options.ai || false
+					AI: ai || false
 				})
 				if (config.emitOwnEvents) {
 					process.nextTick(async () => {
