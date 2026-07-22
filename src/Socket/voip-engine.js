@@ -1,0 +1,1385 @@
+'use strict'
+
+/**
+ * WhatsApp VoIP WASM engine.
+ *
+ * Loads the WhatsApp Web VoIP WASM stack inside a Node.js vm.Context,
+ * spawns a 20-thread worker_threads pool to mirror the browser's pthread
+ * model, and exposes a callback-based JS bridge. Audio-only (no video).
+ *
+ * @author ShellTear
+ */
+
+const vm = require('node:vm')
+const fs = require('node:fs')
+const path = require('node:path')
+const { randomFillSync } = require('node:crypto')
+const { Worker } = require('node:worker_threads')
+
+const CALL_WASM_AB_PROPS_JSON = process.env.CALL_WASM_AB_PROPS_JSON ?? ''
+const PTHREAD_POOL_SIZE = 20
+const VOIP_READY_TIMEOUT_MS = 15_000
+
+const parseJsonObjectEnv = raw => {
+	if (!raw) return {}
+	try {
+		const parsed = JSON.parse(raw)
+		if (parsed && typeof parsed === 'object' && !Array.isArray(parsed)) return parsed
+	} catch {}
+	return {}
+}
+
+const toByteArray = input => {
+	if (!input) return new Uint8Array(0)
+	if (input instanceof Uint8Array) return input
+	if (typeof input === 'string') return new TextEncoder().encode(input)
+	if (ArrayBuffer.isView(input)) return new Uint8Array(input.buffer, input.byteOffset, input.byteLength)
+	if (input instanceof ArrayBuffer) return new Uint8Array(input)
+	if (typeof input === 'object' && typeof input.length === 'number') {
+		const arr = new Uint8Array(input.length)
+		for (let i = 0; i < input.length; i += 1) arr[i] = input[i] ?? 0
+		return arr
+	}
+	return new Uint8Array(0)
+}
+
+const filterWorkerStderr = chunk => {
+	const line = chunk.toString().trim()
+	if (line && !line.startsWith('voip:') && !line.startsWith('still waiting')) {
+		process.stderr.write(chunk)
+	}
+}
+
+// In CommonJS, __filename and __dirname are always available globally
+const __dirname = path.dirname(__filename)
+
+const resolveWorkerScriptPath = () => {
+	const compiled = path.join(__dirname, 'worker-bootstrap.js')
+	return fs.existsSync(compiled) ? compiled : path.join(__dirname, 'worker-bootstrap.mts')
+}
+
+class NodeWorkerMessagePort {
+	constructor(worker, name = 'WAWebVoipWebWasmWorker') {
+		this.worker = worker
+		this.name = name
+		this.listeners = new Map()
+		this.workerID = 0
+		this.pthread_ptr = 0
+
+		this.fullyConnected = new Promise(resolve => {
+			const loadedHandler = msg => {
+				if (msg && msg.cmd === 'loaded') {
+					this.workerID = msg.workerID ?? 0
+					resolve(this)
+				}
+			}
+			this.addMessageListener('cmd', loadedHandler)
+		})
+
+		if (typeof worker.on === 'function') {
+			worker.on('message', data => this.handleMessage(data))
+			worker.on('error', () => {})
+		} else if (typeof worker.addEventListener === 'function') {
+			worker.addEventListener('message', ev => this.handleMessage(ev?.data ?? ev))
+		}
+	}
+
+	postMessage(msg, transferList) {
+		const out = msg && typeof msg === 'object' && msg.cmd && !msg.type ? { ...msg, type: 'cmd' } : msg
+		this.worker.postMessage(out, transferList)
+	}
+
+	addMessageListener(type, handler) {
+		let set = this.listeners.get(type)
+		if (!set) {
+			set = new Set()
+			this.listeners.set(type, set)
+		}
+		set.add(handler)
+		return handler
+	}
+
+	removeMessageListener(type, handler) {
+		return this.listeners.get(type)?.delete(handler) ?? false
+	}
+
+	removeAllMessageListeners(type) {
+		if (type) this.listeners.get(type)?.clear()
+		else this.listeners.clear()
+	}
+
+	terminate() {
+		this.worker.terminate()
+	}
+	close() {}
+	isWrappingVirtualMessagePort() {
+		return false
+	}
+	getWorker() {
+		return this.worker
+	}
+
+	handleMessage(data) {
+		if (!data || typeof data !== 'object') return
+
+		if (data.type === 'callback' || data.type === 'waWasmWorkerCompatibleCallback') {
+			let callbackName
+			let callbackArgs
+
+			if (data.__name) {
+				callbackName = data.__name
+				callbackArgs = {}
+				for (const key in data) {
+					if (key !== 'type' && key !== '__name' && key !== 'prototype' && key !== 'args' && !key.startsWith('__')) {
+						callbackArgs[key] = data[key]
+					}
+				}
+			} else if (data.name) {
+				callbackName = data.name
+				callbackArgs = data.args ?? {}
+			} else if (data.payload?.name) {
+				callbackName = data.payload.name
+				callbackArgs = data.payload.args ?? {}
+			} else {
+				return
+			}
+
+			if (callbackName === 'onSignalingXmpp' && (!callbackArgs || Object.keys(callbackArgs).length === 0)) {
+				callbackArgs = {
+					peerJid: data.peerJid,
+					callId: data.callId,
+					xmlPayload: data.xmlPayload
+				}
+			}
+
+			let listenerData = callbackArgs
+			if (
+				!callbackArgs ||
+				Object.keys(callbackArgs).length === 0 ||
+				(Object.keys(callbackArgs).length === 1 && callbackArgs.prototype)
+			) {
+				listenerData = {}
+				for (const key in data) {
+					if (key !== 'type' && key !== '__name' && key !== 'prototype' && key !== 'args' && !key.startsWith('__')) {
+						listenerData[key] = data[key]
+					}
+				}
+			} else if (callbackName === 'sendDataToRelay') {
+				listenerData = { ...callbackArgs }
+				if (data.data !== undefined) listenerData.data = data.data
+				if (data.len !== undefined) listenerData.len = data.len
+				if (data.ip !== undefined) listenerData.ip = data.ip
+				if (data.port !== undefined) listenerData.port = data.port
+			} else if (callbackName === 'onCallEvent') {
+				listenerData = { ...callbackArgs }
+				if (data.eventType !== undefined) listenerData.eventType = data.eventType
+				if (data.userData !== undefined) listenerData.userData = data.userData
+				if (data.eventDataJson !== undefined) listenerData.eventDataJson = data.eventDataJson
+			}
+
+			WasmEngine.notifyGlobalCallbackListeners(callbackName, listenerData)
+			return
+		}
+
+		const dispatch = key => {
+			if (!key) return
+			for (const handler of this.listeners.get(key) ?? []) {
+				try {
+					handler(data)
+				} catch {}
+			}
+		}
+		dispatch(data.type)
+		if (data.cmd !== data.type) dispatch(data.cmd)
+	}
+}
+
+class WasmEngine {
+	static globalCallbackListeners = new Map()
+	static globalCallbacksRegistered = false
+
+	static registerGlobalCallbackListener(callbackName, handler) {
+		const key = `callback:${callbackName}`
+		let set = WasmEngine.globalCallbackListeners.get(key)
+		if (!set) {
+			set = new Set()
+			WasmEngine.globalCallbackListeners.set(key, set)
+		}
+		set.add(handler)
+	}
+
+	static notifyGlobalCallbackListeners(callbackName, data) {
+		const set = WasmEngine.globalCallbackListeners.get(`callback:${callbackName}`)
+		if (!set) return
+		for (const handler of set) {
+			try {
+				handler(data)
+			} catch {}
+		}
+	}
+
+	constructor(config = {}) {
+		const basePath = config.resourcesPath
+			? path.isAbsolute(config.resourcesPath)
+				? config.resourcesPath
+				: path.resolve(process.cwd(), config.resourcesPath)
+			: path.resolve(__dirname, '..')
+		const wasmPath = config.wasmPath
+			? path.isAbsolute(config.wasmPath)
+				? config.wasmPath
+				: path.resolve(process.cwd(), config.wasmPath)
+			: path.join(basePath, '..', 'WAProto', 'wasm', 'whatsapp.wasm')
+
+		this.config = {
+			...config,
+			wasmPath,
+			resourcesPath: basePath,
+			enableLogs: config.enableLogs ?? true,
+			options: {
+				heartbeatInterval: 30,
+				lobbyTimeout: 1,
+				maxParticipantsScreenShare: 32,
+				maxGroupSizeLongRingtone: 32,
+				...config.options
+			}
+		}
+
+		this.instance = null
+		this.initialized = false
+		this.moduleRegistry = new Map()
+		this.vmContext = null
+
+		this.unusedWorkers = []
+		this.runningWorkers = []
+		this.pthreads = {}
+		this.nextWorkerID = 1
+
+		this.wasmModule = null
+		this.wasmMemory = null
+		this.removeRunDependencyCallback = null
+		this.workersLoadedCount = 0
+
+		this.audioPlaybackLoopInterval = null
+		this.audioPlaybackBuffer = null
+		this.isPlaybackActive = false
+
+		this.voipStackInitialized = false
+		this.voipStackInitPromise = null
+		this.voipReadyResolver = null
+		this.voipReadyPromise = null
+
+		this.workerModulesCode = ''
+		this.loaderCode = ''
+	}
+
+	async initialize() {
+		if (this.initialized) throw new Error('WasmEngine already initialized')
+
+		const voipStorageDir = '/tmp/voip'
+		try {
+			if (!fs.existsSync(voipStorageDir)) fs.mkdirSync(voipStorageDir, { recursive: true })
+		} catch {}
+
+		const loaderFile = path.join(this.config.resourcesPath, '..', 'WAProto', 'wasm', 'loader.js')
+		const workerFile = path.join(this.config.resourcesPath, '..', 'WAProto', 'wasm', 'worker-modules.js')
+
+		if (!this.config.wasmBinary && !fs.existsSync(this.config.wasmPath)) {
+			throw new Error(`WASM file not found: ${this.config.wasmPath}`)
+		}
+
+		const wasmBuffer = this.config.wasmBinary
+			? Buffer.from(this.config.wasmBinary)
+			: fs.readFileSync(this.config.wasmPath)
+
+		const diskWorkerCode = fs.existsSync(workerFile) ? fs.readFileSync(workerFile, 'utf8') : ''
+		this.workerModulesCode = this.config.workerModulesCode ?? diskWorkerCode
+		const workerBundleHasLoader =
+			typeof this.workerModulesCode === 'string' && /WAWebVoipWebWasmLoader/.test(this.workerModulesCode)
+
+		this.loaderCode =
+			this.config.loaderCode ??
+			(workerBundleHasLoader ? '' : fs.existsSync(loaderFile) ? fs.readFileSync(loaderFile, 'utf8') : '')
+
+		if (!this.loaderCode && !this.workerModulesCode) {
+			throw new Error('No loader/worker code available to initialize VoIP')
+		}
+
+		const memory = new WebAssembly.Memory({ initial: 256, maximum: 32768, shared: true })
+		this.wasmMemory = memory
+		this.wasmModule = await WebAssembly.compile(wasmBuffer)
+		this.vmContext = this.createVMContext(memory)
+
+		const runModuleCode = code => {
+			if (code) vm.runInContext(code, this.vmContext)
+		}
+		runModuleCode(this.workerModulesCode)
+		runModuleCode(this.loaderCode)
+
+		this.vmContext.WAWebVoipWebWasmWorkerResource = this.requireModule('WAWebVoipWebWasmWorkerResource')
+
+		const loaderModuleNames = [
+			this.config.loaderModuleName,
+			'WAWebVoipWebWasmLoader',
+			'WAWebVoipWebWasmLoader.worker',
+			'WAWebVoipWebWasmLoader_ProdLab_internal.worker',
+			'WAWebVoipWebWasmLoader_ProdLabvideo_internal.worker'
+		].filter((v, i, a) => !!v && a.indexOf(v) === i)
+
+		let wasmLoader = null
+		for (const moduleName of loaderModuleNames) {
+			const candidate = this.requireModule(moduleName)
+			if (typeof candidate === 'function') {
+				wasmLoader = candidate
+				break
+			}
+			if (typeof candidate?.default === 'function') {
+				wasmLoader = candidate.default
+				break
+			}
+		}
+		if (typeof wasmLoader !== 'function') {
+			throw new Error(`No compatible WASM loader found. Tried: ${loaderModuleNames.join(', ')}`)
+		}
+
+		if (!WasmEngine.globalCallbacksRegistered) this.registerGlobalCallbacks()
+		await this.initPThreadPool()
+		const workersLoadingPromise = this.loadWasmModuleToAllWorkers()
+
+		const readyPromise = wasmLoader({
+			wasmBinary: wasmBuffer,
+			wasmMemory: memory,
+			locateFile: () => this.config.wasmPath,
+			onRuntimeInitialized: () => {}
+		})
+
+		const [instance] = await Promise.all([readyPromise, workersLoadingPromise])
+		this.instance = instance
+		this.initialized = true
+	}
+
+	isInitialized() {
+		return this.initialized
+	}
+
+	destroy() {
+		this.stopAudioPlaybackLoop()
+		if (this.instance && typeof this.instance.endCall === 'function') {
+			try {
+				this.instance.endCall(0, false)
+			} catch {}
+		}
+		for (const worker of [...this.runningWorkers, ...this.unusedWorkers]) {
+			try {
+				worker.terminate()
+			} catch {}
+		}
+		this.runningWorkers = []
+		this.unusedWorkers = []
+		this.instance = null
+		this.vmContext = null
+		this.moduleRegistry.clear()
+		this.wasmModule = null
+		this.wasmMemory = null
+		this.initialized = false
+	}
+
+	initVoipStack(selfJid, meUserJid, selfLid) {
+		this.ensureInitialized()
+		if (this.voipStackInitialized || this.voipStackInitPromise) return
+
+		this.voipStackInitPromise = new Promise(resolveInit => {
+			this.voipReadyPromise = new Promise(readyResolve => {
+				this.voipReadyResolver = () => {
+					this.voipStackInitialized = true
+					this.voipReadyResolver = null
+					this.voipReadyPromise = null
+					readyResolve()
+				}
+			})
+
+			try {
+				this.applyDefaultAbProps()
+				try {
+					this.instance.initVoipStack(selfJid, meUserJid, selfLid)
+				} catch (modernErr) {
+					if (
+						modernErr?.name === 'BindingError' &&
+						(String(modernErr?.message ?? '').includes('expected 8 args') ||
+							String(modernErr?.message ?? '').includes('takes 8'))
+					) {
+						this.instance.initVoipStack(selfJid, meUserJid, selfLid, true, 5, 0, 8, 16)
+					} else {
+						throw modernErr
+					}
+				}
+
+				Promise.race([
+					this.voipReadyPromise,
+					new Promise(r =>
+						setTimeout(() => {
+							this.voipStackInitialized = true
+							r()
+						}, VOIP_READY_TIMEOUT_MS)
+					)
+				]).finally(() => {
+					this.voipStackInitPromise = null
+					resolveInit()
+				})
+			} catch {
+				this.voipReadyResolver = null
+				this.voipReadyPromise = null
+				this.voipStackInitPromise = null
+				resolveInit()
+			}
+		})
+	}
+
+	async waitForVoipStackReady() {
+		if (this.voipStackInitialized) return
+		if (this.voipStackInitPromise) {
+			await this.voipStackInitPromise
+		} else {
+			await new Promise(r => setTimeout(r, 100))
+		}
+	}
+
+	isVoipStackReady() {
+		return this.voipStackInitialized
+	}
+
+	startCall(options) {
+		this.ensureInitialized()
+		const peers = this.makeStringList(options.peerList ?? [options.peerJid])
+		const tcToken = this.createUint8List(options.extraData)
+		const isLidCall = options.isLidCall ?? options.peerJid.includes('@lid')
+		const isFromDialer = options.isFromDialer ?? false
+		const peerJid = String(options.peerJid)
+
+		try {
+			try {
+				return this.instance.startVoipCall(
+					peerJid,
+					peers,
+					options.callId,
+					options.isVideo,
+					options.peerPn,
+					isLidCall,
+					isFromDialer,
+					tcToken
+				)
+			} catch (error) {
+				if (error?.name !== 'BindingError') throw error
+				return this.instance.startVoipCall(
+					peerJid,
+					peers,
+					options.callId,
+					options.isVideo,
+					options.peerPn,
+					isFromDialer,
+					tcToken
+				)
+			}
+		} finally {
+			peers?.delete?.()
+			tcToken?.delete?.()
+		}
+	}
+
+	endCall(reason = 0, sendTerminate = true) {
+		this.ensureInitialized()
+		this.instance.endCall(reason, sendTerminate)
+	}
+
+	setMute(muted) {
+		this.ensureInitialized()
+		return this.instance.setCallMute(muted)
+	}
+
+	updateNetworkMedium(networkMedium, networkMtu = 0) {
+		this.ensureInitialized()
+		this.instance.updateNetworkMedium?.(networkMedium, networkMtu)
+	}
+
+	handleSignalingOffer(msg) {
+		this.ensureInitialized()
+		const tcTokenList = this.createUint8List(msg.tcToken)
+		try {
+			this.instance.handleIncomingSignalingOffer(
+				msg.payload,
+				String(msg.peerPlatform ?? 0),
+				String(msg.peerAppVersion ?? '0'),
+				String(msg.epochId ?? '0'),
+				String(msg.timestamp ?? '0'),
+				msg.isOffline ?? false,
+				msg.isOfferNotContact ?? false,
+				String(msg.peerJid),
+				tcTokenList
+			)
+		} finally {
+			tcTokenList?.delete?.()
+		}
+	}
+
+	handleSignalingMessage(msg) {
+		this.ensureInitialized()
+		const tcTokenList = this.createUint8List(msg.tcToken)
+		try {
+			this.instance.handleIncomingSignalingMessage(
+				msg.payload,
+				String(msg.peerPlatform ?? '0'),
+				String(msg.peerAppVersion ?? '0'),
+				String(msg.epochId ?? '0'),
+				String(msg.timestamp ?? '0'),
+				msg.isOffline ?? false,
+				String(msg.peerJid),
+				tcTokenList
+			)
+		} finally {
+			tcTokenList?.delete?.()
+		}
+	}
+
+	handleSignalingAck(msg) {
+		this.ensureInitialized()
+		const options = this.createUint8List(msg.extraData)
+		try {
+			this.instance.handleIncomingSignalingAck(
+				msg.payload,
+				String(msg.ackError ?? '0'),
+				String(msg.msgType ?? ''),
+				msg.peerJid ?? '',
+				options
+			)
+		} finally {
+			options?.delete?.()
+		}
+	}
+
+	handleSignalingReceipt(msg) {
+		this.ensureInitialized()
+		const tcTokenList = this.createUint8List(msg.tcToken)
+		try {
+			this.instance.handleIncomingSignalingReceipt?.(msg.payload, msg.peerJid, tcTokenList)
+		} finally {
+			tcTokenList?.delete?.()
+		}
+	}
+
+	handleOnTransportMessage(data, ip, port) {
+		this.ensureInitialized()
+		if (typeof this.instance.handleOnMessageFromHeap === 'function') {
+			const ptr = this.malloc(data.byteLength)
+			if (!ptr) return
+			try {
+				const heapU8 = this.instance.GROWABLE_HEAP_U8?.() ?? this.instance.HEAPU8
+				if (!heapU8) return
+				heapU8.set(data, ptr)
+				this.instance.handleOnMessageFromHeap(ptr, data.byteLength, ip, port)
+			} finally {
+				this.free(ptr)
+			}
+			return
+		}
+		if (typeof this.instance.handleOnMessage !== 'function') return
+		const dataList = this.createUint8List(data)
+		try {
+			this.instance.handleOnMessage(dataList, ip, port)
+		} finally {
+			dataList?.delete?.()
+		}
+	}
+
+	updateIceRtt(rttMs, relayIp, relayPort) {
+		this.ensureInitialized()
+		this.instance.updateIceRtt?.(rttMs, relayIp, relayPort)
+	}
+
+	sendAudioData(data, ptr) {
+		this.ensureInitialized()
+		if (!data || data.length === 0 || !ptr) return
+		if (typeof this.instance.onAudioDataFromJs !== 'function') return
+		try {
+			const heapF32 = this.instance.GROWABLE_HEAP_F32?.()
+			if (!heapF32) return
+			const index = Math.floor(ptr / 4)
+			if (index < 0 || index + data.length > heapF32.length) return
+			heapF32.set(data, index)
+			this.instance.onAudioDataFromJs(ptr, data.length)
+		} catch {}
+	}
+
+	malloc(size) {
+		this.ensureInitialized()
+		return this.instance._malloc(size)
+	}
+
+	free(ptr) {
+		this.ensureInitialized()
+		this.instance._free(ptr)
+	}
+
+	// â”€â”€â”€ private â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+
+	ensureInitialized() {
+		if (!this.initialized || !this.instance) {
+			throw new Error('WasmEngine not initialized. Call initialize() first.')
+		}
+	}
+
+	makeStringList(arr) {
+		const list = new this.instance.StringList()
+		for (const v of arr) list.push_back(v)
+		return list
+	}
+
+	createUint8List(data) {
+		if (!this.instance?.Uint8List) return null
+		const list = new this.instance.Uint8List()
+		if (data) data.forEach(byte => list.push_back(byte))
+		return list
+	}
+
+	startAudioPlaybackLoop() {
+		if (this.audioPlaybackLoopInterval) return
+		this.ensureInitialized()
+		this.isPlaybackActive = true
+		if (typeof this.instance.requestAudioDataFromWasmVoip !== 'function') return
+
+		const framesPerChunk = 320
+		const bufferSize = framesPerChunk * 4
+		try {
+			const _malloc = this.instance._malloc ?? this.instance.malloc
+			if (!_malloc) return
+			this.audioPlaybackBuffer = _malloc(bufferSize)
+		} catch {
+			return
+		}
+		if (!this.audioPlaybackBuffer || this.audioPlaybackBuffer <= 0) return
+
+		this.audioPlaybackLoopInterval = setInterval(() => {
+			if (!this.isPlaybackActive || !this.instance || !this.initialized) {
+				this.stopAudioPlaybackLoop()
+				return
+			}
+			try {
+				this.instance.requestAudioDataFromWasmVoip(this.audioPlaybackBuffer, bufferSize)
+				const heapF32 = this.instance.GROWABLE_HEAP_F32?.()
+				if (!heapF32) return
+				const index = Math.floor(this.audioPlaybackBuffer / 4)
+				const numFloats = Math.floor(bufferSize / 4)
+				if (index < 0 || index + numFloats > heapF32.length) return
+				const audioData = new Float32Array(heapF32.buffer, heapF32.byteOffset + index * 4, numFloats)
+				const hasNonZero = audioData.some(s => Math.abs(s) > 0.0001)
+				if (hasNonZero) this.config.callbacks?.onAudioPlaybackData?.(audioData)
+			} catch {}
+		}, 16)
+	}
+
+	stopAudioPlaybackLoop() {
+		this.isPlaybackActive = false
+		if (this.audioPlaybackLoopInterval) {
+			clearInterval(this.audioPlaybackLoopInterval)
+			this.audioPlaybackLoopInterval = null
+		}
+		if (this.audioPlaybackBuffer && this.audioPlaybackBuffer > 0) {
+			try {
+				this.instance?._free?.(this.audioPlaybackBuffer)
+			} catch {}
+			this.audioPlaybackBuffer = null
+		}
+	}
+
+	applyDefaultAbProps() {
+		if (!this.instance) return
+		const setInt =
+			typeof this.instance.setABPropInt === 'function'
+				? (k, v) => {
+						this.instance.setABPropInt(k, v)
+					}
+				: null
+		const setBool =
+			typeof this.instance.setABPropBool === 'function'
+				? (k, v) => {
+						this.instance.setABPropBool(k, v)
+					}
+				: null
+		const setString =
+			typeof this.instance.setABPropString === 'function'
+				? (k, v) => {
+						this.instance.setABPropString(k, v)
+					}
+				: null
+		if (!setInt && !setBool && !setString) return
+
+		const opts = this.config.options ?? {}
+		const intProps = {
+			heartbeat_interval_s: opts.heartbeatInterval ?? 30,
+			lobby_timeout_min: opts.lobbyTimeout ?? 1,
+			max_num_participants_for_ss: opts.maxParticipantsScreenShare ?? 32,
+			max_group_size_for_long_ringtone: opts.maxGroupSizeLongRingtone ?? 32,
+			app_exit_reason_version: 1,
+			log_level: opts.logLevel ?? 3,
+			calling_rust_migration_bitmap: 0,
+			calling_rust_migration_incoming_stanza_bitmap: 0,
+			default_endpoint_thread_poll_timeout: 0,
+			aigc_version: 0,
+			call_admin_version: 0,
+			vid_stream_pause_resume_jb_reset_threshold_ms: 0,
+			opus_max_bandwidth: 1103
+		}
+		const boolProps = {
+			enable_av_downgrade: false,
+			enable_new_user_action_stanza_for_raise_hand_sender: false,
+			enable_webcodec_video_encode: false,
+			enable_init_bwe_for_group_call: false,
+			enable_ring_for_gc_on_offer_expire: false,
+			allow_reporting_call_replayer_id: false,
+			enable_offer_v2_upgrade: false,
+			enable_silent_offer: false,
+			voice_ai_conversation_starter_latency_tracking: false,
+			enable_waiting_room_logging: false,
+			attach_transport_rtx: false,
+			ignore_joinable_terminate_on_expired_offer: false,
+			enable_passthrough_video_decoder: false
+		}
+
+		for (const [key, value] of Object.entries(intProps)) {
+			if (setInt && Number.isFinite(value))
+				try {
+					setInt(key, value)
+				} catch {}
+		}
+		for (const [key, value] of Object.entries(boolProps)) {
+			if (setBool)
+				try {
+					setBool(key, value)
+				} catch {}
+		}
+
+		const overrideProps = parseJsonObjectEnv(CALL_WASM_AB_PROPS_JSON)
+		for (const [key, value] of Object.entries(overrideProps)) {
+			try {
+				if (typeof value === 'boolean' && setBool) setBool(key, value)
+				else if (typeof value === 'number' && setInt) setInt(key, value)
+				else if (typeof value === 'string' && setString) setString(key, value)
+			} catch {}
+		}
+	}
+
+	allocateUnusedWorker() {
+		const workerScriptPath = resolveWorkerScriptPath()
+		if (!fs.existsSync(workerScriptPath)) return
+		try {
+			const worker = new Worker(workerScriptPath, {
+				stdout: true,
+				stderr: true,
+				workerData: {
+					wasmPath: this.config.wasmPath,
+					wasmBinary: this.config.wasmBinary,
+					workerModulesCode: this.workerModulesCode,
+					loaderCode: this.loaderCode,
+					loaderModuleName: this.config.loaderModuleName,
+					resourcesPath: this.config.resourcesPath,
+					enableLogs: this.config.enableLogs
+				}
+			})
+			const port = new NodeWorkerMessagePort(worker, 'WAWebVoipWebWasmWorker')
+			worker.stdout?.on('data', () => {})
+			worker.stderr?.on('data', filterWorkerStderr)
+			this.unusedWorkers.push(port)
+		} catch {}
+	}
+
+	async initPThreadPool() {
+		for (let i = 0; i < PTHREAD_POOL_SIZE; i += 1) this.allocateUnusedWorker()
+	}
+
+	loadWasmModuleToWorker(worker) {
+		return new Promise(resolve => {
+			const loadedHandler = msg => {
+				if (msg && msg.cmd === 'loaded') {
+					worker.removeMessageListener('cmd', loadedHandler)
+					this.workersLoadedCount += 1
+					if (this.workersLoadedCount >= PTHREAD_POOL_SIZE && this.removeRunDependencyCallback) {
+						this.removeRunDependencyCallback('loading-workers')
+					}
+					resolve()
+				}
+			}
+			worker.addMessageListener('cmd', loadedHandler)
+			worker.workerID = this.nextWorkerID++
+			worker.postMessage({
+				cmd: 'load',
+				type: 'cmd',
+				wasmMemory: this.wasmMemory,
+				wasmModule: this.wasmModule,
+				workerID: worker.workerID,
+				handlers: []
+			})
+		})
+	}
+
+	async loadWasmModuleToAllWorkers() {
+		this.workersLoadedCount = 0
+		await Promise.all(this.unusedWorkers.map(w => this.loadWasmModuleToWorker(w)))
+	}
+
+	registerGlobalCallbacks() {
+		const callbacks = this.config.callbacks ?? {}
+
+		WasmEngine.registerGlobalCallbackListener('loggingCallback', data => {
+			if (!this.config.enableLogs) return
+			const level = data?.level
+			const msg = data?.message ?? ''
+			const mapped = level === 1 ? 'error' : level === 2 ? 'warn' : level === 3 ? 'log' : 'debug'
+			callbacks.onLog?.(mapped, msg)
+		})
+
+		if (callbacks.onAudioCaptureInit) {
+			WasmEngine.registerGlobalCallbackListener('initCaptureDriverJS', data => {
+				callbacks.onAudioCaptureInit({
+					sampleRate: data?.sample_rate ?? data?.sampleRate,
+					channels: data?.channels,
+					bitsPerSample: data?.bits_per_sample ?? data?.bitsPerSample,
+					framesPerChunk: data?.frames_per_chunk ?? data?.framesPerChunk
+				})
+			})
+		}
+
+		WasmEngine.registerGlobalCallbackListener('startCaptureJS', () => callbacks.onAudioCaptureStart?.())
+		WasmEngine.registerGlobalCallbackListener('stopCaptureJS', () => callbacks.onAudioCaptureStop?.())
+
+		if (callbacks.onAudioPlaybackInit) {
+			WasmEngine.registerGlobalCallbackListener('initPlaybackDriverJS', data => {
+				callbacks.onAudioPlaybackInit({
+					sampleRate: data?.sample_rate ?? data?.sampleRate,
+					channels: data?.channels,
+					bitsPerSample: data?.bits_per_sample ?? data?.bitsPerSample,
+					framesPerChunk: data?.frames_per_chunk ?? data?.framesPerChunk
+				})
+			})
+		}
+
+		WasmEngine.registerGlobalCallbackListener('startPlaybackJS', () => {
+			callbacks.onAudioPlaybackStart?.()
+			this.startAudioPlaybackLoop()
+		})
+		WasmEngine.registerGlobalCallbackListener('stopPlaybackJS', () => {
+			this.stopAudioPlaybackLoop()
+			callbacks.onAudioPlaybackStop?.()
+		})
+
+		if (callbacks.onSignalingXmpp) {
+			WasmEngine.registerGlobalCallbackListener('onSignalingXmpp', data => {
+				const peerJid = data.peerJid ?? data.args?.peerJid
+				const callId = data.callId ?? data.args?.callId
+				let xmlPayload = data.xmlPayload ?? data.args?.xmlPayload
+				if (Array.isArray(xmlPayload)) xmlPayload = new Uint8Array(xmlPayload)
+				else if (
+					xmlPayload &&
+					typeof xmlPayload === 'object' &&
+					!(xmlPayload instanceof Uint8Array) &&
+					!Buffer.isBuffer(xmlPayload)
+				) {
+					xmlPayload = new Uint8Array(xmlPayload)
+				}
+				callbacks.onSignalingXmpp(peerJid, callId, xmlPayload)
+			})
+		}
+
+		if (callbacks.onCallEvent) {
+			WasmEngine.registerGlobalCallbackListener('onCallEvent', data => {
+				callbacks.onCallEvent(data.eventType, data.eventDataJson)
+			})
+		}
+
+		if (callbacks.sendDataToRelay) {
+			WasmEngine.registerGlobalCallbackListener('sendDataToRelay', data => {
+				let relayData = data.data ?? data.args?.data
+				const ip = data.ip ?? data.args?.ip
+				const portNum = data.port ?? data.args?.port
+				if (relayData instanceof Uint8Array) {
+					/* ok */
+				} else if (Array.isArray(relayData)) relayData = new Uint8Array(relayData)
+				else if (Buffer.isBuffer(relayData)) relayData = new Uint8Array(relayData)
+				else if (relayData && typeof relayData === 'object' && relayData.buffer) {
+					relayData = new Uint8Array(
+						relayData.buffer,
+						relayData.byteOffset ?? 0,
+						relayData.byteLength ?? relayData.length
+					)
+				} else if (relayData instanceof ArrayBuffer) relayData = new Uint8Array(relayData)
+				else return 0
+				if (!ip || !portNum) return 0
+				callbacks.sendDataToRelay(relayData, ip, portNum)
+				return relayData.byteLength
+			})
+		}
+
+		if (callbacks.onVideoFrame) {
+			WasmEngine.registerGlobalCallbackListener('onVideoFrameWasmToJs', data => {
+				let fb = data.frameBuffer ?? data.args?.frameBuffer
+				let bytes = null
+				if (fb instanceof Uint8Array) bytes = fb
+				else if (fb instanceof ArrayBuffer) bytes = new Uint8Array(fb)
+				else if (Buffer.isBuffer(fb)) bytes = new Uint8Array(fb)
+				else if (fb && typeof fb === 'object' && fb.buffer) {
+					bytes = new Uint8Array(fb.buffer, fb.byteOffset ?? 0, fb.byteLength ?? fb.length)
+				}
+				if (!bytes) return
+				callbacks.onVideoFrame({
+					data: bytes,
+					width: Number(data.width) || 0,
+					height: Number(data.height) || 0,
+					format: Number(data.format) || 0,
+					isKeyFrame: !!data.isKeyFrame,
+					userJid: data.userJid
+				})
+			})
+		}
+
+		WasmEngine.globalCallbacksRegistered = true
+	}
+
+	requireModule(name) {
+		const preDefinedModules = {
+			Promise,
+			WAWebVoipWebWasmWorkerResource: {
+				resourcePath: resolveWorkerScriptPath(),
+				name: 'WAWebVoipWebWasmWorker'
+			},
+			WorkerBundleResource: {
+				createDedicatedWebWorker: resource => {
+					const scriptPath =
+						resource?.resourcePath && fs.existsSync(resource.resourcePath)
+							? resource.resourcePath
+							: resolveWorkerScriptPath()
+					const worker = new Worker(scriptPath, {
+						stdout: true,
+						stderr: true,
+						workerData: {
+							wasmPath: this.config.wasmPath,
+							wasmBinary: this.config.wasmBinary,
+							workerModulesCode: this.workerModulesCode,
+							loaderCode: this.loaderCode,
+							loaderModuleName: this.config.loaderModuleName,
+							resourcesPath: this.config.resourcesPath,
+							enableLogs: this.config.enableLogs
+						}
+					})
+					worker.stdout?.on('data', () => {})
+					worker.stderr?.on('data', filterWorkerStderr)
+					return worker
+				}
+			},
+			WorkerClient: { init: () => {} },
+			WorkerMessagePort: {
+				WorkerMessagePort: NodeWorkerMessagePort,
+				CastWorkerMessagePort: w => w,
+				WorkerSyncedMessagePort: NodeWorkerMessagePort
+			},
+			bx: Object.assign(id => String(id), { getURL: () => '' }),
+			HasteSupportData: { handle: () => {} },
+			ServiceWorkerDynamicModules: { handle: () => {} },
+			WhatsAppWebServiceWorker: { default: true },
+			WAWebLogger: { initializeWAWebLogger: () => {} },
+			WAWebSw: { initHandlers: () => {} },
+			WAWebWamRuntimeProvider: { setWamRuntime: () => {} },
+			WAWebWamWorkerInterface: { commit: () => {}, set: () => {} },
+			ServerJSDefine: { handleDefine: () => {} },
+			ix: { add: () => {} },
+			MetaConfigMap: { add: () => {} },
+			QPLHasteSupportDataStorage: { default: { add: () => {}, get: () => null } },
+			getFalcoLogPolicy_DO_NOT_USE: { add: () => {} },
+			gkx: { add: () => {} },
+			justknobx: { add: () => {} },
+			qex: { add: () => {} }
+		}
+
+		if (preDefinedModules[name]) return preDefinedModules[name]
+		const mod = this.moduleRegistry.get(name)
+		if (!mod) return {}
+		if (mod.exports !== undefined) return mod.exports
+
+		const requireFn = name => this.requireModule(name)
+		const normalizeModuleResult = value => {
+			if (value && typeof value === 'object' && 'exports' in value && Object.keys(value).length === 1) {
+				return value.exports
+			}
+			return value
+		}
+		const importDefaultFn = dep => {
+			const v = requireFn(dep)
+			return v && v.__esModule ? v.default : v
+		}
+		const importAllFn = dep => {
+			const v = requireFn(dep)
+			if (v == null) return { default: v }
+			if (v.__esModule) return v
+			if (typeof v !== 'object' && typeof v !== 'function') return { default: v }
+			const ns = {}
+			for (const key of Object.keys(v)) ns[key] = v[key]
+			ns.default = v
+			return ns
+		}
+
+		const tryMetro = () => {
+			const module = { exports: {} }
+			mod.factory(this.vmContext ?? globalThis, requireFn, importDefaultFn, importAllFn, null, module, module.exports)
+			return normalizeModuleResult(module.exports)
+		}
+		const tryLegacy = () => {
+			const exports = {}
+			const module = { exports }
+			const resolvedDeps = mod.deps.map(dep => requireFn(dep))
+			mod.factory(this.vmContext ?? globalThis, requireFn, requireFn, requireFn, module, exports, ...resolvedDeps)
+			return normalizeModuleResult(module.exports)
+		}
+
+		let result = {}
+		let metroError = null
+		try {
+			result = tryMetro()
+		} catch (e) {
+			metroError = e
+		}
+		if (metroError != null || (result && typeof result === 'object' && Object.keys(result).length === 0)) {
+			try {
+				const legacyResult = tryLegacy()
+				if (typeof legacyResult === 'function' || (legacyResult && Object.keys(legacyResult).length > 0)) {
+					result = legacyResult
+				}
+			} catch {}
+		}
+		mod.exports = result
+		return result
+	}
+
+	createVMContext(memory) {
+		const callbacks = this.config.callbacks ?? {}
+
+		const wasmCallbacks = {
+			onVoipReady: () => {
+				this.voipReadyResolver?.()
+				callbacks.onVoipReady?.()
+			},
+			onSignalingXmpp: data => callbacks.onSignalingXmpp?.(data?.peerJid, data?.callId, data?.xmlPayload),
+			onCallEvent: data => callbacks.onCallEvent?.(data?.eventType, data?.eventDataJson),
+			sendDataToRelay: data => callbacks.sendDataToRelay?.(data?.data, data?.ip, data?.port),
+			loggingCallback: data => {
+				if (!this.config.enableLogs) return
+				const level = data?.level
+				const msg = data?.message ?? ''
+				const mapped = level === 1 ? 'error' : level === 2 ? 'warn' : level === 3 ? 'log' : 'debug'
+				callbacks.onLog?.(mapped, msg)
+			},
+			initCaptureDriverJS: data => {
+				callbacks.onAudioCaptureInit?.({
+					sampleRate: data?.sample_rate,
+					channels: data?.channels,
+					bitsPerSample: data?.bits_per_sample,
+					framesPerChunk: data?.frames_per_chunk
+				})
+				return 0
+			},
+			startCaptureJS: () => {
+				callbacks.onAudioCaptureStart?.()
+				return 0
+			},
+			stopCaptureJS: () => {
+				callbacks.onAudioCaptureStop?.()
+				return 0
+			},
+			initPlaybackDriverJS: data => {
+				callbacks.onAudioPlaybackInit?.({
+					sampleRate: data?.sample_rate,
+					channels: data?.channels,
+					bitsPerSample: data?.bits_per_sample,
+					framesPerChunk: data?.frames_per_chunk
+				})
+				return 0
+			},
+			startPlaybackJS: () => {
+				callbacks.onAudioPlaybackStart?.()
+				this.startAudioPlaybackLoop()
+				return 0
+			},
+			stopPlaybackJS: () => {
+				this.stopAudioPlaybackLoop()
+				callbacks.onAudioPlaybackStop?.()
+				return 0
+			},
+			startVideoCaptureJS: () => 0,
+			stopVideoCaptureJS: () => 0,
+			startDesktopCaptureJS: () => 0,
+			stopDesktopCaptureJS: () => 0,
+			dataChannelStateCallback: () => 0,
+			getBrowserAudioProcessingStatus: () => 7,
+			getBweModelPath: () => null,
+			videoFrameConsumed: () => 0,
+			cryptoHkdfExtractWithSaltAndExpand: data => {
+				const key = toByteArray(data?.key_)
+				const salt = data?.salt_ ? toByteArray(data.salt_) : new Uint8Array(0)
+				const info = toByteArray(data?.info_)
+				const length = data?.length ?? 32
+				return callbacks.cryptoHkdf?.(key, salt, info, length) ?? new Uint8Array(length)
+			},
+			hmacSha256KeyGenerator: data => {
+				const hmacData = new Uint8Array(data?.data_ ?? [])
+				const hmacKey = new Uint8Array(data?.key_ ?? [])
+				return callbacks.hmacSha256?.(hmacData, hmacKey) ?? new Uint8Array(32)
+			},
+			isParticipantKnownContact: () => true,
+			getPersistentDirectoryPath: () => {
+				const dir = '/tmp/voip'
+				try {
+					if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true })
+				} catch {}
+				return dir
+			}
+		}
+
+		const __d = (name, deps, factory) => {
+			this.moduleRegistry.set(name, { deps, factory, exports: undefined })
+		}
+
+		const babelHelpers = {
+			extends: Object.assign,
+			inheritsLoose: (sub, sup) => {
+				sub.prototype = Object.create(sup.prototype)
+				sub.prototype.constructor = sub
+				sub.__proto__ = sup
+			},
+			objectWithoutPropertiesLoose: (source, excluded) => {
+				if (source == null) return {}
+				const target = {}
+				for (const key of Object.keys(source)) {
+					if (excluded.indexOf(key) >= 0) continue
+					target[key] = source[key]
+				}
+				return target
+			},
+			taggedTemplateLiteralLoose: (strings, raw) => {
+				if (!raw) raw = strings.slice(0)
+				strings.raw = raw
+				return strings
+			},
+			wrapNativeSuper: Class => Class
+		}
+
+		const addRunDependency = dep => {
+			if (dep === 'loading-workers' && this.workersLoadedCount >= PTHREAD_POOL_SIZE) {
+				setImmediate(() => this.removeRunDependencyCallback?.(dep))
+			}
+		}
+		const removeRunDependency = _dep => {}
+		this.removeRunDependencyCallback = removeRunDependency
+
+		const webCrypto = {
+			getRandomValues: arr => {
+				if (!arr || !ArrayBuffer.isView(arr)) {
+					throw new TypeError('crypto.getRandomValues expects a TypedArray')
+				}
+				const bytes = Buffer.from(arr.buffer, arr.byteOffset, arr.byteLength)
+				randomFillSync(bytes)
+				try {
+					const p = process.env.CALL_ORACLE_PATH || 'voip-oracle.jsonl'
+					fs.appendFileSync(
+						p,
+						JSON.stringify({
+							t: Date.now(),
+							src: 'wasm-engine',
+							k: 'rng',
+							len: bytes.length,
+							out: Buffer.from(bytes).toString('hex')
+						}) + '\n'
+					)
+				} catch {}
+				return arr
+			}
+		}
+
+		const selfObj = {
+			__swData: { dynamic_data: { hsdp: {}, dynamic_modules: [] } },
+			WhatsAppVoipWasmCallbacks: wasmCallbacks,
+			WhatsAppVoipWasmWorkerCompatibleCallbacks: wasmCallbacks,
+			crypto: webCrypto
+		}
+		selfObj.self = selfObj
+		selfObj.window = selfObj
+		selfObj.globalThis = selfObj
+
+		if (typeof global !== 'undefined') {
+			global.WhatsAppVoipWasmCallbacks = wasmCallbacks
+			global.WhatsAppVoipWasmWorkerCompatibleCallbacks = wasmCallbacks
+		}
+
+		const context = vm.createContext({
+			self: selfObj,
+			globalThis: selfObj,
+			global: selfObj,
+			window: selfObj,
+			console,
+			setTimeout,
+			setInterval,
+			clearTimeout,
+			clearInterval,
+			queueMicrotask,
+			performance,
+			babelHelpers,
+			__d,
+			require: name => this.requireModule(name),
+			addRunDependency,
+			removeRunDependency,
+			WebAssembly,
+			SharedArrayBuffer,
+			Atomics: this.createAtomicsWrapper(memory),
+			Int8Array,
+			Uint8Array,
+			Int16Array,
+			Uint16Array,
+			Int32Array,
+			Uint32Array,
+			Float32Array,
+			Float64Array,
+			BigInt64Array,
+			BigUint64Array,
+			ArrayBuffer,
+			DataView,
+			Error,
+			TypeError,
+			RangeError,
+			Promise,
+			Map,
+			Set,
+			WeakMap,
+			WeakSet,
+			Symbol,
+			Object,
+			Array,
+			String,
+			Number,
+			Boolean,
+			Math,
+			Date,
+			JSON,
+			RegExp,
+			Function,
+			Proxy,
+			Reflect,
+			crypto: webCrypto,
+			WhatsAppVoipWasmCallbacks: wasmCallbacks,
+			WhatsAppVoipWasmWorkerCompatibleCallbacks: wasmCallbacks,
+			navigator: {
+				userAgent: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36',
+				hardwareConcurrency: 4
+			},
+			process: undefined,
+			document: { currentScript: null },
+			location: { href: 'file:///wasm' },
+			Worker: class {
+				constructor() {}
+				postMessage() {}
+				terminate() {}
+				addEventListener() {}
+			},
+			fetch: async () => {
+				throw new Error('fetch not supported')
+			},
+			XMLHttpRequest: class {
+				open() {}
+				send() {}
+				setRequestHeader() {}
+			},
+			Blob: class {
+				constructor() {}
+			},
+			URL: { createObjectURL: () => 'blob:fake', revokeObjectURL: () => {} },
+			Image: class {
+				src = ''
+				onload = null
+				onerror = null
+			},
+			Audio: class {
+				src = ''
+				addEventListener() {}
+			},
+			__NODE_PTHREAD: {
+				getUnusedWorker: () => {
+					if (this.unusedWorkers.length === 0) return null
+					const worker = this.unusedWorkers.pop()
+					this.runningWorkers.push(worker)
+					return worker
+				},
+				returnWorkerToPool: worker => {
+					const idx = this.runningWorkers.indexOf(worker)
+					if (idx >= 0) {
+						this.runningWorkers.splice(idx, 1)
+						this.unusedWorkers.push(worker)
+					}
+				},
+				spawnThread: params => {
+					const worker = this.unusedWorkers.pop()
+					if (!worker) return 6
+					this.runningWorkers.push(worker)
+					this.pthreads[params.pthread_ptr] = worker
+					worker.pthread_ptr = params.pthread_ptr
+					const pthreadTable = this.instance?.PThread?.pthreads
+					if (pthreadTable) pthreadTable[params.pthread_ptr] = worker
+					worker.postMessage({
+						cmd: 'run',
+						start_routine: params.startRoutine,
+						arg: params.arg,
+						pthread_ptr: params.pthread_ptr
+					})
+					return 0
+				},
+				unusedWorkersCount: () => this.unusedWorkers.length,
+				runningWorkersCount: () => this.runningWorkers.length
+			},
+			__IS_NODE_PTHREAD_ENV: true
+		})
+
+		context.self = context
+		context.globalThis = context
+		context.global = context
+		context.window = context
+		return context
+	}
+
+	createAtomicsWrapper(_memory) {
+		const atomicsWrapper = {
+			add: Atomics.add.bind(Atomics),
+			and: Atomics.and.bind(Atomics),
+			compareExchange: Atomics.compareExchange.bind(Atomics),
+			exchange: Atomics.exchange.bind(Atomics),
+			isLockFree: Atomics.isLockFree.bind(Atomics),
+			load: Atomics.load.bind(Atomics),
+			or: Atomics.or.bind(Atomics),
+			store: Atomics.store.bind(Atomics),
+			sub: Atomics.sub.bind(Atomics),
+			xor: Atomics.xor.bind(Atomics),
+			notify: (typedArray, index, count) => {
+				try {
+					return Atomics.notify(typedArray, index, count)
+				} catch (e) {
+					if (e?.message?.includes('futex_wake') || e?.message?.includes('main_browser_thread')) return 0
+					throw e
+				}
+			},
+			waitAsync: Atomics.waitAsync
+				? Atomics.waitAsync.bind(Atomics)
+				: () => ({ async: true, value: Promise.resolve('ok') }),
+			wait: (typedArray, index, value, timeout) => {
+				const currentValue = Atomics.load(typedArray, index)
+				if (currentValue !== value) return 'not-equal'
+				if (timeout !== undefined && timeout <= 0) return 'timed-out'
+				return 'timed-out'
+			},
+			[Symbol.toStringTag]: 'Atomics'
+		}
+		return atomicsWrapper
+	}
+}
+
+module.exports = { WasmEngine }
