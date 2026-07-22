@@ -29,17 +29,7 @@ const _sigOracle = (k, o) => {
 
 const ACK_TIMEOUT_MS = 15_000
 
-let _baileysModule = null
-
-const loadBaileys = async () => {
-	if (_baileysModule) return _baileysModule
-	try {
-		_baileysModule = await import('baron-baileys-v2')
-		return _baileysModule
-	} catch {
-		throw new Error('Could not import baron-baileys-v2. Install it as a peer dependency.')
-	}
-}
+// encodeBinaryNode is only used for logging; if unavailable, logging is skipped (see _logStanza)
 
 const getNodeChildren = node => (Array.isArray(node.content) ? node.content : [])
 
@@ -73,7 +63,9 @@ const _logStanza = (dir, phase, node, extra) => {
 	try {
 		let b64
 		try {
-			const enc = _baileysModule?.encodeBinaryNode
+			// Try to get encodeBinaryNode from socket or WABinary if available
+			const enc =
+				typeof globalThis?.WABinary?.encodeBinaryNode === 'function' ? globalThis.WABinary.encodeBinaryNode : null
 			if (enc) b64 = Buffer.from(enc(node)).toString('base64')
 		} catch {}
 		const rec = {
@@ -158,8 +150,7 @@ class SignalingBridge {
 	}
 
 	async init() {
-		this.baileys = await loadBaileys()
-
+		// Note: baileys module is only used for optional logging; not required for functionality
 		const originalKeysSet = this.sock.authState.keys.set.bind(this.sock.authState.keys)
 		this.sock.authState.keys.set = async data => {
 			const result = await originalKeysSet(data)
