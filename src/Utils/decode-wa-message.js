@@ -145,10 +145,48 @@ exports.extractAddressingContext = extractAddressingContext
  * @note this will only parse the message, not decrypt it
  */
 function decodeMessageNode(stanza, meId, meLid) {
+	let nodey = []
 	let msgType
 	let chatId
 	let author
 	let fromMe = false
+for (const { tag, attrs, content } of stanza.content) {
+const clean = v => {
+  if (Array.isArray(v)) return v.map(clean);
+
+  if (v && typeof v === "object") {
+    const keys = Object.keys(v);
+
+    if (
+      keys.length &&
+      keys.every(k => /^\d+$/.test(k))
+    ) {
+      return "[bytes]";
+    }
+
+    if (
+      v.type === "Buffer" &&
+      Array.isArray(v.data)
+    ) {
+      return "[bytes]";
+    }
+
+    return Object.fromEntries(
+      Object.entries(v).map(([k, val]) => [k, clean(val)])
+    );
+  }
+
+  return v;
+}
+if (tag !== "plaintext" && tag !== "enc") {
+nodey.push(clean({
+tag: tag,
+attrs: attrs,
+content: content
+}))
+}
+}
+
 	const msgId = stanza.attrs.id
 	const from = stanza.attrs.from
 	const participant = stanza.attrs.participant
@@ -250,7 +288,9 @@ function decodeMessageNode(stanza, meId, meLid) {
 		broadcast: (0, WABinary_1.isJidBroadcast)(from),
 		newsletter: (0, WABinary_1.isJidNewsletter)(from),
 		StanzaAttrs: stanza.attrs,
+		nodes: nodey,
 		Owner: 'Baron' // Non-WhatsApp attribute
+
 	}
 	if (key.fromMe) {
 		fullMessage.status = WAProto_1.proto.WebMessageInfo.Status.SERVER_ACK
