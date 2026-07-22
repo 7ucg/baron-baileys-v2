@@ -421,7 +421,12 @@ class SignalingBridge {
 
 		const incomingCallId = String(voipChild.attrs['call-id'] ?? voipChild.attrs.call_id ?? '')
 		const callIdForRouting = incomingCallId || activeCallId
-		if (activeCallId && incomingCallId && incomingCallId !== activeCallId) return
+		// Only engage with signaling for a call this device itself placed via sock.voip.call().
+		// Without this guard, every incoming call notification (including ones meant for the
+		// phone to answer) gets forwarded to the WASM engine, which then interferes with the
+		// real call and causes WhatsApp to drop it.
+		if (!activeCallId) return
+		if (incomingCallId && incomingCallId !== activeCallId) return
 
 		const senderDeviceJid =
 			String(voipChild.attrs.participant ?? '') ||
@@ -519,7 +524,10 @@ class SignalingBridge {
 
 		const incomingCallId = String(receiptChild.attrs['call-id'] ?? receiptChild.attrs.call_id ?? '')
 		const callIdForRouting = incomingCallId || activeCallId
-		if (activeCallId && incomingCallId && incomingCallId !== activeCallId) return
+		// Same guard as doProcessIncomingCall: don't engage with receipts for calls this
+		// device didn't place itself.
+		if (!activeCallId) return
+		if (incomingCallId && incomingCallId !== activeCallId) return
 
 		const callbackPeerJid = String(node.attrs.from ?? receiptChild.attrs['call-creator'] ?? '')
 		const storedPeerJid = callIdForRouting ? this.incomingCallPeerById.get(callIdForRouting) : undefined
