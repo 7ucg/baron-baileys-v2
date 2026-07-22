@@ -50,7 +50,8 @@ const makeWASocket = config => {
 	sock.initVoip = async function () {
 		const voipFn = await loadVoipSocket()
 		if (voipFn) {
-			return voipFn(sock)
+			voipFn(sock) // Attach voip to socket
+			return sock.voip // Return the voip object
 		}
 		throw new Error('VoIP module failed to load')
 	}
