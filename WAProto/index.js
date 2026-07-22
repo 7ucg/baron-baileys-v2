@@ -23053,6 +23053,7 @@ $root.proto = (function() {
                 case 54:
                 case 55:
                 case 56:
+                case 57:
                     break;
                 }
             }
@@ -23274,6 +23275,10 @@ $root.proto = (function() {
             case "NEW_CHAT_LIST":
             case 56:
                 message.botEntryPointOrigin = 56;
+                break;
+            case "CONTACTS_TAB":
+            case 57:
+                message.botEntryPointOrigin = 57;
                 break;
             }
             if (object.forwardScore != null)
@@ -25208,6 +25213,7 @@ $root.proto = (function() {
      * @property {number} GROUP_MEMBER=54 GROUP_MEMBER value
      * @property {number} CHATLIST_SEARCH=55 CHATLIST_SEARCH value
      * @property {number} NEW_CHAT_LIST=56 NEW_CHAT_LIST value
+     * @property {number} CONTACTS_TAB=57 CONTACTS_TAB value
      */
     proto.BotMetricsEntryPoint = (function() {
         var valuesById = {}, values = Object.create(valuesById);
@@ -25259,6 +25265,7 @@ $root.proto = (function() {
         values[valuesById[54] = "GROUP_MEMBER"] = 54;
         values[valuesById[55] = "CHATLIST_SEARCH"] = 55;
         values[valuesById[56] = "NEW_CHAT_LIST"] = 56;
+        values[valuesById[57] = "CONTACTS_TAB"] = 57;
         return values;
     })();
 
@@ -25505,6 +25512,7 @@ $root.proto = (function() {
                 case 54:
                 case 55:
                 case 56:
+                case 57:
                     break;
                 }
             }
@@ -25736,6 +25744,10 @@ $root.proto = (function() {
             case "NEW_CHAT_LIST":
             case 56:
                 message.destinationEntryPoint = 56;
+                break;
+            case "CONTACTS_TAB":
+            case 57:
+                message.destinationEntryPoint = 57;
                 break;
             }
             switch (object.threadOrigin) {
@@ -74647,7 +74659,6 @@ $root.proto = (function() {
              * @property {boolean|null} [supportHatchHistory] HistorySyncConfig supportHatchHistory
              * @property {Array.<string>|null} [supportedBotChannelFbids] HistorySyncConfig supportedBotChannelFbids
              * @property {boolean|null} [supportInlineContacts] HistorySyncConfig supportInlineContacts
-             * @property {boolean|null} [supportNewsletter] HistorySyncConfig supportNewsletter
              */
 
             /**
@@ -74858,14 +74869,6 @@ $root.proto = (function() {
              */
             HistorySyncConfig.prototype.supportInlineContacts = null;
 
-            /**
-             * HistorySyncConfig supportNewsletter.
-             * @member {boolean|null|undefined} supportNewsletter
-             * @memberof proto.DeviceProps.HistorySyncConfig
-             * @instance
-             */
-            HistorySyncConfig.prototype.supportNewsletter = null;
-
             // OneOf field names bound to virtual getters and setters
             var $oneOfFields;
 
@@ -75007,12 +75010,6 @@ $root.proto = (function() {
                 set: $util.oneOfSetter($oneOfFields)
             });
 
-            // Virtual OneOf for proto3 optional field
-            Object.defineProperty(HistorySyncConfig.prototype, "_supportNewsletter", {
-                get: $util.oneOfGetter($oneOfFields = ["supportNewsletter"]),
-                set: $util.oneOfSetter($oneOfFields)
-            });
-
             /**
              * Creates a new HistorySyncConfig instance using the specified properties.
              * @function create
@@ -75086,8 +75083,6 @@ $root.proto = (function() {
                         writer.uint32(/* id 23, wireType 2 =*/186).string(message.supportedBotChannelFbids[i]);
                 if (message.supportInlineContacts != null && Object.hasOwnProperty.call(message, "supportInlineContacts"))
                     writer.uint32(/* id 24, wireType 0 =*/192).bool(message.supportInlineContacts);
-                if (message.supportNewsletter != null && Object.hasOwnProperty.call(message, "supportNewsletter"))
-                    writer.uint32(/* id 25, wireType 0 =*/200).bool(message.supportNewsletter);
                 return writer;
             };
 
@@ -75220,10 +75215,6 @@ $root.proto = (function() {
                         }
                     case 24: {
                             message.supportInlineContacts = reader.bool();
-                            break;
-                        }
-                    case 25: {
-                            message.supportNewsletter = reader.bool();
                             break;
                         }
                     default:
@@ -75384,11 +75375,6 @@ $root.proto = (function() {
                     if (typeof message.supportInlineContacts !== "boolean")
                         return "supportInlineContacts: boolean expected";
                 }
-                if (message.supportNewsletter != null && message.hasOwnProperty("supportNewsletter")) {
-                    properties._supportNewsletter = 1;
-                    if (typeof message.supportNewsletter !== "boolean")
-                        return "supportNewsletter: boolean expected";
-                }
                 return null;
             };
 
@@ -75457,8 +75443,6 @@ $root.proto = (function() {
                 }
                 if (object.supportInlineContacts != null)
                     message.supportInlineContacts = Boolean(object.supportInlineContacts);
-                if (object.supportNewsletter != null)
-                    message.supportNewsletter = Boolean(object.supportNewsletter);
                 return message;
             };
 
@@ -75596,11 +75580,6 @@ $root.proto = (function() {
                     object.supportInlineContacts = message.supportInlineContacts;
                     if (options.oneofs)
                         object._supportInlineContacts = "supportInlineContacts";
-                }
-                if (message.supportNewsletter != null && message.hasOwnProperty("supportNewsletter")) {
-                    object.supportNewsletter = message.supportNewsletter;
-                    if (options.oneofs)
-                        object._supportNewsletter = "supportNewsletter";
                 }
                 return object;
             };
@@ -142324,6 +142303,7 @@ $root.proto = (function() {
                     case 11:
                     case 12:
                     case 13:
+                    case 14:
                         break;
                     }
                 }
@@ -142495,6 +142475,10 @@ $root.proto = (function() {
                 case "BUSINESS_BROADCAST_INSIGHTS_REFRESH":
                 case 13:
                     message.peerDataOperationRequestType = 13;
+                    break;
+                case "CONTACT_REFRESH_REQUEST":
+                case 14:
+                    message.peerDataOperationRequestType = 14;
                     break;
                 }
                 if (object.requestStickerReupload) {
@@ -145972,6 +145956,7 @@ $root.proto = (function() {
                     case 11:
                     case 12:
                     case 13:
+                    case 14:
                         break;
                     }
                 }
@@ -146066,6 +146051,10 @@ $root.proto = (function() {
                 case "BUSINESS_BROADCAST_INSIGHTS_REFRESH":
                 case 13:
                     message.peerDataOperationRequestType = 13;
+                    break;
+                case "CONTACT_REFRESH_REQUEST":
+                case 14:
+                    message.peerDataOperationRequestType = 14;
                     break;
                 }
                 if (object.stanzaId != null)
@@ -151242,6 +151231,7 @@ $root.proto = (function() {
          * @property {number} GALAXY_FLOW_ACTION=11 GALAXY_FLOW_ACTION value
          * @property {number} BUSINESS_BROADCAST_INSIGHTS_DELIVERED_TO=12 BUSINESS_BROADCAST_INSIGHTS_DELIVERED_TO value
          * @property {number} BUSINESS_BROADCAST_INSIGHTS_REFRESH=13 BUSINESS_BROADCAST_INSIGHTS_REFRESH value
+         * @property {number} CONTACT_REFRESH_REQUEST=14 CONTACT_REFRESH_REQUEST value
          */
         Message.PeerDataOperationRequestType = (function() {
             var valuesById = {}, values = Object.create(valuesById);
@@ -151259,6 +151249,7 @@ $root.proto = (function() {
             values[valuesById[11] = "GALAXY_FLOW_ACTION"] = 11;
             values[valuesById[12] = "BUSINESS_BROADCAST_INSIGHTS_DELIVERED_TO"] = 12;
             values[valuesById[13] = "BUSINESS_BROADCAST_INSIGHTS_REFRESH"] = 13;
+            values[valuesById[14] = "CONTACT_REFRESH_REQUEST"] = 14;
             return values;
         })();
 

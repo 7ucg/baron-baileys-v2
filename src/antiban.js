@@ -111,6 +111,8 @@ var RateLimiter = class {
 	knownChats = /* @__PURE__ */ new Set()
 	burstCount = 0
 	lastMessageTime = 0
+	statsCacheTime = 0
+	statsCache = null
 	constructor(config = {}) {
 		this.config = { ...DEFAULT_CONFIG, ...config }
 	}
@@ -202,15 +204,27 @@ var RateLimiter = class {
 		}
 	}
 	/**
-	 * Get current usage stats
+	 * Get current usage stats (cached for 100ms)
 	 */
 	getStats() {
 		const now = Date.now()
+		if (this.statsCache && now - this.statsCacheTime < 100) {
+			return this.statsCache
+		}
 		this.cleanup(now)
-		return {
-			lastMinute: this.messages.filter(m => now - m.timestamp < TIME_CONSTANTS.MS_PER_MINUTE).length,
-			lastHour: this.messages.filter(m => now - m.timestamp < TIME_CONSTANTS.MS_PER_HOUR).length,
-			lastDay: this.messages.filter(m => now - m.timestamp < TIME_CONSTANTS.MS_PER_DAY).length,
+		let lastMinute = 0
+		let lastHour = 0
+		let lastDay = 0
+		for (const m of this.messages) {
+			const age = now - m.timestamp
+			if (age < TIME_CONSTANTS.MS_PER_MINUTE) lastMinute++
+			if (age < TIME_CONSTANTS.MS_PER_HOUR) lastHour++
+			if (age < TIME_CONSTANTS.MS_PER_DAY) lastDay++
+		}
+		this.statsCache = {
+			lastMinute,
+			lastHour,
+			lastDay,
 			limits: {
 				perMinute: this.config.maxPerMinute,
 				perHour: this.config.maxPerHour,
@@ -218,6 +232,8 @@ var RateLimiter = class {
 			},
 			knownChats: this.knownChats.size
 		}
+		this.statsCacheTime = now
+		return this.statsCache
 	}
 	/** Get the set of known chat JIDs (for state persistence) */
 	getKnownChats() {
@@ -3609,21 +3625,16 @@ var ContentVariator = class {
 		return result
 	}
 	/**
-	 * Create N unique variations of a message
+	 * Create N unique variations of a message (deterministic via counter)
 	 */
 	varyBulk(text, count) {
 		const results = []
-		const seen = /* @__PURE__ */ new Set()
+		const startCounter = this.counter
 		for (let i = 0; i < count; i++) {
-			let variation = this.vary(text)
-			let attempts = 0
-			while (seen.has(variation) && attempts < 10) {
-				variation = this.vary(text)
-				attempts++
-			}
-			seen.add(variation)
-			results.push(variation)
+			this.counter = startCounter + i
+			results.push(this.vary(text))
 		}
+		this.counter = startCounter + count
 		return results
 	}
 	addZeroWidth(text) {
@@ -3659,21 +3670,18 @@ var ContentVariator = class {
 		return text + emojis[this.counter % emojis.length]
 	}
 	applySynonyms(text) {
-		const words = text.split(/\b/)
-		let replaced = false
-		return words
-			.map(word => {
-				if (replaced) return word
-				const lower = word.toLowerCase()
-				const synonymList = SYNONYMS[lower]
-				if (synonymList && Math.random() > 0.5) {
-					replaced = true
-					const synonym = synonymList[Math.floor(Math.random() * synonymList.length)]
-					return word[0] === word[0].toUpperCase() ? synonym.charAt(0).toUpperCase() + synonym.slice(1) : synonym
-				}
-				return word
-			})
-			.join('')
+		const lower = text.toLowerCase()
+		for (const key of Object.keys(SYNONYMS)) {
+			const idx = lower.indexOf(key)
+			if (idx === -1) continue
+			const word = text.substring(idx, idx + key.length)
+			if (!SYNONYMS[key] || Math.random() > 0.5) continue
+			const synonym = SYNONYMS[key][Math.floor(Math.random() * SYNONYMS[key].length)]
+			const replacement =
+				word[0] === word[0].toUpperCase() ? synonym.charAt(0).toUpperCase() + synonym.slice(1) : synonym
+			return text.substring(0, idx) + replacement + text.substring(idx + key.length)
+		}
+		return text
 	}
 	randomPositions(max, count) {
 		const positions = []

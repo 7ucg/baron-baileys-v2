@@ -2727,6 +2727,37 @@ const makeMessagesRecvSocket = config => {
 			// }
 		}
 	}
+	const handleChatstate = async node => {
+		const { from, state } = node.attrs
+		if (!from) return
+		const isTyping = state === 'typing'
+		ev.emit('presence.update', [
+			{
+				id: from,
+				presences: {
+					[from]: isTyping ? 'composing' : 'paused'
+				}
+			}
+		])
+	}
+	const handlePresence = async node => {
+		const { from, type } = node.attrs
+		if (!from || !type) return
+		const presenceMap = {
+			available: 'available',
+			unavailable: 'unavailable'
+		}
+		const presence = presenceMap[type] || type
+		ev.emit('presence.update', [
+			{
+				id: from,
+				presences: {
+					[from]: presence
+				},
+				lastSeen: node.attrs.t ? Number(node.attrs.t) * 1000 : undefined
+			}
+		])
+	}
 	/// processes a node with the given function
 	/// and adds the task to the existing buffer if we're buffering events
 	const processNodeWithBuffer = async (node, identifier, exec) => {
@@ -2822,6 +2853,14 @@ const makeMessagesRecvSocket = config => {
 	ws.on('CB:status', async node => {
 		nodelogger(node)
 		await handleNewsletterStatus(node).catch(error => onUnexpectedError(error, 'handling newsletter status'))
+	})
+	ws.on('CB:chatstate', async node => {
+		nodelogger(node)
+		await handleChatstate(node).catch(error => onUnexpectedError(error, 'handling chatstate'))
+	})
+	ws.on('CB:presence', async node => {
+		nodelogger(node)
+		await handlePresence(node).catch(error => onUnexpectedError(error, 'handling presence'))
 	})
 	ws.on('CB:ack,class:message', node => {
 		nodelogger(node)

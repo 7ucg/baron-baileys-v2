@@ -1562,6 +1562,36 @@ const makeChatsSocket = config => {
 		return chatModify({ privateProcessingSetting: enabled ? 'enabled' : 'disabled' }, '')
 	}
 	/**
+	 * Update Meta AI features control
+	 * @param status 'enabled' | 'enabled_has_learning' | 'disabled'
+	 * @param replyMode 'muted' | 'ai_agent' | 'suggestions'
+	 */
+	const updateAIFeatures = (status = 'enabled', replyMode = 'suggestions') => {
+		const statusEnum =
+			require('../../WAProto/index.js').proto.SyncActionValue.MaibaAIFeaturesControlAction.MaibaAIFeatureStatus
+		const replyModeEnum =
+			require('../../WAProto/index.js').proto.SyncActionValue.MaibaAIFeaturesControlAction.MaibaAIReplyMode
+		const statusMap = {
+			enabled: statusEnum.ENABLED,
+			enabled_has_learning: statusEnum.ENABLED_HAS_LEARNING,
+			disabled: statusEnum.DISABLED
+		}
+		const replyModeMap = {
+			muted: replyModeEnum.MUTED,
+			ai_agent: replyModeEnum.AI_AGENT,
+			suggestions: replyModeEnum.SUGGESTIONS
+		}
+		return chatModify(
+			{
+				maibaAIFeatures: {
+					status: statusMap[status] ?? statusEnum.ENABLED,
+					replyMode: replyModeMap[replyMode] ?? replyModeEnum.SUGGESTIONS
+				}
+			},
+			''
+		)
+	}
+	/**
 	 * Update bio/about privacy (who can see your About text)
 	 * @param value 'all' | 'contacts' | 'contact_blacklist' | 'none'
 	 */
@@ -1648,6 +1678,30 @@ const makeChatsSocket = config => {
 	 */
 	const silenceChat = (jid, silent = true, until = null) => {
 		return chatModify({ silenceChat: { silent, until } }, jid)
+	}
+	/**
+	 * Clear all messages in a chat
+	 */
+	const clearChat = (jid, lastMessages) => {
+		return chatModify({ clear: true, lastMessages }, jid)
+	}
+	/**
+	 * Pin or unpin a chat to the top
+	 */
+	const pinChat = (jid, pinned = true) => {
+		return chatModify({ pin: { pinned } }, jid)
+	}
+	/**
+	 * Star or unstar messages
+	 */
+	const starMessages = (jid, messageIds, starred = true) => {
+		return chatModify({ star: { messages: messageIds, star: starred } }, jid)
+	}
+	/**
+	 * Set up a quick reply
+	 */
+	const setQuickReply = (text, shortcut) => {
+		return chatModify({ quickReply: { text, shortcut } }, '')
 	}
 	/**
 	 * Fetch bot profiles for a list of JIDs using USyncBotProfileProtocol
@@ -2263,6 +2317,7 @@ const makeChatsSocket = config => {
 		renameAIThread,
 		pinThreadMessage,
 		updatePrivateProcessingSetting,
+		updateAIFeatures,
 		updateBioPrivacy,
 		blockBot,
 		unblockBot,
@@ -2276,6 +2331,10 @@ const makeChatsSocket = config => {
 		markChatAsUnread,
 		setChatEphemeral,
 		silenceChat,
+		clearChat,
+		pinChat,
+		starMessages,
+		setQuickReply,
 		fetchBotProfiles,
 		updateChatLock,
 		updateChatWallpaper,

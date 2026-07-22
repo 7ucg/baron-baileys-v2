@@ -8725,7 +8725,8 @@ export namespace proto {
         WEB_NAVIGATION_BAR = 47,
         GROUP_MEMBER = 54,
         CHATLIST_SEARCH = 55,
-        NEW_CHAT_LIST = 56
+        NEW_CHAT_LIST = 56,
+        CONTACTS_TAB = 57
     }
 
     /** Properties of a BotMetricsMetadata. */
@@ -24668,9 +24669,6 @@ export namespace proto {
 
             /** HistorySyncConfig supportInlineContacts */
             supportInlineContacts?: (boolean|null);
-
-            /** HistorySyncConfig supportNewsletter */
-            supportNewsletter?: (boolean|null);
         }
 
         /** Represents a HistorySyncConfig. */
@@ -24753,9 +24751,6 @@ export namespace proto {
 
             /** HistorySyncConfig supportInlineContacts. */
             public supportInlineContacts?: (boolean|null);
-
-            /** HistorySyncConfig supportNewsletter. */
-            public supportNewsletter?: (boolean|null);
 
             /**
              * Creates a new HistorySyncConfig instance using the specified properties.
@@ -49151,7 +49146,8 @@ export namespace proto {
             HISTORY_SYNC_CHUNK_RETRY = 10,
             GALAXY_FLOW_ACTION = 11,
             BUSINESS_BROADCAST_INSIGHTS_DELIVERED_TO = 12,
-            BUSINESS_BROADCAST_INSIGHTS_REFRESH = 13
+            BUSINESS_BROADCAST_INSIGHTS_REFRESH = 13,
+            CONTACT_REFRESH_REQUEST = 14
         }
 
         /** Properties of a PinInChatMessage. */

@@ -841,6 +841,45 @@ const chatModificationToAppPatch = (mod, jid) => {
 			apiVersion: 1,
 			operation: OP.SET
 		}
+	} else if ('externalWebBeta' in mod) {
+		patch = {
+			syncAction: {
+				externalWebBetaAction: { isOptIn: !!mod.externalWebBeta }
+			},
+			index: ['setting_external_web_beta'],
+			type: 'regular',
+			apiVersion: 1,
+			operation: OP.SET
+		}
+	} else if ('maibaAIFeatures' in mod) {
+		const statusEnum = index_js_1.proto.SyncActionValue.MaibaAIFeaturesControlAction.MaibaAIFeatureStatus
+		const replyModeEnum = index_js_1.proto.SyncActionValue.MaibaAIFeaturesControlAction.MaibaAIReplyMode
+		const statusMap = {
+			enabled: statusEnum.ENABLED,
+			enabled_has_learning: statusEnum.ENABLED_HAS_LEARNING,
+			disabled: statusEnum.DISABLED
+		}
+		const replyModeMap = {
+			muted: replyModeEnum.MUTED,
+			ai_agent: replyModeEnum.AI_AGENT,
+			suggestions: replyModeEnum.SUGGESTIONS
+		}
+		const aiFeatures = mod.maibaAIFeatures
+		const status =
+			typeof aiFeatures.status === 'string' ? (statusMap[aiFeatures.status] ?? statusEnum.ENABLED) : aiFeatures.status
+		const replyMode =
+			typeof aiFeatures.replyMode === 'string'
+				? (replyModeMap[aiFeatures.replyMode] ?? replyModeEnum.SUGGESTIONS)
+				: aiFeatures.replyMode
+		patch = {
+			syncAction: {
+				maibaAiFeaturesControlAction: { aiFeatureStatus: status, aiReplyMode: replyMode }
+			},
+			index: ['setting_maiba_ai'],
+			type: 'regular',
+			apiVersion: 1,
+			operation: OP.SET
+		}
 	} else {
 		throw new boom_1.Boom('not supported')
 	}
@@ -1184,6 +1223,33 @@ const processSyncAction = (syncAction, ev, me, initialSyncOpts, logger) => {
 		ev.emit('settings.update', { setting: 'businessBroadcastInsights', value: action.businessBroadcastInsightsAction })
 	} else if (action?.bizAiSettingsNudgeAction) {
 		ev.emit('settings.update', { setting: 'bizAiSettingsNudge', value: action.bizAiSettingsNudgeAction })
+	} else if (action?.clearChatAction) {
+		ev.emit('chats.update', [
+			{
+				id,
+				lastMessageRecvTimestamp: 0,
+				conditional: getChatUpdateConditional(id, action.clearChatAction?.messageRange)
+			}
+		])
+	} else if (action?.deviceCapabilities) {
+		ev.emit('settings.update', { setting: 'deviceCapabilities', value: action.deviceCapabilities })
+	} else if (action?.ugcBot) {
+		ev.emit('settings.update', { setting: 'ugcBot', value: action.ugcBot })
+	} else if (action?.coexV2VersionAction) {
+		ev.emit('settings.update', { setting: 'coexV2Version', value: action.coexV2VersionAction })
+	} else if (action?.wasaRootSecretAction) {
+		ev.emit('settings.update', { setting: 'wasaRootSecret', value: action.wasaRootSecretAction })
+	} else if (action?.bubbleLockMessageAction) {
+		ev.emit('messages.update', [
+			{
+				key: { remoteJid: id, id: msgId, fromMe: fromMe === '1' },
+				update: { bubbleLocked: action.bubbleLockMessageAction?.locked }
+			}
+		])
+	} else if (action?.labelSublistAction) {
+		ev.emit('chats.update', [
+			{ id, labelSublistId: action.labelSublistAction?.subListId, conditional: getChatUpdateConditional(id, undefined) }
+		])
 	} else {
 		logger?.debug({ syncAction, id }, 'unprocessable update')
 	}
