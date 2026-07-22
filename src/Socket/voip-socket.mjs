@@ -25,14 +25,12 @@ const makeVoipSocket = sock => {
 			if (!authDeps) {
 				authDeps = await getAuthDependencies()
 			}
-			const authDir = sock.authState?.creds?.accountHash
-				? path.join(process.cwd(), `auth-voip-${sock.authState.creds.accountHash.slice(0, 8)}`)
-				: path.join(process.cwd(), 'auth-voip')
+			// Use the bot's existing auth state instead of creating a new one
 			voipClient = new VoipClient({
-				authDir,
 				useMultiFileAuthState: authDeps.useMultiFileAuthState,
 				makeWASocket: authDeps.makeWASocket,
-				DisconnectReason: authDeps.DisconnectReason
+				DisconnectReason: authDeps.DisconnectReason,
+				existingAuthState: sock.authState // Pass the bot's auth state
 			})
 		}
 		return voipClient

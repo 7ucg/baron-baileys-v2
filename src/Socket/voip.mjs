@@ -143,10 +143,8 @@ class VoipClient {
 		this.useMultiFileAuthState = config.useMultiFileAuthState
 		this.makeWASocket = config.makeWASocket
 		this.DisconnectReason = config.DisconnectReason
+		this.existingAuthState = config.existingAuthState
 
-		if (!this.useMultiFileAuthState) {
-			throw new Error('VoipClient requires useMultiFileAuthState in config')
-		}
 		if (!this.makeWASocket) {
 			throw new Error('VoipClient requires makeWASocket in config')
 		}
@@ -172,8 +170,9 @@ class VoipClient {
 	async connect() {
 		const makeSocket = this.makeWASocket
 
-		const authDir = resolve(this.config.authDir)
-		const { state, saveCreds } = await this.useMultiFileAuthState(authDir)
+		// Use existing auth state if provided, otherwise load from disk
+		const { state, saveCreds } =
+			this.existingAuthState || (await this.useMultiFileAuthState(resolve(this.config.authDir)))
 
 		const silentLogger = {
 			level: 'silent',
