@@ -2094,10 +2094,10 @@ const makeMessagesSocket = config => {
 			}
 		},
 
-		sendMetaAI: async (text, opts = {}) => {
+		sendMetaAI: async (jid, text, opts = {}) => {
 			const { proto } = require('../../WAProto/index.js')
 			const META_AI_BOT_JID = '867051314767696@bot'
-			const yourJid = authState.creds.me?.id || ''
+			const yourJid = jid || ''
 			const jid = opts.jid || META_AI_BOT_JID
 			const threadId = opts.threadId || Utils_1.generateMessageIDV2(yourJid)
 			const message = {
