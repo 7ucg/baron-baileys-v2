@@ -2096,29 +2096,60 @@ const makeMessagesSocket = config => {
 
 		sendMetaAI: async (text, opts = {}) => {
 			const { proto } = require('../../WAProto/index.js')
-			const META_AI_HATCH_JID = '1807055946647697@s.whatsapp.net'
+			const META_AI_BOT_JID = '867051314767696@bot'
 			const yourJid = authState.creds.me?.id || ''
-			const jid = opts.jid || META_AI_HATCH_JID
-			const conversationCtx = opts.conversationContext
+			const jid = opts.jid || META_AI_BOT_JID
+			const threadId = opts.threadId || Utils_1.generateMessageIDV2(yourJid)
 			const message = {
 				extendedTextMessage: proto.Message.ExtendedTextMessage.fromObject({
 					text,
+					previewType: 'NONE',
 					contextInfo: proto.ContextInfo.fromObject({
-						isSupportAiMessage: true,
-						botMessageInvokerJid: yourJid,
-						botTargetId: '1807055946647697'
-					})
+						botMessageSharingInfo: {
+							botEntryPointOrigin: 'FAVICON',
+							forwardScore: 0
+						}
+					}),
+					inviteLinkGroupTypeV2: 'DEFAULT'
 				}),
 				messageContextInfo: proto.MessageContextInfo.fromObject({
-					botMetadata: proto.BotMetadata.fromObject({
-						personaId: 'meta_ai',
-						invokerJid: yourJid,
-						aiConversationContext: conversationCtx || new Uint8Array(0)
-					})
+					deviceListMetadata: {
+						senderKeyHash: opts.senderKeyHash || '',
+						senderTimestamp: String(Math.floor(Date.now() / 1000))
+					},
+					deviceListMetadataVersion: 2,
+					messageSecret: opts.messageSecret || Buffer.alloc(32),
+					botMetadata: {
+						botModeSelectionMetadata: {
+							overrideMode: [0]
+						},
+						botThreadInfo: {
+							serverInfo: { title: text.substring(0, 50) },
+							clientInfo: { type: 'DEFAULT' }
+						},
+						botRenderingConfigMetadata: {
+							pixelDensity: 2.625
+						}
+					},
+					threadId: [
+						{
+							threadType: 'AI_THREAD',
+							threadKey: {
+								remoteJid: '0002@s.whatsapp.net',
+								fromMe: true,
+								id: threadId
+							}
+						}
+					]
 				})
 			}
 			const msgId = (0, Utils_1.generateMessageIDV2)(yourJid)
-			await relayMessage(jid, message, { messageId: msgId })
+			const messageOptions = {
+				messageId: msgId,
+				quoted: opts.quoted,
+				links: opts.links
+			}
+			await relayMessage(jid, message, messageOptions)
 			return msgId
 		}
 	}
