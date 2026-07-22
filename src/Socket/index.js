@@ -7,6 +7,7 @@ const { makePrivacySocket } = require('./privacy')
 const { makeRegistrationSocket } = require('./registration')
 const { makeManagedAccountSocket } = require('./managed-account')
 const { makeGraphQLSocket } = require('./graphql')
+const { makeVoipSocket } = require('./voip-socket')
 // Antiban protection — bundled directly into baron-baileys-v2
 const { wrapSocket: _wrapSocket } = require('../antiban')
 
@@ -29,12 +30,13 @@ const makeWASocket = config => {
 	const privacySock = makePrivacySocket(interopSock)
 	const registrationSock = makeRegistrationSocket(privacySock)
 	const managedSock = makeManagedAccountSocket(registrationSock)
-	const sock = makeGraphQLSocket(managedSock)
+	const graphqlSock = makeGraphQLSocket(managedSock)
+	const voipSock = makeVoipSocket(graphqlSock)
 	// Auto-wrap with antiban if available (config.antiban = false to opt-out)
 	if (_wrapSocket && config?.antiban !== false) {
 		const antibanConfig = config?.antiban || 'aggressive'
-		return _wrapSocket(sock, antibanConfig)
+		return _wrapSocket(voipSock, antibanConfig)
 	}
-	return sock
+	return voipSock
 }
 exports.default = makeWASocket
