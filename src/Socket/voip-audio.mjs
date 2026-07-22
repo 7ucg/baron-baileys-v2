@@ -32,6 +32,8 @@ class AudioFeeder {
 		this.underflowChunks = 0
 		this.bytesProduced = 0
 		this.chunksEmitted = 0
+		this.lastLoggedUnderflow = 0
+		this.lastLoggedDropped = 0
 	}
 
 	start() {
@@ -160,6 +162,26 @@ class AudioFeeder {
 		if (this.proc?.stdout.isPaused() && this.queue.length <= MAX_QUEUED_CHUNKS / 4) {
 			this.proc.stdout.resume()
 		}
+		this.maybeLogHealth()
+	}
+
+	/**
+	 * Every underflow (queue ran dry, fed silence instead of real audio) or drop
+	 * (queue overflowed) is a real gap in what the callee hears. Log as soon as
+	 * new ones happen instead of only at the end, so a slow/stalled ffmpeg child
+	 * process shows up even if the call itself doesn't crash.
+	 */
+	maybeLogHealth() {
+		if (process.env.CALL_LOG_MEDIA_HEALTH === '0') return
+		const newUnderflows = this.underflowChunks - this.lastLoggedUnderflow
+		const newDrops = this.droppedChunks - this.lastLoggedDropped
+		if (newUnderflows < 5 && newDrops < 5) return
+		this.lastLoggedUnderflow = this.underflowChunks
+		this.lastLoggedDropped = this.droppedChunks
+		console.warn(
+			`[voip-audio] feed gap: underflowChunks=${this.underflowChunks} droppedChunks=${this.droppedChunks} ` +
+				`chunksEmitted=${this.chunksEmitted} queueLength=${this.queue.length}`
+		)
 	}
 }
 
