@@ -1,5 +1,3 @@
-'use strict'
-
 /**
  * Relay transport.
  *
@@ -10,7 +8,7 @@
  * @author ShellTear
  */
 
-const { appendFileSync } = require('node:fs')
+import { appendFileSync } from 'node:fs'
 
 const RELAY_PROTO_UDP = 0
 const FAUX_WEB_CLIENT_RELAY_PORT = 3478
@@ -301,7 +299,7 @@ class RelayRtcTransport {
 		for (const id of [...this.connections.keys()]) this.closeConnection(id)
 	}
 
-	// â”€â”€â”€ private â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+	// ─── private ────────────────────────────────────────────────────────────────────
 
 	getOrCreateConnection(info) {
 		const existing = this.connections.get(info.id)
@@ -664,5 +662,4 @@ class RelayRtcTransport {
 	}
 }
 
-module.exports = { RelayRtcTransport }
-
+export { RelayRtcTransport }

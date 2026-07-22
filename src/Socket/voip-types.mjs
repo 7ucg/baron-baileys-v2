@@ -1,5 +1,3 @@
-'use strict'
-
 /**
  * Shared type definitions for baileys-caller VoIP.
  * These are mostly documentation via JSDoc; at runtime they're optional.
@@ -125,6 +123,4 @@ const CallState = {
  * @property {number} openConnections
  */
 
-module.exports = {
-	CallState
-}
+export { CallState }

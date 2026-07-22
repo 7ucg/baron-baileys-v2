@@ -1,5 +1,3 @@
-'use strict'
-
 /**
  * Signaling bridge.
  *
@@ -10,7 +8,7 @@
  * @author ShellTear
  */
 
-const fs = require('fs')
+import fs from 'fs'
 
 const S_WHATSAPP_NET = '@s.whatsapp.net'
 const TC_TOKEN_REQUEST_TIMEOUT_MS = 3500
@@ -286,7 +284,7 @@ class SignalingBridge {
 		return this.remoteDevicePeerByCallId.get(callId)
 	}
 
-	// â”€â”€â”€ private â€” outbound signaling â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+	// ─── private ─ outbound signaling ──────────────────────────────────────────────
 
 	async doSendSignaling(peerJid, callId, xmlPayload) {
 		const { decodeBinaryNode, getBinaryNodeChild } = this.baileys
@@ -387,7 +385,7 @@ class SignalingBridge {
 		})()
 	}
 
-	// â”€â”€â”€ private â€” inbound signaling â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+	// ─── private ─ inbound signaling ───────────────────────────────────────────────
 
 	async doProcessIncomingCall(node, voip, activeCallId) {
 		const { getAllBinaryNodeChildren, getBinaryNodeChild, encodeBinaryNode } = this.baileys
@@ -616,7 +614,7 @@ class SignalingBridge {
 		setNodeChildren(voipNode, children)
 	}
 
-	// â”€â”€â”€ private â€” JID utilities â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+	// ─── private ─ JID utilities ────────────────────────────────────────────────────
 
 	toBareJid(jid) {
 		const { jidDecode, jidEncode } = this.baileys
@@ -713,7 +711,7 @@ class SignalingBridge {
 		return [...result].slice(0, 5)
 	}
 
-	// â”€â”€â”€ private â€” TC token â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+	// ─── private ─ TC token ────────────────────────────────────────────────────────
 
 	rememberTcToken(jid, token, timestamp = '') {
 		const bareJid = this.toBareJid(jid)
@@ -742,5 +740,4 @@ class SignalingBridge {
 	}
 }
 
-module.exports = { SignalingBridge }
-
+export { SignalingBridge }

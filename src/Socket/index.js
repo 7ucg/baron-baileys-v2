@@ -7,9 +7,23 @@ const { makePrivacySocket } = require('./privacy')
 const { makeRegistrationSocket } = require('./registration')
 const { makeManagedAccountSocket } = require('./managed-account')
 const { makeGraphQLSocket } = require('./graphql')
-const { makeVoipSocket } = require('./voip-socket')
 // Antiban protection — bundled directly into baron-baileys-v2
 const { wrapSocket: _wrapSocket } = require('../antiban')
+
+// VoIP socket wrapper (ESM module)
+let makeVoipSocket = null
+const loadVoipSocket = async () => {
+	if (!makeVoipSocket) {
+		try {
+			const voipModule = await import('./voip-socket.mjs')
+			makeVoipSocket = voipModule.makeVoipSocket
+		} catch (err) {
+			console.error('Failed to load VoIP module:', err.message)
+			return null
+		}
+	}
+	return makeVoipSocket
+}
 
 // export the last socket layer
 const makeWASocket = config => {
@@ -30,13 +44,22 @@ const makeWASocket = config => {
 	const privacySock = makePrivacySocket(interopSock)
 	const registrationSock = makeRegistrationSocket(privacySock)
 	const managedSock = makeManagedAccountSocket(registrationSock)
-	const graphqlSock = makeGraphQLSocket(managedSock)
-	const voipSock = makeVoipSocket(graphqlSock)
+	const sock = makeGraphQLSocket(managedSock)
+
+	// Add VoIP initialization method to socket
+	sock.initVoip = async function () {
+		const voipFn = await loadVoipSocket()
+		if (voipFn) {
+			return voipFn(sock)
+		}
+		throw new Error('VoIP module failed to load')
+	}
+
 	// Auto-wrap with antiban if available (config.antiban = false to opt-out)
 	if (_wrapSocket && config?.antiban !== false) {
 		const antibanConfig = config?.antiban || 'aggressive'
-		return _wrapSocket(voipSock, antibanConfig)
+		return _wrapSocket(sock, antibanConfig)
 	}
-	return voipSock
+	return sock
 }
 exports.default = makeWASocket

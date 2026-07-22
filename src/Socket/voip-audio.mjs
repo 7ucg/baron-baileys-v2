@@ -1,5 +1,3 @@
-'use strict'
-
 /**
  * Audio feeder.
  *
@@ -9,7 +7,7 @@
  * @author ShellTear
  */
 
-const { spawn } = require('node:child_process')
+import { spawn } from 'node:child_process'
 
 const LOW_WATERMARK_CHUNKS = 16
 const MAX_QUEUED_CHUNKS = 1024
@@ -165,5 +163,4 @@ class AudioFeeder {
 	}
 }
 
-module.exports = { AudioFeeder }
-
+export { AudioFeeder }

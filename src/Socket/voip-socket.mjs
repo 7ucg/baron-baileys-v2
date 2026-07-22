@@ -1,7 +1,5 @@
-'use strict'
-
-const path = require('path')
-const { VoipClient, ActiveCall, CallState } = require('./voip')
+import path from 'node:path'
+import { VoipClient, ActiveCall, CallState } from './voip.mjs'
 
 /**
  * Attach VoIP/Voice Calling support to Socket
@@ -150,4 +148,4 @@ const makeVoipSocket = sock => {
 	return sock
 }
 
-module.exports = { makeVoipSocket }
+export { makeVoipSocket }

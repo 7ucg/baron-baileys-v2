@@ -1,7 +1,5 @@
-'use strict'
-
 /**
- * baileys-caller â€” WhatsApp voice calling for Node.js.
+ * baileys-caller – WhatsApp voice calling for Node.js.
  *
  * Wraps WhatsApp Web's official VoIP WASM stack and routes signaling through
  * Baileys. Public surface:
@@ -13,15 +11,15 @@
  * @author ShellTear
  */
 
-const { EventEmitter } = require('node:events')
-const { randomBytes, createHmac } = require('node:crypto')
-const { resolve } = require('node:path')
+import { EventEmitter } from 'node:events'
+import { randomBytes, createHmac } from 'node:crypto'
+import { resolve } from 'node:path'
 
-const { WasmEngine } = require('./voip-engine.js')
-const { RelayRtcTransport } = require('./voip-relay.js')
-const { SignalingBridge } = require('./voip-signaling.js')
-const { AudioFeeder } = require('./voip-audio.js')
-const { CallState } = require('./voip-types.js')
+import { WasmEngine } from './voip-engine.mjs'
+import { RelayRtcTransport } from './voip-relay.mjs'
+import { SignalingBridge } from './voip-signaling.mjs'
+import { AudioFeeder } from './voip-audio.mjs'
+import { CallState } from './voip-types.mjs'
 
 const SHA256_LEN = 32
 
@@ -113,7 +111,7 @@ class ActiveCall extends EventEmitter {
 		return this.endPromise
 	}
 
-	/** @internal â€” called by VoipClient on WASM call-state change */
+	/** @internal – called by VoipClient on WASM call-state change */
 	_updateState(state) {
 		this.state = state
 		if (state === CallState.PreacceptReceived) this.emit('ringing')
@@ -347,7 +345,7 @@ class VoipClient {
 		this.sock = null
 	}
 
-	// â”€â”€â”€ private â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+	// ─── private ────────────────────────────────────────────────────────────────────
 
 	handleCallEvent(eventType, eventData) {
 		if (eventType === 16 && eventData) {
@@ -404,5 +402,4 @@ class VoipClient {
 	}
 }
 
-module.exports = { VoipClient, ActiveCall, CallState }
-
+export { VoipClient, ActiveCall, CallState }

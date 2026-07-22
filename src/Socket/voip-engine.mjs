@@ -1,5 +1,3 @@
-'use strict'
-
 /**
  * WhatsApp VoIP WASM engine.
  *
@@ -10,11 +8,15 @@
  * @author ShellTear
  */
 
-const vm = require('node:vm')
-const fs = require('node:fs')
-const path = require('node:path')
-const { randomFillSync } = require('node:crypto')
-const { Worker } = require('node:worker_threads')
+import vm from 'node:vm'
+import fs from 'node:fs'
+import path from 'node:path'
+import { randomFillSync } from 'node:crypto'
+import { Worker } from 'node:worker_threads'
+import { fileURLToPath } from 'node:url'
+
+const __filename = fileURLToPath(import.meta.url)
+const __dirname = path.dirname(__filename)
 
 const CALL_WASM_AB_PROPS_JSON = process.env.CALL_WASM_AB_PROPS_JSON ?? ''
 const PTHREAD_POOL_SIZE = 20
@@ -49,9 +51,6 @@ const filterWorkerStderr = chunk => {
 		process.stderr.write(chunk)
 	}
 }
-
-// In CommonJS, __filename and __dirname are always available globally
-const __dirname = path.dirname(__filename)
 
 const resolveWorkerScriptPath = () => {
 	const compiled = path.join(__dirname, 'worker-bootstrap.js')
@@ -618,7 +617,7 @@ class WasmEngine {
 		this.instance._free(ptr)
 	}
 
-	// â”€â”€â”€ private â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+	// ─── private ────────────────────────────────────────────────────────────────────
 
 	ensureInitialized() {
 		if (!this.initialized || !this.instance) {
@@ -1382,4 +1381,4 @@ class WasmEngine {
 	}
 }
 
-module.exports = { WasmEngine }
+export { WasmEngine }
