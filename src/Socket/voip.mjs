@@ -2,11 +2,13 @@
  * baileys-caller – WhatsApp voice calling for Node.js.
  *
  * Wraps WhatsApp Web's official VoIP WASM stack and routes signaling through
- * Baileys. Public surface:
+ * Baileys. Public surface (through makeVoipSocket):
  *
- *   const client = new VoipClient({ authDir })
- *   await client.connect()
- *   const call = await client.call("12345678901", { audioSource: "./hi.mp3" })
+ *   sock.voip.connect()
+ *   const call = await sock.voip.call("12345678901", { audioSource: "./hi.mp3" })
+ *
+ * Note: VoipClient requires baron-baileys-v2 dependencies injected to avoid circular imports.
+ * Use makeVoipSocket to attach to a socket (dependencies handled automatically).
  *
  * @author ShellTear
  */
@@ -22,14 +24,6 @@ import { AudioFeeder } from './voip-audio.mjs'
 import { CallState } from './voip-types.mjs'
 
 const SHA256_LEN = 32
-
-const loadBaileys = async () => {
-	try {
-		return await import('baron-baileys-v2')
-	} catch {
-		throw new Error('Could not import baron-baileys-v2. Install it as a peer dependency.')
-	}
-}
 
 const toBareJid = jid => {
 	if (!jid) return jid
@@ -146,12 +140,25 @@ class ActiveCall extends EventEmitter {
 class VoipClient {
 	constructor(config) {
 		this.config = config
+		this.useMultiFileAuthState = config.useMultiFileAuthState
+		this.makeWASocket = config.makeWASocket
+		this.DisconnectReason = config.DisconnectReason
+
+		if (!this.useMultiFileAuthState) {
+			throw new Error('VoipClient requires useMultiFileAuthState in config')
+		}
+		if (!this.makeWASocket) {
+			throw new Error('VoipClient requires makeWASocket in config')
+		}
+		if (!this.DisconnectReason) {
+			throw new Error('VoipClient requires DisconnectReason in config')
+		}
+
 		this.engine = null
 		this.relay = null
 		this.signaling = null
 		this.sock = null
 		this.activeCall = null
-		this.baileys = null
 
 		this.capturePtr = 0
 		this.captureChunkBytes = 0
@@ -163,12 +170,10 @@ class VoipClient {
 
 	/** Connect to WhatsApp and bring up the WASM VoIP stack. */
 	async connect() {
-		this.baileys = await loadBaileys()
-		const { useMultiFileAuthState, default: makeWASocket, DisconnectReason } = this.baileys
-		const makeSocket = makeWASocket ?? this.baileys.makeWASocket ?? this.baileys
+		const makeSocket = this.makeWASocket
 
 		const authDir = resolve(this.config.authDir)
-		const { state, saveCreds } = await useMultiFileAuthState(authDir)
+		const { state, saveCreds } = await this.useMultiFileAuthState(authDir)
 
 		const silentLogger = {
 			level: 'silent',
@@ -226,7 +231,7 @@ class VoipClient {
 					}
 					if (update.connection === 'close' && !opened) {
 						const statusCode = update.lastDisconnect?.error?.output?.statusCode
-						const shouldReconnect = statusCode === 515 || statusCode === DisconnectReason?.restartRequired
+						const shouldReconnect = statusCode === 515 || statusCode === this.DisconnectReason?.restartRequired
 						if (shouldReconnect && retries < maxRetries) {
 							retries += 1
 							setTimeout(connectSocket, 1000)
