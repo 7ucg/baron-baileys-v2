@@ -589,13 +589,31 @@ class RelayRtcTransport {
 	startIceRttPolling(connection) {
 		this.stopIceRttPolling(connection)
 		const pc = connection.peerConnection
-		if (!pc || typeof pc.getStats !== 'function' || !this.config.onIceRtt) return
+		if (!pc) return
+
+		const logHealth = process.env.CALL_LOG_MEDIA_HEALTH !== '0'
+		let pollCount = 0
 
 		const poll = async () => {
-			const rttMs = await this.readCurrentRoundTripTimeMs(pc)
-			if (rttMs == null || connection.lastIceRttMs === rttMs) return
-			connection.lastIceRttMs = rttMs
-			this.config.onIceRtt?.(rttMs, connection.info.ip, connection.info.port)
+			pollCount += 1
+			if (this.config.onIceRtt && typeof pc.getStats === 'function') {
+				const rttMs = await this.readCurrentRoundTripTimeMs(pc)
+				if (rttMs != null && connection.lastIceRttMs !== rttMs) {
+					connection.lastIceRttMs = rttMs
+					this.config.onIceRtt?.(rttMs, connection.info.ip, connection.info.port)
+				}
+			}
+			// Every ~3s: log data channel buffering / packet stats. A growing bufferedAmount
+			// or rising droppedPackets means media isn't flowing smoothly even though ICE
+			// itself reports "completed" — this is invisible from iceConnectionState alone.
+			if (logHealth && pollCount % 3 === 0) {
+				console.warn(
+					`[voip-relay] media health for ${getConnectionIdentifier(connection.info.ip, connection.info.port)}: ` +
+						`bufferedAmount=${connection.dataChannel?.bufferedAmount ?? 'n/a'} ` +
+						`rttMs=${connection.lastIceRttMs ?? 'n/a'} ` +
+						`stats=${JSON.stringify(connection.stats)}`
+				)
+			}
 		}
 		void poll()
 		connection.iceStatsInterval = setInterval(() => {
