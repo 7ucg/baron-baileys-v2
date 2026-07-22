@@ -443,6 +443,12 @@ class RelayRtcTransport {
 		}
 
 		pc.oniceconnectionstatechange = () => {
+			if (process.env.CALL_LOG_ICE_RESTART !== '0') {
+				console.warn(
+					`[voip-relay] native iceConnectionState -> ${pc.iceConnectionState} for ` +
+						getConnectionIdentifier(connection.info.ip, connection.info.port)
+				)
+			}
 			if (pc.iceConnectionState === 'failed' || pc.iceConnectionState === 'closed') {
 				connection.state = 'failed'
 			}
@@ -505,6 +511,14 @@ class RelayRtcTransport {
 			pc.onicecandidate = event => {
 				if (event.candidate?.candidate && !connection.iceCandidate) {
 					connection.iceCandidate = event.candidate.candidate
+				}
+			}
+			pc.oniceconnectionstatechange = () => {
+				if (process.env.CALL_LOG_ICE_RESTART !== '0') {
+					console.warn(
+						`[voip-relay] (restart) native iceConnectionState -> ${pc.iceConnectionState} for ` +
+							getConnectionIdentifier(connection.info.ip, connection.info.port)
+					)
 				}
 			}
 
