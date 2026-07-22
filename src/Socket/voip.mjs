@@ -144,12 +144,16 @@ class VoipClient {
 		this.makeWASocket = config.makeWASocket
 		this.DisconnectReason = config.DisconnectReason
 		this.existingAuthState = config.existingAuthState
+		this.existingSocket = config.existingSocket
 
-		if (!this.makeWASocket) {
-			throw new Error('VoipClient requires makeWASocket in config')
-		}
-		if (!this.DisconnectReason) {
-			throw new Error('VoipClient requires DisconnectReason in config')
+		// If socket is provided, we don't need makeWASocket or DisconnectReason
+		if (!this.existingSocket) {
+			if (!this.makeWASocket) {
+				throw new Error('VoipClient requires makeWASocket in config or existingSocket')
+			}
+			if (!this.DisconnectReason) {
+				throw new Error('VoipClient requires DisconnectReason in config or existingSocket')
+			}
 		}
 
 		this.engine = null
@@ -168,81 +172,96 @@ class VoipClient {
 
 	/** Connect to WhatsApp and bring up the WASM VoIP stack. */
 	async connect() {
-		const makeSocket = this.makeWASocket
+		// If we have an existing socket, use it directly
+		if (this.existingSocket) {
+			this.sock = this.existingSocket
+		} else {
+			// Otherwise, create a new socket (legacy mode)
+			const makeSocket = this.makeWASocket
 
-		// Use existing auth state if provided, otherwise load from disk
-		const { state, saveCreds } =
-			this.existingAuthState || (await this.useMultiFileAuthState(resolve(this.config.authDir)))
-
-		const silentLogger = {
-			level: 'silent',
-			child: () => silentLogger,
-			trace: () => {},
-			debug: () => {},
-			info: () => {},
-			warn: () => {},
-			error: () => {},
-			fatal: () => {}
-		}
-
-		const createSocket = () =>
-			makeSocket({
-				auth: state,
-				emitOwnEvents: true,
-				logger: silentLogger
-			})
-
-		// Connect with auto-reconnect on the post-QR 515 stream-error path.
-		await new Promise((resolveOpen, rejectOpen) => {
-			let opened = false
-			let retries = 0
-			const maxRetries = 5
-
-			const connectSocket = () => {
-				this.sock = createSocket()
-				this.sock.ev.on('creds.update', saveCreds)
-
-				process.removeAllListeners('uncaughtException')
-				process.on('uncaughtException', err => {
-					const code = err?.output?.statusCode ?? err?.data?.attrs?.code
-					if ((code === 515 || code === '515') && !opened && retries < maxRetries) {
-						retries += 1
-						setTimeout(connectSocket, 1500)
-					} else if (!opened) {
-						rejectOpen(err)
-					}
-				})
-
-				this.sock.ev.on('connection.update', update => {
-					if (update.qr) {
-						void import('qrcode-terminal')
-							.then(qrt => (qrt.default ?? qrt).generate(update.qr, { small: true }))
-							.catch(() => {
-								console.log('Scan this QR code in WhatsApp > Linked Devices:')
-								console.log(update.qr)
-							})
-					}
-					if (update.connection === 'open') {
-						opened = true
-						process.removeAllListeners('uncaughtException')
-						resolveOpen()
-						return
-					}
-					if (update.connection === 'close' && !opened) {
-						const statusCode = update.lastDisconnect?.error?.output?.statusCode
-						const shouldReconnect = statusCode === 515 || statusCode === this.DisconnectReason?.restartRequired
-						if (shouldReconnect && retries < maxRetries) {
-							retries += 1
-							setTimeout(connectSocket, 1000)
-						} else {
-							rejectOpen(update.lastDisconnect?.error ?? new Error('socket closed before open'))
-						}
-					}
-				})
+			// Use existing auth state if provided, otherwise load from disk
+			let state, saveCreds
+			if (this.existingAuthState) {
+				// existingAuthState is the direct state object from the bot's socket
+				state = this.existingAuthState
+				saveCreds = () => {} // No-op since bot manages creds
+			} else {
+				// Load from disk if no existing state
+				const loaded = await this.useMultiFileAuthState(resolve(this.config.authDir))
+				state = loaded.state
+				saveCreds = loaded.saveCreds
 			}
 
-			connectSocket()
-		})
+			const silentLogger = {
+				level: 'silent',
+				child: () => silentLogger,
+				trace: () => {},
+				debug: () => {},
+				info: () => {},
+				warn: () => {},
+				error: () => {},
+				fatal: () => {}
+			}
+
+			const createSocket = () =>
+				makeSocket({
+					auth: state,
+					emitOwnEvents: true,
+					logger: silentLogger
+				})
+
+			// Connect with auto-reconnect on the post-QR 515 stream-error path.
+			await new Promise((resolveOpen, rejectOpen) => {
+				let opened = false
+				let retries = 0
+				const maxRetries = 5
+
+				const connectSocket = () => {
+					this.sock = createSocket()
+					this.sock.ev.on('creds.update', saveCreds)
+
+					process.removeAllListeners('uncaughtException')
+					process.on('uncaughtException', err => {
+						const code = err?.output?.statusCode ?? err?.data?.attrs?.code
+						if ((code === 515 || code === '515') && !opened && retries < maxRetries) {
+							retries += 1
+							setTimeout(connectSocket, 1500)
+						} else if (!opened) {
+							rejectOpen(err)
+						}
+					})
+
+					this.sock.ev.on('connection.update', update => {
+						if (update.qr) {
+							void import('qrcode-terminal')
+								.then(qrt => (qrt.default ?? qrt).generate(update.qr, { small: true }))
+								.catch(() => {
+									console.log('Scan this QR code in WhatsApp > Linked Devices:')
+									console.log(update.qr)
+								})
+						}
+						if (update.connection === 'open') {
+							opened = true
+							process.removeAllListeners('uncaughtException')
+							resolveOpen()
+							return
+						}
+						if (update.connection === 'close' && !opened) {
+							const statusCode = update.lastDisconnect?.error?.output?.statusCode
+							const shouldReconnect = statusCode === 515 || statusCode === this.DisconnectReason?.restartRequired
+							if (shouldReconnect && retries < maxRetries) {
+								retries += 1
+								setTimeout(connectSocket, 1000)
+							} else {
+								rejectOpen(update.lastDisconnect?.error ?? new Error('socket closed before open'))
+							}
+						}
+					})
+				}
+
+				connectSocket()
+			})
+		}
 
 		this.signaling = new SignalingBridge({ sock: this.sock })
 		await this.signaling.init()
@@ -342,7 +361,10 @@ class VoipClient {
 		this.activeCall = null
 		this.relay?.closeAll()
 		this.engine?.destroy()
-		this.sock?.end?.()
+		// Only end socket if we created it (not using existing socket)
+		if (!this.existingSocket) {
+			this.sock?.end?.()
+		}
 		this.engine = null
 		this.relay = null
 		this.signaling = null

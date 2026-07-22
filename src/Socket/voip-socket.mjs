@@ -19,18 +19,11 @@ const makeVoipSocket = sock => {
 	let voipConnected = false
 
 	// Helper to get VoIP client (lazy init)
-	let authDeps = null
 	const getVoipClient = async () => {
 		if (!voipClient) {
-			if (!authDeps) {
-				authDeps = await getAuthDependencies()
-			}
-			// Use the bot's existing auth state instead of creating a new one
+			// Pass the bot's existing socket directly - VoIP will reuse it
 			voipClient = new VoipClient({
-				useMultiFileAuthState: authDeps.useMultiFileAuthState,
-				makeWASocket: authDeps.makeWASocket,
-				DisconnectReason: authDeps.DisconnectReason,
-				existingAuthState: sock.authState // Pass the bot's auth state
+				existingSocket: sock // Pass the bot's socket directly
 			})
 		}
 		return voipClient
