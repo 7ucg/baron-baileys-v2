@@ -9,6 +9,39 @@
  */
 
 import fs from 'fs'
+import path from 'node:path'
+import { createRequire } from 'node:module'
+import { fileURLToPath } from 'node:url'
+
+const __filename = fileURLToPath(import.meta.url)
+const __dirname = path.dirname(__filename)
+const require = createRequire(import.meta.url)
+
+// Local CommonJS modules — required directly (not via the `baron-baileys-v2` package
+// name) to avoid a circular import, since this file lives inside that package itself.
+const { encodeBinaryNode } = require('../WABinary/encode.js')
+const { decodeBinaryNode } = require('../WABinary/decode.js')
+const { getBinaryNodeChild, getAllBinaryNodeChildren } = require('../WABinary/generic-utils.js')
+const { unpadRandomMax16, encodeWAMessage } = require('../Utils/generics.js')
+const { parseAndInjectE2ESessions } = require('../Utils/signal.js')
+const { encodeSignedDeviceIdentity } = require('../Utils/validate-connection.js')
+const { jidDecode, jidEncode, jidNormalizedUser } = require('../WABinary/jid-utils.js')
+const { proto } = require('../../WAProto/index.js')
+
+const baileys = {
+	encodeBinaryNode,
+	decodeBinaryNode,
+	getBinaryNodeChild,
+	getAllBinaryNodeChildren,
+	unpadRandomMax16,
+	encodeWAMessage,
+	parseAndInjectE2ESessions,
+	encodeSignedDeviceIdentity,
+	jidDecode,
+	jidEncode,
+	jidNormalizedUser,
+	proto
+}
 
 const S_WHATSAPP_NET = '@s.whatsapp.net'
 const TC_TOKEN_REQUEST_TIMEOUT_MS = 3500
@@ -132,7 +165,7 @@ const parseCountAttr = (value, fallback = 0) => {
 class SignalingBridge {
 	constructor(config) {
 		this.sock = config.sock
-		this.baileys = null
+		this.baileys = baileys
 		this.voip = null
 		this.observedTcTokens = new Map()
 		this.pendingTcTokenWaiters = new Map()
