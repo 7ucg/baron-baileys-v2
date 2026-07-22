@@ -593,6 +593,7 @@ class RelayRtcTransport {
 
 		const logHealth = process.env.CALL_LOG_MEDIA_HEALTH !== '0'
 		let pollCount = 0
+		let lastLoggedSnapshot = ''
 
 		const poll = async () => {
 			pollCount += 1
@@ -606,13 +607,19 @@ class RelayRtcTransport {
 			// Every ~3s: log data channel buffering / packet stats. A growing bufferedAmount
 			// or rising droppedPackets means media isn't flowing smoothly even though ICE
 			// itself reports "completed" — this is invisible from iceConnectionState alone.
+			// Skip if nothing changed since last log (the relay connection is kept warm
+			// between calls, so stats stay frozen once a call ends — no need to repeat them).
 			if (logHealth && pollCount % 3 === 0) {
-				console.warn(
-					`[voip-relay] media health for ${getConnectionIdentifier(connection.info.ip, connection.info.port)}: ` +
-						`bufferedAmount=${connection.dataChannel?.bufferedAmount ?? 'n/a'} ` +
-						`rttMs=${connection.lastIceRttMs ?? 'n/a'} ` +
-						`stats=${JSON.stringify(connection.stats)}`
-				)
+				const snapshot = JSON.stringify(connection.stats) + connection.dataChannel?.bufferedAmount
+				if (snapshot !== lastLoggedSnapshot) {
+					lastLoggedSnapshot = snapshot
+					console.warn(
+						`[voip-relay] media health for ${getConnectionIdentifier(connection.info.ip, connection.info.port)}: ` +
+							`bufferedAmount=${connection.dataChannel?.bufferedAmount ?? 'n/a'} ` +
+							`rttMs=${connection.lastIceRttMs ?? 'n/a'} ` +
+							`stats=${JSON.stringify(connection.stats)}`
+					)
+				}
 			}
 		}
 		void poll()
