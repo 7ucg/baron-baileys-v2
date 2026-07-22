@@ -175,6 +175,7 @@ const makeEventBuffer = logger => {
 		},
 		on: (...args) => ev.on(...args),
 		off: (...args) => ev.off(...args),
+		once: (...args) => ev.once(...args),
 		removeAllListeners: (...args) => ev.removeAllListeners(...args)
 	}
 }
