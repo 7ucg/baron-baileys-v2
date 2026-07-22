@@ -2095,11 +2095,16 @@ const makeMessagesSocket = config => {
 		},
 
 		sendMetaAI: async (jid1, text, opts = {}) => {
+			const crypto = require('crypto')
 			const { proto } = require('../../WAProto/index.js')
 			const META_AI_BOT_JID = '867051314767696@bot'
 			const yourJid = jid1 || ''
 			const jid = opts.jid || META_AI_BOT_JID
 			const threadId = opts.threadId || Utils_1.generateMessageIDV2(yourJid)
+			const now = Date.now()
+			const senderTimestamp = opts.senderTimestamp || String(Math.floor(now / 1000))
+			const messageSecret = opts.messageSecret || crypto.randomBytes(32)
+			const senderKeyHash = opts.senderKeyHash || crypto.randomBytes(8).toString('base64')
 			const message = {
 				extendedTextMessage: proto.Message.ExtendedTextMessage.fromObject({
 					text,
@@ -2114,11 +2119,11 @@ const makeMessagesSocket = config => {
 				}),
 				messageContextInfo: proto.MessageContextInfo.fromObject({
 					deviceListMetadata: {
-						senderKeyHash: opts.senderKeyHash || '',
-						senderTimestamp: String(Math.floor(Date.now() / 1000))
+						senderKeyHash,
+						senderTimestamp
 					},
 					deviceListMetadataVersion: 2,
-					messageSecret: opts.messageSecret || Buffer.alloc(32),
+					messageSecret,
 					botMetadata: {
 						botModeSelectionMetadata: {
 							overrideMode: [0]
@@ -2128,6 +2133,7 @@ const makeMessagesSocket = config => {
 							clientInfo: { type: 'DEFAULT' }
 						},
 						botRenderingConfigMetadata: {
+							bloksVersioningId: '1eb86e6f4117d052e6bab62fe758a2e2af43747b85c5c1a886c8262bac462ea4',
 							pixelDensity: 2.625
 						}
 					},
