@@ -111,7 +111,6 @@ class ActiveCall extends EventEmitter {
 		this.state = state
 		if (state === CallState.PreacceptReceived) this.emit('ringing')
 		else if (state === CallState.Active) {
-			this._startEventLoopMonitor()
 			this.emit('connected')
 		} else if (state === CallState.Idle || state === CallState.Ending) {
 			this._forceEnd('ended')
@@ -125,6 +124,7 @@ class ActiveCall extends EventEmitter {
 	 */
 	_startEventLoopMonitor() {
 		if (process.env.CALL_LOG_EVENT_LOOP_DELAY === '0') return
+		if (this._loopMonitor) return
 		try {
 			this._loopMonitor = monitorEventLoopDelay({ resolution: 20 })
 			this._loopMonitor.enable()
@@ -370,6 +370,11 @@ class VoipClient {
 		const call = new ActiveCall(callId, this.engine, durationMs)
 		call._audioSource = audioSource
 		this.activeCall = call
+		// Start measuring from the moment the call is placed, not just once it connects —
+		// whatever runs synchronously right after this call() returns (e.g. a bot's own
+		// command dispatch for the same message) can still stall the offer/ringing/ICE
+		// handshake, and that window was previously invisible to this diagnostic.
+		call._startEventLoopMonitor()
 
 		this.engine.startCall({
 			peerJid: peerLid,
