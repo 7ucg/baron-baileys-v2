@@ -268,6 +268,14 @@ class RelayRtcTransport {
 			connection.sentMedia &&
 			Date.now() - connection.lastRxPacketTime > ICE_RESTART_IDLE_THRESHOLD_MS
 		) {
+			if (process.env.CALL_LOG_ICE_RESTART !== '0') {
+				const idleMs = Date.now() - connection.lastRxPacketTime
+				console.warn(
+					`[voip-relay] ICE restart triggered for ${getConnectionIdentifier(ip, port)}: ` +
+						`no packet received for ${idleMs}ms (threshold ${ICE_RESTART_IDLE_THRESHOLD_MS}ms), ` +
+						`stats=${JSON.stringify(connection.stats)}`
+				)
+			}
 			connection.packetBuffer = []
 			connection.bufferedBytes = 0
 			bufferPacket(connection, arrayBuffer)

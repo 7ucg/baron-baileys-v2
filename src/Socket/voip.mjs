@@ -16,6 +16,7 @@
 import { EventEmitter } from 'node:events'
 import { randomBytes, createHmac } from 'node:crypto'
 import { resolve } from 'node:path'
+import { monitorEventLoopDelay } from 'node:perf_hooks'
 
 import { WasmEngine } from './voip-engine.mjs'
 import { RelayRtcTransport } from './voip-relay.mjs'
@@ -109,10 +110,38 @@ class ActiveCall extends EventEmitter {
 	_updateState(state) {
 		this.state = state
 		if (state === CallState.PreacceptReceived) this.emit('ringing')
-		else if (state === CallState.Active) this.emit('connected')
-		else if (state === CallState.Idle || state === CallState.Ending) {
+		else if (state === CallState.Active) {
+			this._startEventLoopMonitor()
+			this.emit('connected')
+		} else if (state === CallState.Idle || state === CallState.Ending) {
 			this._forceEnd('ended')
 		}
+	}
+
+	/**
+	 * Diagnostic only (see CALL_LOG_ICE_RESTART in voip-relay.mjs): tracks how long the Node
+	 * event loop was blocked during the live portion of the call, to correlate against any
+	 * "Verbindung wird neu aufgebaut" reports on the callee's screen.
+	 */
+	_startEventLoopMonitor() {
+		if (process.env.CALL_LOG_EVENT_LOOP_DELAY === '0') return
+		try {
+			this._loopMonitor = monitorEventLoopDelay({ resolution: 20 })
+			this._loopMonitor.enable()
+		} catch {}
+	}
+
+	_stopEventLoopMonitor() {
+		if (!this._loopMonitor) return
+		try {
+			this._loopMonitor.disable()
+			const maxMs = this._loopMonitor.max / 1e6
+			const meanMs = this._loopMonitor.mean / 1e6
+			console.warn(
+				`[voip] event loop delay during call ${this.callId}: max=${maxMs.toFixed(1)}ms mean=${meanMs.toFixed(1)}ms`
+			)
+		} catch {}
+		this._loopMonitor = null
 	}
 
 	/** @internal */
@@ -131,6 +160,7 @@ class ActiveCall extends EventEmitter {
 			clearTimeout(this.endTimer)
 			this.endTimer = null
 		}
+		this._stopEventLoopMonitor()
 		this.emit('ended', reason)
 		this.endResolver(reason)
 	}
