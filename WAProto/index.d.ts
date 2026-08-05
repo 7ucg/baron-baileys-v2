@@ -5538,7 +5538,10 @@ export namespace proto {
             UNIFIED_RESPONSE_MARKDOWN_LINKS_ENABLED = 63,
             AI_RICH_RESPONSE_MAPS_V2_ENABLED = 64,
             AI_SUBSCRIPTION_METERING_ENABLED = 65,
-            RICH_RESPONSE_SPORTS_WIDGET_ENABLED = 66
+            RICH_RESPONSE_SPORTS_WIDGET_ENABLED = 66,
+            AI_RICH_RESPONSE_ARTIFACTS_ENABLED = 67,
+            AI_RICH_RESPONSE_EMAIL_CALENDAR_ENABLED = 68,
+            AI_RICH_RESPONSE_REMINDERS_ENABLED = 69
         }
     }
 
@@ -11278,6 +11281,9 @@ export namespace proto {
 
         /** BotSignatureVerificationUseCaseProof certificateChain */
         certificateChain?: (Uint8Array[]|null);
+
+        /** BotSignatureVerificationUseCaseProof certificateChainSki */
+        certificateChainSki?: (proto.BotSignatureVerificationUseCaseProof.ICertificateSKI[]|null);
     }
 
     /** Represents a BotSignatureVerificationUseCaseProof. */
@@ -11300,6 +11306,9 @@ export namespace proto {
 
         /** BotSignatureVerificationUseCaseProof certificateChain. */
         public certificateChain: Uint8Array[];
+
+        /** BotSignatureVerificationUseCaseProof certificateChainSki. */
+        public certificateChainSki: proto.BotSignatureVerificationUseCaseProof.ICertificateSKI[];
 
         /**
          * Creates a new BotSignatureVerificationUseCaseProof instance using the specified properties.
@@ -11386,7 +11395,112 @@ export namespace proto {
             UNSPECIFIED = 0,
             WA_BOT_MSG = 1,
             WA_TEE_BOT_MSG = 2,
-            P2P_PILLS = 3
+            P2P_PILLS = 3,
+            WA_WAFFLE = 4,
+            WA_FEATURE_PKI = 5
+        }
+
+        /** Properties of a CertificateSKI. */
+        interface ICertificateSKI {
+
+            /** CertificateSKI useCase */
+            useCase?: (proto.BotSignatureVerificationUseCaseProof.BotSignatureUseCase|null);
+
+            /** CertificateSKI ski */
+            ski?: (Uint8Array|null);
+        }
+
+        /** Represents a CertificateSKI. */
+        class CertificateSKI implements ICertificateSKI {
+
+            /**
+             * Constructs a new CertificateSKI.
+             * @param [properties] Properties to set
+             */
+            constructor(properties?: proto.BotSignatureVerificationUseCaseProof.ICertificateSKI);
+
+            /** CertificateSKI useCase. */
+            public useCase?: (proto.BotSignatureVerificationUseCaseProof.BotSignatureUseCase|null);
+
+            /** CertificateSKI ski. */
+            public ski?: (Uint8Array|null);
+
+            /**
+             * Creates a new CertificateSKI instance using the specified properties.
+             * @param [properties] Properties to set
+             * @returns CertificateSKI instance
+             */
+            public static create(properties?: proto.BotSignatureVerificationUseCaseProof.ICertificateSKI): proto.BotSignatureVerificationUseCaseProof.CertificateSKI;
+
+            /**
+             * Encodes the specified CertificateSKI message. Does not implicitly {@link proto.BotSignatureVerificationUseCaseProof.CertificateSKI.verify|verify} messages.
+             * @param message CertificateSKI message or plain object to encode
+             * @param [writer] Writer to encode to
+             * @returns Writer
+             */
+            public static encode(message: proto.BotSignatureVerificationUseCaseProof.ICertificateSKI, writer?: $protobuf.Writer): $protobuf.Writer;
+
+            /**
+             * Encodes the specified CertificateSKI message, length delimited. Does not implicitly {@link proto.BotSignatureVerificationUseCaseProof.CertificateSKI.verify|verify} messages.
+             * @param message CertificateSKI message or plain object to encode
+             * @param [writer] Writer to encode to
+             * @returns Writer
+             */
+            public static encodeDelimited(message: proto.BotSignatureVerificationUseCaseProof.ICertificateSKI, writer?: $protobuf.Writer): $protobuf.Writer;
+
+            /**
+             * Decodes a CertificateSKI message from the specified reader or buffer.
+             * @param reader Reader or buffer to decode from
+             * @param [length] Message length if known beforehand
+             * @returns CertificateSKI
+             * @throws {Error} If the payload is not a reader or valid buffer
+             * @throws {$protobuf.util.ProtocolError} If required fields are missing
+             */
+            public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): proto.BotSignatureVerificationUseCaseProof.CertificateSKI;
+
+            /**
+             * Decodes a CertificateSKI message from the specified reader or buffer, length delimited.
+             * @param reader Reader or buffer to decode from
+             * @returns CertificateSKI
+             * @throws {Error} If the payload is not a reader or valid buffer
+             * @throws {$protobuf.util.ProtocolError} If required fields are missing
+             */
+            public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): proto.BotSignatureVerificationUseCaseProof.CertificateSKI;
+
+            /**
+             * Verifies a CertificateSKI message.
+             * @param message Plain object to verify
+             * @returns `null` if valid, otherwise the reason why it is not
+             */
+            public static verify(message: { [k: string]: any }): (string|null);
+
+            /**
+             * Creates a CertificateSKI message from a plain object. Also converts values to their respective internal types.
+             * @param object Plain object
+             * @returns CertificateSKI
+             */
+            public static fromObject(object: { [k: string]: any }): proto.BotSignatureVerificationUseCaseProof.CertificateSKI;
+
+            /**
+             * Creates a plain object from a CertificateSKI message. Also converts values to other types if specified.
+             * @param message CertificateSKI
+             * @param [options] Conversion options
+             * @returns Plain object
+             */
+            public static toObject(message: proto.BotSignatureVerificationUseCaseProof.CertificateSKI, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+            /**
+             * Converts this CertificateSKI to JSON.
+             * @returns JSON object
+             */
+            public toJSON(): { [k: string]: any };
+
+            /**
+             * Gets the default type url for CertificateSKI
+             * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+             * @returns The default type url
+             */
+            public static getTypeUrl(typeUrlPrefix?: string): string;
         }
     }
 
@@ -25555,9 +25669,6 @@ export namespace proto {
         /** EncryptMessageOutput timestampMs */
         timestampMs?: (number|Long|null);
 
-        /** EncryptMessageOutput messageKey */
-        messageKey?: (Uint8Array|null);
-
         /** EncryptMessageOutput error */
         error?: (string|null);
     }
@@ -25585,9 +25696,6 @@ export namespace proto {
 
         /** EncryptMessageOutput timestampMs. */
         public timestampMs?: (number|Long|null);
-
-        /** EncryptMessageOutput messageKey. */
-        public messageKey?: (Uint8Array|null);
 
         /** EncryptMessageOutput error. */
         public error?: (string|null);
@@ -31250,6 +31358,9 @@ export namespace proto {
 
         /** LabyrinthWaCommand deriveMessageKeyInput */
         deriveMessageKeyInput?: (proto.IDeriveMessageKeyInput|null);
+
+        /** LabyrinthWaCommand rotateEpochInput */
+        rotateEpochInput?: (proto.IRotateEpochInput|null);
     }
 
     /** Represents a LabyrinthWaCommand. */
@@ -31276,8 +31387,11 @@ export namespace proto {
         /** LabyrinthWaCommand deriveMessageKeyInput. */
         public deriveMessageKeyInput?: (proto.IDeriveMessageKeyInput|null);
 
+        /** LabyrinthWaCommand rotateEpochInput. */
+        public rotateEpochInput?: (proto.IRotateEpochInput|null);
+
         /** LabyrinthWaCommand commandInput. */
-        public commandInput?: ("createBackupInput"|"encryptMessageInput"|"decryptMessageInput"|"orfThreadIdInput"|"deriveMessageKeyInput");
+        public commandInput?: ("createBackupInput"|"encryptMessageInput"|"decryptMessageInput"|"orfThreadIdInput"|"deriveMessageKeyInput"|"rotateEpochInput");
 
         /**
          * Creates a new LabyrinthWaCommand instance using the specified properties.
@@ -33228,6 +33342,15 @@ export namespace proto {
 
         /** Message splitPaymentUpdateMessage */
         splitPaymentUpdateMessage?: (proto.Message.ISplitPaymentUpdateMessage|null);
+
+        /** Message musicMessage */
+        musicMessage?: (proto.Message.IMusicMessage|null);
+
+        /** Message statusLinkPreviewMetadata */
+        statusLinkPreviewMetadata?: (proto.Message.IStatusLinkPreviewMetadata|null);
+
+        /** Message botPlatformRegistrationSuccessMessage */
+        botPlatformRegistrationSuccessMessage?: (proto.Message.IFutureProofMessage|null);
     }
 
     /** Represents a Message. */
@@ -33562,6 +33685,15 @@ export namespace proto {
 
         /** Message splitPaymentUpdateMessage. */
         public splitPaymentUpdateMessage?: (proto.Message.ISplitPaymentUpdateMessage|null);
+
+        /** Message musicMessage. */
+        public musicMessage?: (proto.Message.IMusicMessage|null);
+
+        /** Message statusLinkPreviewMetadata. */
+        public statusLinkPreviewMetadata?: (proto.Message.IStatusLinkPreviewMetadata|null);
+
+        /** Message botPlatformRegistrationSuccessMessage. */
+        public botPlatformRegistrationSuccessMessage?: (proto.Message.IFutureProofMessage|null);
 
         /**
          * Creates a new Message instance using the specified properties.
@@ -44725,6 +44857,135 @@ export namespace proto {
             public static getTypeUrl(typeUrlPrefix?: string): string;
         }
 
+        /** Properties of a MusicMessage. */
+        interface IMusicMessage {
+
+            /** MusicMessage embeddedMusic */
+            embeddedMusic?: (proto.IEmbeddedMusic|null);
+
+            /** MusicMessage songUri */
+            songUri?: (string|null);
+
+            /** MusicMessage artworkUri */
+            artworkUri?: (string|null);
+
+            /** MusicMessage style */
+            style?: (number|null);
+
+            /** MusicMessage contextInfo */
+            contextInfo?: (proto.IContextInfo|null);
+        }
+
+        /** Represents a MusicMessage. */
+        class MusicMessage implements IMusicMessage {
+
+            /**
+             * Constructs a new MusicMessage.
+             * @param [properties] Properties to set
+             */
+            constructor(properties?: proto.Message.IMusicMessage);
+
+            /** MusicMessage embeddedMusic. */
+            public embeddedMusic?: (proto.IEmbeddedMusic|null);
+
+            /** MusicMessage songUri. */
+            public songUri?: (string|null);
+
+            /** MusicMessage artworkUri. */
+            public artworkUri?: (string|null);
+
+            /** MusicMessage style. */
+            public style?: (number|null);
+
+            /** MusicMessage contextInfo. */
+            public contextInfo?: (proto.IContextInfo|null);
+
+            /**
+             * Creates a new MusicMessage instance using the specified properties.
+             * @param [properties] Properties to set
+             * @returns MusicMessage instance
+             */
+            public static create(properties?: proto.Message.IMusicMessage): proto.Message.MusicMessage;
+
+            /**
+             * Encodes the specified MusicMessage message. Does not implicitly {@link proto.Message.MusicMessage.verify|verify} messages.
+             * @param message MusicMessage message or plain object to encode
+             * @param [writer] Writer to encode to
+             * @returns Writer
+             */
+            public static encode(message: proto.Message.IMusicMessage, writer?: $protobuf.Writer): $protobuf.Writer;
+
+            /**
+             * Encodes the specified MusicMessage message, length delimited. Does not implicitly {@link proto.Message.MusicMessage.verify|verify} messages.
+             * @param message MusicMessage message or plain object to encode
+             * @param [writer] Writer to encode to
+             * @returns Writer
+             */
+            public static encodeDelimited(message: proto.Message.IMusicMessage, writer?: $protobuf.Writer): $protobuf.Writer;
+
+            /**
+             * Decodes a MusicMessage message from the specified reader or buffer.
+             * @param reader Reader or buffer to decode from
+             * @param [length] Message length if known beforehand
+             * @returns MusicMessage
+             * @throws {Error} If the payload is not a reader or valid buffer
+             * @throws {$protobuf.util.ProtocolError} If required fields are missing
+             */
+            public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): proto.Message.MusicMessage;
+
+            /**
+             * Decodes a MusicMessage message from the specified reader or buffer, length delimited.
+             * @param reader Reader or buffer to decode from
+             * @returns MusicMessage
+             * @throws {Error} If the payload is not a reader or valid buffer
+             * @throws {$protobuf.util.ProtocolError} If required fields are missing
+             */
+            public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): proto.Message.MusicMessage;
+
+            /**
+             * Verifies a MusicMessage message.
+             * @param message Plain object to verify
+             * @returns `null` if valid, otherwise the reason why it is not
+             */
+            public static verify(message: { [k: string]: any }): (string|null);
+
+            /**
+             * Creates a MusicMessage message from a plain object. Also converts values to their respective internal types.
+             * @param object Plain object
+             * @returns MusicMessage
+             */
+            public static fromObject(object: { [k: string]: any }): proto.Message.MusicMessage;
+
+            /**
+             * Creates a plain object from a MusicMessage message. Also converts values to other types if specified.
+             * @param message MusicMessage
+             * @param [options] Conversion options
+             * @returns Plain object
+             */
+            public static toObject(message: proto.Message.MusicMessage, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+            /**
+             * Converts this MusicMessage to JSON.
+             * @returns JSON object
+             */
+            public toJSON(): { [k: string]: any };
+
+            /**
+             * Gets the default type url for MusicMessage
+             * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+             * @returns The default type url
+             */
+            public static getTypeUrl(typeUrlPrefix?: string): string;
+        }
+
+        namespace MusicMessage {
+
+            /** MusicMessageStyle enum. */
+            enum MusicMessageStyle {
+                UNKNOWN = 0
+            }
+        }
+
         /** Properties of a NewsletterAdminInviteMessage. */
         interface INewsletterAdminInviteMessage {
 
@@ -45412,7 +45673,8 @@ export namespace proto {
                 UNKNOWN = 0,
                 FBPAY = 1,
                 NOVI = 2,
-                UPI = 3
+                UPI = 3,
+                PIX = 4
             }
         }
 
@@ -47488,6 +47750,9 @@ export namespace proto {
 
                 /** PeerDataOperationResult bizBroadcastInsightsContactListResponse */
                 bizBroadcastInsightsContactListResponse?: (proto.Message.PeerDataOperationRequestResponseMessage.PeerDataOperationResult.IBizBroadcastInsightsContactListResponse|null);
+
+                /** PeerDataOperationResult contactRefreshResponse */
+                contactRefreshResponse?: (proto.Message.PeerDataOperationRequestResponseMessage.PeerDataOperationResult.IContactRefreshResponse|null);
             }
 
             /** Represents a PeerDataOperationResult. */
@@ -47534,6 +47799,9 @@ export namespace proto {
 
                 /** PeerDataOperationResult bizBroadcastInsightsContactListResponse. */
                 public bizBroadcastInsightsContactListResponse?: (proto.Message.PeerDataOperationRequestResponseMessage.PeerDataOperationResult.IBizBroadcastInsightsContactListResponse|null);
+
+                /** PeerDataOperationResult contactRefreshResponse. */
+                public contactRefreshResponse?: (proto.Message.PeerDataOperationRequestResponseMessage.PeerDataOperationResult.IContactRefreshResponse|null);
 
                 /**
                  * Creates a new PeerDataOperationResult instance using the specified properties.
@@ -48027,6 +48295,121 @@ export namespace proto {
 
                     /**
                      * Gets the default type url for CompanionMetaNonceFetchResponse
+                     * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+                     * @returns The default type url
+                     */
+                    public static getTypeUrl(typeUrlPrefix?: string): string;
+                }
+
+                /** Properties of a ContactRefreshResponse. */
+                interface IContactRefreshResponse {
+
+                    /** ContactRefreshResponse coveredRequestIds */
+                    coveredRequestIds?: (string[]|null);
+
+                    /** ContactRefreshResponse collectionVersion */
+                    collectionVersion?: (number|Long|null);
+
+                    /** ContactRefreshResponse primaryDurationMs */
+                    primaryDurationMs?: (number|Long|null);
+
+                    /** ContactRefreshResponse uniqueContactCount */
+                    uniqueContactCount?: (number|null);
+                }
+
+                /** Represents a ContactRefreshResponse. */
+                class ContactRefreshResponse implements IContactRefreshResponse {
+
+                    /**
+                     * Constructs a new ContactRefreshResponse.
+                     * @param [properties] Properties to set
+                     */
+                    constructor(properties?: proto.Message.PeerDataOperationRequestResponseMessage.PeerDataOperationResult.IContactRefreshResponse);
+
+                    /** ContactRefreshResponse coveredRequestIds. */
+                    public coveredRequestIds: string[];
+
+                    /** ContactRefreshResponse collectionVersion. */
+                    public collectionVersion?: (number|Long|null);
+
+                    /** ContactRefreshResponse primaryDurationMs. */
+                    public primaryDurationMs?: (number|Long|null);
+
+                    /** ContactRefreshResponse uniqueContactCount. */
+                    public uniqueContactCount?: (number|null);
+
+                    /**
+                     * Creates a new ContactRefreshResponse instance using the specified properties.
+                     * @param [properties] Properties to set
+                     * @returns ContactRefreshResponse instance
+                     */
+                    public static create(properties?: proto.Message.PeerDataOperationRequestResponseMessage.PeerDataOperationResult.IContactRefreshResponse): proto.Message.PeerDataOperationRequestResponseMessage.PeerDataOperationResult.ContactRefreshResponse;
+
+                    /**
+                     * Encodes the specified ContactRefreshResponse message. Does not implicitly {@link proto.Message.PeerDataOperationRequestResponseMessage.PeerDataOperationResult.ContactRefreshResponse.verify|verify} messages.
+                     * @param message ContactRefreshResponse message or plain object to encode
+                     * @param [writer] Writer to encode to
+                     * @returns Writer
+                     */
+                    public static encode(message: proto.Message.PeerDataOperationRequestResponseMessage.PeerDataOperationResult.IContactRefreshResponse, writer?: $protobuf.Writer): $protobuf.Writer;
+
+                    /**
+                     * Encodes the specified ContactRefreshResponse message, length delimited. Does not implicitly {@link proto.Message.PeerDataOperationRequestResponseMessage.PeerDataOperationResult.ContactRefreshResponse.verify|verify} messages.
+                     * @param message ContactRefreshResponse message or plain object to encode
+                     * @param [writer] Writer to encode to
+                     * @returns Writer
+                     */
+                    public static encodeDelimited(message: proto.Message.PeerDataOperationRequestResponseMessage.PeerDataOperationResult.IContactRefreshResponse, writer?: $protobuf.Writer): $protobuf.Writer;
+
+                    /**
+                     * Decodes a ContactRefreshResponse message from the specified reader or buffer.
+                     * @param reader Reader or buffer to decode from
+                     * @param [length] Message length if known beforehand
+                     * @returns ContactRefreshResponse
+                     * @throws {Error} If the payload is not a reader or valid buffer
+                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                     */
+                    public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): proto.Message.PeerDataOperationRequestResponseMessage.PeerDataOperationResult.ContactRefreshResponse;
+
+                    /**
+                     * Decodes a ContactRefreshResponse message from the specified reader or buffer, length delimited.
+                     * @param reader Reader or buffer to decode from
+                     * @returns ContactRefreshResponse
+                     * @throws {Error} If the payload is not a reader or valid buffer
+                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                     */
+                    public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): proto.Message.PeerDataOperationRequestResponseMessage.PeerDataOperationResult.ContactRefreshResponse;
+
+                    /**
+                     * Verifies a ContactRefreshResponse message.
+                     * @param message Plain object to verify
+                     * @returns `null` if valid, otherwise the reason why it is not
+                     */
+                    public static verify(message: { [k: string]: any }): (string|null);
+
+                    /**
+                     * Creates a ContactRefreshResponse message from a plain object. Also converts values to their respective internal types.
+                     * @param object Plain object
+                     * @returns ContactRefreshResponse
+                     */
+                    public static fromObject(object: { [k: string]: any }): proto.Message.PeerDataOperationRequestResponseMessage.PeerDataOperationResult.ContactRefreshResponse;
+
+                    /**
+                     * Creates a plain object from a ContactRefreshResponse message. Also converts values to other types if specified.
+                     * @param message ContactRefreshResponse
+                     * @param [options] Conversion options
+                     * @returns Plain object
+                     */
+                    public static toObject(message: proto.Message.PeerDataOperationRequestResponseMessage.PeerDataOperationResult.ContactRefreshResponse, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+                    /**
+                     * Converts this ContactRefreshResponse to JSON.
+                     * @returns JSON object
+                     */
+                    public toJSON(): { [k: string]: any };
+
+                    /**
+                     * Gets the default type url for ContactRefreshResponse
                      * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
                      * @returns The default type url
                      */
@@ -50892,9 +51275,6 @@ export namespace proto {
 
             /** ProtocolMessage coexStateSync */
             coexStateSync?: (proto.ICoexStateSync|null);
-
-            /** ProtocolMessage syncRequestMutationRetry */
-            syncRequestMutationRetry?: (proto.Message.ISyncRequestMutationRetry|null);
         }
 
         /** Represents a ProtocolMessage. */
@@ -50995,9 +51375,6 @@ export namespace proto {
 
             /** ProtocolMessage coexStateSync. */
             public coexStateSync?: (proto.ICoexStateSync|null);
-
-            /** ProtocolMessage syncRequestMutationRetry. */
-            public syncRequestMutationRetry?: (proto.Message.ISyncRequestMutationRetry|null);
 
             /**
              * Creates a new ProtocolMessage instance using the specified properties.
@@ -51112,8 +51489,7 @@ export namespace proto {
                 CHAT_THEME_SETTING = 34,
                 AI_METADATA_OPERATION = 35,
                 MARK_AS_VERIFIED_ACTION = 36,
-                COEX_STATE_SYNC = 37,
-                SYNC_REQUEST_MUTATION_RETRY = 38
+                COEX_STATE_SYNC = 37
             }
         }
 
@@ -52723,6 +53099,114 @@ export namespace proto {
             public static getTypeUrl(typeUrlPrefix?: string): string;
         }
 
+        /** Properties of a StatusLinkPreviewMetadata. */
+        interface IStatusLinkPreviewMetadata {
+
+            /** StatusLinkPreviewMetadata style */
+            style?: (proto.Message.StatusLinkPreviewMetadata.Style|null);
+        }
+
+        /** Represents a StatusLinkPreviewMetadata. */
+        class StatusLinkPreviewMetadata implements IStatusLinkPreviewMetadata {
+
+            /**
+             * Constructs a new StatusLinkPreviewMetadata.
+             * @param [properties] Properties to set
+             */
+            constructor(properties?: proto.Message.IStatusLinkPreviewMetadata);
+
+            /** StatusLinkPreviewMetadata style. */
+            public style?: (proto.Message.StatusLinkPreviewMetadata.Style|null);
+
+            /**
+             * Creates a new StatusLinkPreviewMetadata instance using the specified properties.
+             * @param [properties] Properties to set
+             * @returns StatusLinkPreviewMetadata instance
+             */
+            public static create(properties?: proto.Message.IStatusLinkPreviewMetadata): proto.Message.StatusLinkPreviewMetadata;
+
+            /**
+             * Encodes the specified StatusLinkPreviewMetadata message. Does not implicitly {@link proto.Message.StatusLinkPreviewMetadata.verify|verify} messages.
+             * @param message StatusLinkPreviewMetadata message or plain object to encode
+             * @param [writer] Writer to encode to
+             * @returns Writer
+             */
+            public static encode(message: proto.Message.IStatusLinkPreviewMetadata, writer?: $protobuf.Writer): $protobuf.Writer;
+
+            /**
+             * Encodes the specified StatusLinkPreviewMetadata message, length delimited. Does not implicitly {@link proto.Message.StatusLinkPreviewMetadata.verify|verify} messages.
+             * @param message StatusLinkPreviewMetadata message or plain object to encode
+             * @param [writer] Writer to encode to
+             * @returns Writer
+             */
+            public static encodeDelimited(message: proto.Message.IStatusLinkPreviewMetadata, writer?: $protobuf.Writer): $protobuf.Writer;
+
+            /**
+             * Decodes a StatusLinkPreviewMetadata message from the specified reader or buffer.
+             * @param reader Reader or buffer to decode from
+             * @param [length] Message length if known beforehand
+             * @returns StatusLinkPreviewMetadata
+             * @throws {Error} If the payload is not a reader or valid buffer
+             * @throws {$protobuf.util.ProtocolError} If required fields are missing
+             */
+            public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): proto.Message.StatusLinkPreviewMetadata;
+
+            /**
+             * Decodes a StatusLinkPreviewMetadata message from the specified reader or buffer, length delimited.
+             * @param reader Reader or buffer to decode from
+             * @returns StatusLinkPreviewMetadata
+             * @throws {Error} If the payload is not a reader or valid buffer
+             * @throws {$protobuf.util.ProtocolError} If required fields are missing
+             */
+            public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): proto.Message.StatusLinkPreviewMetadata;
+
+            /**
+             * Verifies a StatusLinkPreviewMetadata message.
+             * @param message Plain object to verify
+             * @returns `null` if valid, otherwise the reason why it is not
+             */
+            public static verify(message: { [k: string]: any }): (string|null);
+
+            /**
+             * Creates a StatusLinkPreviewMetadata message from a plain object. Also converts values to their respective internal types.
+             * @param object Plain object
+             * @returns StatusLinkPreviewMetadata
+             */
+            public static fromObject(object: { [k: string]: any }): proto.Message.StatusLinkPreviewMetadata;
+
+            /**
+             * Creates a plain object from a StatusLinkPreviewMetadata message. Also converts values to other types if specified.
+             * @param message StatusLinkPreviewMetadata
+             * @param [options] Conversion options
+             * @returns Plain object
+             */
+            public static toObject(message: proto.Message.StatusLinkPreviewMetadata, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+            /**
+             * Converts this StatusLinkPreviewMetadata to JSON.
+             * @returns JSON object
+             */
+            public toJSON(): { [k: string]: any };
+
+            /**
+             * Gets the default type url for StatusLinkPreviewMetadata
+             * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+             * @returns The default type url
+             */
+            public static getTypeUrl(typeUrlPrefix?: string): string;
+        }
+
+        namespace StatusLinkPreviewMetadata {
+
+            /** Style enum. */
+            enum Style {
+                AUTO = 0,
+                COMPACT = 1,
+                FULL = 2,
+                IMMERSIVE = 3
+            }
+        }
+
         /** Properties of a StatusNotificationMessage. */
         interface IStatusNotificationMessage {
 
@@ -52839,7 +53323,8 @@ export namespace proto {
                 UNKNOWN = 0,
                 STATUS_ADD_YOURS = 1,
                 STATUS_RESHARE = 2,
-                STATUS_QUESTION_ANSWER_RESHARE = 3
+                STATUS_QUESTION_ANSWER_RESHARE = 3,
+                STATUS_GROUP_STATUS_REPLY = 4
             }
         }
 
@@ -53883,215 +54368,6 @@ export namespace proto {
              * @returns The default type url
              */
             public static getTypeUrl(typeUrlPrefix?: string): string;
-        }
-
-        /** Properties of a SyncRequestMutationRetry. */
-        interface ISyncRequestMutationRetry {
-
-            /** SyncRequestMutationRetry collections */
-            collections?: (proto.Message.SyncRequestMutationRetry.ICollection[]|null);
-
-            /** SyncRequestMutationRetry count */
-            count?: (number|null);
-        }
-
-        /** Represents a SyncRequestMutationRetry. */
-        class SyncRequestMutationRetry implements ISyncRequestMutationRetry {
-
-            /**
-             * Constructs a new SyncRequestMutationRetry.
-             * @param [properties] Properties to set
-             */
-            constructor(properties?: proto.Message.ISyncRequestMutationRetry);
-
-            /** SyncRequestMutationRetry collections. */
-            public collections: proto.Message.SyncRequestMutationRetry.ICollection[];
-
-            /** SyncRequestMutationRetry count. */
-            public count?: (number|null);
-
-            /**
-             * Creates a new SyncRequestMutationRetry instance using the specified properties.
-             * @param [properties] Properties to set
-             * @returns SyncRequestMutationRetry instance
-             */
-            public static create(properties?: proto.Message.ISyncRequestMutationRetry): proto.Message.SyncRequestMutationRetry;
-
-            /**
-             * Encodes the specified SyncRequestMutationRetry message. Does not implicitly {@link proto.Message.SyncRequestMutationRetry.verify|verify} messages.
-             * @param message SyncRequestMutationRetry message or plain object to encode
-             * @param [writer] Writer to encode to
-             * @returns Writer
-             */
-            public static encode(message: proto.Message.ISyncRequestMutationRetry, writer?: $protobuf.Writer): $protobuf.Writer;
-
-            /**
-             * Encodes the specified SyncRequestMutationRetry message, length delimited. Does not implicitly {@link proto.Message.SyncRequestMutationRetry.verify|verify} messages.
-             * @param message SyncRequestMutationRetry message or plain object to encode
-             * @param [writer] Writer to encode to
-             * @returns Writer
-             */
-            public static encodeDelimited(message: proto.Message.ISyncRequestMutationRetry, writer?: $protobuf.Writer): $protobuf.Writer;
-
-            /**
-             * Decodes a SyncRequestMutationRetry message from the specified reader or buffer.
-             * @param reader Reader or buffer to decode from
-             * @param [length] Message length if known beforehand
-             * @returns SyncRequestMutationRetry
-             * @throws {Error} If the payload is not a reader or valid buffer
-             * @throws {$protobuf.util.ProtocolError} If required fields are missing
-             */
-            public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): proto.Message.SyncRequestMutationRetry;
-
-            /**
-             * Decodes a SyncRequestMutationRetry message from the specified reader or buffer, length delimited.
-             * @param reader Reader or buffer to decode from
-             * @returns SyncRequestMutationRetry
-             * @throws {Error} If the payload is not a reader or valid buffer
-             * @throws {$protobuf.util.ProtocolError} If required fields are missing
-             */
-            public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): proto.Message.SyncRequestMutationRetry;
-
-            /**
-             * Verifies a SyncRequestMutationRetry message.
-             * @param message Plain object to verify
-             * @returns `null` if valid, otherwise the reason why it is not
-             */
-            public static verify(message: { [k: string]: any }): (string|null);
-
-            /**
-             * Creates a SyncRequestMutationRetry message from a plain object. Also converts values to their respective internal types.
-             * @param object Plain object
-             * @returns SyncRequestMutationRetry
-             */
-            public static fromObject(object: { [k: string]: any }): proto.Message.SyncRequestMutationRetry;
-
-            /**
-             * Creates a plain object from a SyncRequestMutationRetry message. Also converts values to other types if specified.
-             * @param message SyncRequestMutationRetry
-             * @param [options] Conversion options
-             * @returns Plain object
-             */
-            public static toObject(message: proto.Message.SyncRequestMutationRetry, options?: $protobuf.IConversionOptions): { [k: string]: any };
-
-            /**
-             * Converts this SyncRequestMutationRetry to JSON.
-             * @returns JSON object
-             */
-            public toJSON(): { [k: string]: any };
-
-            /**
-             * Gets the default type url for SyncRequestMutationRetry
-             * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
-             * @returns The default type url
-             */
-            public static getTypeUrl(typeUrlPrefix?: string): string;
-        }
-
-        namespace SyncRequestMutationRetry {
-
-            /** Properties of a Collection. */
-            interface ICollection {
-
-                /** Collection name */
-                name?: (string|null);
-
-                /** Collection storedSyncdVersion */
-                storedSyncdVersion?: (number|Long|null);
-            }
-
-            /** Represents a Collection. */
-            class Collection implements ICollection {
-
-                /**
-                 * Constructs a new Collection.
-                 * @param [properties] Properties to set
-                 */
-                constructor(properties?: proto.Message.SyncRequestMutationRetry.ICollection);
-
-                /** Collection name. */
-                public name?: (string|null);
-
-                /** Collection storedSyncdVersion. */
-                public storedSyncdVersion?: (number|Long|null);
-
-                /**
-                 * Creates a new Collection instance using the specified properties.
-                 * @param [properties] Properties to set
-                 * @returns Collection instance
-                 */
-                public static create(properties?: proto.Message.SyncRequestMutationRetry.ICollection): proto.Message.SyncRequestMutationRetry.Collection;
-
-                /**
-                 * Encodes the specified Collection message. Does not implicitly {@link proto.Message.SyncRequestMutationRetry.Collection.verify|verify} messages.
-                 * @param message Collection message or plain object to encode
-                 * @param [writer] Writer to encode to
-                 * @returns Writer
-                 */
-                public static encode(message: proto.Message.SyncRequestMutationRetry.ICollection, writer?: $protobuf.Writer): $protobuf.Writer;
-
-                /**
-                 * Encodes the specified Collection message, length delimited. Does not implicitly {@link proto.Message.SyncRequestMutationRetry.Collection.verify|verify} messages.
-                 * @param message Collection message or plain object to encode
-                 * @param [writer] Writer to encode to
-                 * @returns Writer
-                 */
-                public static encodeDelimited(message: proto.Message.SyncRequestMutationRetry.ICollection, writer?: $protobuf.Writer): $protobuf.Writer;
-
-                /**
-                 * Decodes a Collection message from the specified reader or buffer.
-                 * @param reader Reader or buffer to decode from
-                 * @param [length] Message length if known beforehand
-                 * @returns Collection
-                 * @throws {Error} If the payload is not a reader or valid buffer
-                 * @throws {$protobuf.util.ProtocolError} If required fields are missing
-                 */
-                public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): proto.Message.SyncRequestMutationRetry.Collection;
-
-                /**
-                 * Decodes a Collection message from the specified reader or buffer, length delimited.
-                 * @param reader Reader or buffer to decode from
-                 * @returns Collection
-                 * @throws {Error} If the payload is not a reader or valid buffer
-                 * @throws {$protobuf.util.ProtocolError} If required fields are missing
-                 */
-                public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): proto.Message.SyncRequestMutationRetry.Collection;
-
-                /**
-                 * Verifies a Collection message.
-                 * @param message Plain object to verify
-                 * @returns `null` if valid, otherwise the reason why it is not
-                 */
-                public static verify(message: { [k: string]: any }): (string|null);
-
-                /**
-                 * Creates a Collection message from a plain object. Also converts values to their respective internal types.
-                 * @param object Plain object
-                 * @returns Collection
-                 */
-                public static fromObject(object: { [k: string]: any }): proto.Message.SyncRequestMutationRetry.Collection;
-
-                /**
-                 * Creates a plain object from a Collection message. Also converts values to other types if specified.
-                 * @param message Collection
-                 * @param [options] Conversion options
-                 * @returns Plain object
-                 */
-                public static toObject(message: proto.Message.SyncRequestMutationRetry.Collection, options?: $protobuf.IConversionOptions): { [k: string]: any };
-
-                /**
-                 * Converts this Collection to JSON.
-                 * @returns JSON object
-                 */
-                public toJSON(): { [k: string]: any };
-
-                /**
-                 * Gets the default type url for Collection
-                 * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
-                 * @returns The default type url
-                 */
-                public static getTypeUrl(typeUrlPrefix?: string): string;
-            }
         }
 
         /** Properties of a TemplateButtonReplyMessage. */
@@ -61844,6 +62120,484 @@ export namespace proto {
 
         /**
          * Gets the default type url for ReportingTokenInfo
+         * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+         * @returns The default type url
+         */
+        public static getTypeUrl(typeUrlPrefix?: string): string;
+    }
+
+    /** Properties of a RotateEpochInput. */
+    interface IRotateEpochInput {
+
+        /** RotateEpochInput currentEpochRootKey */
+        currentEpochRootKey?: (Uint8Array|null);
+
+        /** RotateEpochInput currentEpochAnonId */
+        currentEpochAnonId?: (number|Long|null);
+
+        /** RotateEpochInput currentEpochFbid */
+        currentEpochFbid?: (number|Long|null);
+
+        /** RotateEpochInput newEpochFbid */
+        newEpochFbid?: (number|Long|null);
+
+        /** RotateEpochInput epochStoragePrivateKey */
+        epochStoragePrivateKey?: (Uint8Array|null);
+
+        /** RotateEpochInput members */
+        members?: (proto.IRotateEpochMemberInput[]|null);
+    }
+
+    /** Represents a RotateEpochInput. */
+    class RotateEpochInput implements IRotateEpochInput {
+
+        /**
+         * Constructs a new RotateEpochInput.
+         * @param [properties] Properties to set
+         */
+        constructor(properties?: proto.IRotateEpochInput);
+
+        /** RotateEpochInput currentEpochRootKey. */
+        public currentEpochRootKey?: (Uint8Array|null);
+
+        /** RotateEpochInput currentEpochAnonId. */
+        public currentEpochAnonId?: (number|Long|null);
+
+        /** RotateEpochInput currentEpochFbid. */
+        public currentEpochFbid?: (number|Long|null);
+
+        /** RotateEpochInput newEpochFbid. */
+        public newEpochFbid?: (number|Long|null);
+
+        /** RotateEpochInput epochStoragePrivateKey. */
+        public epochStoragePrivateKey?: (Uint8Array|null);
+
+        /** RotateEpochInput members. */
+        public members: proto.IRotateEpochMemberInput[];
+
+        /**
+         * Creates a new RotateEpochInput instance using the specified properties.
+         * @param [properties] Properties to set
+         * @returns RotateEpochInput instance
+         */
+        public static create(properties?: proto.IRotateEpochInput): proto.RotateEpochInput;
+
+        /**
+         * Encodes the specified RotateEpochInput message. Does not implicitly {@link proto.RotateEpochInput.verify|verify} messages.
+         * @param message RotateEpochInput message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encode(message: proto.IRotateEpochInput, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Encodes the specified RotateEpochInput message, length delimited. Does not implicitly {@link proto.RotateEpochInput.verify|verify} messages.
+         * @param message RotateEpochInput message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encodeDelimited(message: proto.IRotateEpochInput, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Decodes a RotateEpochInput message from the specified reader or buffer.
+         * @param reader Reader or buffer to decode from
+         * @param [length] Message length if known beforehand
+         * @returns RotateEpochInput
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): proto.RotateEpochInput;
+
+        /**
+         * Decodes a RotateEpochInput message from the specified reader or buffer, length delimited.
+         * @param reader Reader or buffer to decode from
+         * @returns RotateEpochInput
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): proto.RotateEpochInput;
+
+        /**
+         * Verifies a RotateEpochInput message.
+         * @param message Plain object to verify
+         * @returns `null` if valid, otherwise the reason why it is not
+         */
+        public static verify(message: { [k: string]: any }): (string|null);
+
+        /**
+         * Creates a RotateEpochInput message from a plain object. Also converts values to their respective internal types.
+         * @param object Plain object
+         * @returns RotateEpochInput
+         */
+        public static fromObject(object: { [k: string]: any }): proto.RotateEpochInput;
+
+        /**
+         * Creates a plain object from a RotateEpochInput message. Also converts values to other types if specified.
+         * @param message RotateEpochInput
+         * @param [options] Conversion options
+         * @returns Plain object
+         */
+        public static toObject(message: proto.RotateEpochInput, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+        /**
+         * Converts this RotateEpochInput to JSON.
+         * @returns JSON object
+         */
+        public toJSON(): { [k: string]: any };
+
+        /**
+         * Gets the default type url for RotateEpochInput
+         * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+         * @returns The default type url
+         */
+        public static getTypeUrl(typeUrlPrefix?: string): string;
+    }
+
+    /** Properties of a RotateEpochMemberEdge. */
+    interface IRotateEpochMemberEdge {
+
+        /** RotateEpochMemberEdge deviceId */
+        deviceId?: (number|Long|null);
+
+        /** RotateEpochMemberEdge encryptedEpochKey */
+        encryptedEpochKey?: (Uint8Array|null);
+
+        /** RotateEpochMemberEdge deviceEpochHmac */
+        deviceEpochHmac?: (Uint8Array|null);
+    }
+
+    /** Represents a RotateEpochMemberEdge. */
+    class RotateEpochMemberEdge implements IRotateEpochMemberEdge {
+
+        /**
+         * Constructs a new RotateEpochMemberEdge.
+         * @param [properties] Properties to set
+         */
+        constructor(properties?: proto.IRotateEpochMemberEdge);
+
+        /** RotateEpochMemberEdge deviceId. */
+        public deviceId?: (number|Long|null);
+
+        /** RotateEpochMemberEdge encryptedEpochKey. */
+        public encryptedEpochKey?: (Uint8Array|null);
+
+        /** RotateEpochMemberEdge deviceEpochHmac. */
+        public deviceEpochHmac?: (Uint8Array|null);
+
+        /**
+         * Creates a new RotateEpochMemberEdge instance using the specified properties.
+         * @param [properties] Properties to set
+         * @returns RotateEpochMemberEdge instance
+         */
+        public static create(properties?: proto.IRotateEpochMemberEdge): proto.RotateEpochMemberEdge;
+
+        /**
+         * Encodes the specified RotateEpochMemberEdge message. Does not implicitly {@link proto.RotateEpochMemberEdge.verify|verify} messages.
+         * @param message RotateEpochMemberEdge message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encode(message: proto.IRotateEpochMemberEdge, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Encodes the specified RotateEpochMemberEdge message, length delimited. Does not implicitly {@link proto.RotateEpochMemberEdge.verify|verify} messages.
+         * @param message RotateEpochMemberEdge message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encodeDelimited(message: proto.IRotateEpochMemberEdge, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Decodes a RotateEpochMemberEdge message from the specified reader or buffer.
+         * @param reader Reader or buffer to decode from
+         * @param [length] Message length if known beforehand
+         * @returns RotateEpochMemberEdge
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): proto.RotateEpochMemberEdge;
+
+        /**
+         * Decodes a RotateEpochMemberEdge message from the specified reader or buffer, length delimited.
+         * @param reader Reader or buffer to decode from
+         * @returns RotateEpochMemberEdge
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): proto.RotateEpochMemberEdge;
+
+        /**
+         * Verifies a RotateEpochMemberEdge message.
+         * @param message Plain object to verify
+         * @returns `null` if valid, otherwise the reason why it is not
+         */
+        public static verify(message: { [k: string]: any }): (string|null);
+
+        /**
+         * Creates a RotateEpochMemberEdge message from a plain object. Also converts values to their respective internal types.
+         * @param object Plain object
+         * @returns RotateEpochMemberEdge
+         */
+        public static fromObject(object: { [k: string]: any }): proto.RotateEpochMemberEdge;
+
+        /**
+         * Creates a plain object from a RotateEpochMemberEdge message. Also converts values to other types if specified.
+         * @param message RotateEpochMemberEdge
+         * @param [options] Conversion options
+         * @returns Plain object
+         */
+        public static toObject(message: proto.RotateEpochMemberEdge, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+        /**
+         * Converts this RotateEpochMemberEdge to JSON.
+         * @returns JSON object
+         */
+        public toJSON(): { [k: string]: any };
+
+        /**
+         * Gets the default type url for RotateEpochMemberEdge
+         * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+         * @returns The default type url
+         */
+        public static getTypeUrl(typeUrlPrefix?: string): string;
+    }
+
+    /** Properties of a RotateEpochMemberInput. */
+    interface IRotateEpochMemberInput {
+
+        /** RotateEpochMemberInput deviceId */
+        deviceId?: (number|Long|null);
+
+        /** RotateEpochMemberInput epochStoragePublicKey */
+        epochStoragePublicKey?: (Uint8Array|null);
+
+        /** RotateEpochMemberInput devicePublicKey */
+        devicePublicKey?: (Uint8Array|null);
+    }
+
+    /** Represents a RotateEpochMemberInput. */
+    class RotateEpochMemberInput implements IRotateEpochMemberInput {
+
+        /**
+         * Constructs a new RotateEpochMemberInput.
+         * @param [properties] Properties to set
+         */
+        constructor(properties?: proto.IRotateEpochMemberInput);
+
+        /** RotateEpochMemberInput deviceId. */
+        public deviceId?: (number|Long|null);
+
+        /** RotateEpochMemberInput epochStoragePublicKey. */
+        public epochStoragePublicKey?: (Uint8Array|null);
+
+        /** RotateEpochMemberInput devicePublicKey. */
+        public devicePublicKey?: (Uint8Array|null);
+
+        /**
+         * Creates a new RotateEpochMemberInput instance using the specified properties.
+         * @param [properties] Properties to set
+         * @returns RotateEpochMemberInput instance
+         */
+        public static create(properties?: proto.IRotateEpochMemberInput): proto.RotateEpochMemberInput;
+
+        /**
+         * Encodes the specified RotateEpochMemberInput message. Does not implicitly {@link proto.RotateEpochMemberInput.verify|verify} messages.
+         * @param message RotateEpochMemberInput message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encode(message: proto.IRotateEpochMemberInput, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Encodes the specified RotateEpochMemberInput message, length delimited. Does not implicitly {@link proto.RotateEpochMemberInput.verify|verify} messages.
+         * @param message RotateEpochMemberInput message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encodeDelimited(message: proto.IRotateEpochMemberInput, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Decodes a RotateEpochMemberInput message from the specified reader or buffer.
+         * @param reader Reader or buffer to decode from
+         * @param [length] Message length if known beforehand
+         * @returns RotateEpochMemberInput
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): proto.RotateEpochMemberInput;
+
+        /**
+         * Decodes a RotateEpochMemberInput message from the specified reader or buffer, length delimited.
+         * @param reader Reader or buffer to decode from
+         * @returns RotateEpochMemberInput
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): proto.RotateEpochMemberInput;
+
+        /**
+         * Verifies a RotateEpochMemberInput message.
+         * @param message Plain object to verify
+         * @returns `null` if valid, otherwise the reason why it is not
+         */
+        public static verify(message: { [k: string]: any }): (string|null);
+
+        /**
+         * Creates a RotateEpochMemberInput message from a plain object. Also converts values to their respective internal types.
+         * @param object Plain object
+         * @returns RotateEpochMemberInput
+         */
+        public static fromObject(object: { [k: string]: any }): proto.RotateEpochMemberInput;
+
+        /**
+         * Creates a plain object from a RotateEpochMemberInput message. Also converts values to other types if specified.
+         * @param message RotateEpochMemberInput
+         * @param [options] Conversion options
+         * @returns Plain object
+         */
+        public static toObject(message: proto.RotateEpochMemberInput, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+        /**
+         * Converts this RotateEpochMemberInput to JSON.
+         * @returns JSON object
+         */
+        public toJSON(): { [k: string]: any };
+
+        /**
+         * Gets the default type url for RotateEpochMemberInput
+         * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+         * @returns The default type url
+         */
+        public static getTypeUrl(typeUrlPrefix?: string): string;
+    }
+
+    /** Properties of a RotateEpochOutput. */
+    interface IRotateEpochOutput {
+
+        /** RotateEpochOutput newEpochRootKey */
+        newEpochRootKey?: (Uint8Array|null);
+
+        /** RotateEpochOutput newEpochAnonId */
+        newEpochAnonId?: (number|Long|null);
+
+        /** RotateEpochOutput epochAnonId */
+        epochAnonId?: (Uint8Array|null);
+
+        /** RotateEpochOutput epochData */
+        epochData?: (Uint8Array|null);
+
+        /** RotateEpochOutput memberEdges */
+        memberEdges?: (proto.IRotateEpochMemberEdge[]|null);
+
+        /** RotateEpochOutput epochRootKeyFingerprint */
+        epochRootKeyFingerprint?: (Uint8Array|null);
+
+        /** RotateEpochOutput error */
+        error?: (string|null);
+    }
+
+    /** Represents a RotateEpochOutput. */
+    class RotateEpochOutput implements IRotateEpochOutput {
+
+        /**
+         * Constructs a new RotateEpochOutput.
+         * @param [properties] Properties to set
+         */
+        constructor(properties?: proto.IRotateEpochOutput);
+
+        /** RotateEpochOutput newEpochRootKey. */
+        public newEpochRootKey?: (Uint8Array|null);
+
+        /** RotateEpochOutput newEpochAnonId. */
+        public newEpochAnonId?: (number|Long|null);
+
+        /** RotateEpochOutput epochAnonId. */
+        public epochAnonId?: (Uint8Array|null);
+
+        /** RotateEpochOutput epochData. */
+        public epochData?: (Uint8Array|null);
+
+        /** RotateEpochOutput memberEdges. */
+        public memberEdges: proto.IRotateEpochMemberEdge[];
+
+        /** RotateEpochOutput epochRootKeyFingerprint. */
+        public epochRootKeyFingerprint?: (Uint8Array|null);
+
+        /** RotateEpochOutput error. */
+        public error?: (string|null);
+
+        /**
+         * Creates a new RotateEpochOutput instance using the specified properties.
+         * @param [properties] Properties to set
+         * @returns RotateEpochOutput instance
+         */
+        public static create(properties?: proto.IRotateEpochOutput): proto.RotateEpochOutput;
+
+        /**
+         * Encodes the specified RotateEpochOutput message. Does not implicitly {@link proto.RotateEpochOutput.verify|verify} messages.
+         * @param message RotateEpochOutput message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encode(message: proto.IRotateEpochOutput, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Encodes the specified RotateEpochOutput message, length delimited. Does not implicitly {@link proto.RotateEpochOutput.verify|verify} messages.
+         * @param message RotateEpochOutput message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encodeDelimited(message: proto.IRotateEpochOutput, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Decodes a RotateEpochOutput message from the specified reader or buffer.
+         * @param reader Reader or buffer to decode from
+         * @param [length] Message length if known beforehand
+         * @returns RotateEpochOutput
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): proto.RotateEpochOutput;
+
+        /**
+         * Decodes a RotateEpochOutput message from the specified reader or buffer, length delimited.
+         * @param reader Reader or buffer to decode from
+         * @returns RotateEpochOutput
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): proto.RotateEpochOutput;
+
+        /**
+         * Verifies a RotateEpochOutput message.
+         * @param message Plain object to verify
+         * @returns `null` if valid, otherwise the reason why it is not
+         */
+        public static verify(message: { [k: string]: any }): (string|null);
+
+        /**
+         * Creates a RotateEpochOutput message from a plain object. Also converts values to their respective internal types.
+         * @param object Plain object
+         * @returns RotateEpochOutput
+         */
+        public static fromObject(object: { [k: string]: any }): proto.RotateEpochOutput;
+
+        /**
+         * Creates a plain object from a RotateEpochOutput message. Also converts values to other types if specified.
+         * @param message RotateEpochOutput
+         * @param [options] Conversion options
+         * @returns Plain object
+         */
+        public static toObject(message: proto.RotateEpochOutput, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+        /**
+         * Converts this RotateEpochOutput to JSON.
+         * @returns JSON object
+         */
+        public toJSON(): { [k: string]: any };
+
+        /**
+         * Gets the default type url for RotateEpochOutput
          * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
          * @returns The default type url
          */

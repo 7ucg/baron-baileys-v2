@@ -657,6 +657,11 @@ const generateWAMessageContent = async (message, options) => {
 		}
 	} else if ((0, exports.hasNonNullishProperty)(message, 'location')) {
 		m.locationMessage = WAProto_1.proto.Message.LocationMessage.create(message.location)
+	} else if ((0, exports.hasNonNullishProperty)(message, 'music')) {
+		// Native musicMessage (songUri/artworkUri, both external links) — added in the
+		// 2.3000.1044539926 proto update. Distinct from the older `embeddedMusic` key
+		// below, which stays as a text-preview fallback for existing callers.
+		m.musicMessage = WAProto_1.proto.Message.MusicMessage.create(message.music)
 	} else if ((0, exports.hasNonNullishProperty)(message, 'react')) {
 		if (!message.react.senderTimestampMs) {
 			message.react.senderTimestampMs = Date.now()
