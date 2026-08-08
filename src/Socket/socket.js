@@ -477,36 +477,43 @@ const makeSocket = config => {
 		}
 	}
 	const onMessageReceived = async data => {
-		await noise.decodeFrame(data, frame => {
-			// reset ping timeout
-			lastDateRecv = new Date()
-			let anyTriggered = false
-			anyTriggered = ws.emit('frame', frame)
-			// if it's a binary node
-			if (!(frame instanceof Uint8Array)) {
-				const msgId = frame.attrs.id
-				if (logger.level === 'trace') {
-					logger.trace({ xml: (0, WABinary_1.binaryNodeToString)(frame), msg: 'recv xml' })
+		try {
+			await noise.decodeFrame(data, frame => {
+				// reset ping timeout
+				lastDateRecv = new Date()
+				let anyTriggered = false
+				anyTriggered = ws.emit('frame', frame)
+				// if it's a binary node
+				if (!(frame instanceof Uint8Array)) {
+					const msgId = frame.attrs.id
+					if (logger.level === 'trace') {
+						logger.trace({ xml: (0, WABinary_1.binaryNodeToString)(frame), msg: 'recv xml' })
+					}
+					/* Check if this is a response to a message we sent */
+					anyTriggered = ws.emit(`${Defaults_1.DEF_TAG_PREFIX}${msgId}`, frame) || anyTriggered
+					/* Check if this is a response to a message we are expecting */
+					const l0 = frame.tag
+					const l1 = frame.attrs || {}
+					const l2 = Array.isArray(frame.content) ? frame.content[0]?.tag : ''
+					for (const key of Object.keys(l1)) {
+						anyTriggered =
+							ws.emit(`${Defaults_1.DEF_CALLBACK_PREFIX}${l0},${key}:${l1[key]},${l2}`, frame) || anyTriggered
+						anyTriggered = ws.emit(`${Defaults_1.DEF_CALLBACK_PREFIX}${l0},${key}:${l1[key]}`, frame) || anyTriggered
+						anyTriggered = ws.emit(`${Defaults_1.DEF_CALLBACK_PREFIX}${l0},${key}`, frame) || anyTriggered
+					}
+					anyTriggered = ws.emit(`${Defaults_1.DEF_CALLBACK_PREFIX}${l0},,${l2}`, frame) || anyTriggered
+					anyTriggered = ws.emit(`${Defaults_1.DEF_CALLBACK_PREFIX}${l0}`, frame) || anyTriggered
+					if (!anyTriggered && logger.level === 'debug') {
+						logger.debug({ unhandled: true, msgId, fromMe: false, frame }, 'communication recv')
+					}
 				}
-				/* Check if this is a response to a message we sent */
-				anyTriggered = ws.emit(`${Defaults_1.DEF_TAG_PREFIX}${msgId}`, frame) || anyTriggered
-				/* Check if this is a response to a message we are expecting */
-				const l0 = frame.tag
-				const l1 = frame.attrs || {}
-				const l2 = Array.isArray(frame.content) ? frame.content[0]?.tag : ''
-				for (const key of Object.keys(l1)) {
-					anyTriggered =
-						ws.emit(`${Defaults_1.DEF_CALLBACK_PREFIX}${l0},${key}:${l1[key]},${l2}`, frame) || anyTriggered
-					anyTriggered = ws.emit(`${Defaults_1.DEF_CALLBACK_PREFIX}${l0},${key}:${l1[key]}`, frame) || anyTriggered
-					anyTriggered = ws.emit(`${Defaults_1.DEF_CALLBACK_PREFIX}${l0},${key}`, frame) || anyTriggered
-				}
-				anyTriggered = ws.emit(`${Defaults_1.DEF_CALLBACK_PREFIX}${l0},,${l2}`, frame) || anyTriggered
-				anyTriggered = ws.emit(`${Defaults_1.DEF_CALLBACK_PREFIX}${l0}`, frame) || anyTriggered
-				if (!anyTriggered && logger.level === 'debug') {
-					logger.debug({ unhandled: true, msgId, fromMe: false, frame }, 'communication recv')
-				}
-			}
-		})
+			})
+		} catch (error) {
+			// A malformed/corrupt frame (seen during flaky pairing) previously threw out of
+			// this handler uncaught, crashing the process instead of just ending this socket.
+			logger.error({ error }, 'error decoding frame')
+			void end(error instanceof Error ? error : new Error(String(error)))
+		}
 	}
 	const end = async error => {
 		if (closed) {
