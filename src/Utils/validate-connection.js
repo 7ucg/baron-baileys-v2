@@ -26,6 +26,12 @@ const getUserAgent = config => {
 		platform = index_js_1.proto.ClientPayload.UserAgent.Platform.IOS
 		device = 'iPhone'
 		osVersion = config.browser[2] || '18.0'
+	} else if (config.syncFullHistory && os === 'Mac OS' && config.browser[1] === 'Desktop') {
+		// WA rejects full-history Desktop pairing unless macOS advertises its native
+		// platform (matching webSubPlatform=DARWIN below) instead of the generic WEB.
+		platform = index_js_1.proto.ClientPayload.UserAgent.Platform.MACOS
+		device = 'Desktop'
+		osVersion = '0.1'
 	} else {
 		platform = index_js_1.proto.ClientPayload.UserAgent.Platform.WEB
 		device = 'Desktop'

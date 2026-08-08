@@ -34,8 +34,30 @@ const useMultiFileAuthState = async folder => {
 		const filePath = (0, path_1.join)(folder, fixFileName(file))
 		const mutex = getFileLock(filePath)
 		return mutex.acquire().then(async release => {
+			const tmpPath = `${filePath}.tmp`
+			// A crash mid-write (process kill, OOM, power loss) leaves a truncated/corrupt
+			// file if we write filePath directly — for creds.json that means an
+			// unrecoverable session. Write to a temp file first, then rename over the
+			// real path: POSIX rename is atomic, so readers only ever see the old
+			// complete file or the new complete file, never a partial one.
+			const existingStat = await (0, promises_1.stat)(filePath).catch(() => undefined)
 			try {
-				await (0, promises_1.writeFile)(filePath, JSON.stringify(data, generics_1.BufferJSON.replacer))
+				await (0, promises_1.writeFile)(
+					tmpPath,
+					JSON.stringify(data, generics_1.BufferJSON.replacer),
+					existingStat ? { mode: existingStat.mode & 0o777 } : undefined
+				)
+				try {
+					await (0, promises_1.rename)(tmpPath, filePath)
+				} catch {
+					// Rename can fail across filesystems/devices (e.g. some Docker volume
+					// mounts) — fall back to a direct write rather than losing the data.
+					await (0, promises_1.writeFile)(
+						filePath,
+						JSON.stringify(data, generics_1.BufferJSON.replacer),
+						existingStat ? { mode: existingStat.mode & 0o777 } : undefined
+					)
+				}
 			} finally {
 				release()
 			}

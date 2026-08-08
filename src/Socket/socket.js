@@ -944,8 +944,11 @@ const makeSocket = config => {
 	// update credentials when required
 	ev.on('creds.update', update => {
 		const name = update.me?.name
-		// if name has just been received
-		if (creds.me?.name !== name) {
+		// A partial creds.update (no `me`) has name === undefined, which used to pass the
+		// "name changed" check whenever creds.me.name was already set, sending a typeless
+		// <presence/> that reads as "available" and marks the account online on every
+		// unrelated creds update, not just real name changes.
+		if (typeof name === 'string' && name.length > 0 && creds.me?.name !== name) {
 			logger.debug({ name }, 'updated pushName')
 			sendNode({
 				tag: 'presence',

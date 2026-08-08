@@ -16,6 +16,15 @@ const Defaults_1 = require('../Defaults')
 const crypto_2 = require('./crypto')
 const generics_1 = require('./generics')
 const pre_key_manager_1 = require('./pre-key-manager')
+// Shared across every addTransactionCapability() call (one per socket) instead of a
+// fresh instance each time: Node's AsyncLocalStorage registers itself with async_hooks
+// on construction, and a long-running bot process that reconnects (each reconnect calls
+// addTransactionCapability again) accumulates one abandoned instance per reconnect —
+// a real per-socket heap leak. Values are tagged with a per-store token (see
+// storeToken below) so a store only ever recognizes its own ambient transaction
+// context, even when a second store's transaction runs nested inside the first's
+// (e.g. one store's transaction() callback creating/using another store).
+const sharedTxStorage = new async_hooks_1.AsyncLocalStorage()
 /**
  * Adds caching capability to a SignalKeyStore
  * @param store the store to add caching to
@@ -90,7 +99,15 @@ function makeCacheableSignalKeyStore(store, logger, _cache) {
  * @returns SignalKeyStore with transaction capability
  */
 const addTransactionCapability = (state, logger, { maxCommitRetries, delayBetweenTriesMs }) => {
-	const txStorage = new async_hooks_1.AsyncLocalStorage()
+	const txStorage = sharedTxStorage
+	// Unique per call (per store), so this store only reads back a transaction context
+	// it created itself — never one that belongs to a different store sharing the same
+	// AsyncLocalStorage instance.
+	const storeToken = Symbol('addTransactionCapability')
+	const getOwnStore = () => {
+		const ctx = txStorage.getStore()
+		return ctx && ctx.token === storeToken ? ctx : undefined
+	}
 	// Queues for concurrency control (keyed by signal data type - bounded set)
 	const keyQueues = new Map()
 	// Transaction mutexes with reference counting for cleanup
@@ -143,7 +160,7 @@ const addTransactionCapability = (state, logger, { maxCommitRetries, delayBetwee
 	 * Check if currently in a transaction
 	 */
 	function isInTransaction() {
-		return !!txStorage.getStore()
+		return !!getOwnStore()
 	}
 	/**
 	 * Commit transaction with retries
@@ -171,7 +188,7 @@ const addTransactionCapability = (state, logger, { maxCommitRetries, delayBetwee
 	}
 	return {
 		get: async (type, ids) => {
-			const ctx = txStorage.getStore()
+			const ctx = getOwnStore()
 			if (!ctx) {
 				// No transaction - direct read without exclusive lock for concurrency
 				return state.get(type, ids)
@@ -198,7 +215,7 @@ const addTransactionCapability = (state, logger, { maxCommitRetries, delayBetwee
 			return result
 		},
 		set: async data => {
-			const ctx = txStorage.getStore()
+			const ctx = getOwnStore()
 			if (!ctx) {
 				// No transaction - direct write with queue protection
 				const types = Object.keys(data)
@@ -239,7 +256,7 @@ const addTransactionCapability = (state, logger, { maxCommitRetries, delayBetwee
 		},
 		isInTransaction,
 		transaction: async (work, key) => {
-			const existing = txStorage.getStore()
+			const existing = getOwnStore()
 			// Nested transaction - reuse existing context
 			if (existing) {
 				logger.trace('reusing existing transaction context')
@@ -251,6 +268,7 @@ const addTransactionCapability = (state, logger, { maxCommitRetries, delayBetwee
 			try {
 				return await mutex.runExclusive(async () => {
 					const ctx = {
+						token: storeToken,
 						cache: {},
 						mutations: {},
 						dbQueries: 0

@@ -61,7 +61,9 @@ const getBinaryNodeChildString = (node, childTag) => {
 exports.getBinaryNodeChildString = getBinaryNodeChildString
 const getBinaryNodeChildUInt = (node, childTag, length) => {
 	const buff = (0, exports.getBinaryNodeChildBuffer)(node, childTag)
-	if (buff) {
+	// A buffer shorter than `length` makes bufferToUInt's loop read past the end
+	// (undefined -> NaN), silently corrupting the result instead of failing loudly.
+	if (buff && buff.length >= length) {
 		return bufferToUInt(buff, length)
 	}
 }
