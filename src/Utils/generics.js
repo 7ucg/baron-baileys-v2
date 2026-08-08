@@ -250,11 +250,17 @@ exports.bindWaitForConnectionUpdate = bindWaitForConnectionUpdate
 const fetchLatestBaileysVersion = async (options = {}) => {
 	const URL = 'https://raw.githubusercontent.com/WhiskeySockets/Baileys/master/src/Defaults/index.ts'
 	try {
+		// Without a timeout, a stalled connection to GitHub hangs this call (and anything
+		// awaiting it) indefinitely instead of falling through to the catch's safe default.
+		const controller = new AbortController()
+		const timer = setTimeout(() => controller.abort(), options.timeout ?? 5000)
 		const response = await fetch(URL, {
 			dispatcher: options.dispatcher,
 			method: 'GET',
-			headers: options.headers
+			headers: options.headers,
+			signal: controller.signal
 		})
+		clearTimeout(timer)
 		if (!response.ok) {
 			throw new boom_1.Boom(`Failed to fetch latest Baileys version: ${response.statusText}`, {
 				statusCode: response.status
@@ -296,11 +302,15 @@ const fetchLatestWaWebVersion = async (options = {}) => {
 				'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36'
 		}
 		const headers = { ...defaultHeaders, ...options.headers }
+		const controller = new AbortController()
+		const timer = setTimeout(() => controller.abort(), options.timeout ?? 5000)
 		const response = await fetch('https://web.whatsapp.com/sw.js', {
 			...options,
 			method: 'GET',
-			headers
+			headers,
+			signal: controller.signal
 		})
+		clearTimeout(timer)
 		if (!response.ok) {
 			throw new boom_1.Boom(`Failed to fetch sw.js: ${response.statusText}`, { statusCode: response.status })
 		}

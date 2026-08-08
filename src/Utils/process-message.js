@@ -507,10 +507,12 @@ const processMessage = async (
 				break
 			case index_js_1.proto.Message.ProtocolMessage.Type.GROUP_MEMBER_LABEL_CHANGE:
 				const labelAssociationMsg = protocolMsg.memberLabel
-				if (labelAssociationMsg?.label) {
+				if (labelAssociationMsg) {
+					// An empty label means the tag was removed, not that there's nothing to
+					// report — gating on `.label` truthiness swallowed removal events entirely.
 					ev.emit('group.member-tag.update', {
 						groupId: chat.id,
-						label: labelAssociationMsg.label,
+						label: labelAssociationMsg.label || '',
 						participant: message.key.participant,
 						participantAlt: message.key.participantAlt,
 						messageTimestamp: Number(message.messageTimestamp)

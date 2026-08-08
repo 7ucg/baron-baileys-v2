@@ -1589,18 +1589,28 @@ const makeMessagesRecvSocket = config => {
 				break
 			case 'link_code_companion_reg':
 				const linkCodeCompanionReg = (0, WABinary_1.getBinaryNodeChild)(node, 'link_code_companion_reg')
-				const ref = toRequiredBuffer(
-					(0, WABinary_1.getBinaryNodeChildBuffer)(linkCodeCompanionReg, 'link_code_pairing_ref')
+				const refBuffer = (0, WABinary_1.getBinaryNodeChildBuffer)(linkCodeCompanionReg, 'link_code_pairing_ref')
+				const primaryIdentityPublicKeyBuffer = (0, WABinary_1.getBinaryNodeChildBuffer)(
+					linkCodeCompanionReg,
+					'primary_identity_pub'
 				)
-				const primaryIdentityPublicKey = toRequiredBuffer(
-					(0, WABinary_1.getBinaryNodeChildBuffer)(linkCodeCompanionReg, 'primary_identity_pub')
+				const primaryEphemeralPublicKeyWrappedBuffer = (0, WABinary_1.getBinaryNodeChildBuffer)(
+					linkCodeCompanionReg,
+					'link_code_pairing_wrapped_primary_ephemeral_pub'
 				)
-				const primaryEphemeralPublicKeyWrapped = toRequiredBuffer(
-					(0, WABinary_1.getBinaryNodeChildBuffer)(
-						linkCodeCompanionReg,
-						'link_code_pairing_wrapped_primary_ephemeral_pub'
-					)
-				)
+				if (
+					refBuffer === undefined ||
+					primaryIdentityPublicKeyBuffer === undefined ||
+					primaryEphemeralPublicKeyWrappedBuffer === undefined
+				) {
+					// The server occasionally sends this notification with no pairing data
+					// attached; toRequiredBuffer would throw on undefined and crash the socket.
+					logger.debug({ id: node.attrs.id, type: node.attrs.type }, 'skipping empty link code companion registration')
+					break
+				}
+				const ref = toRequiredBuffer(refBuffer)
+				const primaryIdentityPublicKey = toRequiredBuffer(primaryIdentityPublicKeyBuffer)
+				const primaryEphemeralPublicKeyWrapped = toRequiredBuffer(primaryEphemeralPublicKeyWrappedBuffer)
 				const codePairingPublicKey = await decipherLinkPublicKey(primaryEphemeralPublicKeyWrapped)
 				const companionSharedKey = Utils_1.Curve.sharedKey(
 					authState.creds.pairingEphemeralKeyPair.private,
