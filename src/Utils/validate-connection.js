@@ -38,7 +38,9 @@ const getUserAgent = config => {
 			tertiary: config.version[2]
 		},
 		platform,
-		releaseChannel: index_js_1.proto.ClientPayload.UserAgent.ReleaseChannel.DEBUG,
+		// WA Web (Client/Payload.js) always advertises RELEASE, not BETA — confirmed against
+		// whatsapp-rust-bridge's build_base_client_payload, which documents this explicitly.
+		releaseChannel: index_js_1.proto.ClientPayload.UserAgent.ReleaseChannel.RELEASE,
 		osVersion,
 		device,
 		osBuildNumber: '0.1',
@@ -50,7 +52,7 @@ const getUserAgent = config => {
 }
 const PLATFORM_MAP = {
 	'Mac OS': index_js_1.proto.ClientPayload.WebInfo.WebSubPlatform.DARWIN,
-	Windows: index_js_1.proto.ClientPayload.WebInfo.WebSubPlatform.WIN32,
+	Windows: index_js_1.proto.ClientPayload.WebInfo.WebSubPlatform.WIN_HYBRID,
 	Android: index_js_1.proto.ClientPayload.WebInfo.WebSubPlatform.WEB_BROWSER,
 	iOS: index_js_1.proto.ClientPayload.WebInfo.WebSubPlatform.WEB_BROWSER
 }
@@ -111,12 +113,15 @@ const generateRegistrationNode = ({ registrationId, signedPreKey, signedIdentity
 		platformType: getPlatformType(config.browser[1]),
 		requireFullSync: config.syncFullHistory,
 		historySyncConfig: {
-			fullSyncDaysLimit: undefined,
+			fullSyncDaysLimit: 30,
 			fullSyncSizeMbLimit: undefined,
 			storageQuotaMb: 10240,
 			inlineInitialPayloadInE2EeMsg: true,
 			recentSyncDaysLimit: undefined,
-			supportCallLogHistory: true,
+			// The call log history payload is bound to the Windows desktop client — advertising
+			// this to the server on any other browser profile is a false capability claim
+			// (confirmed against whatsapp-rust-bridge's default_history_sync_config).
+			supportCallLogHistory: config.browser[0] === 'Windows',
 			supportBotUserAgentChatHistory: true,
 			supportCagReactionsAndPolls: true,
 			supportBizHostedMsg: true,
