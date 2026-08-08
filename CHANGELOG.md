@@ -1,5 +1,28 @@
 # Changelog
 
+## 2026-08-09
+
+Reviewed open pull requests on upstream WhiskeySockets/Baileys and ported the isolated bug fixes that apply to this fork. All entries below originate from third-party PRs, credited by number — not our own findings. Larger feature PRs (newsletter media paths, phone-generated link previews, hidden-voter polls, passkey pairing, connection-stability overhaul, enterprise bot framework, Rust/WASM codec migrations) were reviewed but skipped as out of scope for a fix-only pass.
+
+| Area | What changed |
+| --- | --- |
+| **WABinary** | `getBinaryNodeChildUInt` now bounds-checks the buffer length before reading, instead of silently producing `NaN` on a short buffer (#2665). |
+| **Pairing** | Full-history Desktop pairing on macOS now advertises the native `MACOS` platform (matching `webSubPlatform=DARWIN`) instead of the generic `WEB` (#2693). |
+| **Auth state** | `creds.json`/key files are now written via temp file + atomic rename, so a crash mid-write can't leave a truncated file (#2675). |
+| **Signal transactions** | `addTransactionCapability` shares one `AsyncLocalStorage` across calls instead of allocating a fresh instance per socket/reconnect (a per-socket heap leak), tagging contexts with a per-store token to keep transaction isolation between stores (#2722). |
+| **Presence** | `creds.update` no longer broadcasts presence on a partial update that lacks `me` — only an actual name change triggers it (#2740). |
+| **LID/PN mapping** | `relayMessage` resolves a PN jid to its mapped LID before sending, using a new store/cache-only lookup (`getStoredLIDForPN`, no USync network call) so a cold cache doesn't block the send path; outgoing stanzas now carry `addressing_mode`/`recipient_pn` (#2692, #2711/#2748 core fix). Inbound LID-addressed messages missing `*_pn` now recover the alt (phone number) JID from the local mapping store instead of leaving it `undefined` (#2744). |
+| **Message edits** | Newer WA clients seal message edits with the original message's `messageSecret` (`secretEncryptedMessage`, type `MESSAGE_EDIT`) instead of a plaintext `protocolMessage` edit — these are now decrypted before `messages.upsert` fires, trying both LID and PN sender identities (#2690). |
+| **Media download** | `downloadEncryptedContent` uses `stream.pipeline` instead of `.pipe()`, so a transport error on the source actually propagates to and destroys the returned decrypt stream instead of leaving callers hung (#2716). |
+| **Media reupload** | Reupload-on-error detection now also reads the HTTP status off a Boom's `output.statusCode` (not just `error.status`), and media-retry-key derivation accepts a base64-string `mediaKey` in addition to a Buffer (#2729). |
+| **Group events** | `group.member-tag.update` now fires on an empty label too — an empty label means the tag was removed, not that there's nothing to report (#2609). |
+| **Pairing notifications** | `link_code_companion_reg` notifications that arrive without pairing data are now skipped instead of crashing on a missing buffer (#2681). |
+| **Version checks** | `fetchLatestBaileysVersion`/`fetchLatestWaWebVersion` now time out after 5s (overridable via `options.timeout`) instead of hanging indefinitely on a stalled request (#2401). |
+| **Socket** | A malformed/corrupt frame in `onMessageReceived` is now caught and ends the connection cleanly via `end()`, instead of crashing the process (#2402). `sendMessageAck` no longer throws when a notification arrives before `creds.me` is set during pairing (#2749). |
+| **Media upload** | Proxy dispatchers (undici-style, e.g. `ProxyAgent`) passed as the upload agent were silently ignored by the Node-native upload path (`http.request` doesn't understand them) — uploads now route through `fetch` when a real dispatcher is detected, so proxying actually works (#1877). |
+
+---
+
 ## 2026-07-20
 
 Verified against a live WA session (real captured stanzas, not APK inference) plus a full sweep of leftover `// TODO` markers. Ports/fixes below are wire-confirmed unless noted.
