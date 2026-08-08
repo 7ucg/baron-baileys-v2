@@ -683,6 +683,14 @@ const isNodeRuntime = () => {
 		typeof globalThis.Deno === 'undefined'
 	)
 }
+// Duck-types an undici-style dispatcher (e.g. ProxyAgent). A Node http.Agent doesn't
+// have dispatch(), so this lets us route only true dispatchers through the fetch path —
+// passing one to http.request's `agent` option is silently ignored, which means a
+// caller-supplied proxy dispatcher would otherwise never actually be used.
+const isFetchDispatcher = agent => {
+	return !!agent && typeof agent.dispatch === 'function'
+}
+exports.isFetchDispatcher = isFetchDispatcher
 const uploadWithNodeHttp = async ({ url, filePath, headers, timeoutMs, agent }, redirectCount = 0) => {
 	if (redirectCount > 5) {
 		throw new Error('Too many redirects')
@@ -706,7 +714,7 @@ const uploadWithNodeHttp = async ({ url, filePath, headers, timeoutMs, agent }, 
 					...headers,
 					'Content-Length': fileSize
 				},
-				agent,
+				agent: isFetchDispatcher(agent) ? undefined : agent,
 				timeout: timeoutMs
 			},
 			res => {
@@ -758,7 +766,7 @@ const uploadWithFetch = async ({ url, filePath, headers, timeoutMs, agent }) => 
 	const nodeStream = (0, fs_1.createReadStream)(filePath)
 	const webStream = stream_1.Readable.toWeb(nodeStream)
 	const response = await fetch(url, {
-		dispatcher: agent,
+		dispatcher: isFetchDispatcher(agent) ? agent : undefined,
 		method: 'POST',
 		body: webStream,
 		headers,
@@ -789,14 +797,17 @@ const uploadWithFetch = async ({ url, filePath, headers, timeoutMs, agent }) => 
  * across all runtimes. Monitor the GitHub issue for updates.
  */
 const uploadMedia = async (params, logger) => {
-	if (isNodeRuntime()) {
+	if (isNodeRuntime() && !isFetchDispatcher(params.agent)) {
 		logger?.debug('Using Node.js https module for upload (avoids undici buffering bug)')
 		return (0, exports.uploadWithNodeHttp)(params)
 	} else {
+		// Node's http.request agent ignores undici dispatchers, so when one is supplied we
+		// must use fetch — accepting the undici buffering cost only for proxied uploads.
 		logger?.debug('Using web-standard Fetch API for upload')
 		return uploadWithFetch(params)
 	}
 }
+exports.uploadMedia = uploadMedia
 const getWAUploadToServer = ({ customUploadHosts, fetchAgent, logger, options }, refreshMediaConn) => {
 	return async (filePath, { mediaType, fileEncSha256B64, timeoutMs }) => {
 		// send a query JSON to obtain the url & auth token to upload our media
