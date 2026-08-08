@@ -20,12 +20,10 @@ class LIDMappingStore {
 		if (pairs.length === 0) return
 		const validatedPairs = []
 		for (const { lid, pn } of pairs) {
-			if (
-				!(
-					((0, WABinary_1.isLidUser)(lid) && (0, WABinary_1.isPnUser)(pn)) ||
-					((0, WABinary_1.isPnUser)(lid) && (0, WABinary_1.isLidUser)(pn))
-				)
-			) {
+			if (!(
+				((0, WABinary_1.isLidUser)(lid) && (0, WABinary_1.isPnUser)(pn)) ||
+				((0, WABinary_1.isPnUser)(lid) && (0, WABinary_1.isLidUser)(pn))
+			)) {
 				this.logger.warn(`Invalid LID-PN mapping: ${lid}, ${pn}`)
 				continue
 			}
@@ -85,6 +83,26 @@ class LIDMappingStore {
 	}
 	async getLIDForPN(pn) {
 		return (await this.getLIDsForPNs([pn]))?.[0]?.lid || null
+	}
+	// Store/cache-only lookup, no USync fallback — for the message-send hot path, where a
+	// missing mapping should just mean "send as PN" rather than block on a network round trip.
+	async getStoredLIDForPN(pn) {
+		if (!(0, WABinary_1.isPnUser)(pn) && !(0, WABinary_1.isHostedPnUser)(pn)) return null
+		const decoded = (0, WABinary_1.jidDecode)(pn)
+		if (!decoded) return null
+		const pnUser = decoded.user
+		let lidUser = this.mappingCache.get(`pn:${pnUser}`)
+		if (!lidUser || typeof lidUser !== 'string') {
+			const stored = await this.keys.get('lid-mapping', [pnUser])
+			lidUser = stored[pnUser]
+			if (lidUser && typeof lidUser === 'string') {
+				this.mappingCache.set(`pn:${pnUser}`, lidUser)
+				this.mappingCache.set(`lid:${lidUser}`, pnUser)
+			}
+		}
+		if (!lidUser || typeof lidUser !== 'string') return null
+		const pnDevice = decoded.device !== undefined ? decoded.device : 0
+		return `${lidUser}${!!pnDevice ? `:${pnDevice}` : ``}@${decoded.server === 'hosted' ? 'hosted.lid' : 'lid'}`
 	}
 	async getLIDsForPNs(pns) {
 		if (pns.length === 0) return null

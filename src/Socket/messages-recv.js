@@ -2183,6 +2183,32 @@ const makeMessagesRecvSocket = config => {
 					await signalRepository.lidMapping.storeLIDPNMappings([{ lid: primaryJid, pn: alt }])
 					await signalRepository.migrateSession(alt, primaryJid)
 				}
+			} else if (msg.key.addressingMode === 'lid') {
+				// Server sent none of participant_pn/sender_pn/peer_recipient_pn, so there's
+				// no alt JID to derive from the stanza. Recover it from the local LID->PN
+				// store instead, which outgoing sends and USync keep populated, so downstream
+				// consumers still get the phone number instead of only a bare @lid.
+				const primaryJid = msg.key.participant || msg.key.remoteJid
+				if ((0, WABinary_1.isLidUser)(primaryJid)) {
+					try {
+						const pn = await signalRepository.lidMapping.getPNForLID(primaryJid)
+						// getPNForLID returns a device-scoped JID; stanza attrs carry it
+						// without the device, so normalize to match. jidNormalizedUser
+						// yields '' for an undecodable JID, so guard before assigning.
+						const pnJid = pn ? (0, WABinary_1.jidNormalizedUser)(pn) : ''
+						if (pnJid) {
+							if ((0, WABinary_1.isJidGroup)(msg.key.remoteJid)) {
+								msg.key.participantAlt = pnJid
+							} else {
+								msg.key.remoteJidAlt = pnJid
+							}
+							logger.debug({ lid: primaryJid, pn: pnJid }, 'recovered alt JID from LID mapping store')
+						}
+					} catch (err) {
+						// Best-effort: a mapping-store failure must not cost us the message.
+						logger.warn({ err, lid: primaryJid }, 'failed to recover alt JID from LID mapping store')
+					}
+				}
 			}
 			await messageMutex.mutex(async () => {
 				await decrypt()
