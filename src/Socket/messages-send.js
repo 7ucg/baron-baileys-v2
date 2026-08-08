@@ -545,27 +545,6 @@ const makeMessagesSocket = config => {
 			AI = false
 		}
 	) => {
-		if ((0, WABinary_1.isPnUser)(jid) || (0, WABinary_1.isHostedPnUser)(jid)) {
-			// A contact migrated to LID keeps sends addressed to their old PN jid working
-			// via server-side translation, but that path skips our own session/device
-			// bookkeeping (senderKeyMap, device cache) which is keyed by LID once migrated —
-			// resolving here keeps this call's state in sync with the LID identity.
-			// Store/cache-only lookup (no USync) so a cold cache never blocks a send.
-			try {
-				const mappedLid = await signalRepository.lidMapping.getStoredLIDForPN(jid)
-				if (mappedLid && ((0, WABinary_1.isLidUser)(mappedLid) || (0, WABinary_1.isHostedLidUser)(mappedLid))) {
-					const pnJid = (0, WABinary_1.jidNormalizedUser)(jid)
-					jid = mappedLid
-					additionalAttributes = {
-						...additionalAttributes,
-						addressing_mode: 'lid',
-						recipient_pn: pnJid
-					}
-				}
-			} catch (error) {
-				logger.debug({ jid, err: error?.message }, 'failed to check LID mapping for PN')
-			}
-		}
 		const meId = authState.creds.me.id
 		const meLid = authState.creds.me?.lid
 		const isRetryResend = Boolean(participant?.jid)
