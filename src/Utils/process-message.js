@@ -124,7 +124,8 @@ const isRealMessage = message => {
 		hasSomeContent &&
 		!normalizedContent?.protocolMessage &&
 		!normalizedContent?.reactionMessage &&
-		!normalizedContent?.pollUpdateMessage
+		!normalizedContent?.pollUpdateMessage &&
+		!normalizedContent?.secretEncryptedMessage
 	)
 }
 exports.isRealMessage = isRealMessage
@@ -187,6 +188,120 @@ function decryptEventResponse({ encPayload, encIv }, { eventCreatorJid, eventMsg
 		return Buffer.from(txt)
 	}
 }
+/**
+ * Decrypt a message edit sealed inside a secretEncryptedMessage.
+ * Newer WhatsApp clients send edits end-to-end encrypted with the original
+ * message's messageSecret instead of a plaintext protocolMessage.
+ * @param edit the secretEncryptedMessage envelope (MESSAGE_EDIT type)
+ * @param ctx additional info about the original message required for decryption
+ * @returns the decrypted inner message
+ */
+function decryptMessageEdit({ encPayload, encIv }, { origMsgId, origMsgSenderJid, editorJid, msgEncKey }) {
+	const sign = Buffer.concat([
+		toBinary(origMsgId),
+		toBinary(origMsgSenderJid),
+		toBinary(editorJid),
+		toBinary('Message Edit'),
+		new Uint8Array([1])
+	])
+	const key0 = (0, crypto_1.hmacSign)(msgEncKey, new Uint8Array(32), 'sha256')
+	const decKey = (0, crypto_1.hmacSign)(sign, key0, 'sha256')
+	// unlike poll votes and event responses, message edits are sealed without AAD
+	const decrypted = (0, crypto_1.aesDecryptGCM)(encPayload, decKey, encIv, new Uint8Array(0))
+	return index_js_1.proto.Message.decode(decrypted)
+	function toBinary(txt) {
+		return Buffer.from(txt)
+	}
+}
+exports.decryptMessageEdit = decryptMessageEdit
+/**
+ * If the message carries a secretEncryptedMessage MESSAGE_EDIT envelope,
+ * decrypt it in place so the message looks like a regular plaintext
+ * protocolMessage edit to everything downstream (upsert consumers included).
+ * Failures are logged and leave the message untouched.
+ */
+const unwrapSecretEncryptedMessage = async (message, { creds, getMessage, logger }) => {
+	const content = (0, messages_1.normalizeMessageContent)(message.message)
+	const secretEnc = content?.secretEncryptedMessage
+	if (
+		!secretEnc?.encPayload ||
+		!secretEnc.encIv ||
+		secretEnc.secretEncType !== index_js_1.proto.Message.SecretEncryptedMessage.SecretEncType.MESSAGE_EDIT
+	) {
+		return
+	}
+	const targetKey = secretEnc.targetMessageKey
+	if (!targetKey?.id) {
+		return
+	}
+	try {
+		// the original message lives in our chat: address it from our perspective.
+		// only the author can edit a message, so fromMe mirrors the envelope's fromMe.
+		const origMsg = await getMessage({
+			...targetKey,
+			remoteJid: message.key.remoteJid,
+			fromMe: message.key.fromMe,
+			participant: message.key.participant
+		})
+		let msgEncKey = origMsg?.messageContextInfo?.messageSecret
+		if (typeof msgEncKey === 'string') {
+			// stores that persist messages as JSON hand the secret back base64-encoded
+			msgEncKey = Buffer.from(msgEncKey, 'base64')
+		}
+		if (!msgEncKey?.length) {
+			logger?.warn({ targetKey }, 'message edit: missing messageSecret for decryption')
+			return
+		}
+		// the sender may have derived the key with either its LID or PN identity —
+		// try both (GCM authentication rejects the wrong one), like whatsmeow does
+		const meIdNormalised = (0, WABinary_1.jidNormalizedUser)(creds.me.id)
+		const candidates = [
+			...(message.key.fromMe
+				? [meIdNormalised, creds.me?.lid]
+				: [message.key.participant || message.key.remoteJid, message.key.participantAlt || message.key.remoteJidAlt]),
+			targetKey.remoteJid
+		]
+			.filter(jid => !!jid)
+			.map(jid => (0, WABinary_1.jidNormalizedUser)(jid))
+			.filter((jid, i, arr) => arr.indexOf(jid) === i)
+		let decoded
+		let lastError
+		for (const authorJid of candidates) {
+			try {
+				decoded = decryptMessageEdit(secretEnc, {
+					origMsgId: targetKey.id,
+					origMsgSenderJid: authorJid,
+					editorJid: authorJid,
+					msgEncKey
+				})
+				break
+			} catch (err) {
+				lastError = err
+			}
+		}
+		if (!decoded) {
+			throw lastError
+		}
+		if (!decoded.protocolMessage) {
+			// normalise to the plaintext edit shape consumers already understand
+			decoded = index_js_1.proto.Message.fromObject({
+				protocolMessage: {
+					key: targetKey,
+					type: index_js_1.proto.Message.ProtocolMessage.Type.MESSAGE_EDIT,
+					editedMessage: decoded
+				}
+			})
+		}
+		if (!decoded.messageContextInfo && content?.messageContextInfo) {
+			decoded.messageContextInfo = content.messageContextInfo
+		}
+		message.message = decoded
+		logger?.debug({ targetKey }, 'decrypted secretEncryptedMessage edit')
+	} catch (err) {
+		logger?.warn({ err, targetKey }, 'failed to decrypt secretEncryptedMessage edit')
+	}
+}
+exports.unwrapSecretEncryptedMessage = unwrapSecretEncryptedMessage
 const processMessage = async (
 	message,
 	{

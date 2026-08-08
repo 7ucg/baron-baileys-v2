@@ -311,7 +311,16 @@ const REUPLOAD_REQUIRED_STATUS = [410, 404]
 /** Downloads the given message. Throws an error if it's not a media message */
 const downloadMediaMessage = async (message, type, options, ctx) => {
 	const result = await downloadMsg().catch(async error => {
-		if (ctx && typeof error?.status === 'number' && REUPLOAD_REQUIRED_STATUS.includes(error.status)) {
+		// getHttpStream throws a Boom, which exposes the HTTP status on output.statusCode
+		// rather than error.status — without this fallback, transport failures never
+		// trigger a reupload and just propagate as a raw fetch error.
+		const errorStatus =
+			typeof error?.status === 'number'
+				? error.status
+				: typeof error?.output?.statusCode === 'number'
+					? error.output.statusCode
+					: undefined
+		if (ctx && typeof errorStatus === 'number' && REUPLOAD_REQUIRED_STATUS.includes(errorStatus)) {
 			ctx.logger.info({ key: message.key }, 'sending reupload media request...')
 			message = await ctx.reuploadRequest(message)
 			const result = await downloadMsg()

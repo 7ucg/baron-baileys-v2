@@ -526,10 +526,9 @@ const downloadContentFromMessage = async ({ mediaKey, directPath, url }, type, o
 	if (type === 'image' && getMediaProp(mediaAbProps, 'multi_scan_pjpeg')) {
 		pjpegHeaders['X-WhatsApp-Multi-Scan-PJPEG'] = '1'
 	}
-	const mergedOpts =
-		Object.keys(pjpegHeaders).length
-			? { ...opts, options: { ...(opts.options || {}), headers: { ...(opts.options?.headers || {}), ...pjpegHeaders } } }
-			: opts
+	const mergedOpts = Object.keys(pjpegHeaders).length
+		? { ...opts, options: { ...(opts.options || {}), headers: { ...(opts.options?.headers || {}), ...pjpegHeaders } } }
+		: opts
 	try {
 		return await (0, exports.downloadEncryptedContent)(downloadUrl, keys, mergedOpts)
 	} catch (err) {
@@ -653,7 +652,15 @@ const downloadEncryptedContent = async (downloadUrl, { cipherKey, iv }, { startB
 			}
 		}
 	})
-	return fetched.pipe(output, { end: true })
+	// Readable.pipe() does not forward source errors to the destination. Use
+	// pipeline so transport and decrypt failures tear down the entire chain and
+	// remain observable through the returned transform.
+	;(0, stream_1.pipeline)(fetched, output, error => {
+		if (error && !output.destroyed) {
+			output.destroy(error)
+		}
+	})
+	return output
 }
 exports.downloadEncryptedContent = downloadEncryptedContent
 function extensionForMediaMessage(message) {
@@ -853,6 +860,9 @@ const getWAUploadToServer = ({ customUploadHosts, fetchAgent, logger, options },
 }
 exports.getWAUploadToServer = getWAUploadToServer
 const getMediaRetryKey = mediaKey => {
+	if (typeof mediaKey === 'string') {
+		mediaKey = Buffer.from(mediaKey.replace('data:;base64,', ''), 'base64')
+	}
 	return (0, crypto_1.hkdf)(mediaKey, 32, { info: 'WhatsApp Media Retry Notification' })
 }
 /**

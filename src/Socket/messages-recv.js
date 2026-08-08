@@ -523,7 +523,9 @@ const makeMessagesRecvSocket = config => {
 		})
 	}
 	const sendMessageAck = async (node, errorCode) => {
-		const stanza = (0, stanza_ack_1.buildAckStanza)(node, errorCode, authState.creds.me.id)
+		// creds.me is unset until pairing completes, but some notification nodes
+		// (e.g. companion_reg_refresh) arrive and must be acked before login.
+		const stanza = (0, stanza_ack_1.buildAckStanza)(node, errorCode, authState.creds.me?.id)
 		logger.debug({ recv: { tag: node.tag, attrs: node.attrs }, sent: stanza.attrs }, 'sent ack')
 		await sendNode(stanza)
 	}

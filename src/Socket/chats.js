@@ -15,6 +15,7 @@ const State_1 = require('../Types/State')
 const Utils_1 = require('../Utils')
 const make_mutex_1 = require('../Utils/make-mutex')
 const process_message_1 = __importDefault(require('../Utils/process-message'))
+const { unwrapSecretEncryptedMessage } = require('../Utils/process-message')
 const tc_token_utils_1 = require('../Utils/tc-token-utils')
 const WABinary_1 = require('../WABinary')
 const WAUSync_1 = require('../WAUSync')
@@ -2016,6 +2017,11 @@ const makeChatsSocket = config => {
 				const sid = _nlServerIdCache.get(ci.stanzaId)
 				if (sid != null) msg.quotedNewsletterServerId = sid
 			}
+		}
+		if (msg.message?.secretEncryptedMessage || msg.message?.editedMessage?.message?.secretEncryptedMessage) {
+			// message edits from newer clients arrive sealed with the original
+			// message's secret — decrypt before anything downstream sees the message
+			await unwrapSecretEncryptedMessage(msg, { creds: authState.creds, getMessage, logger })
 		}
 		ev.emit('messages.upsert', { messages: [msg], type })
 		if (!!msg.pushName) {
