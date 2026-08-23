@@ -363,6 +363,87 @@ const processMessage = async (
 	const protocolMsg = content?.protocolMessage
 	if (protocolMsg) {
 		switch (protocolMsg.type) {
+			case index_js_1.proto.Message.ProtocolMessage.Type.EPHEMERAL_SYNC_RESPONSE:
+				logger?.debug({ key: message.key }, 'got ephemeral sync response')
+				break
+			case index_js_1.proto.Message.ProtocolMessage.Type.APP_STATE_SYNC_KEY_REQUEST:
+				if (protocolMsg.appStateSyncKeyRequest) {
+					ev.emit('app-state-sync-key.request', {
+						key: message.key,
+						keyIds: protocolMsg.appStateSyncKeyRequest.keyIds
+					})
+				}
+				break
+			case index_js_1.proto.Message.ProtocolMessage.Type.MSG_FANOUT_BACKFILL_REQUEST:
+				logger?.debug({ key: message.key }, 'got message fanout backfill request')
+				break
+			case index_js_1.proto.Message.ProtocolMessage.Type.INITIAL_SECURITY_NOTIFICATION_SETTING_SYNC:
+				if (protocolMsg.initialSecurityNotificationSettingSync) {
+					ev.emit('creds.update', {
+						initialSecurityNotificationSettingSync:
+							protocolMsg.initialSecurityNotificationSettingSync.securityNotificationEnabled
+					})
+				}
+				break
+			case index_js_1.proto.Message.ProtocolMessage.Type.APP_STATE_FATAL_EXCEPTION_NOTIFICATION:
+				if (protocolMsg.appStateFatalExceptionNotification) {
+					logger?.warn(
+						{ notification: protocolMsg.appStateFatalExceptionNotification },
+						'got app state fatal exception notification'
+					)
+					ev.emit('app-state.sync-error', {
+						notification: protocolMsg.appStateFatalExceptionNotification
+					})
+				}
+				break
+			case index_js_1.proto.Message.ProtocolMessage.Type.SHARE_PHONE_NUMBER:
+				logger?.debug({ key: message.key, invokerJid: protocolMsg.invokerJid }, 'got share phone number request')
+				break
+			case index_js_1.proto.Message.ProtocolMessage.Type.PEER_DATA_OPERATION_REQUEST_MESSAGE:
+				if (protocolMsg.peerDataOperationRequestMessage) {
+					ev.emit('peer-data-operation.request', {
+						key: message.key,
+						request: protocolMsg.peerDataOperationRequestMessage
+					})
+				}
+				break
+			case index_js_1.proto.Message.ProtocolMessage.Type.LIMIT_SHARING:
+				if (protocolMsg.limitSharing) {
+					ev.emit('messages.update', [
+						{
+							key: message.key,
+							update: { limitSharing: protocolMsg.limitSharing }
+						}
+					])
+				}
+				break
+			case index_js_1.proto.Message.ProtocolMessage.Type.AI_METADATA_OPERATION:
+				if (protocolMsg.aiMetadataOperation) {
+					ev.emit('bot.metadata-operation', {
+						key: message.key,
+						metadataOperation: protocolMsg.aiMetadataOperation,
+						chatId: chat.id
+					})
+				}
+				break
+			case index_js_1.proto.Message.ProtocolMessage.Type.MARK_AS_VERIFIED_ACTION:
+				if (protocolMsg.markAsVerifiedAction) {
+					ev.emit('chats.update', [
+						{
+							id: chat.id,
+							markAsVerifiedAction: protocolMsg.markAsVerifiedAction
+						}
+					])
+				}
+				break
+			case index_js_1.proto.Message.ProtocolMessage.Type.COEX_STATE_SYNC:
+				if (protocolMsg.coexStateSync) {
+					ev.emit('coex.state-sync', {
+						key: message.key,
+						coexStateSync: protocolMsg.coexStateSync
+					})
+				}
+				break
 			case index_js_1.proto.Message.ProtocolMessage.Type.HISTORY_SYNC_NOTIFICATION:
 				const histNotification = protocolMsg.historySyncNotification
 				const process = shouldProcessHistoryMsg
@@ -629,21 +710,7 @@ const processMessage = async (
 				}
 				break
 			case index_js_1.proto.Message.ProtocolMessage.Type.LID_MIGRATION_MAPPING_SYNC:
-				const encodedPayload = protocolMsg.lidMigrationMappingSyncMessage?.encodedMappingPayload
-				const { pnToLidMappings, chatDbMigrationTimestamp } =
-					index_js_1.proto.LIDMigrationMappingSyncPayload.decode(encodedPayload)
-				logger?.debug({ pnToLidMappings, chatDbMigrationTimestamp }, 'got lid mappings and chat db migration timestamp')
-				const pairs = []
-				for (const { pn, latestLid, assignedLid } of pnToLidMappings) {
-					const lid = latestLid || assignedLid
-					pairs.push({ lid: `${lid}@lid`, pn: `${pn}@s.whatsapp.net` })
-				}
-				await signalRepository.lidMapping.storeLIDPNMappings(pairs)
-				if (pairs.length) {
-					for (const { pn, lid } of pairs) {
-						await signalRepository.migrateSession(pn, lid)
-					}
-				}
+				logger?.debug('lid migration mapping sync payload type removed from WAProto, skipping decode')
 		}
 	} else if (content?.reactionMessage) {
 		const reaction = {

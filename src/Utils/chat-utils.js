@@ -532,6 +532,16 @@ const chatModificationToAppPatch = (mod, jid) => {
 			apiVersion: 8,
 			operation: OP.SET
 		}
+	} else if ('relayAllCalls' in mod) {
+		patch = {
+			syncAction: {
+				privacySettingRelayAllCalls: mod.relayAllCalls || {}
+			},
+			index: ['setting_relayAllCalls'],
+			type: 'regular',
+			apiVersion: 8,
+			operation: OP.SET
+		}
 	} else if ('star' in mod) {
 		const key = mod.star.messages[0]
 		patch = {
@@ -1233,6 +1243,16 @@ const processSyncAction = (syncAction, ev, me, initialSyncOpts, logger) => {
 		])
 	} else if (action?.deviceCapabilities) {
 		ev.emit('settings.update', { setting: 'deviceCapabilities', value: action.deviceCapabilities })
+	} else if (action?.deviceCapabilitiesV2) {
+		ev.emit('settings.update', { setting: 'deviceCapabilitiesV2', value: action.deviceCapabilitiesV2 })
+	} else if (action?.ctwaMessageReceivedAction) {
+		ev.emit('settings.update', { setting: 'ctwaMessageReceived', value: action.ctwaMessageReceivedAction })
+	} else if (action?.sharedDeviceAllowlistAction) {
+		ev.emit('settings.update', { setting: 'sharedDeviceAllowlist', value: action.sharedDeviceAllowlistAction })
+	} else if (action?.contactManagerMetadataAction) {
+		ev.emit('settings.update', { setting: 'contactManagerMetadata', value: action.contactManagerMetadataAction })
+	} else if (action?.businessFolderActivationAction) {
+		ev.emit('settings.update', { setting: 'businessFolderActivation', value: action.businessFolderActivationAction })
 	} else if (action?.ugcBot) {
 		ev.emit('settings.update', { setting: 'ugcBot', value: action.ugcBot })
 	} else if (action?.coexV2VersionAction) {

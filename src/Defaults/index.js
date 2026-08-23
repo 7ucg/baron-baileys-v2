@@ -45,7 +45,7 @@ const libsignal_1 = require('../Signal/libsignal')
 const browser_utils_1 = require('../Utils/browser-utils')
 const logger_1 = __importDefault(require('../Utils/logger'))
 // [major, 3000, client_revision] — client_revision is fetched from web.whatsapp.com/sw.js
-const version = [2, 3000, 1044798975]
+const version = [2, 3000, 1045825683]
 exports.VERSION = version
 exports.UNAUTHORIZED_CODES = [401, 403, 419]
 exports.DEFAULT_ORIGIN = 'https://web.whatsapp.com'

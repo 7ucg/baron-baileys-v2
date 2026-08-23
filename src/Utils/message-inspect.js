@@ -66,7 +66,8 @@ const normalizeMessageContent = content => {
 			message.newsletterAdminProfileStatusMessage ||
 			message.spoilerMessage ||
 			message.groupStatusV3Message ||
-			message.pollCreationMessageV6
+			message.pollCreationMessageV6 ||
+			message.botPlatformRegistrationSuccessMessage
 		)
 	}
 }
