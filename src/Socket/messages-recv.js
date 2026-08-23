@@ -2162,9 +2162,10 @@ const makeMessagesRecvSocket = config => {
 			}
 		}
 		let acked = false
+		let msg
 		try {
 			const {
-				fullMessage: msg,
+				fullMessage: decryptedMsg,
 				category,
 				author,
 				decrypt
@@ -2175,6 +2176,7 @@ const makeMessagesRecvSocket = config => {
 				signalRepository,
 				logger
 			)
+			msg = decryptedMsg
 			if (isInteropNode) {
 				logger.info(
 					{ remoteJid: msg.key.remoteJid, id: msg.key.id, fromMe: msg.key.fromMe, pushName: msg.pushName },
@@ -2451,7 +2453,16 @@ const makeMessagesRecvSocket = config => {
 			}
 			logger.error({ error, node: (0, WABinary_1.binaryNodeToString)(node) }, 'error in handling message')
 			if (!acked) {
-				await sendMessageAck(node, Utils_1.NACK_REASONS.UnhandledError).catch(ackErr =>
+				// Undecryptable statuses: ack without a NACK reason. A NACK makes the
+				// server keep the stanza and re-deliver it on every (re)connect, and
+				// while it is pending the rest of the offline queue is withheld —
+				// one undecryptable fresh status stalls delivery of every queued
+				// message. Statuses are best-effort content; dropping one is far
+				// better than freezing the account's message delivery.
+				const nackReason = (0, WABinary_1.isJidStatusBroadcast)(msg?.key?.remoteJid)
+					? undefined
+					: Utils_1.NACK_REASONS.UnhandledError
+				await sendMessageAck(node, nackReason).catch(ackErr =>
 					logger.error({ ackErr }, 'failed to ack message after error')
 				)
 			}
@@ -2490,10 +2501,19 @@ const makeMessagesRecvSocket = config => {
 				status
 			}
 			if (status === 'relaylatency') {
-				const latencyValue = infoChild.attrs.latency || infoChild.attrs['latency_ms'] || infoChild.attrs['latency-ms']
+				// Real stanzas carry latency/relay_name/dl_bw on a nested <te> child, not on
+				// the relaylatency node's own attrs (which are just call-id/call-creator).
+				const teNode = (0, WABinary_1.getBinaryNodeChild)(infoChild, 'te')
+				const latencyValue = teNode?.attrs?.latency
 				const latencyMs = latencyValue ? Number(latencyValue) : undefined
 				if (Number.isFinite(latencyMs)) {
 					call.latencyMs = latencyMs
+				}
+				if (teNode?.attrs?.relay_name) {
+					call.relayName = teNode.attrs.relay_name
+				}
+				if (teNode?.attrs?.dl_bw) {
+					call.dlBw = teNode.attrs.dl_bw
 				}
 			}
 			if (status === 'offer') {
@@ -2579,6 +2599,16 @@ const makeMessagesRecvSocket = config => {
 				status === 'remote_busy' ||
 				status === 'remote_offline'
 			) {
+				// terminate stanzas carry call length in ms
+				if (infoChild.attrs.duration) {
+					call.durationMs = +infoChild.attrs.duration
+				}
+				if (infoChild.attrs.audio_duration) {
+					call.audioDurationMs = +infoChild.attrs.audio_duration
+				}
+				if (infoChild.attrs.video_duration) {
+					call.videoDurationMs = +infoChild.attrs.video_duration
+				}
 				await callOfferCache.del(call.id)
 			}
 			await normalizeCallEventJids(call, infoChild)
@@ -2609,7 +2639,9 @@ const makeMessagesRecvSocket = config => {
 		'video_state_ack',
 		'flow_control',
 		'mute_v2',
-		'waiting_room_request'
+		'waiting_room_request',
+		'video',
+		'duration'
 	])
 	const handleStandaloneCallStanza = async node => {
 		try {
@@ -2652,6 +2684,21 @@ const makeMessagesRecvSocket = config => {
 					await callOfferCache.set(callId, call)
 				}
 			}
+			if (status === 'video') {
+				// Standalone <video> signalling: numeric state, orientation, codec, and
+				// (on the initial upgrade node) voip_settings screen dimensions.
+				call.videoState = attrs.state
+				call.deviceOrientation = attrs.device_orientation
+				call.transactionId = attrs['transaction-id']
+				if (attrs.dec) {
+					call.videoCodec = attrs.dec
+				}
+				const voipSettingsNode = (0, WABinary_1.getBinaryNodeChild)(node, 'voip_settings')
+				if (voipSettingsNode?.attrs) {
+					call.screenWidth = voipSettingsNode.attrs.screen_width
+					call.screenHeight = voipSettingsNode.attrs.screen_height
+				}
+			}
 			const existingCall = callId ? await callOfferCache.get(callId) : undefined
 			if (existingCall) {
 				call.isVideo = existingCall.isVideo
@@ -2684,6 +2731,16 @@ const makeMessagesRecvSocket = config => {
 				// attrs are { call-id, call-creator, mute-state: "0"|"1" }, never
 				// muted/audio_muted, and there's no nested <audio> child.
 				call.muted = node.attrs['mute-state'] === '1'
+			} else if (status === 'duration') {
+				// standalone post-call summary stanza — attrs are
+				// { call-id, call-creator, type, peer, audio_duration, video_duration }
+				call.peer = attrs.peer
+				if (attrs.audio_duration) {
+					call.audioDurationMs = +attrs.audio_duration
+				}
+				if (attrs.video_duration) {
+					call.videoDurationMs = +attrs.video_duration
+				}
 			}
 			if (
 				callId &&
@@ -2697,6 +2754,16 @@ const makeMessagesRecvSocket = config => {
 					status === 'remote_busy' ||
 					status === 'remote_offline')
 			) {
+				// terminate stanzas carry call length in ms
+				if (attrs.duration) {
+					call.durationMs = +attrs.duration
+				}
+				if (attrs.audio_duration) {
+					call.audioDurationMs = +attrs.audio_duration
+				}
+				if (attrs.video_duration) {
+					call.videoDurationMs = +attrs.video_duration
+				}
 				await callOfferCache.del(callId)
 			}
 			await normalizeCallEventJids(call, node)
@@ -2766,9 +2833,9 @@ const makeMessagesRecvSocket = config => {
 		}
 	}
 	const handleChatstate = async node => {
-		const { from, state } = node.attrs
+		const { from } = node.attrs
 		if (!from) return
-		const isTyping = state === 'typing'
+		const isTyping = !!(0, WABinary_1.getBinaryNodeChild)(node, 'composing')
 		ev.emit('presence.update', [
 			{
 				id: from,

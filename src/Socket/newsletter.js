@@ -354,6 +354,14 @@ const makeNewsletterSocket = config => {
 			)
 			return response.admin_count
 		},
+		newsletterAdminCapabilities: async jid => {
+			const response = await executeWMexQuery(
+				{ newsletter_id: jid },
+				Types_1.QueryIds.ADMIN_CAPABILITIES,
+				Types_1.XWAPaths.xwa2_newsletter_admin
+			)
+			return response.capabilities
+		},
 		newsletterChangeOwner: async (jid, newOwnerJid) => {
 			await executeWMexQuery(
 				{ newsletter_id: jid, user_id: newOwnerJid },
@@ -942,6 +950,18 @@ const makeNewsletterSocket = config => {
 				{ newsletter_id: jid, server_id: String(serverId), message_type: messageType },
 				Types_1.QueryIds.LABEL_PAID_PARTNERSHIP,
 				Types_1.XWAPaths.xwa2_newsletter_label_paid_partnership
+			),
+		/**
+		 * Label a newsletter post as AI-generated content.
+		 * @param {string} jid - Newsletter JID
+		 * @param {string} serverId - Server message ID
+		 * @param {string} messageType
+		 */
+		newsletterLabelAiContent: async (jid, serverId, messageType = 'MESSAGE') =>
+			executeWMexQuery(
+				{ newsletter_id: jid, server_id: String(serverId), message_type: messageType },
+				Types_1.QueryIds.LABEL_AI_CONTENT,
+				Types_1.XWAPaths.xwa2_newsletter_label_ai_content
 			),
 		/**
 		 * Log newsletter exposure events (analytics).

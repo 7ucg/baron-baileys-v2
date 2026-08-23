@@ -289,6 +289,29 @@ const makeGroupsSocket = config => {
 				return { status: p.attrs.error || '200', jid: p.attrs.jid }
 			})
 		},
+		groupCancelMembershipRequest: async (jid, participantJid) => {
+			const result = await groupQuery(jid, 'set', [
+				{
+					tag: 'cancel_membership_requests',
+					attrs: {},
+					content: [{ tag: 'participant', attrs: { jid: participantJid } }]
+				}
+			])
+			return !!result
+		},
+		groupRevokeRequestCode: async (jid, participantJids) => {
+			const result = await groupQuery(jid, 'set', [
+				{
+					tag: 'revoke',
+					attrs: {},
+					content: participantJids.map(jid => ({
+						tag: 'participant',
+						attrs: { jid }
+					}))
+				}
+			])
+			return !!result
+		},
 		groupParticipantsUpdate: async (jid, participants, action) => {
 			const result = await groupQuery(jid, 'set', [
 				{
@@ -513,6 +536,30 @@ const makeGroupsSocket = config => {
 					return { jid: group?.attrs?.jid, linkType: link.attrs?.link_type }
 				})
 				.filter(l => !!l.jid)
+		},
+		/**
+		 * Get messages reported by group members (admin-only)
+		 */
+		groupGetReportedMessages: async jid => {
+			const result = await groupQuery(jid, 'get', [{ tag: 'reports', attrs: {} }])
+			const node = (0, WABinary_1.getBinaryNodeChild)(result, 'reports')
+			if (!node) return []
+			const reports = (0, WABinary_1.getBinaryNodeChildren)(node, 'report')
+			return reports.map(r => ({
+				messageId: r.attrs.message_id,
+				reporters: (0, WABinary_1.getBinaryNodeChildren)(r, 'reporter').map(reporter => ({
+					jid: reporter.attrs.jid,
+					timestamp: reporter.attrs.timestamp ? Number(reporter.attrs.timestamp) : undefined
+				}))
+			}))
+		},
+		/**
+		 * Report a message to group admins
+		 */
+		groupReportMessage: async (jid, messageId) => {
+			await groupQuery(jid, 'set', [
+				{ tag: 'reports', attrs: {}, content: [{ tag: 'report', attrs: { message_id: messageId } }] }
+			])
 		},
 		groupFetchAllParticipating,
 

@@ -193,12 +193,17 @@ const makeCommunitiesSocket = config => {
 				}
 			])
 		},
-		communityUnlinkGroup: async (groupJid, parentCommunityJid) => {
+		communityUnlinkGroup: async (groupJid, parentCommunityJid, removeOrphanMembers = false) => {
 			await communityQuery(parentCommunityJid, 'set', [
 				{
 					tag: 'unlink',
 					attrs: { unlink_type: 'sub_group' },
-					content: [{ tag: 'group', attrs: { jid: groupJid } }]
+					content: [
+						{
+							tag: 'group',
+							attrs: removeOrphanMembers ? { jid: groupJid, remove_orphaned_members: 'true' } : { jid: groupJid }
+						}
+					]
 				}
 			])
 		},

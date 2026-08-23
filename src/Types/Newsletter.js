@@ -72,6 +72,7 @@ var XWAPaths
 	XWAPaths['xwa2_newsletter_link_preview_check'] = 'xwa2_newsletter_link_preview_check'
 	XWAPaths['xwa2_newsletter_update_verification'] = 'xwa2_newsletter_update_verification'
 	XWAPaths['xwa2_newsletter_label_paid_partnership'] = 'xwa2_newsletter_label_paid_partnership'
+	XWAPaths['xwa2_newsletter_label_ai_content'] = 'xwa2_newsletter_label_ai_content'
 	// Newsletter log/user
 	XWAPaths['xwa2_newsletter_log_exposures'] = 'xwa2_newsletter_log_exposures'
 	XWAPaths['xwa2_newsletter_update_user_setting'] = 'xwa2_newsletter_update_user_setting'
@@ -103,6 +104,7 @@ var QueryIds
 	QueryIds['MUTE'] = '25033614912931367' // NewsletterHide
 	QueryIds['UNMUTE'] = '24551592861177484' // NewsletterUnhide
 	QueryIds['ADMIN_COUNT'] = '27579307995002556' // NewslettersAdminCapabilitiesQuery
+	QueryIds['ADMIN_CAPABILITIES'] = '9801384413216421' // WAWebMexFetchNewsletterAdminCapabilitiesJobQuery
 	QueryIds['CHANGE_OWNER'] = '24737692515842078' // NewsletterChangeOwner
 	QueryIds['DEMOTE'] = '9880997548630971' // NewsletterAdminDemote — verified 2026-07-19
 	QueryIds['DELETE'] = '30062808666639665' // NewsletterDelete — verified 2026-07-19
@@ -138,6 +140,7 @@ var QueryIds
 	QueryIds['LINK_PREVIEW_CHECK'] = '24188786150796507' // NewsletterLinkPreviewCheck
 	QueryIds['UPDATE_VERIFICATION'] = '27133493439664458' // NewsletterUpdateVerification
 	QueryIds['LABEL_PAID_PARTNERSHIP'] = '26102375079404865' // NewsletterLabelPaidPartnership
+	QueryIds['LABEL_AI_CONTENT'] = '27909718265289596' // WAWebMexNewsletterLabelAiContentJobMutation
 	// Newsletter Wamo (paid subscription)
 	QueryIds['WAMO_CHANGE_SUB'] = '25201342542835866' // NewsletterChangeWamoSub
 	QueryIds['WAMO_ENABLE_SUB'] = '25122474967344830' // NewsletterEnableWamoSub

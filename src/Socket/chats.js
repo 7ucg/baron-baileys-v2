@@ -1264,7 +1264,16 @@ const makeChatsSocket = config => {
 		if (shouldIgnoreJid(jid) && jid !== WABinary_1.S_WHATSAPP_NET) {
 			return
 		}
-		if (tag === 'presence') {
+		if (tag === 'presence' && WABinary_1.isJidGroup(jid) && !attrs.participant) {
+			const count = attrs.count !== undefined ? +attrs.count : attrs.type === 'unavailable' ? 0 : undefined
+			if (count !== undefined) {
+				ev.emit('presence.update', {
+					id: jid,
+					presences: { [jid]: { lastKnownPresence: 'available', groupOnlineCount: count } }
+				})
+			}
+			return
+		} else if (tag === 'presence') {
 			presence = {
 				lastKnownPresence: attrs.type === 'unavailable' ? 'unavailable' : 'available',
 				lastSeen: attrs.last && attrs.last !== 'deny' ? +attrs.last : undefined
@@ -1415,6 +1424,17 @@ const makeChatsSocket = config => {
 		return chatModify(
 			{
 				disableLinkPreviews: { isPreviewsDisabled }
+			},
+			''
+		)
+	}
+	/**
+	 * Enable/Disable relaying all calls through the server (hides IP from callers)
+	 */
+	const updateRelayAllCallsPrivacy = isEnabled => {
+		return chatModify(
+			{
+				relayAllCalls: { isEnabled }
 			},
 			''
 		)
@@ -2294,6 +2314,7 @@ const makeChatsSocket = config => {
 		updateProfileName,
 		updateBlockStatus,
 		updateDisableLinkPreviewsPrivacy,
+		updateRelayAllCallsPrivacy,
 		updateCallPrivacy,
 		updateMessagesPrivacy,
 		updateLastSeenPrivacy,

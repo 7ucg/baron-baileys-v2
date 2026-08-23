@@ -448,6 +448,9 @@ const getCallStatusFromNode = ({ tag, attrs }) => {
 		case 'video_state_ack':
 			status = 'video_state_ack'
 			break
+		case 'video':
+			status = 'video'
+			break
 		case 'flow_control':
 			status = 'flow_control'
 			break
@@ -459,6 +462,9 @@ const getCallStatusFromNode = ({ tag, attrs }) => {
 			break
 		case 'waiting_room_request':
 			status = 'waiting_room_request'
+			break
+		case 'duration':
+			status = 'duration'
 			break
 		case 'signal':
 			// Numeric type mapping for <signal type="N"/> child nodes
