@@ -635,13 +635,12 @@ const makeSocket = config => {
 		if (customPairingCode && customPairingCode.length !== 8) {
 			throw new Error('Custom pairing code must be exactly 8 chars')
 		}
-		authState.creds.pairingCode = pairingCode
-		authState.creds.me = {
-			id: (0, WABinary_1.jidEncode)(phoneNumber, 's.whatsapp.net'),
-			name: '~'
-		}
-		ev.emit('creds.update', authState.creds)
-		await sendNode({
+		const meId = (0, WABinary_1.jidEncode)(phoneNumber, 's.whatsapp.net')
+		// Use query() (not sendNode()) so a server error IQ response throws here instead
+		// of being silently swallowed, and only persist creds.me/pairingCode once the
+		// server has actually acknowledged the pairing request — persisting them
+		// beforehand poisons the session with a pairing code the server never accepted.
+		const result = await query({
 			tag: 'iq',
 			attrs: {
 				to: WABinary_1.S_WHATSAPP_NET,
@@ -653,7 +652,7 @@ const makeSocket = config => {
 				{
 					tag: 'link_code_companion_reg',
 					attrs: {
-						jid: authState.creds.me.id,
+						jid: meId,
 						stage: 'companion_hello',
 						should_show_push_notification: 'true'
 					},
@@ -661,7 +660,7 @@ const makeSocket = config => {
 						{
 							tag: 'link_code_pairing_wrapped_companion_ephemeral_pub',
 							attrs: {},
-							content: await generatePairingKey()
+							content: await generatePairingKey(pairingCode)
 						},
 						{
 							tag: 'companion_server_auth_key_pub',
@@ -687,12 +686,20 @@ const makeSocket = config => {
 				}
 			]
 		})
+		if (!result) {
+			throw new boom_1.Boom('Timed out waiting for pairing code registration response', {
+				statusCode: Types_1.DisconnectReason.timedOut
+			})
+		}
+		authState.creds.pairingCode = pairingCode
+		authState.creds.me = { id: meId, name: '~' }
+		ev.emit('creds.update', authState.creds)
 		return authState.creds.pairingCode
 	}
-	async function generatePairingKey() {
+	async function generatePairingKey(pairingCode) {
 		const salt = (0, crypto_1.randomBytes)(32)
 		const randomIv = (0, crypto_1.randomBytes)(16)
-		const key = await (0, Utils_1.derivePairingCodeKey)(authState.creds.pairingCode, salt)
+		const key = await (0, Utils_1.derivePairingCodeKey)(pairingCode, salt)
 		const ciphered = (0, Utils_1.aesEncryptCTR)(authState.creds.pairingEphemeralKeyPair.public, key, randomIv)
 		return Buffer.concat([salt, randomIv, ciphered])
 	}
