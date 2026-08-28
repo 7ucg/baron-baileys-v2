@@ -211,6 +211,35 @@ const makeNewsletterSocket = config => {
 			)
 			return parseNewsletterMetadata(result)
 		},
+		/**
+		 * Fetch a lightweight "dehydrated" newsletter preview, e.g. for an invite-link
+		 * preview before joining.
+		 *
+		 * @param {string} type - 'jid' or 'invite'
+		 * @param {string} key - Newsletter JID or invite code
+		 * @param {object} options
+		 *   @param {'ADMIN'|'GUEST'|'SUBSCRIBER'} [options.viewRole='GUEST']
+		 *   @param {boolean} [options.fetchPinnedMessages=false]
+		 *   @param {boolean} [options.fetchWamoSub=false]
+		 */
+		newsletterDehydrated: async (type, key, options = {}) => {
+			const { viewRole = 'GUEST', fetchPinnedMessages = false, fetchWamoSub = false } = options
+			const variables = {
+				input: {
+					key,
+					type: type.toUpperCase(),
+					view_role: viewRole
+				},
+				fetch_wamo_sub: fetchWamoSub,
+				fetch_pinned_messages: fetchPinnedMessages
+			}
+			const result = await executeWMexQuery(
+				variables,
+				Types_1.QueryIds.DEHYDRATED,
+				Types_1.XWAPaths.xwa2_newsletter_metadata
+			)
+			return parseNewsletterMetadata(result)
+		},
 		newsletterFollow: jid => {
 			return executeWMexQuery({ newsletter_id: jid }, Types_1.QueryIds.FOLLOW, Types_1.XWAPaths.xwa2_newsletter_join_v2)
 		},
@@ -593,6 +622,13 @@ const makeNewsletterSocket = config => {
 				Types_1.XWAPaths.xwa2_newsletter_admin
 			)
 		},
+		/**
+		 * Fetch admin info (admin count, admin profile, admin settings) for a newsletter.
+		 *
+		 * @param {string} jid - Newsletter JID
+		 */
+		newsletterAdminInfo: async jid =>
+			executeWMexQuery({ newsletter_id: jid }, Types_1.QueryIds.ADMIN_INFO, Types_1.XWAPaths.xwa2_newsletter_admin),
 		/**
 		 * Update admin profile fields for a newsletter (e.g. contact info, links).
 		 *

@@ -92,7 +92,8 @@ var QueryIds
 ;(function (QueryIds) {
 	// Newsletter core
 	// IDs below marked "verified 2026-07-19" were cross-checked against a live WA Web
-	// graphql module dump; the rest are unverified and may also be stale.
+	// graphql module dump; IDs marked "verified 2026-08-28" were re-checked against a
+	// fresher capture; the rest are unverified and may also be stale.
 	QueryIds['CREATE'] = '25149874324715067' // NewsletterCreate — verified 2026-07-19
 	QueryIds['CREATE_VERIFIED'] = '27777918425146464' // NewsletterCreateVerified
 	QueryIds['UPDATE_METADATA'] = '27150690864552229' // NewsletterMetadataUpdate
@@ -108,7 +109,7 @@ var QueryIds
 	QueryIds['CHANGE_OWNER'] = '24737692515842078' // NewsletterChangeOwner
 	QueryIds['DEMOTE'] = '9880997548630971' // NewsletterAdminDemote — verified 2026-07-19
 	QueryIds['DELETE'] = '30062808666639665' // NewsletterDelete — verified 2026-07-19
-	QueryIds['REACHOUT_TIMELOCK'] = '25627902213558773' // FetchReachoutTimelockQuery
+	QueryIds['REACHOUT_TIMELOCK'] = '23983697327930364' // WAWebMexFetchReachoutTimelockJobQuery — verified 2026-08-28
 	QueryIds['MESSAGE_CAPPING_INFO'] = '37491736743758664' // XWA2MessageCappingInfoQuery
 	QueryIds['UPDATE_USER_SETTING'] = '24935528202764688' // NewsletterUpdateUserSetting
 	// Newsletter admin/invite
@@ -117,12 +118,14 @@ var QueryIds
 	QueryIds['ADMIN_INVITE_ACCEPT'] = '24934958956134858' // NewsletterAcceptAdminInvite
 	QueryIds['ADMIN_METADATA'] = '26882701001369256' // NewsletterAdminMetadataQuery
 	QueryIds['ADMIN_PROFILE_UPDATE'] = '25959584293627630' // NewsletterAdminProfileUpdate
+	QueryIds['ADMIN_INFO'] = '26278439461859188' // WAWebMexFetchNewsletterAdminInfoJobQuery — verified 2026-08-28
+	QueryIds['DEHYDRATED'] = '26944199458535748' // WAWebMexFetchNewsletterDehydratedJobQuery — verified 2026-08-28
 	// Newsletter directory/search
-	QueryIds['DIRECTORY_LIST'] = '27480627564903390' // NewsletterDirectoryList
+	QueryIds['DIRECTORY_LIST'] = '26125047313831973' // WAWebMexFetchNewsletterDirectoryListJobQuery — verified 2026-08-28
 	QueryIds['DIRECTORY_SEARCH'] = '27887355094203575' // NewsletterDirectorySearch
-	QueryIds['DIRECTORY_CATEGORY_PREVIEW'] = '27432651036395658' // NewsletterDirectoryCategoryPreview
+	QueryIds['DIRECTORY_CATEGORY_PREVIEW'] = '35266481849605779' // WAWebMexFetchNewsletterDirectoryCategoriesPreviewJobQuery — verified 2026-08-28
 	QueryIds['SEARCH'] = '25909596625362196' // NewsletterSearch (no APK match — kept as-is)
-	QueryIds['RECOMMENDED'] = '26638880912457992' // NewsletterRecommended
+	QueryIds['RECOMMENDED'] = '25806748772361516' // WAWebMexFetchRecommendedNewslettersJobQuery — verified 2026-08-28
 	QueryIds['SIMILAR'] = '36410329795280256' // NewsletterSimilar
 	QueryIds['FOLLOWING_LIST'] = '26856957210673444' // NewsletterFollowing
 	// Newsletter engagement
@@ -130,13 +133,13 @@ var QueryIds
 	QueryIds['POLL_VOTER_LIST'] = '24803802869271956' // NewsletterPollVoterList
 	QueryIds['REACTION_SENDERS_LIST'] = '25219734117717032' // NewsletterReactionSendersList
 	QueryIds['QUESTION_RESPONSE_STATE_UPDATE'] = '24896618076668076' // NewsletterQuestionResponseStateUpdate
-	QueryIds['LOG_EXPOSURES'] = '24606408825709914' // NewsletterLogExposures
+	QueryIds['LOG_EXPOSURES'] = '25260800823586918' // WAWebMexLogNewsletterExposuresJobMutation — verified 2026-08-28
 	QueryIds['RANKING_FEATURES'] = '24742757908756088' // FetchNewsletterRankingFeatures
 	// Newsletter moderation
 	QueryIds['BLOCK_USER'] = '25106066249006236' // NewsletterBlockUser
 	QueryIds['USER_REPORTS'] = '27149305681394065' // NewsletterUserReports
 	QueryIds['CREATE_REPORT_APPEAL'] = '27792557363683798' // NewsletterCreateReportAppeal
-	QueryIds['ENFORCEMENTS'] = '27089116857425014' // NewsletterEnforcements
+	QueryIds['ENFORCEMENTS'] = '27835373536068060' // WAWebMexFetchNewsletterEnforcementsJobQuery — verified 2026-08-28
 	QueryIds['LINK_PREVIEW_CHECK'] = '24188786150796507' // NewsletterLinkPreviewCheck
 	QueryIds['UPDATE_VERIFICATION'] = '27133493439664458' // NewsletterUpdateVerification
 	QueryIds['LABEL_PAID_PARTNERSHIP'] = '26102375079404865' // NewsletterLabelPaidPartnership
