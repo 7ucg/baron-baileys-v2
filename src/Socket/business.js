@@ -6,9 +6,24 @@ const business_1 = require('../Utils/business')
 const WABinary_1 = require('../WABinary')
 const generic_utils_1 = require('../WABinary/generic-utils')
 const messages_recv_1 = require('./messages-recv')
+const mex_1 = require('./mex')
+
+// GraphQL (w:mex) query IDs for catalog/collection management mutations.
+// Sourced from wa-protocol-all-2026-08-28T12-15-31-087Z/biz.json
+// (WAWebBizCatalogManagement*Mutation_facebookRelayOperation.source) — verified 2026-08-28
+const CATALOG_MEX_QUERY_IDS = {
+	CREATE_CATALOG: '29232780583035464', // WAWebBizCatalogManagementCreateCatalogMutation — verified 2026-08-28
+	CREATE_COLLECTION: '29361942130088470', // WAWebBizCatalogManagementCreateCollectionMutation — verified 2026-08-28
+	UPDATE_COLLECTION: '24486970300891371', // WAWebBizCatalogManagementUpdateCollectionMutation — verified 2026-08-28
+	DELETE_COLLECTIONS: '29970196299234260', // WAWebBizCatalogManagementDeleteCollectionsMutation — verified 2026-08-28
+	APPEAL_PRODUCT: '29276343172013990', // WAWebBizCatalogManagementAppealProductMutation — verified 2026-08-28
+	APPEAL_COLLECTION: '9971242039605207' // WAWebBizCatalogManagementAppealCollectionMutation — verified 2026-08-28
+}
 const makeBusinessSocket = config => {
 	const sock = (0, messages_recv_1.makeMessagesRecvSocket)(config)
-	const { authState, query, waUploadToServer } = sock
+	const { authState, query, waUploadToServer, generateMessageTag } = sock
+	const mexQuery = (variables, queryId, dataPath) =>
+		(0, mex_1.executeWMexQuery)(variables, queryId, dataPath, query, generateMessageTag)
 	const updateBussinesProfile = async args => {
 		const node = []
 		const simpleFields = ['address', 'email', 'description']
@@ -403,6 +418,84 @@ const makeBusinessSocket = config => {
 			deleted: +(productCatalogDelNode?.attrs.deleted_count || 0)
 		}
 	}
+	/**
+	 * Create a new product catalog.
+	 * Ported from WhatsApp Web's WAWebBizCatalogManagementCreateCatalogMutation (xfb_whatsapp_catalog_create).
+	 * @param {object} input - Mutation input (relay `request` variable), e.g. `{ name, vertical, ... }`
+	 * @returns {Promise<{ success?: boolean }>}
+	 */
+	const catalogCreate = async input => {
+		return mexQuery({ input }, CATALOG_MEX_QUERY_IDS.CREATE_CATALOG, 'xfb_whatsapp_catalog_create')
+	}
+	/**
+	 * Create a new product collection within a catalog.
+	 * Ported from WhatsApp Web's WAWebBizCatalogManagementCreateCollectionMutation (xfb_whatsapp_catalog_create_collection).
+	 * @param {object} input - Mutation input (relay `request` variable), e.g. `{ catalog_id, name, product_ids, ... }`
+	 * @returns {Promise<{ collection?: { id: string, status_info?: { status: string } } }>}
+	 */
+	const collectionCreate = async input => {
+		return mexQuery({ input }, CATALOG_MEX_QUERY_IDS.CREATE_COLLECTION, 'xfb_whatsapp_catalog_create_collection')
+	}
+	/**
+	 * Update an existing collection (name, product list, etc).
+	 * Ported from WhatsApp Web's WAWebBizCatalogManagementUpdateCollectionMutation (xfb_whatsapp_catalog_update_collection).
+	 * @param {object} input - Mutation input (relay `request` variable), e.g. `{ collection_id, name, product_ids, ... }`
+	 * @returns {Promise<{ collection?: { id: string, status_info?: { status: string } } }>}
+	 */
+	const collectionUpdate = async input => {
+		return mexQuery({ input }, CATALOG_MEX_QUERY_IDS.UPDATE_COLLECTION, 'xfb_whatsapp_catalog_update_collection')
+	}
+	/**
+	 * Delete one or more collections.
+	 * Ported from WhatsApp Web's WAWebBizCatalogManagementDeleteCollectionsMutation (xfb_whatsapp_catalog_delete_collections).
+	 * @param {object} input - Mutation input (relay `request` variable), e.g. `{ collection_ids }`
+	 * @returns {Promise<{ success?: boolean }>}
+	 */
+	const collectionsDelete = async input => {
+		return mexQuery({ input }, CATALOG_MEX_QUERY_IDS.DELETE_COLLECTIONS, 'xfb_whatsapp_catalog_delete_collections')
+	}
+	/**
+	 * Appeal a rejected/blocked product listing.
+	 * Ported from WhatsApp Web's WAWebBizCatalogManagementAppealProductMutation (xfb_whatsapp_catalog_appeal_product).
+	 * @param {object} input - Mutation input (relay `request` variable), e.g. `{ product_id, catalog_id, ... }`
+	 * @returns {Promise<{ success?: boolean }>}
+	 */
+	const productAppeal = async input => {
+		return mexQuery({ input }, CATALOG_MEX_QUERY_IDS.APPEAL_PRODUCT, 'xfb_whatsapp_catalog_appeal_product')
+	}
+	/**
+	 * Appeal a rejected/blocked collection.
+	 * Ported from WhatsApp Web's WAWebBizCatalogManagementAppealCollectionMutation (xfb_whatsapp_catalog_appeal_collection).
+	 * @param {object} input - Mutation input (relay `request` variable), e.g. `{ collection_id, catalog_id, ... }`
+	 * @returns {Promise<{ success?: boolean }>}
+	 */
+	const collectionAppeal = async input => {
+		return mexQuery({ input }, CATALOG_MEX_QUERY_IDS.APPEAL_COLLECTION, 'xfb_whatsapp_catalog_appeal_collection')
+	}
+	/**
+	 * Get a CTWA (Click-to-WhatsApp-Ads) ad-account access token and session cookies.
+	 * Ported from WhatsApp Web's WASmaxBizCtwaAdAccountGetAccessTokenAndSessionCookiesRPC.
+	 * Same transport family as getLinkedAccounts (fb:thrift_iq + smax_id), confirmed from
+	 * WASmaxOutBizCtwaAdAccountGetAccessTokenAndSessionCookiesRequest in smax.json (smax_id 104,
+	 * payload `<parameters><code>{nonce}</code></parameters>`) — verified 2026-08-28.
+	 * The `code` is the one-time nonce delivered via the server-pushed CTWA nonce notification
+	 * (see `business.ctwa-nonce` event, handled in messages-recv.js).
+	 * @param {string} code - The nonce code to exchange for an access token + session cookies.
+	 */
+	const ctwaAdAccountGetAccessTokenAndSessionCookies = async code => {
+		const result = await query({
+			tag: 'iq',
+			attrs: { to: WABinary_1.S_WHATSAPP_NET, type: 'get', xmlns: 'fb:thrift_iq', smax_id: '104' },
+			content: [
+				{
+					tag: 'parameters',
+					attrs: {},
+					content: [{ tag: 'code', attrs: {}, content: Buffer.from(code) }]
+				}
+			]
+		})
+		return result
+	}
 	return {
 		...sock,
 		logger: config.logger,
@@ -414,6 +507,13 @@ const makeBusinessSocket = config => {
 		productCreate,
 		productDelete,
 		productUpdate,
+		catalogCreate,
+		collectionCreate,
+		collectionUpdate,
+		collectionsDelete,
+		productAppeal,
+		collectionAppeal,
+		ctwaAdAccountGetAccessTokenAndSessionCookies,
 		updateBussinesProfile,
 		updateCoverPhoto,
 		removeCoverPhoto

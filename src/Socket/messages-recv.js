@@ -1567,6 +1567,16 @@ const makeMessagesRecvSocket = config => {
 					if (child.attrs.jid) {
 						ev.emit('contacts.update', [{ id: (0, WABinary_1.jidNormalizedUser)(child.attrs.jid), isBusiness: false }])
 					}
+				} else if (child?.tag === 'wa_ad_account_nonce') {
+					// CTWA (Click-to-WhatsApp-Ads) ad-account linking nonce push.
+					// Ported from WhatsApp Web's WASmaxBizCtwaAdAccountNonceNotificationRPC
+					// (WASmaxInBizCtwaAdAccountNonceNotificationRequest parses a `<notification type="business">`
+					// stanza with a `<wa_ad_account_nonce>` child) — verified 2026-08-28.
+					// Consume this nonce via business.ctwaAdAccountGetAccessTokenAndSessionCookies(code).
+					ev.emit('business.ctwa-nonce', {
+						jid: from,
+						nonce: child.content ? Buffer.from(child.content).toString('utf-8') : undefined
+					})
 				}
 				break
 			case 'hosted':
