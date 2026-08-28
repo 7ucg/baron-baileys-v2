@@ -110,7 +110,7 @@ var QueryIds
 	QueryIds['DEMOTE'] = '9880997548630971' // NewsletterAdminDemote — verified 2026-07-19
 	QueryIds['DELETE'] = '30062808666639665' // NewsletterDelete — verified 2026-07-19
 	QueryIds['REACHOUT_TIMELOCK'] = '23983697327930364' // WAWebMexFetchReachoutTimelockJobQuery — verified 2026-08-28
-	QueryIds['MESSAGE_CAPPING_INFO'] = '37491736743758664' // XWA2MessageCappingInfoQuery
+	QueryIds['MESSAGE_CAPPING_INFO'] = '27910975521856601' // WAWebMexFetchNewChatMessageCappingInfoJobQuery — verified 2026-08-28
 	QueryIds['UPDATE_USER_SETTING'] = '24935528202764688' // NewsletterUpdateUserSetting
 	// Newsletter admin/invite
 	QueryIds['ADMIN_INVITE'] = '26278681041745438' // NewsletterAdminInvite

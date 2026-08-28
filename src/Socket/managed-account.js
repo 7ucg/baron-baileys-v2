@@ -16,7 +16,7 @@ const MANAGED_ACCOUNT_MEX_IDS = {
 	UPDATE_PIN: '27653949584193082', // ManagedAccountUpdatePinMutation
 	GET_SPONSOR_AGE_VERIFICATION: '26433623289634522', // ManagedAccountGetSponsorAgeVerificationInfoQuery
 	// Payments passkey
-	PAYMENTS_PASSKEY_HAS_CREDENTIAL: '26328228500182426', // PaymentsPasskeyHasCredential
+	PAYMENTS_PASSKEY_HAS_CREDENTIAL: '36878915648418618', // PaymentsPasskeyHasCredential (WAWebMexPaymentsPasskeyHasCredentialJobQuery) — verified 2026-08-28
 	PAYMENTS_PASSKEY_ENROLL_CHALLENGE: '25233109079721001', // PaymentsPasskeyEnrollChallengeMutation
 	PAYMENTS_PASSKEY_ENROLL_VERIFY: '26563835863283058', // PaymentsPasskeyEnrollVerifyMutation
 	PAYMENTS_PASSKEY_REGISTER_FINISH: '26658791263822236', // PaymentsPasskeyRegisterFinishMutation

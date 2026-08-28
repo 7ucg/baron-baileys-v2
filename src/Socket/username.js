@@ -13,12 +13,12 @@ const { makeNewsletterSocket } = require('./newsletter')
  * Cross-checked: live Frida capture on real device (wa-logger-2.26.26.4.js, 2026-06-30)
  */
 const USERNAME_QUERY_IDS = {
-	CHECK: '26124072630599518', // UsernameCheck
+	CHECK: '26122779627399568', // UsernameCheck (WAWebMexUsernameAvailabilityQuery) — verified 2026-08-28
 	CHECK_MULTI: '27134626522840286', // UsernameCheckMulti
 	SET: '27108705368767936', // UsernameSet
-	GET: '32618050064506055', // UsernameGet
+	GET: '25347099718279209', // UsernameGet (WAWebMexGetUsernameJobQuery) — verified 2026-08-28
 	GET_RECOMMENDATIONS: '26077456248616957', // UsernameGetRecommendationsQuery
-	PIN_SET: '25529696019976770' // UsernamePinSet
+	PIN_SET: '9749436995157074' // UsernamePinSet (WAWebMexSetUsernameKeyJobMutation) — verified 2026-08-28
 }
 
 /**
@@ -196,11 +196,7 @@ const makeUsernameSocket = config => {
 	 * @param {string[]} usernames - Array of usernames (without @)
 	 */
 	const checkUsernameMulti = async usernames => {
-		const data = await mexQuery(
-			{ usernames },
-			USERNAME_QUERY_IDS.CHECK_MULTI,
-			'xwa2_username_check_multi'
-		)
+		const data = await mexQuery({ usernames }, USERNAME_QUERY_IDS.CHECK_MULTI, 'xwa2_username_check_multi')
 		return data
 	}
 

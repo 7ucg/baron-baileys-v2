@@ -17,7 +17,8 @@ const mex_1 = require('./mex')
 const COMMUNITY_MEX_QUERY_IDS = {
 	QUERY_PARTICIPANT_COUNT: '31981537024824320', // QueryCommunityParticipantCount
 	QUERY_SUBGROUPS: '25554052094203120', // QuerySubgroups (shared with groups)
-	QUERY_SUBGROUP_PARTICIPANT_COUNT: '24784259781196780', // QuerySubgroupParticipantCount
+	QUERY_SUBGROUP_PARTICIPANT_COUNT: '24079399904996141', // QuerySubgroupParticipantCount (WAWebMexQuerySubgroupParticipantCountJobQuery) — verified 2026-08-28
+	QUERY_SUBGROUP_SUGGESTIONS: '23972005349071865', // QuerySubgroupSuggestions (WAWebMexFetchSubgroupSuggestionsJobQuery) — verified 2026-08-28
 	UPDATE_OWNER: '24781435194845316' // UpdateCommunityOwner
 }
 
@@ -483,6 +484,25 @@ const makeCommunitiesSocket = config => {
 				'xwa2_group_query_by_id'
 			)
 			return result?.participant_count ?? result?.participantCount ?? result?.count ?? result
+		},
+
+		/**
+		 * Suggest candidate subgroups for a community via MEX
+		 * (WAWebMexFetchSubgroupSuggestionsJobQuery). Distinct from
+		 * communitySuggestedContacts-style contact suggestions — this returns
+		 * subgroup candidates (existing or new) for the community.
+		 * @param {string} communityJid - Community JID
+		 * @param {string} [subGroupHintId] - Optional sub-group hint id
+		 * @param {string} [queryContext] - Optional query context (e.g. 'INTERACTIVE')
+		 */
+		communitySubgroupSuggestions: async (communityJid, subGroupHintId = '', queryContext = 'INTERACTIVE') => {
+			const result = await mexQuery(
+				{ group_input: { group_id: communityJid, query_context: queryContext, sub_group_hint: subGroupHintId } },
+				COMMUNITY_MEX_QUERY_IDS.QUERY_SUBGROUP_SUGGESTIONS,
+				'xwa2_group_query_by_id'
+			)
+			const edges = result?.sub_group_suggestions?.edges
+			return Array.isArray(edges) ? edges.map(edge => edge?.node).filter(Boolean) : []
 		},
 
 		/**

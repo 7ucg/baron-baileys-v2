@@ -9,25 +9,27 @@ const chats_1 = require('./chats')
 const mex_1 = require('./mex')
 
 const GROUP_MEX_QUERY_IDS = {
-	QUERY_INFO: '25530136513328492', // QueryGroupInfo
+	QUERY_INFO: '27508847222068472', // QueryGroupInfo (WAWebMexFetchGroupInfoJobQuery) — verified 2026-08-28
+	QUERY_INFO_INCLUDE_BOTS: '27795062750123057', // QueryGroupInfoIncludeBots (WAWebMexFetchGroupInfoIncludBotsJobQuery) — verified 2026-08-28
+	QUERY_IS_INTERNAL: '34119218944390847', // QueryGroupIsInternal (WAWebMexFetchGroupIsInternalJobQuery) — verified 2026-08-28
 	QUERY_INFO_BY_CODE: '24576337542042464', // QueryGroupInfoByCode
 	QUERY_BATCH: '26440064815661176', // QueryBatchGetGroups
-	QUERY_INVITE_LINK: '24558418350455204', // QueryInviteLink
+	QUERY_INVITE_LINK: '29247029834912157', // QueryInviteLink (WAWebMexFetchGroupInviteCodeJobQuery) — verified 2026-08-28
 	QUERY_PARTICIPATING: '26664341543184776', // QueryParticipatingGroups
 	QUERY_SUGGESTED: '26012055225051916', // QuerySuggestedGroups
 	QUERY_LINKED: '25629003043401452', // QueryLinkedGroupInfo
 	QUERY_SUBGROUPS: '25554052094203120', // QuerySubgroups
 	ADD_PARTICIPANTS_V2: '32627550323510250', // AddParticipantsToGroupV2
 	ADD_PARTICIPANTS_V3: '26581073158212628', // AddParticipantsToGroupsV3
-	SET_PROPERTY: '24688994337458820', // SetGroupProperty
+	SET_PROPERTY: '9418211574894172', // SetGroupProperty (WAWebMexUpdateGroupPropertyJobMutation) — verified 2026-08-28
 	RESET_INVITE_LINK: '24812851838367452', // SetGroupResetInviteLink
-	CREATE_INVITE_CODE: '25207706598901440', // CreateInviteCode
+	CREATE_INVITE_CODE: '26155584267463745', // CreateInviteCode (WAWebMexCreateInviteCodeJobMutation) — verified 2026-08-28
 	CREATE_GROUP: '32341779532133480', // CreateGroup
 	ALLOW_NON_ADMIN_GROUP_CREATION: '32024438593867696', // AllowNonAdminGroupCreation
 	GET_INVITE_INFO: '24745668928467084', // GetInviteInfo
 	GET_PRE_REG_ADD_REQUESTS: '25018599251091280', // GetPreRegGroupAddRequestsQuery
 	GET_SUGGESTED_CONTACTS: '27208468032086900', // GetSuggestedContacts
-	STORE_INVITES_SMS: '25508574885415376', // GroupsStoreInvitesSMSMutation
+	STORE_INVITES_SMS: '26810859745268181', // GroupsStoreInvitesSMSMutation (WAWebMexGroupStoreInviteSmsJobMutation) — verified 2026-08-28
 	LOG_SERVER_SENT_INVITE: '26580640204871220', // LogServerSentInviteIntent
 	QUERY_ONLINE_STATUS: '24599444653063564', // QueryOnlineStatusFromPDP
 	QUERY_ONLINE_STATUS_LAST_SEEN: '24653084284365540' // QueryOnlineStatusLastSeenFromPDP
@@ -570,6 +572,34 @@ const makeGroupsSocket = config => {
 		 * @param {string} jid - Group JID
 		 */
 		groupQueryInfo: jid => mexQuery({ group_id: jid }, GROUP_MEX_QUERY_IDS.QUERY_INFO, 'xwa2_group_query_by_id'),
+
+		/**
+		 * Fetch group info via MEX, including bot participants in the response
+		 * (variant of groupQueryInfo — WAWebMexFetchGroupInfoIncludBotsJobQuery).
+		 * @param {string} jid - Group JID
+		 */
+		groupQueryInfoIncludeBots: jid =>
+			mexQuery(
+				{ group_input: { group_id: jid, query_context: 'INTERACTIVE' } },
+				GROUP_MEX_QUERY_IDS.QUERY_INFO_INCLUDE_BOTS,
+				'xwa2_group_query_by_id'
+			),
+
+		/**
+		 * Check whether a group is flagged internal/test via MEX
+		 * (WAWebMexFetchGroupIsInternalJobQuery). Returns the group's
+		 * `properties.internal` boolean.
+		 * @param {string} jid - Group JID
+		 * @returns {Promise<boolean>}
+		 */
+		groupQueryIsInternal: async jid => {
+			const result = await mexQuery(
+				{ group_input: { group_id: jid, query_context: 'INTERACTIVE' } },
+				GROUP_MEX_QUERY_IDS.QUERY_IS_INTERNAL,
+				'xwa2_group_query_by_id'
+			)
+			return result?.properties?.internal === true
+		},
 
 		/**
 		 * Fetch group info by invite code via MEX.

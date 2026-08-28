@@ -10,7 +10,7 @@ const { executeWMexQuery } = require('./mex')
  */
 const PRIVACY_MEX_IDS = {
 	// Privacy settings
-	GET_SETTINGS: '32774292262215379', // GetPrivacySettingsQuery
+	GET_SETTINGS: '25637004609323493', // GetPrivacySettingsQuery (WAWebMexGetPrivacySettingsQuery) — verified 2026-08-28
 	SET_SETTING: '26887749497493182', // SetPrivacySettingMutation
 	UPDATE_CONTACT_LIST: '26375158178762799', // UpdatePrivacyContactListMutation
 	GET_CONTACT_LIST: '25700444246275822', // GetPrivacyContactListQuery
