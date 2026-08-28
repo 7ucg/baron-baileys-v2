@@ -8651,6 +8651,7 @@ $root.proto = (function() {
          * @property {Array.<proto.IAIRichResponseSubMessage>|null} [submessages] AIRichResponseMessage submessages
          * @property {proto.IAIRichResponseUnifiedResponse|null} [unifiedResponse] AIRichResponseMessage unifiedResponse
          * @property {proto.IContextInfo|null} [contextInfo] AIRichResponseMessage contextInfo
+         * @property {proto.IAIRichResponseUnifiedResponse|null} [originalRecipientMetadata] AIRichResponseMessage originalRecipientMetadata
          */
 
         /**
@@ -8701,6 +8702,14 @@ $root.proto = (function() {
          */
         AIRichResponseMessage.prototype.contextInfo = null;
 
+        /**
+         * AIRichResponseMessage originalRecipientMetadata.
+         * @member {proto.IAIRichResponseUnifiedResponse|null|undefined} originalRecipientMetadata
+         * @memberof proto.AIRichResponseMessage
+         * @instance
+         */
+        AIRichResponseMessage.prototype.originalRecipientMetadata = null;
+
         // OneOf field names bound to virtual getters and setters
         var $oneOfFields;
 
@@ -8719,6 +8728,12 @@ $root.proto = (function() {
         // Virtual OneOf for proto3 optional field
         Object.defineProperty(AIRichResponseMessage.prototype, "_contextInfo", {
             get: $util.oneOfGetter($oneOfFields = ["contextInfo"]),
+            set: $util.oneOfSetter($oneOfFields)
+        });
+
+        // Virtual OneOf for proto3 optional field
+        Object.defineProperty(AIRichResponseMessage.prototype, "_originalRecipientMetadata", {
+            get: $util.oneOfGetter($oneOfFields = ["originalRecipientMetadata"]),
             set: $util.oneOfSetter($oneOfFields)
         });
 
@@ -8755,6 +8770,8 @@ $root.proto = (function() {
                 $root.proto.AIRichResponseUnifiedResponse.encode(message.unifiedResponse, writer.uint32(/* id 3, wireType 2 =*/26).fork()).ldelim();
             if (message.contextInfo != null && Object.hasOwnProperty.call(message, "contextInfo"))
                 $root.proto.ContextInfo.encode(message.contextInfo, writer.uint32(/* id 4, wireType 2 =*/34).fork()).ldelim();
+            if (message.originalRecipientMetadata != null && Object.hasOwnProperty.call(message, "originalRecipientMetadata"))
+                $root.proto.AIRichResponseUnifiedResponse.encode(message.originalRecipientMetadata, writer.uint32(/* id 5, wireType 2 =*/42).fork()).ldelim();
             return writer;
         };
 
@@ -8807,6 +8824,10 @@ $root.proto = (function() {
                     }
                 case 4: {
                         message.contextInfo = $root.proto.ContextInfo.decode(reader, reader.uint32());
+                        break;
+                    }
+                case 5: {
+                        message.originalRecipientMetadata = $root.proto.AIRichResponseUnifiedResponse.decode(reader, reader.uint32());
                         break;
                     }
                 default:
@@ -8880,6 +8901,14 @@ $root.proto = (function() {
                         return "contextInfo." + error;
                 }
             }
+            if (message.originalRecipientMetadata != null && message.hasOwnProperty("originalRecipientMetadata")) {
+                properties._originalRecipientMetadata = 1;
+                {
+                    var error = $root.proto.AIRichResponseUnifiedResponse.verify(message.originalRecipientMetadata);
+                    if (error)
+                        return "originalRecipientMetadata." + error;
+                }
+            }
             return null;
         };
 
@@ -8931,6 +8960,11 @@ $root.proto = (function() {
                     throw TypeError(".proto.AIRichResponseMessage.contextInfo: object expected");
                 message.contextInfo = $root.proto.ContextInfo.fromObject(object.contextInfo);
             }
+            if (object.originalRecipientMetadata != null) {
+                if (typeof object.originalRecipientMetadata !== "object")
+                    throw TypeError(".proto.AIRichResponseMessage.originalRecipientMetadata: object expected");
+                message.originalRecipientMetadata = $root.proto.AIRichResponseUnifiedResponse.fromObject(object.originalRecipientMetadata);
+            }
             return message;
         };
 
@@ -8968,6 +9002,11 @@ $root.proto = (function() {
                 object.contextInfo = $root.proto.ContextInfo.toObject(message.contextInfo, options);
                 if (options.oneofs)
                     object._contextInfo = "contextInfo";
+            }
+            if (message.originalRecipientMetadata != null && message.hasOwnProperty("originalRecipientMetadata")) {
+                object.originalRecipientMetadata = $root.proto.AIRichResponseUnifiedResponse.toObject(message.originalRecipientMetadata, options);
+                if (options.oneofs)
+                    object._originalRecipientMetadata = "originalRecipientMetadata";
             }
             return object;
         };
@@ -15486,6 +15525,7 @@ $root.proto = (function() {
                     case 67:
                     case 68:
                     case 69:
+                    case 70:
                         break;
                     }
             }
@@ -15795,6 +15835,10 @@ $root.proto = (function() {
                     case 69:
                         message.capabilities[i] = 69;
                         break;
+                    case "AI_STOP_GENERATION_ENABLED":
+                    case 70:
+                        message.capabilities[i] = 70;
+                        break;
                     }
             }
             return message;
@@ -15923,6 +15967,7 @@ $root.proto = (function() {
          * @property {number} AI_RICH_RESPONSE_ARTIFACTS_ENABLED=67 AI_RICH_RESPONSE_ARTIFACTS_ENABLED value
          * @property {number} AI_RICH_RESPONSE_EMAIL_CALENDAR_ENABLED=68 AI_RICH_RESPONSE_EMAIL_CALENDAR_ENABLED value
          * @property {number} AI_RICH_RESPONSE_REMINDERS_ENABLED=69 AI_RICH_RESPONSE_REMINDERS_ENABLED value
+         * @property {number} AI_STOP_GENERATION_ENABLED=70 AI_STOP_GENERATION_ENABLED value
          */
         BotCapabilityMetadata.BotCapabilityType = (function() {
             var valuesById = {}, values = Object.create(valuesById);
@@ -15996,6 +16041,7 @@ $root.proto = (function() {
             values[valuesById[67] = "AI_RICH_RESPONSE_ARTIFACTS_ENABLED"] = 67;
             values[valuesById[68] = "AI_RICH_RESPONSE_EMAIL_CALENDAR_ENABLED"] = 68;
             values[valuesById[69] = "AI_RICH_RESPONSE_REMINDERS_ENABLED"] = 69;
+            values[valuesById[70] = "AI_STOP_GENERATION_ENABLED"] = 70;
             return values;
         })();
 
@@ -23368,6 +23414,7 @@ $root.proto = (function() {
                 case 55:
                 case 56:
                 case 57:
+                case 58:
                     break;
                 }
             }
@@ -23594,6 +23641,10 @@ $root.proto = (function() {
             case 57:
                 message.botEntryPointOrigin = 57;
                 break;
+            case "NEW_3P_AGENT_CREATION":
+            case 58:
+                message.botEntryPointOrigin = 58;
+                break;
             }
             if (object.forwardScore != null)
                 message.forwardScore = object.forwardScore >>> 0;
@@ -23703,6 +23754,7 @@ $root.proto = (function() {
          * @property {proto.IAISubscriptionUpsellMetadata|null} [subscriptionUpsellMetadata] BotMetadata subscriptionUpsellMetadata
          * @property {proto.IBotPttPromptMetadata|null} [pttPromptMetadata] BotMetadata pttPromptMetadata
          * @property {proto.IBotHistoryShareMetadata|null} [botHistoryShareMetadata] BotMetadata botHistoryShareMetadata
+         * @property {boolean|null} [responseStoppedByUser] BotMetadata responseStoppedByUser
          * @property {Uint8Array|null} [internalMetadata] BotMetadata internalMetadata
          */
 
@@ -24058,6 +24110,14 @@ $root.proto = (function() {
         BotMetadata.prototype.botHistoryShareMetadata = null;
 
         /**
+         * BotMetadata responseStoppedByUser.
+         * @member {boolean|null|undefined} responseStoppedByUser
+         * @memberof proto.BotMetadata
+         * @instance
+         */
+        BotMetadata.prototype.responseStoppedByUser = null;
+
+        /**
          * BotMetadata internalMetadata.
          * @member {Uint8Array|null|undefined} internalMetadata
          * @memberof proto.BotMetadata
@@ -24321,6 +24381,12 @@ $root.proto = (function() {
         });
 
         // Virtual OneOf for proto3 optional field
+        Object.defineProperty(BotMetadata.prototype, "_responseStoppedByUser", {
+            get: $util.oneOfGetter($oneOfFields = ["responseStoppedByUser"]),
+            set: $util.oneOfSetter($oneOfFields)
+        });
+
+        // Virtual OneOf for proto3 optional field
         Object.defineProperty(BotMetadata.prototype, "_internalMetadata", {
             get: $util.oneOfGetter($oneOfFields = ["internalMetadata"]),
             set: $util.oneOfSetter($oneOfFields)
@@ -24434,6 +24500,8 @@ $root.proto = (function() {
                 $root.proto.BotPttPromptMetadata.encode(message.pttPromptMetadata, writer.uint32(/* id 42, wireType 2 =*/338).fork()).ldelim();
             if (message.botHistoryShareMetadata != null && Object.hasOwnProperty.call(message, "botHistoryShareMetadata"))
                 $root.proto.BotHistoryShareMetadata.encode(message.botHistoryShareMetadata, writer.uint32(/* id 43, wireType 2 =*/346).fork()).ldelim();
+            if (message.responseStoppedByUser != null && Object.hasOwnProperty.call(message, "responseStoppedByUser"))
+                writer.uint32(/* id 44, wireType 0 =*/352).bool(message.responseStoppedByUser);
             if (message.internalMetadata != null && Object.hasOwnProperty.call(message, "internalMetadata"))
                 writer.uint32(/* id 999, wireType 2 =*/7994).bytes(message.internalMetadata);
             return writer;
@@ -24638,6 +24706,10 @@ $root.proto = (function() {
                     }
                 case 43: {
                         message.botHistoryShareMetadata = $root.proto.BotHistoryShareMetadata.decode(reader, reader.uint32());
+                        break;
+                    }
+                case 44: {
+                        message.responseStoppedByUser = reader.bool();
                         break;
                     }
                 case 999: {
@@ -24995,6 +25067,11 @@ $root.proto = (function() {
                         return "botHistoryShareMetadata." + error;
                 }
             }
+            if (message.responseStoppedByUser != null && message.hasOwnProperty("responseStoppedByUser")) {
+                properties._responseStoppedByUser = 1;
+                if (typeof message.responseStoppedByUser !== "boolean")
+                    return "responseStoppedByUser: boolean expected";
+            }
             if (message.internalMetadata != null && message.hasOwnProperty("internalMetadata")) {
                 properties._internalMetadata = 1;
                 if (!(message.internalMetadata && typeof message.internalMetadata.length === "number" || $util.isString(message.internalMetadata)))
@@ -25207,6 +25284,8 @@ $root.proto = (function() {
                     throw TypeError(".proto.BotMetadata.botHistoryShareMetadata: object expected");
                 message.botHistoryShareMetadata = $root.proto.BotHistoryShareMetadata.fromObject(object.botHistoryShareMetadata);
             }
+            if (object.responseStoppedByUser != null)
+                message.responseStoppedByUser = Boolean(object.responseStoppedByUser);
             if (object.internalMetadata != null)
                 if (typeof object.internalMetadata === "string")
                     $util.base64.decode(object.internalMetadata, message.internalMetadata = $util.newBuffer($util.base64.length(object.internalMetadata)), 0);
@@ -25438,6 +25517,11 @@ $root.proto = (function() {
                 if (options.oneofs)
                     object._botHistoryShareMetadata = "botHistoryShareMetadata";
             }
+            if (message.responseStoppedByUser != null && message.hasOwnProperty("responseStoppedByUser")) {
+                object.responseStoppedByUser = message.responseStoppedByUser;
+                if (options.oneofs)
+                    object._responseStoppedByUser = "responseStoppedByUser";
+            }
             if (message.internalMetadata != null && message.hasOwnProperty("internalMetadata")) {
                 object.internalMetadata = options.bytes === String ? $util.base64.encode(message.internalMetadata, 0, message.internalMetadata.length) : options.bytes === Array ? Array.prototype.slice.call(message.internalMetadata) : message.internalMetadata;
                 if (options.oneofs)
@@ -25528,6 +25612,7 @@ $root.proto = (function() {
      * @property {number} CHATLIST_SEARCH=55 CHATLIST_SEARCH value
      * @property {number} NEW_CHAT_LIST=56 NEW_CHAT_LIST value
      * @property {number} CONTACTS_TAB=57 CONTACTS_TAB value
+     * @property {number} NEW_3P_AGENT_CREATION=58 NEW_3P_AGENT_CREATION value
      */
     proto.BotMetricsEntryPoint = (function() {
         var valuesById = {}, values = Object.create(valuesById);
@@ -25580,6 +25665,7 @@ $root.proto = (function() {
         values[valuesById[55] = "CHATLIST_SEARCH"] = 55;
         values[valuesById[56] = "NEW_CHAT_LIST"] = 56;
         values[valuesById[57] = "CONTACTS_TAB"] = 57;
+        values[valuesById[58] = "NEW_3P_AGENT_CREATION"] = 58;
         return values;
     })();
 
@@ -25827,6 +25913,7 @@ $root.proto = (function() {
                 case 55:
                 case 56:
                 case 57:
+                case 58:
                     break;
                 }
             }
@@ -26062,6 +26149,10 @@ $root.proto = (function() {
             case "CONTACTS_TAB":
             case 57:
                 message.destinationEntryPoint = 57;
+                break;
+            case "NEW_3P_AGENT_CREATION":
+            case 58:
+                message.destinationEntryPoint = 58;
                 break;
             }
             switch (object.threadOrigin) {
@@ -58131,6 +58222,7 @@ $root.proto = (function() {
          * @property {string|null} [posterStatusId] ContextInfo posterStatusId
          * @property {proto.ContextInfo.IInstagramThreadLink|null} [instagramThreadLink] ContextInfo instagramThreadLink
          * @property {proto.IAIProvenance|null} [aiProvenance] ContextInfo aiProvenance
+         * @property {Array.<number>|null} [experienceIds] ContextInfo experienceIds
          */
 
         /**
@@ -58145,6 +58237,7 @@ $root.proto = (function() {
             this.mentionedJid = [];
             this.groupMentions = [];
             this.statusAttributions = [];
+            this.experienceIds = [];
             if (properties)
                 for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
                     if (properties[keys[i]] != null)
@@ -58662,6 +58755,14 @@ $root.proto = (function() {
          * @instance
          */
         ContextInfo.prototype.aiProvenance = null;
+
+        /**
+         * ContextInfo experienceIds.
+         * @member {Array.<number>} experienceIds
+         * @memberof proto.ContextInfo
+         * @instance
+         */
+        ContextInfo.prototype.experienceIds = $util.emptyArray;
 
         // OneOf field names bound to virtual getters and setters
         var $oneOfFields;
@@ -59187,6 +59288,12 @@ $root.proto = (function() {
                 $root.proto.ContextInfo.InstagramThreadLink.encode(message.instagramThreadLink, writer.uint32(/* id 80, wireType 2 =*/642).fork()).ldelim();
             if (message.aiProvenance != null && Object.hasOwnProperty.call(message, "aiProvenance"))
                 $root.proto.AIProvenance.encode(message.aiProvenance, writer.uint32(/* id 81, wireType 2 =*/650).fork()).ldelim();
+            if (message.experienceIds != null && message.experienceIds.length) {
+                writer.uint32(/* id 82, wireType 2 =*/658).fork();
+                for (var i = 0; i < message.experienceIds.length; ++i)
+                    writer.uint32(message.experienceIds[i]);
+                writer.ldelim();
+            }
             return writer;
         };
 
@@ -59483,6 +59590,17 @@ $root.proto = (function() {
                     }
                 case 81: {
                         message.aiProvenance = $root.proto.AIProvenance.decode(reader, reader.uint32());
+                        break;
+                    }
+                case 82: {
+                        if (!(message.experienceIds && message.experienceIds.length))
+                            message.experienceIds = [];
+                        if ((tag & 7) === 2) {
+                            var end2 = reader.uint32() + reader.pos;
+                            while (reader.pos < end2)
+                                message.experienceIds.push(reader.uint32());
+                        } else
+                            message.experienceIds.push(reader.uint32());
                         break;
                     }
                 default:
@@ -59966,6 +60084,13 @@ $root.proto = (function() {
                         return "aiProvenance." + error;
                 }
             }
+            if (message.experienceIds != null && message.hasOwnProperty("experienceIds")) {
+                if (!Array.isArray(message.experienceIds))
+                    return "experienceIds: array expected";
+                for (var i = 0; i < message.experienceIds.length; ++i)
+                    if (!$util.isInteger(message.experienceIds[i]))
+                        return "experienceIds: integer[] expected";
+            }
             return null;
         };
 
@@ -60372,6 +60497,13 @@ $root.proto = (function() {
                     throw TypeError(".proto.ContextInfo.aiProvenance: object expected");
                 message.aiProvenance = $root.proto.AIProvenance.fromObject(object.aiProvenance);
             }
+            if (object.experienceIds) {
+                if (!Array.isArray(object.experienceIds))
+                    throw TypeError(".proto.ContextInfo.experienceIds: array expected");
+                message.experienceIds = [];
+                for (var i = 0; i < object.experienceIds.length; ++i)
+                    message.experienceIds[i] = object.experienceIds[i] >>> 0;
+            }
             return message;
         };
 
@@ -60392,6 +60524,7 @@ $root.proto = (function() {
                 object.mentionedJid = [];
                 object.groupMentions = [];
                 object.statusAttributions = [];
+                object.experienceIds = [];
             }
             if (message.stanzaId != null && message.hasOwnProperty("stanzaId")) {
                 object.stanzaId = message.stanzaId;
@@ -60715,6 +60848,11 @@ $root.proto = (function() {
                 object.aiProvenance = $root.proto.AIProvenance.toObject(message.aiProvenance, options);
                 if (options.oneofs)
                     object._aiProvenance = "aiProvenance";
+            }
+            if (message.experienceIds && message.experienceIds.length) {
+                object.experienceIds = [];
+                for (var j = 0; j < message.experienceIds.length; ++j)
+                    object.experienceIds[j] = message.experienceIds[j];
             }
             return object;
         };
@@ -72615,6 +72753,7 @@ $root.proto = (function() {
              * @property {boolean|null} [campaignSyncEnabled] BusinessBroadcast campaignSyncEnabled
              * @property {boolean|null} [insightsSyncEnabled] BusinessBroadcast insightsSyncEnabled
              * @property {number|null} [recipientLimit] BusinessBroadcast recipientLimit
+             * @property {boolean|null} [proCompanionSupportEnabled] BusinessBroadcast proCompanionSupportEnabled
              */
 
             /**
@@ -72672,6 +72811,14 @@ $root.proto = (function() {
              */
             BusinessBroadcast.prototype.recipientLimit = null;
 
+            /**
+             * BusinessBroadcast proCompanionSupportEnabled.
+             * @member {boolean|null|undefined} proCompanionSupportEnabled
+             * @memberof proto.DeviceCapabilities.BusinessBroadcast
+             * @instance
+             */
+            BusinessBroadcast.prototype.proCompanionSupportEnabled = null;
+
             // OneOf field names bound to virtual getters and setters
             var $oneOfFields;
 
@@ -72702,6 +72849,12 @@ $root.proto = (function() {
             // Virtual OneOf for proto3 optional field
             Object.defineProperty(BusinessBroadcast.prototype, "_recipientLimit", {
                 get: $util.oneOfGetter($oneOfFields = ["recipientLimit"]),
+                set: $util.oneOfSetter($oneOfFields)
+            });
+
+            // Virtual OneOf for proto3 optional field
+            Object.defineProperty(BusinessBroadcast.prototype, "_proCompanionSupportEnabled", {
+                get: $util.oneOfGetter($oneOfFields = ["proCompanionSupportEnabled"]),
                 set: $util.oneOfSetter($oneOfFields)
             });
 
@@ -72739,6 +72892,8 @@ $root.proto = (function() {
                     writer.uint32(/* id 4, wireType 0 =*/32).bool(message.insightsSyncEnabled);
                 if (message.recipientLimit != null && Object.hasOwnProperty.call(message, "recipientLimit"))
                     writer.uint32(/* id 5, wireType 0 =*/40).int32(message.recipientLimit);
+                if (message.proCompanionSupportEnabled != null && Object.hasOwnProperty.call(message, "proCompanionSupportEnabled"))
+                    writer.uint32(/* id 6, wireType 0 =*/48).bool(message.proCompanionSupportEnabled);
                 return writer;
             };
 
@@ -72793,6 +72948,10 @@ $root.proto = (function() {
                         }
                     case 5: {
                             message.recipientLimit = reader.int32();
+                            break;
+                        }
+                    case 6: {
+                            message.proCompanionSupportEnabled = reader.bool();
                             break;
                         }
                     default:
@@ -72856,6 +73015,11 @@ $root.proto = (function() {
                     if (!$util.isInteger(message.recipientLimit))
                         return "recipientLimit: integer expected";
                 }
+                if (message.proCompanionSupportEnabled != null && message.hasOwnProperty("proCompanionSupportEnabled")) {
+                    properties._proCompanionSupportEnabled = 1;
+                    if (typeof message.proCompanionSupportEnabled !== "boolean")
+                        return "proCompanionSupportEnabled: boolean expected";
+                }
                 return null;
             };
 
@@ -72881,6 +73045,8 @@ $root.proto = (function() {
                     message.insightsSyncEnabled = Boolean(object.insightsSyncEnabled);
                 if (object.recipientLimit != null)
                     message.recipientLimit = object.recipientLimit | 0;
+                if (object.proCompanionSupportEnabled != null)
+                    message.proCompanionSupportEnabled = Boolean(object.proCompanionSupportEnabled);
                 return message;
             };
 
@@ -72921,6 +73087,11 @@ $root.proto = (function() {
                     object.recipientLimit = message.recipientLimit;
                     if (options.oneofs)
                         object._recipientLimit = "recipientLimit";
+                }
+                if (message.proCompanionSupportEnabled != null && message.hasOwnProperty("proCompanionSupportEnabled")) {
+                    object.proCompanionSupportEnabled = message.proCompanionSupportEnabled;
+                    if (options.oneofs)
+                        object._proCompanionSupportEnabled = "proCompanionSupportEnabled";
                 }
                 return object;
             };
@@ -100750,6 +100921,7 @@ $root.proto = (function() {
          * @property {proto.Message.IMusicMessage|null} [musicMessage] Message musicMessage
          * @property {proto.Message.IStatusLinkPreviewMetadata|null} [statusLinkPreviewMetadata] Message statusLinkPreviewMetadata
          * @property {proto.Message.IFutureProofMessage|null} [botPlatformRegistrationSuccessMessage] Message botPlatformRegistrationSuccessMessage
+         * @property {proto.Message.IFutureProofMessage|null} [newsletterScheduledMessage] Message newsletterScheduledMessage
          */
 
         /**
@@ -101647,6 +101819,14 @@ $root.proto = (function() {
          */
         Message.prototype.botPlatformRegistrationSuccessMessage = null;
 
+        /**
+         * Message newsletterScheduledMessage.
+         * @member {proto.Message.IFutureProofMessage|null|undefined} newsletterScheduledMessage
+         * @memberof proto.Message
+         * @instance
+         */
+        Message.prototype.newsletterScheduledMessage = null;
+
         // OneOf field names bound to virtual getters and setters
         var $oneOfFields;
 
@@ -102310,6 +102490,12 @@ $root.proto = (function() {
             set: $util.oneOfSetter($oneOfFields)
         });
 
+        // Virtual OneOf for proto3 optional field
+        Object.defineProperty(Message.prototype, "_newsletterScheduledMessage", {
+            get: $util.oneOfGetter($oneOfFields = ["newsletterScheduledMessage"]),
+            set: $util.oneOfSetter($oneOfFields)
+        });
+
         /**
          * Creates a new Message instance using the specified properties.
          * @function create
@@ -102554,6 +102740,8 @@ $root.proto = (function() {
                 $root.proto.Message.StatusLinkPreviewMetadata.encode(message.statusLinkPreviewMetadata, writer.uint32(/* id 130, wireType 2 =*/1042).fork()).ldelim();
             if (message.botPlatformRegistrationSuccessMessage != null && Object.hasOwnProperty.call(message, "botPlatformRegistrationSuccessMessage"))
                 $root.proto.Message.FutureProofMessage.encode(message.botPlatformRegistrationSuccessMessage, writer.uint32(/* id 131, wireType 2 =*/1050).fork()).ldelim();
+            if (message.newsletterScheduledMessage != null && Object.hasOwnProperty.call(message, "newsletterScheduledMessage"))
+                $root.proto.Message.FutureProofMessage.encode(message.newsletterScheduledMessage, writer.uint32(/* id 132, wireType 2 =*/1058).fork()).ldelim();
             return writer;
         };
 
@@ -103028,6 +103216,10 @@ $root.proto = (function() {
                     }
                 case 131: {
                         message.botPlatformRegistrationSuccessMessage = $root.proto.Message.FutureProofMessage.decode(reader, reader.uint32());
+                        break;
+                    }
+                case 132: {
+                        message.newsletterScheduledMessage = $root.proto.Message.FutureProofMessage.decode(reader, reader.uint32());
                         break;
                     }
                 default:
@@ -103943,6 +104135,14 @@ $root.proto = (function() {
                         return "botPlatformRegistrationSuccessMessage." + error;
                 }
             }
+            if (message.newsletterScheduledMessage != null && message.hasOwnProperty("newsletterScheduledMessage")) {
+                properties._newsletterScheduledMessage = 1;
+                {
+                    var error = $root.proto.Message.FutureProofMessage.verify(message.newsletterScheduledMessage);
+                    if (error)
+                        return "newsletterScheduledMessage." + error;
+                }
+            }
             return null;
         };
 
@@ -104504,6 +104704,11 @@ $root.proto = (function() {
                 if (typeof object.botPlatformRegistrationSuccessMessage !== "object")
                     throw TypeError(".proto.Message.botPlatformRegistrationSuccessMessage: object expected");
                 message.botPlatformRegistrationSuccessMessage = $root.proto.Message.FutureProofMessage.fromObject(object.botPlatformRegistrationSuccessMessage);
+            }
+            if (object.newsletterScheduledMessage != null) {
+                if (typeof object.newsletterScheduledMessage !== "object")
+                    throw TypeError(".proto.Message.newsletterScheduledMessage: object expected");
+                message.newsletterScheduledMessage = $root.proto.Message.FutureProofMessage.fromObject(object.newsletterScheduledMessage);
             }
             return message;
         };
@@ -105070,6 +105275,11 @@ $root.proto = (function() {
                 object.botPlatformRegistrationSuccessMessage = $root.proto.Message.FutureProofMessage.toObject(message.botPlatformRegistrationSuccessMessage, options);
                 if (options.oneofs)
                     object._botPlatformRegistrationSuccessMessage = "botPlatformRegistrationSuccessMessage";
+            }
+            if (message.newsletterScheduledMessage != null && message.hasOwnProperty("newsletterScheduledMessage")) {
+                object.newsletterScheduledMessage = $root.proto.Message.FutureProofMessage.toObject(message.newsletterScheduledMessage, options);
+                if (options.oneofs)
+                    object._newsletterScheduledMessage = "newsletterScheduledMessage";
             }
             return object;
         };
@@ -170269,6 +170479,7 @@ $root.proto = (function() {
              * @property {number|Long|null} [motionPhotoPresentationOffsetMs] VideoMessage motionPhotoPresentationOffsetMs
              * @property {string|null} [metadataUrl] VideoMessage metadataUrl
              * @property {proto.Message.VideoMessage.VideoSourceType|null} [videoSourceType] VideoMessage videoSourceType
+             * @property {string|null} [dashManifestUrl] VideoMessage dashManifestUrl
              */
 
             /**
@@ -170529,6 +170740,14 @@ $root.proto = (function() {
              */
             VideoMessage.prototype.videoSourceType = null;
 
+            /**
+             * VideoMessage dashManifestUrl.
+             * @member {string|null|undefined} dashManifestUrl
+             * @memberof proto.Message.VideoMessage
+             * @instance
+             */
+            VideoMessage.prototype.dashManifestUrl = null;
+
             // OneOf field names bound to virtual getters and setters
             var $oneOfFields;
 
@@ -170694,6 +170913,12 @@ $root.proto = (function() {
                 set: $util.oneOfSetter($oneOfFields)
             });
 
+            // Virtual OneOf for proto3 optional field
+            Object.defineProperty(VideoMessage.prototype, "_dashManifestUrl", {
+                get: $util.oneOfGetter($oneOfFields = ["dashManifestUrl"]),
+                set: $util.oneOfSetter($oneOfFields)
+            });
+
             /**
              * Creates a new VideoMessage instance using the specified properties.
              * @function create
@@ -170781,6 +171006,8 @@ $root.proto = (function() {
                     writer.uint32(/* id 30, wireType 2 =*/242).string(message.metadataUrl);
                 if (message.videoSourceType != null && Object.hasOwnProperty.call(message, "videoSourceType"))
                     writer.uint32(/* id 31, wireType 0 =*/248).int32(message.videoSourceType);
+                if (message.dashManifestUrl != null && Object.hasOwnProperty.call(message, "dashManifestUrl"))
+                    writer.uint32(/* id 33, wireType 2 =*/266).string(message.dashManifestUrl);
                 return writer;
             };
 
@@ -170941,6 +171168,10 @@ $root.proto = (function() {
                         }
                     case 31: {
                             message.videoSourceType = reader.int32();
+                            break;
+                        }
+                    case 33: {
+                            message.dashManifestUrl = reader.string();
                             break;
                         }
                     default:
@@ -171156,6 +171387,11 @@ $root.proto = (function() {
                         break;
                     }
                 }
+                if (message.dashManifestUrl != null && message.hasOwnProperty("dashManifestUrl")) {
+                    properties._dashManifestUrl = 1;
+                    if (!$util.isString(message.dashManifestUrl))
+                        return "dashManifestUrl: string expected";
+                }
                 return null;
             };
 
@@ -171336,6 +171572,8 @@ $root.proto = (function() {
                     message.videoSourceType = 1;
                     break;
                 }
+                if (object.dashManifestUrl != null)
+                    message.dashManifestUrl = String(object.dashManifestUrl);
                 return message;
             };
 
@@ -171515,6 +171753,11 @@ $root.proto = (function() {
                     object.videoSourceType = options.enums === String ? $root.proto.Message.VideoMessage.VideoSourceType[message.videoSourceType] === undefined ? message.videoSourceType : $root.proto.Message.VideoMessage.VideoSourceType[message.videoSourceType] : message.videoSourceType;
                     if (options.oneofs)
                         object._videoSourceType = "videoSourceType";
+                }
+                if (message.dashManifestUrl != null && message.hasOwnProperty("dashManifestUrl")) {
+                    object.dashManifestUrl = message.dashManifestUrl;
+                    if (options.oneofs)
+                        object._dashManifestUrl = "dashManifestUrl";
                 }
                 return object;
             };

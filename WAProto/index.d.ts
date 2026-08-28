@@ -3103,6 +3103,9 @@ export namespace proto {
 
         /** AIRichResponseMessage contextInfo */
         contextInfo?: (proto.IContextInfo|null);
+
+        /** AIRichResponseMessage originalRecipientMetadata */
+        originalRecipientMetadata?: (proto.IAIRichResponseUnifiedResponse|null);
     }
 
     /** Represents a AIRichResponseMessage. */
@@ -3125,6 +3128,9 @@ export namespace proto {
 
         /** AIRichResponseMessage contextInfo. */
         public contextInfo?: (proto.IContextInfo|null);
+
+        /** AIRichResponseMessage originalRecipientMetadata. */
+        public originalRecipientMetadata?: (proto.IAIRichResponseUnifiedResponse|null);
 
         /**
          * Creates a new AIRichResponseMessage instance using the specified properties.
@@ -5650,7 +5656,8 @@ export namespace proto {
             RICH_RESPONSE_SPORTS_WIDGET_ENABLED = 66,
             AI_RICH_RESPONSE_ARTIFACTS_ENABLED = 67,
             AI_RICH_RESPONSE_EMAIL_CALENDAR_ENABLED = 68,
-            AI_RICH_RESPONSE_REMINDERS_ENABLED = 69
+            AI_RICH_RESPONSE_REMINDERS_ENABLED = 69,
+            AI_STOP_GENERATION_ENABLED = 70
         }
     }
 
@@ -8568,6 +8575,9 @@ export namespace proto {
         /** BotMetadata botHistoryShareMetadata */
         botHistoryShareMetadata?: (proto.IBotHistoryShareMetadata|null);
 
+        /** BotMetadata responseStoppedByUser */
+        responseStoppedByUser?: (boolean|null);
+
         /** BotMetadata internalMetadata */
         internalMetadata?: (Uint8Array|null);
     }
@@ -8707,6 +8717,9 @@ export namespace proto {
         /** BotMetadata botHistoryShareMetadata. */
         public botHistoryShareMetadata?: (proto.IBotHistoryShareMetadata|null);
 
+        /** BotMetadata responseStoppedByUser. */
+        public responseStoppedByUser?: (boolean|null);
+
         /** BotMetadata internalMetadata. */
         public internalMetadata?: (Uint8Array|null);
 
@@ -8838,7 +8851,8 @@ export namespace proto {
         GROUP_MEMBER = 54,
         CHATLIST_SEARCH = 55,
         NEW_CHAT_LIST = 56,
-        CONTACTS_TAB = 57
+        CONTACTS_TAB = 57,
+        NEW_3P_AGENT_CREATION = 58
     }
 
     /** Properties of a BotMetricsMetadata. */
@@ -20006,6 +20020,9 @@ export namespace proto {
 
         /** ContextInfo aiProvenance */
         aiProvenance?: (proto.IAIProvenance|null);
+
+        /** ContextInfo experienceIds */
+        experienceIds?: (number[]|null);
     }
 
     /** Represents a ContextInfo. */
@@ -20208,6 +20225,9 @@ export namespace proto {
 
         /** ContextInfo aiProvenance. */
         public aiProvenance?: (proto.IAIProvenance|null);
+
+        /** ContextInfo experienceIds. */
+        public experienceIds: number[];
 
         /**
          * Creates a new ContextInfo instance using the specified properties.
@@ -23984,6 +24004,9 @@ export namespace proto {
 
             /** BusinessBroadcast recipientLimit */
             recipientLimit?: (number|null);
+
+            /** BusinessBroadcast proCompanionSupportEnabled */
+            proCompanionSupportEnabled?: (boolean|null);
         }
 
         /** Represents a BusinessBroadcast. */
@@ -24009,6 +24032,9 @@ export namespace proto {
 
             /** BusinessBroadcast recipientLimit. */
             public recipientLimit?: (number|null);
+
+            /** BusinessBroadcast proCompanionSupportEnabled. */
+            public proCompanionSupportEnabled?: (boolean|null);
 
             /**
              * Creates a new BusinessBroadcast instance using the specified properties.
@@ -33466,6 +33492,9 @@ export namespace proto {
 
         /** Message botPlatformRegistrationSuccessMessage */
         botPlatformRegistrationSuccessMessage?: (proto.Message.IFutureProofMessage|null);
+
+        /** Message newsletterScheduledMessage */
+        newsletterScheduledMessage?: (proto.Message.IFutureProofMessage|null);
     }
 
     /** Represents a Message. */
@@ -33806,6 +33835,9 @@ export namespace proto {
 
         /** Message botPlatformRegistrationSuccessMessage. */
         public botPlatformRegistrationSuccessMessage?: (proto.Message.IFutureProofMessage|null);
+
+        /** Message newsletterScheduledMessage. */
+        public newsletterScheduledMessage?: (proto.Message.IFutureProofMessage|null);
 
         /**
          * Creates a new Message instance using the specified properties.
@@ -55337,6 +55369,9 @@ export namespace proto {
 
             /** VideoMessage videoSourceType */
             videoSourceType?: (proto.Message.VideoMessage.VideoSourceType|null);
+
+            /** VideoMessage dashManifestUrl */
+            dashManifestUrl?: (string|null);
         }
 
         /** Represents a VideoMessage. */
@@ -55437,6 +55472,9 @@ export namespace proto {
 
             /** VideoMessage videoSourceType. */
             public videoSourceType?: (proto.Message.VideoMessage.VideoSourceType|null);
+
+            /** VideoMessage dashManifestUrl. */
+            public dashManifestUrl?: (string|null);
 
             /**
              * Creates a new VideoMessage instance using the specified properties.
