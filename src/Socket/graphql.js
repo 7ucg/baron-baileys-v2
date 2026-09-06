@@ -18,11 +18,9 @@ const ENDPOINTS = {
 	WAMO_PATH: '/api/wamo/graphql/'
 }
 
-// Default fallback token — only valid as a no-op / anonymous placeholder.
+// A valid access token must always be supplied by the caller.
 // Real sessions must supply a token obtained via wwwGetNonce + wwwExchangeNonce.
-// Confirmed from APX.java: "WA|1015890928915437|3201f239340c1c8ec6262a6dad04200e"
-const WAMO_APP_ID = '1015890928915437'
-const WWW_DEFAULT_TOKEN = `WA|${WAMO_APP_ID}|3201f239340c1c8ec6262a6dad04200e`
+// No hardcoded fallback token is used, as it would allow unauthorized API access.
 
 /**
  * Parse a GraphQL JSON response and extract the data at the given path.
@@ -67,7 +65,10 @@ const executeWWWGraphQL = async (
 	lang = 'en',
 	endpoint = ENDPOINTS.WWW
 ) => {
-	const token = accessToken || WWW_DEFAULT_TOKEN
+	if (!accessToken) {
+		throw new boom_1.Boom('Missing access token for WWW GraphQL request', { statusCode: 401 })
+	}
+	const token = accessToken
 	const body = JSON.stringify({ access_token: token, doc_id: String(docId), variables, lang })
 	const res = await fetch(endpoint, {
 		method: 'POST',
@@ -117,7 +118,10 @@ exports.executeFacebookGraphQL = executeFacebookGraphQL
  * @param {string} [wamoHost='wamo.whatsapp.net'] - Wamo API host (fetched from config at runtime)
  */
 const executeWamoGraphQL = async (docId, variables, wamoAuth = {}, dataPath = null, wamoHost = 'wamo.whatsapp.net') => {
-	const { accessToken = WWW_DEFAULT_TOKEN, credential = '', userId = '' } = wamoAuth
+	const { accessToken, credential = '', userId = '' } = wamoAuth
+	if (!accessToken) {
+		throw new boom_1.Boom('Missing access token for Wamo GraphQL request', { statusCode: 401 })
+	}
 	const params = new URLSearchParams({
 		access_token: accessToken,
 		credential,
