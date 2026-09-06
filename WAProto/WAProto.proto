@@ -1,7 +1,7 @@
 syntax = "proto3";
 package proto;
 
-/// WhatsApp Version: 2.3000.1046273326
+/// WhatsApp Version: 2.3000.1046909856
 
 message ADVDeviceIdentity {
     optional uint32 rawId = 1;
@@ -81,6 +81,7 @@ message AIMediaCollectionMetadata {
 
 message AIMetadataOperation {
     optional HatchMetadataSync hatchMetadataSync = 1;
+    optional BizAIMetadataSync bizAiMetadataSync = 2;
 }
 
 message AIProvenance {
@@ -331,6 +332,27 @@ message BackwardEdge {
     optional bytes prevEpochRootKeyFingerprint = 3;
 }
 
+message BizAIMetadataSync {
+    oneof operation {
+        BizAIMetadataSync.ServerEvent serverEvent = 1;
+    }
+    message ServerEvent {
+        oneof event {
+            BizAIMetadataSync.ServerEvent.ProtocolEvent protocolEvent = 1;
+            BizAIMetadataSync.ServerEvent.AgentOnboardingStarted agentOnboardingStarted = 2;
+        }
+        message AgentOnboardingStarted {
+            optional int64 composerBlockDurationSecs = 1;
+        }
+        
+        enum ProtocolEvent {
+            UNSPECIFIED = 0;
+            AGENT_CHAT_READY = 1;
+        }
+    }
+    
+}
+
 message BizAccountLinkInfo {
     optional uint64 whatsappBizAcctFbid = 1;
     optional string whatsappAcctNumber = 2;
@@ -468,6 +490,7 @@ message BotCapabilityMetadata {
         AI_RICH_RESPONSE_EMAIL_CALENDAR_ENABLED = 68;
         AI_RICH_RESPONSE_REMINDERS_ENABLED = 69;
         AI_STOP_GENERATION_ENABLED = 70;
+        AI_RICH_RESPONSE_3P_LINKING_CARD_ENABLED = 71;
     }
 }
 
@@ -1196,6 +1219,7 @@ message ClientPairingProps {
     optional bool isSyncdSnapshotRecoveryEnabled = 3;
     optional bool isHsThumbnailSyncEnabled = 4;
     optional bytes subscriptionSyncPayload = 5;
+    optional bool isBotJidDbMigrated = 6;
 }
 
 message ClientPayload {
@@ -1392,6 +1416,8 @@ message ClientPayload {
             BLUE_VR = 36;
             AR_WRIST = 37;
             WAIL = 38;
+            WORK_ANDROID = 39;
+            WORK_IOS = 40;
         }
         enum ReleaseChannel {
             RELEASE = 0;
@@ -2115,6 +2141,7 @@ message DeviceCapabilities {
     optional ContactRefresh contactRefresh = 9;
     message AiFbidMigration {
         optional uint64 chatDbMigrationTimestamp = 1;
+        optional uint32 supportVersion = 2;
     }
     
     message AiThread {
@@ -4824,6 +4851,7 @@ message MessageContextInfo {
     optional bytes teeBotMetadata = 17;
     optional NonE2EEAttestation accountEncryptionAttestation = 18;
     optional bytes associatedPrimaryIdentityKey = 19;
+    optional string teeContextAnchorMessageId = 20;
     enum MessageAddonExpiryType {
         STATIC = 1;
         DEPENDENT_ON_PARENT = 2;
@@ -4912,6 +4940,8 @@ message MsgOpaqueData {
     optional bool sharableEventInviteIsCanceled = 58;
     optional bytes sharableEventInviteJpegThumbnail = 59;
     optional string sharableEventInviteCallLink = 60;
+    optional string mediaPngThumbnail = 61;
+    optional string qrUrl = 62;
     message EventLocation {
         optional double degreesLatitude = 1;
         optional double degreesLongitude = 2;
