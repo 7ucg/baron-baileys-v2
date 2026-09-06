@@ -15,8 +15,8 @@ const PRIVACY_MEX_IDS = {
 	UPDATE_CONTACT_LIST: '26375158178762799', // UpdatePrivacyContactListMutation
 	GET_CONTACT_LIST: '25700444246275822', // GetPrivacyContactListQuery
 	// Status / profile
-	UPDATE_TEXT_STATUS: '25863197129975892', // UpdateTextStatus
-	GET_TEXT_STATUS_LIST: '25741205615468935', // GetTextStatusList
+	UPDATE_TEXT_STATUS: '9152604461510864', // UpdateTextStatus (WAWebMexUpdateTextStatusJobMutation) — verified 2026-09-06
+	GET_TEXT_STATUS_LIST: '24072923595647473', // FetchTextStatusList (WAWebMexFetchTextStatusListJobQuery) — verified 2026-09-06
 	UPDATE_USER_STATUS: '7452341274886724', // UpdateUserStatus
 	FETCH_USER_PICTURE: '24983561624604407', // FetchUserPictureInfo
 	PROFILE_PICTURE_MUTATION: '24714239711610700', // ProfilePictureMutation
