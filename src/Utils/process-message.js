@@ -353,6 +353,18 @@ const processMessage = async (
 			ephemeralExpirationTimestamp: (0, generics_1.toNumber)(message.ephemeralExpirationTimestamp)
 		})
 	}
+	if (message.message?.acp2SettingMessage) {
+		const acp2Setting = message.messageContextInfo?.acp2Setting
+		if (acp2Setting) {
+			Object.assign(chat, {
+				acp2Enabled: acp2Setting.enabled || false,
+				acp2SettingTimestamp:
+					(0, generics_1.toNumber)(acp2Setting.settingTimestamp) || (0, generics_1.toNumber)(message.messageTimestamp),
+				acp2Trigger: acp2Setting.trigger,
+				acp2InitiatedByMe: acp2Setting.initiatedByMe || false
+			})
+		}
+	}
 	const content = (0, messages_1.normalizeMessageContent)(message.message)
 	// unarchive chat if it's a real message, or someone reacted to our message
 	// and we've the unarchive chats setting on

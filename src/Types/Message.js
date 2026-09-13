@@ -41,6 +41,8 @@ exports.ConditionalRevealType = index_js_1.proto.Message.ConditionalRevealMessag
 exports.EventResponseType = index_js_1.proto.Message.EventResponseMessage.EventResponseType
 exports.PrivateProcessingStatus =
 	index_js_1.proto.SyncActionValue.PrivateProcessingSettingAction.PrivateProcessingStatus
+exports.BusinessBroadcastCampaignStatus = index_js_1.proto.SyncActionValue.BusinessBroadcastCampaignStatus
+exports.BusinessBroadcastCampaignBBProStatus = index_js_1.proto.SyncActionValue.BusinessBroadcastCampaignBBProStatus
 exports.PaymentInfoStatus = index_js_1.proto.PaymentInfo.Status
 exports.PaymentInfoTxnStatus = index_js_1.proto.PaymentInfo.TxnStatus
 exports.VideoQuality = index_js_1.proto.ProcessedVideo.VideoQuality

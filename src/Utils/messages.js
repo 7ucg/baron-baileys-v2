@@ -1035,6 +1035,12 @@ const generateWAMessageContent = async (message, options) => {
 	} else if (!hasCaptionWithoutMedia && hasMediaPayload(message)) {
 		m = await (0, exports.prepareWAMessageMedia)(message, options)
 	}
+	if (m.stickerMessage && (0, exports.hasNonNullishProperty)(message, 'stickerAudio')) {
+		const audioPrep = await (0, exports.prepareWAMessageMedia)({ audio: message.stickerAudio, ptt: true }, options)
+		if (audioPrep?.audioMessage) {
+			m.stickerMessage.audioMessage = audioPrep.audioMessage
+		}
+	}
 	if ('buttons' in message && !!message.buttons) {
 		const interactiveMessage = {
 			nativeFlowMessage: WAProto_1.proto.Message.InteractiveMessage.NativeFlowMessage.fromObject({
@@ -1353,13 +1359,18 @@ const generateWAMessageContent = async (message, options) => {
 		const ssiData =
 			'statusStickerInteraction' in message ? message.statusStickerInteraction : message.statusStickerInteractionMessage
 		m = { statusStickerInteractionMessage: WAProto_1.proto.Message.StatusStickerInteractionMessage.fromObject(ssiData) }
-	} else if ('newsletterFollowerInvite' in message || 'newsletterFollowerInviteMessageV2' in message) {
-		const nfiData =
-			'newsletterFollowerInvite' in message
-				? message.newsletterFollowerInvite
-				: message.newsletterFollowerInviteMessageV2
+	} else if (
+		'newsletterFollowerInvite' in message ||
+		'newsletterFollowerInviteMessage' in message ||
+		'newsletterFollowerInviteMessageV2' in message
+	) {
+		const isV2 = 'newsletterFollowerInviteMessageV2' in message
+		const nfiData = isV2
+			? message.newsletterFollowerInviteMessageV2
+			: (message.newsletterFollowerInvite ?? message.newsletterFollowerInviteMessage)
+		const nfiField = isV2 ? 'newsletterFollowerInviteMessageV2' : 'newsletterFollowerInviteMessage'
 		m = {
-			newsletterFollowerInviteMessageV2: WAProto_1.proto.Message.NewsletterFollowerInviteMessage.fromObject(nfiData)
+			[nfiField]: WAProto_1.proto.Message.NewsletterFollowerInviteMessage.fromObject(nfiData)
 		}
 	} else if ('messageHistoryNotice' in message) {
 		m = { messageHistoryNotice: WAProto_1.proto.Message.MessageHistoryNotice.fromObject(message.messageHistoryNotice) }
@@ -1765,6 +1776,13 @@ const generateWAMessageContent = async (message, options) => {
 				fileEncSha256: ct.customImage.fileEncSha256,
 				fileSha256: ct.customImage.fileSha256,
 				dimLevel: ct.customImage.dimLevel ?? 0
+			})
+		} else if (ct.animatedWallpaper) {
+			themeSetting.animatedWallpaper = WAProto_1.proto.Message.ChatAnimatedWallpaper.fromObject({
+				animatedWallpaperId: ct.animatedWallpaper.id || ct.animatedWallpaper.animatedWallpaperId,
+				dimLevel:
+					ct.animatedWallpaper.dimLevel ??
+					(ct.animatedWallpaper.opacity != null ? ct.animatedWallpaper.opacity / 100 : 0)
 			})
 		}
 		m.protocolMessage = {

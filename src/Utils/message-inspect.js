@@ -67,7 +67,10 @@ const normalizeMessageContent = content => {
 			message.spoilerMessage ||
 			message.groupStatusV3Message ||
 			message.pollCreationMessageV6 ||
-			message.botPlatformRegistrationSuccessMessage
+			message.botPlatformRegistrationSuccessMessage ||
+			message.newsletterScheduledMessage ||
+			message.acp2SettingMessage ||
+			message.audioStickerMessage
 		)
 	}
 }
