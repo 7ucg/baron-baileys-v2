@@ -1,5 +1,26 @@
 # Changelog
 
+## 2026-09-13
+
+WAProto updated to `2.3000.1047412487` (from `1046909856`, two versions in one pass), cross-checked
+against a fresh `wa-spec` extraction and the decompiled WhatsApp Android 2.26.36.1 APK. Mex query IDs
+re-verified against the same extraction. New surfaces from both proto bumps wired into the JS layer,
+plus three features ported from `vanSnowi/baileys` (adapted to this fork's existing rich-message infra
+instead of duplicated inline).
+
+| Area | What changed |
+| --- | --- |
+| **WAProto** | Two version bumps: `BizAIMetadataSync` (server-event protocol/onboarding), `ACP2Setting` (Advanced Chat Privacy 2), shared-device contact hash key sync, chat animated wallpaper, audio-sticker message type, BB Pro broadcast campaign status enum, and assorted `DeviceCapabilities`/`ClientPairingProps`/`MessageContextInfo`/`MsgOpaqueData` field additions. `index.d.ts`/`index.js` regenerated and diff-verified against the `.proto` after each bump. |
+| **Mex query IDs** | `UPDATE_TEXT_STATUS`, `GET_TEXT_STATUS_LIST` (`privacy.js`) and `OHAI_KEY_CONFIG` (`registration.js`) had rotated/stale doc IDs — re-verified against a fresh `wa-spec` extraction of web.whatsapp.com and corrected. |
+| **ACP2 setting** | Incoming `Message.acp2SettingMessage` is now recognized; the Advanced Chat Privacy 2 change (`enabled`/`trigger`/`settingTimestamp`/`initiatedByMe`, carried in `MessageContextInfo.acp2Setting`) is surfaced on the chat object, mirroring the existing ephemeral-setting handling. |
+| **Newsletter follower invite** | Fixed: sending with the base alias (`newsletterFollowerInvite`) or the raw `newsletterFollowerInviteMessage` key always produced the V2 proto field regardless of which was requested — each now maps to its own field (108 vs 113). |
+| **Content builders** | `chatTheme.animatedWallpaper` (`Message.ChatAnimatedWallpaper`) and a `stickerAudio` option when sending a sticker (pairs an `AudioMessage` via the new `StickerMessage.audioMessage` oneof) are now supported. |
+| **Business broadcast** | `BusinessBroadcastCampaignStatus`/`BusinessBroadcastCampaignBBProStatus` enums exported from `Types`. |
+| **relayMessage** | Auto-wraps `buttonsMessage`/`templateMessage`/`listMessage`/`interactiveMessage` in `viewOnceMessage` before sending, and tags forwarded `richResponseMessage`/`botForwardedMessage` content as forwarded (`forwardOrigin: META_AI`). New `isSecret`/`protected`/`me` options scope device fanout (self-only, non-device-specific-only, or self+specific-device-only). Ported from `vanSnowi/baileys`. |
+| **richMenu / sendHtml** | New `sock.richMenu(jid, content, quoted?, options?)` and `sock.sendHtml(jid, html, quoted?, options?)`, building GenAI unified-response messages (header/body/footer sections; raw HTML via the `FOAHtmlPrimitiveDemoDONOTUSE` primitive) through two new `message-composer.js` generators reusing the existing `buildBotForwardedMessage`/`buildRichContextInfo` helpers. Ported from `vanSnowi/baileys`. |
+
+---
+
 ## 2026-08-09
 
 Reviewed open pull requests on upstream WhiskeySockets/Baileys and ported the isolated bug fixes that apply to this fork. All entries below originate from third-party PRs, credited by number — not our own findings. Larger feature PRs (newsletter media paths, phone-generated link previews, hidden-voter polls, passkey pairing, connection-stability overhaul, enterprise bot framework, Rust/WASM codec migrations) were reviewed but skipped as out of scope for a fix-only pass.

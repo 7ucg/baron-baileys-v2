@@ -113,7 +113,7 @@ See [MEX.md](documentation/MEX.md) for full documentation.
 | ------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
 | Meta AI / msmsg decrypt   | Full `messageSecret`-encrypted AI message decryption                                                                                                                                                                                       |
 | Meta AI message handling  | Receive and process Meta AI bot responses                                                                                                                                                                                                  |
-| Rich AI composer          | Send tables, lists, code blocks, LaTeX via Meta AI format                                                                                                                                                                                  |
+| Rich AI composer          | Send tables, lists, code blocks, LaTeX, rich menus (header/body/footer), and raw HTML via Meta AI format                                                                                                                                   |
 | Interactive buttons       | List, reply, template, cards, product list, PIX/PAY                                                                                                                                                                                        |
 | Interop (FB/IG)           | Near-parity with mobile & web for cross-platform JIDs                                                                                                                                                                                      |
 | Anti-ban measures         | Connection fingerprinting aligned with official clients                                                                                                                                                                                    |
@@ -670,30 +670,32 @@ sock.ev.on('messages.upsert', ({ messages }) => {
 await sock.sendMetaAI('Und die Bevölkerung?', { conversationContext: conversationCtx })
 
 // Rich AI response (table, list, code, LaTeX)
-await sock.sendRichAIResponse(jid, {
-	table: {
-		headers: ['Name', 'Value'],
-		rows: [
-			['Foo', '1'],
-			['Bar', '2']
-		]
-	}
+await sock.sendTable(jid, 'Comparison', ['Name', 'Value'], [
+	['Foo', '1'],
+	['Bar', '2']
+])
+
+await sock.sendList(jid, 'My List', ['Item 1', 'Item 2', 'Item 3'])
+
+await sock.sendCodeBlock(jid, 'console.log("hello")', undefined, { language: 'js' })
+
+await sock.sendLatex(jid, undefined, { expressions: [{ latexExpression: 'E = mc^2' }] })
+
+// Capture a Meta AI unified response and resend it as-is elsewhere
+const captured = sock.captureUnifiedResponse(metaAiMsg.message)
+if (captured) {
+	await sock.sendUnifiedResponse(jid, undefined, captured)
+}
+
+// Rich menu: header (title/image/disclaimer), body (buttons or carousel cards), footer (CTA link)
+await sock.richMenu(jid, {
+	header: { title: 'Choose an option' },
+	body: { buttons: ['Option A', 'Option B'] },
+	footer: { text: 'Learn more', url: 'https://example.com' }
 })
 
-await sock.sendRichAIResponse(jid, {
-	list: { items: ['Item 1', 'Item 2', 'Item 3'] }
-})
-
-await sock.sendRichAIResponse(jid, {
-	codeBlock: { language: 'js', code: 'console.log("hello")' }
-})
-
-await sock.sendRichAIResponse(jid, {
-	latex: 'E = mc^2'
-})
-
-// Capture & resend a Meta AI unified response
-await sock.captureAndResendUnifiedResponse(jid, metaAiMsg)
+// Raw HTML rendered via WhatsApp's GenAI unified-response primitive
+await sock.sendHtml(jid, '<b>Hello</b> from Baileys')
 ```
 
 ### Status / Stories
