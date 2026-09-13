@@ -1,7 +1,14 @@
 syntax = "proto3";
 package proto;
 
-/// WhatsApp Version: 2.3000.1046909856
+/// WhatsApp Version: 2.3000.1047412487
+
+message ACP2Setting {
+    optional bool enabled = 1;
+    optional LimitSharing.TriggerType trigger = 2;
+    optional int64 settingTimestamp = 3;
+    optional bool initiatedByMe = 4;
+}
 
 message ADVDeviceIdentity {
     optional uint32 rawId = 1;
@@ -1912,6 +1919,7 @@ message ContextInfo {
         optional int32 agmTitleStrategy = 30;
         optional int32 agmSubtitleStrategy = 31;
         optional int32 agmHeaderInteractionStrategy = 32;
+        optional bool containsCtwaFlowsAutoLabel = 33;
         enum AdType {
             CTWA = 0;
             CAWC = 1;
@@ -2078,6 +2086,7 @@ message Conversation {
     optional string authAgentParentCompanyName = 61;
     optional string authAgentObaPhoneNumber = 62;
     optional IdentityVerificationState identityVerification = 63;
+    optional ACP2Setting acp2Setting = 64;
     enum EndOfHistoryTransferType {
         COMPLETE_BUT_MORE_MESSAGES_REMAIN_ON_PRIMARY = 0;
         COMPLETE_AND_NO_MORE_MESSAGE_REMAIN_ON_PRIMARY = 1;
@@ -2288,6 +2297,8 @@ message DeviceProps {
         CLOUD_API = 23;
         SMARTGLASSES = 24;
         WAIL = 25;
+        WASS = 26;
+        BUSINESS_BACK_OFFICE = 27;
     }
 }
 
@@ -3008,6 +3019,8 @@ message Message {
     optional StatusLinkPreviewMetadata statusLinkPreviewMetadata = 130;
     optional FutureProofMessage botPlatformRegistrationSuccessMessage = 131;
     optional FutureProofMessage newsletterScheduledMessage = 132;
+    optional FutureProofMessage acp2SettingMessage = 133;
+    optional FutureProofMessage audioStickerMessage = 134;
     message AlbumMessage {
         optional uint32 expectedImageCount = 2;
         optional uint32 expectedVideoCount = 3;
@@ -3195,6 +3208,11 @@ message Message {
         optional string id = 2;
     }
     
+    message ChatAnimatedWallpaper {
+        optional string animatedWallpaperId = 1;
+        optional float dimLevel = 2;
+    }
+    
     message ChatCustomImageWallpaper {
         optional string directPath = 1;
         optional bytes mediaKey = 2;
@@ -3227,6 +3245,7 @@ message Message {
             Message.ChatSolidColorWallpaper solidColor = 11;
             Message.ChatStockImageWallpaper stockImage = 12;
             Message.ChatCustomImageWallpaper customImage = 13;
+            Message.ChatAnimatedWallpaper animatedWallpaper = 14;
         }
     }
     
@@ -4403,6 +4422,9 @@ message Message {
         optional AIMetadataOperation aiMetadataOperation = 31;
         optional Message.MarkAsVerifiedAction markAsVerifiedAction = 32;
         optional CoexStateSync coexStateSync = 33;
+        optional ACP2Setting acp2Setting = 35;
+        optional Message.SharedDeviceContactHashKeyShare sharedDeviceContactHashKeyShare = 36;
+        optional Message.SharedDeviceContactHashKeyRequest sharedDeviceContactHashKeyRequest = 37;
         enum Type {
             REVOKE = 0;
             EPHEMERAL_SETTING = 3;
@@ -4436,6 +4458,9 @@ message Message {
             AI_METADATA_OPERATION = 35;
             MARK_AS_VERIFIED_ACTION = 36;
             COEX_STATE_SYNC = 37;
+            ACP2_SETTING = 39;
+            SHARED_DEVICE_CONTACT_HASH_KEY_SHARE = 40;
+            SHARED_DEVICE_CONTACT_HASH_KEY_REQUEST = 41;
         }
     }
     
@@ -4529,6 +4554,25 @@ message Message {
     message SenderKeyDistributionMessage {
         optional string groupId = 1;
         optional bytes axolotlSenderKeyDistributionMessage = 2;
+    }
+    
+    message SharedDeviceContactHashKey {
+        optional uint32 epoch = 1;
+        optional Kind kind = 2;
+        optional bytes keyData = 3;
+        enum Kind {
+            UNKNOWN = 0;
+            LID = 1;
+            PHONE_NUMBER = 2;
+        }
+    }
+    
+    message SharedDeviceContactHashKeyRequest {
+        optional uint32 knownEpoch = 1;
+    }
+    
+    message SharedDeviceContactHashKeyShare {
+        repeated Message.SharedDeviceContactHashKey keys = 1;
     }
     
     message SplitPaymentMessage {
@@ -4627,6 +4671,9 @@ message Message {
         optional string accessibilityLabel = 22;
         optional int32 premium = 24;
         optional string emojis = 25;
+        oneof audio {
+            Message.AudioMessage audioMessage = 26;
+        }
     }
     
     message StickerPackMessage {
@@ -4852,6 +4899,7 @@ message MessageContextInfo {
     optional NonE2EEAttestation accountEncryptionAttestation = 18;
     optional bytes associatedPrimaryIdentityKey = 19;
     optional string teeContextAnchorMessageId = 20;
+    optional ACP2Setting acp2Setting = 21;
     enum MessageAddonExpiryType {
         STATIC = 1;
         DEPENDENT_ON_PARENT = 2;
@@ -4959,6 +5007,7 @@ message MsgOpaqueData {
     message PollOption {
         optional string name = 1;
         optional string hash = 2;
+        optional string addOptionMsgKey = 3;
     }
     
     enum PollType {
@@ -5918,8 +5967,22 @@ message SyncActionValue {
         optional int64 scheduledTimestamp = 7;
         optional int64 createTimestamp = 8;
         optional SyncActionValue.BusinessBroadcastCampaignStatus status = 9;
+        optional SyncActionValue.BusinessBroadcastCampaignBBProStatus bbProStatus = 10;
+        optional string customAudienceFbid = 11;
     }
     
+    enum BusinessBroadcastCampaignBBProStatus {
+        BB_PRO_ACTIVE = 1;
+        BB_PRO_COMPLETED = 2;
+        BB_PRO_IN_DRAFT = 3;
+        BB_PRO_IN_REVIEW = 4;
+        BB_PRO_NOT_SENDING = 5;
+        BB_PRO_OFF = 6;
+        BB_PRO_REJECTED = 7;
+        BB_PRO_SCHEDULED = 8;
+        BB_PRO_SENDING_LIMITED = 9;
+        BB_PRO_PROCESSING = 10;
+    }
     enum BusinessBroadcastCampaignStatus {
         DRAFT = 1;
         SCHEDULED = 2;
@@ -6095,6 +6158,7 @@ message SyncActionValue {
             THIRD_PARTY = 15;
             LEAD = 16;
             MENTIONS_AND_REPLIES = 17;
+            REQUESTS = 18;
         }
     }
     
@@ -7098,6 +7162,8 @@ message WebMessageInfo {
         IDENTITY_TRUST_UNMARKED = 227;
         IDENTITY_TRUST_REVOKED = 228;
         CTWA_CONSUMER_DISCLOSURE = 230;
+        CHANGE_ACP2_SETTING = 240;
+        EPHEMERAL_CHANGED_FOR_COEX = 248;
     }
 }
 
