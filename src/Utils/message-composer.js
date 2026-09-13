@@ -2,6 +2,7 @@
 
 const { proto } = require('../../WAProto/index.js')
 const { generateMessageIDV2 } = require('./generics.js')
+const { randomBytes, randomUUID } = require('crypto')
 
 const JS_KEYWORDS = new Set([
 	'import',
@@ -458,6 +459,220 @@ const generateRichMessageContent = (submessages, quoted, options) => {
 	}
 }
 
+// GenAI "unified response" rich-menu builder: header (title/disclaimer/image), body
+// (buttons or carousel cards), and footer (CTA link) sections rendered client-side by
+// the GenAI unified-response primitive.
+const generateRichMenuContent = (content = {}, quoted, options = {}) => {
+	const header = content?.header
+	const body = content?.body
+	const footer = content?.footer
+	const sections = []
+	let messageContextInfo
+	const randomToolId = () => randomBytes(8).toString('hex')
+	if (header) {
+		const { disclaimer = false, disclaimerText = ' ', image = { inline: false }, title = '' } = header ?? {}
+		if (disclaimer) {
+			messageContextInfo = { botMetadata: { messageDisclaimerText: disclaimerText } }
+		}
+		if (title) {
+			sections.push({
+				__typename: 'GenAIUnifiedResponseSection',
+				view_model: {
+					__typename: 'GenAISingleLayoutViewModel',
+					primitive: { __typename: 'FOATextPrimitive', text: '# ' + title }
+				}
+			})
+		}
+		if (image?.url) {
+			if (image?.inline) {
+				sections.push({
+					__typename: 'GenAIUnifiedResponseSection',
+					view_model: {
+						__typename: 'GenAISingleLayoutViewModel',
+						primitive: {
+							__typename: 'GenAIMarkdownTextUXPrimitive',
+							text: '{{header}}.{{/header}}',
+							inline_entities: [
+								{
+									__typename: 'GenAITextInlineEntity',
+									key: 'header',
+									metadata: {
+										__typename: 'GenAILatexItem',
+										latex_expression: '.',
+										font_height: 24,
+										padding: 4,
+										latex_image: {
+											__typename: 'GenAIMediaItem',
+											mime_type: image.mime_type || 'image/png',
+											url: image.url,
+											url_fallback: image.url,
+											width: image.width || 500,
+											height: image.height || 500,
+											expiration_timestamp_ms: Date.now() + 86400000
+										}
+									}
+								}
+							]
+						}
+					}
+				})
+			} else {
+				sections.push({
+					__typename: 'GenAIUnifiedResponseSection',
+					view_model: {
+						__typename: 'GenAISingleLayoutViewModel',
+						primitive: {
+							__typename: 'GenAIImagePrimitive',
+							preview_image: {
+								__typename: 'GenAIMediaItem',
+								mime_type: image.mime_type || 'image/png',
+								url: image.url
+							},
+							full_image: { __typename: 'GenAIMediaItem', mime_type: image.mime_type || 'image/png', url: image.url }
+						}
+					}
+				})
+			}
+		}
+	}
+	if (body) {
+		const { cards = null, buttons = null, title = '', toast = '', carousel = false, row = false } = body ?? {}
+		if (carousel || row) {
+			if (cards?.length >= 1) {
+				sections.push({
+					__typename: 'GenAIUnifiedResponseSection',
+					view_model: {
+						primitives: cards.map(card => ({
+							__typename: 'GenAI3PExtWidgetPrimitive',
+							header: { __typename: 'GenAI3PExtWidgetStandardHeader', title: card?.title || '' },
+							body: {
+								__typename: 'GenAI3PExtCalendarEventList',
+								ctas: (card?.buttons || []).map(text => ({
+									label: text,
+									state: 'PENDING',
+									kind: 'OTHER',
+									tool_call_id: randomToolId(),
+									toast: { label: card?.toast || '', __typename: 'GenAI3PExtWidgetToast' },
+									__typename: 'GenAI3PExtWidgetCTA'
+								})),
+								sections: []
+							}
+						})),
+						__typename: carousel ? 'GenAIHScrollLayoutViewModel' : 'GenAIActionRowLayoutViewModel'
+					}
+				})
+			}
+		} else if (buttons?.length) {
+			sections.push({
+				__typename: 'GenAIUnifiedResponseSection',
+				view_model: {
+					primitive: {
+						__typename: 'GenAI3PExtWidgetPrimitive',
+						header: { __typename: 'GenAI3PExtWidgetStandardHeader', title: title || '' },
+						body: {
+							__typename: 'GenAI3PExtCalendarEventList',
+							ctas: buttons.map(text => ({
+								label: text,
+								state: 'PENDING',
+								kind: 'OTHER',
+								tool_call_id: randomToolId(),
+								toast: { label: toast, __typename: 'GenAI3PExtWidgetToast' },
+								__typename: 'GenAI3PExtWidgetCTA'
+							})),
+							sections: []
+						}
+					},
+					__typename: 'GenAISingleLayoutViewModel'
+				}
+			})
+		}
+	}
+	if (footer) {
+		const { text = '', url = '', image = {} } = footer ?? {}
+		const img = []
+		if (image?.url) {
+			img.push({
+				__typename: 'GenAIMarkdownTextUXPrimitive',
+				text: '{{header}}.{{/header}}',
+				inline_entities: [
+					{
+						__typename: 'GenAITextInlineEntity',
+						key: 'header',
+						metadata: {
+							__typename: 'GenAILatexItem',
+							latex_expression: '.',
+							font_height: 24,
+							padding: -5,
+							latex_image: {
+								__typename: 'GenAIMediaItem',
+								mime_type: image.mime_type || 'image/png',
+								url: image.url,
+								url_fallback: image.url,
+								width: image.width || 100,
+								height: image.height || 100,
+								expiration_timestamp_ms: Date.now() + 86400000
+							}
+						}
+					}
+				]
+			})
+		}
+		sections.push({
+			view_model: {
+				primitives: [
+					{ cta_text: text || '', cta_type: 'OPEN_URL', cta_url: url || '', __typename: 'GenAIFooterActionPrimitive' },
+					...img
+				],
+				__typename: 'GenAIActionRowLayoutViewModel'
+			}
+		})
+	}
+	const ctxInfo = buildRichContextInfo(quoted, options)
+	if (content?.contextInfo) {
+		Object.assign(ctxInfo, content.contextInfo)
+	}
+	const unifiedResponse = { data: Buffer.from(JSON.stringify({ sections })).toString('base64') }
+	return {
+		message: {
+			...(messageContextInfo ? { messageContextInfo } : {}),
+			...buildBotForwardedMessage(undefined, ctxInfo, unifiedResponse)
+		},
+		messageId: generateMessageIDV2()
+	}
+}
+
+// Wraps arbitrary HTML in the GenAI "FOAHtmlPrimitiveDemoDONOTUSE" unified-response
+// primitive. Meta's own naming flags this as an internal/experimental surface — it
+// renders, but is not a stable, documented feature.
+const generateHtmlContent = (html = '', quoted, options = {}) => {
+	const ctxInfo = buildRichContextInfo(quoted, options)
+	const unifiedResponse = {
+		data: Buffer.from(
+			JSON.stringify({
+				__typename: 'GenAIUnifiedResponse',
+				response_id: randomUUID(),
+				sections: [
+					{
+						__typename: 'GenAIUnifiedResponseSection',
+						view_model: {
+							__typename: 'GenAISingleLayoutViewModel',
+							primitive: {
+								__typename: 'FOAHtmlPrimitiveDemoDONOTUSE',
+								trusted_sources: [],
+								payload: String(html).trim()
+							}
+						}
+					}
+				]
+			})
+		).toString('base64')
+	}
+	return {
+		message: buildBotForwardedMessage(undefined, ctxInfo, unifiedResponse),
+		messageId: generateMessageIDV2()
+	}
+}
+
 module.exports = {
 	JS_KEYWORDS,
 	PYTHON_KEYWORDS,
@@ -475,5 +690,7 @@ module.exports = {
 	generateLatexInlineImageContent,
 	captureUnifiedResponse,
 	generateUnifiedResponseContent,
-	generateRichMessageContent
+	generateRichMessageContent,
+	generateRichMenuContent,
+	generateHtmlContent
 }

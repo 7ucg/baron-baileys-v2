@@ -536,6 +536,9 @@ const makeMessagesSocket = config => {
 		{
 			messageId: msgId,
 			participant,
+			isSecret,
+			protected: protectedSend,
+			me: meOnly,
 			additionalAttributes,
 			additionalNodes,
 			useUserDevicesCache,
@@ -566,6 +569,36 @@ const makeMessagesSocket = config => {
 		const binaryNodeContent = []
 		const devices = []
 		let reportingMessage
+		const requiresViewOnce = !!(
+			message.buttonsMessage ||
+			message.templateMessage ||
+			message.listMessage ||
+			message.interactiveMessage
+		)
+		if (requiresViewOnce) {
+			message = {
+				viewOnceMessage: {
+					message: { ...message }
+				}
+			}
+		}
+		const applyForwarded = m => {
+			const rich = m?.botForwardedMessage?.message?.richResponseMessage || m?.richResponseMessage
+			if (!rich) {
+				return m
+			}
+			rich.contextInfo = {
+				...rich.contextInfo,
+				isForwarded: true,
+				forwardOrigin: 4
+			}
+			return m.botForwardedMessage ? m : { botForwardedMessage: { message: m } }
+		}
+		if (message?.deviceSentMessage?.message) {
+			message.deviceSentMessage.message = applyForwarded(message.deviceSentMessage.message)
+		} else {
+			message = applyForwarded(message)
+		}
 		const meMsg = {
 			deviceSentMessage: {
 				destinationJid,
@@ -592,6 +625,8 @@ const makeMessagesSocket = config => {
 				device,
 				jid: participant.jid
 			})
+		} else if ((isSecret || protectedSend || meOnly) && !isGroup && !isStatus) {
+			additionalAttributes = { ...additionalAttributes, device_fanout: 'false' }
 		}
 		await authState.keys.transaction(async () => {
 			const mediaType = getMediaType(message)
@@ -919,6 +954,16 @@ const makeMessagesSocket = config => {
 					}
 					// Check if this is our device (could match either PN or LID user)
 					const isMe = user === mePnUser || user === meLidUser
+					const hasDevice = jid.includes(':')
+					if (isSecret && !(!isMe && !hasDevice)) {
+						continue
+					}
+					if (protectedSend && !isMe && hasDevice) {
+						continue
+					}
+					if (meOnly && !isMe) {
+						continue
+					}
 					if (isMe) {
 						meRecipients.push(jid)
 					} else {
@@ -1719,6 +1764,16 @@ const makeMessagesSocket = config => {
 		},
 		sendRichMessage: async (jid, submessages, quoted, options = {}) => {
 			const { message, messageId } = message_composer_1.generateRichMessageContent(submessages, quoted, options)
+			await relayMessage(jid, message, { messageId })
+			return { message, messageId }
+		},
+		richMenu: async (jid, content = {}, quoted, options = {}) => {
+			const { message, messageId } = message_composer_1.generateRichMenuContent(content, quoted, options)
+			await relayMessage(jid, message, { messageId })
+			return { message, messageId }
+		},
+		sendHtml: async (jid, html = '', quoted, options = {}) => {
+			const { message, messageId } = message_composer_1.generateHtmlContent(html, quoted, options)
 			await relayMessage(jid, message, { messageId })
 			return { message, messageId }
 		},
