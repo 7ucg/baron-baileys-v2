@@ -16670,6 +16670,7 @@ $root.proto = (function() {
                     case 69:
                     case 70:
                     case 71:
+                    case 72:
                         break;
                     }
             }
@@ -16987,6 +16988,10 @@ $root.proto = (function() {
                     case 71:
                         message.capabilities[i] = 71;
                         break;
+                    case "HATCH_NOTIFICATION_METADATA_EVENT_ENABLED":
+                    case 72:
+                        message.capabilities[i] = 72;
+                        break;
                     }
             }
             return message;
@@ -17117,6 +17122,7 @@ $root.proto = (function() {
          * @property {number} AI_RICH_RESPONSE_REMINDERS_ENABLED=69 AI_RICH_RESPONSE_REMINDERS_ENABLED value
          * @property {number} AI_STOP_GENERATION_ENABLED=70 AI_STOP_GENERATION_ENABLED value
          * @property {number} AI_RICH_RESPONSE_3P_LINKING_CARD_ENABLED=71 AI_RICH_RESPONSE_3P_LINKING_CARD_ENABLED value
+         * @property {number} HATCH_NOTIFICATION_METADATA_EVENT_ENABLED=72 HATCH_NOTIFICATION_METADATA_EVENT_ENABLED value
          */
         BotCapabilityMetadata.BotCapabilityType = (function() {
             var valuesById = {}, values = Object.create(valuesById);
@@ -17192,6 +17198,7 @@ $root.proto = (function() {
             values[valuesById[69] = "AI_RICH_RESPONSE_REMINDERS_ENABLED"] = 69;
             values[valuesById[70] = "AI_STOP_GENERATION_ENABLED"] = 70;
             values[valuesById[71] = "AI_RICH_RESPONSE_3P_LINKING_CARD_ENABLED"] = 71;
+            values[valuesById[72] = "HATCH_NOTIFICATION_METADATA_EVENT_ENABLED"] = 72;
             return values;
         })();
 
@@ -41423,6 +41430,7 @@ $root.proto = (function() {
          * @property {number|null} [processingQueueSize] ClientPayload processingQueueSize
          * @property {Array.<string>|null} [pairedPeripherals] ClientPayload pairedPeripherals
          * @property {Uint8Array|null} [testIsolationId] ClientPayload testIsolationId
+         * @property {number|Long|null} [messageSts] ClientPayload messageSts
          */
 
         /**
@@ -41730,6 +41738,14 @@ $root.proto = (function() {
          */
         ClientPayload.prototype.testIsolationId = null;
 
+        /**
+         * ClientPayload messageSts.
+         * @member {number|Long|null|undefined} messageSts
+         * @memberof proto.ClientPayload
+         * @instance
+         */
+        ClientPayload.prototype.messageSts = null;
+
         // OneOf field names bound to virtual getters and setters
         var $oneOfFields;
 
@@ -41937,6 +41953,12 @@ $root.proto = (function() {
             set: $util.oneOfSetter($oneOfFields)
         });
 
+        // Virtual OneOf for proto3 optional field
+        Object.defineProperty(ClientPayload.prototype, "_messageSts", {
+            get: $util.oneOfGetter($oneOfFields = ["messageSts"]),
+            set: $util.oneOfSetter($oneOfFields)
+        });
+
         /**
          * Creates a new ClientPayload instance using the specified properties.
          * @function create
@@ -42038,6 +42060,8 @@ $root.proto = (function() {
                     writer.uint32(/* id 47, wireType 2 =*/378).string(message.pairedPeripherals[i]);
             if (message.testIsolationId != null && Object.hasOwnProperty.call(message, "testIsolationId"))
                 writer.uint32(/* id 48, wireType 2 =*/386).bytes(message.testIsolationId);
+            if (message.messageSts != null && Object.hasOwnProperty.call(message, "messageSts"))
+                writer.uint32(/* id 49, wireType 0 =*/392).int64(message.messageSts);
             return writer;
         };
 
@@ -42225,6 +42249,10 @@ $root.proto = (function() {
                     }
                 case 48: {
                         message.testIsolationId = reader.bytes();
+                        break;
+                    }
+                case 49: {
+                        message.messageSts = reader.int64();
                         break;
                     }
                 default:
@@ -42513,6 +42541,11 @@ $root.proto = (function() {
                 properties._testIsolationId = 1;
                 if (!(message.testIsolationId && typeof message.testIsolationId.length === "number" || $util.isString(message.testIsolationId)))
                     return "testIsolationId: buffer expected";
+            }
+            if (message.messageSts != null && message.hasOwnProperty("messageSts")) {
+                properties._messageSts = 1;
+                if (!$util.isInteger(message.messageSts) && !(message.messageSts && $util.isInteger(message.messageSts.low) && $util.isInteger(message.messageSts.high)))
+                    return "messageSts: integer|Long expected";
             }
             return null;
         };
@@ -42827,6 +42860,15 @@ $root.proto = (function() {
                     $util.base64.decode(object.testIsolationId, message.testIsolationId = $util.newBuffer($util.base64.length(object.testIsolationId)), 0);
                 else if (object.testIsolationId.length >= 0)
                     message.testIsolationId = object.testIsolationId;
+            if (object.messageSts != null)
+                if ($util.Long)
+                    (message.messageSts = $util.Long.fromValue(object.messageSts)).unsigned = false;
+                else if (typeof object.messageSts === "string")
+                    message.messageSts = parseInt(object.messageSts, 10);
+                else if (typeof object.messageSts === "number")
+                    message.messageSts = object.messageSts;
+                else if (typeof object.messageSts === "object")
+                    message.messageSts = new $util.LongBits(object.messageSts.low >>> 0, object.messageSts.high >>> 0).toNumber();
             return message;
         };
 
@@ -43032,6 +43074,14 @@ $root.proto = (function() {
                 object.testIsolationId = options.bytes === String ? $util.base64.encode(message.testIsolationId, 0, message.testIsolationId.length) : options.bytes === Array ? Array.prototype.slice.call(message.testIsolationId) : message.testIsolationId;
                 if (options.oneofs)
                     object._testIsolationId = "testIsolationId";
+            }
+            if (message.messageSts != null && message.hasOwnProperty("messageSts")) {
+                if (typeof message.messageSts === "number")
+                    object.messageSts = options.longs === String ? String(message.messageSts) : message.messageSts;
+                else
+                    object.messageSts = options.longs === String ? $util.Long.prototype.toString.call(message.messageSts) : options.longs === Number ? new $util.LongBits(message.messageSts.low >>> 0, message.messageSts.high >>> 0).toNumber() : message.messageSts;
+                if (options.oneofs)
+                    object._messageSts = "messageSts";
             }
             return object;
         };
@@ -59430,6 +59480,7 @@ $root.proto = (function() {
          * @property {proto.ContextInfo.IInstagramThreadLink|null} [instagramThreadLink] ContextInfo instagramThreadLink
          * @property {proto.IAIProvenance|null} [aiProvenance] ContextInfo aiProvenance
          * @property {Array.<number>|null} [experienceIds] ContextInfo experienceIds
+         * @property {string|null} [partnerDeepLinkToken] ContextInfo partnerDeepLinkToken
          */
 
         /**
@@ -59971,6 +60022,14 @@ $root.proto = (function() {
          */
         ContextInfo.prototype.experienceIds = $util.emptyArray;
 
+        /**
+         * ContextInfo partnerDeepLinkToken.
+         * @member {string|null|undefined} partnerDeepLinkToken
+         * @memberof proto.ContextInfo
+         * @instance
+         */
+        ContextInfo.prototype.partnerDeepLinkToken = null;
+
         // OneOf field names bound to virtual getters and setters
         var $oneOfFields;
 
@@ -60340,6 +60399,12 @@ $root.proto = (function() {
             set: $util.oneOfSetter($oneOfFields)
         });
 
+        // Virtual OneOf for proto3 optional field
+        Object.defineProperty(ContextInfo.prototype, "_partnerDeepLinkToken", {
+            get: $util.oneOfGetter($oneOfFields = ["partnerDeepLinkToken"]),
+            set: $util.oneOfSetter($oneOfFields)
+        });
+
         /**
          * Creates a new ContextInfo instance using the specified properties.
          * @function create
@@ -60501,6 +60566,8 @@ $root.proto = (function() {
                     writer.uint32(message.experienceIds[i]);
                 writer.ldelim();
             }
+            if (message.partnerDeepLinkToken != null && Object.hasOwnProperty.call(message, "partnerDeepLinkToken"))
+                writer.uint32(/* id 83, wireType 2 =*/666).string(message.partnerDeepLinkToken);
             return writer;
         };
 
@@ -60808,6 +60875,10 @@ $root.proto = (function() {
                                 message.experienceIds.push(reader.uint32());
                         } else
                             message.experienceIds.push(reader.uint32());
+                        break;
+                    }
+                case 83: {
+                        message.partnerDeepLinkToken = reader.string();
                         break;
                     }
                 default:
@@ -61298,6 +61369,11 @@ $root.proto = (function() {
                     if (!$util.isInteger(message.experienceIds[i]))
                         return "experienceIds: integer[] expected";
             }
+            if (message.partnerDeepLinkToken != null && message.hasOwnProperty("partnerDeepLinkToken")) {
+                properties._partnerDeepLinkToken = 1;
+                if (!$util.isString(message.partnerDeepLinkToken))
+                    return "partnerDeepLinkToken: string expected";
+            }
             return null;
         };
 
@@ -61711,6 +61787,8 @@ $root.proto = (function() {
                 for (var i = 0; i < object.experienceIds.length; ++i)
                     message.experienceIds[i] = object.experienceIds[i] >>> 0;
             }
+            if (object.partnerDeepLinkToken != null)
+                message.partnerDeepLinkToken = String(object.partnerDeepLinkToken);
             return message;
         };
 
@@ -62060,6 +62138,11 @@ $root.proto = (function() {
                 object.experienceIds = [];
                 for (var j = 0; j < message.experienceIds.length; ++j)
                     object.experienceIds[j] = message.experienceIds[j];
+            }
+            if (message.partnerDeepLinkToken != null && message.hasOwnProperty("partnerDeepLinkToken")) {
+                object.partnerDeepLinkToken = message.partnerDeepLinkToken;
+                if (options.oneofs)
+                    object._partnerDeepLinkToken = "partnerDeepLinkToken";
             }
             return object;
         };
@@ -85800,6 +85883,7 @@ $root.proto = (function() {
          * @property {Array.<proto.IUnCountedAssociatedMessageList>|null} [uncountedAssociatedMessageLists] GroupHistory uncountedAssociatedMessageLists
          * @property {Array.<proto.IWebMessageInfo>|null} [commentMessages] GroupHistory commentMessages
          * @property {Array.<proto.IWebMessageInfo>|null} [outOfWindowPinnedMessages] GroupHistory outOfWindowPinnedMessages
+         * @property {proto.IWebMessageInfo|null} [themeMessage] GroupHistory themeMessage
          */
 
         /**
@@ -85854,6 +85938,23 @@ $root.proto = (function() {
         GroupHistory.prototype.outOfWindowPinnedMessages = $util.emptyArray;
 
         /**
+         * GroupHistory themeMessage.
+         * @member {proto.IWebMessageInfo|null|undefined} themeMessage
+         * @memberof proto.GroupHistory
+         * @instance
+         */
+        GroupHistory.prototype.themeMessage = null;
+
+        // OneOf field names bound to virtual getters and setters
+        var $oneOfFields;
+
+        // Virtual OneOf for proto3 optional field
+        Object.defineProperty(GroupHistory.prototype, "_themeMessage", {
+            get: $util.oneOfGetter($oneOfFields = ["themeMessage"]),
+            set: $util.oneOfSetter($oneOfFields)
+        });
+
+        /**
          * Creates a new GroupHistory instance using the specified properties.
          * @function create
          * @memberof proto.GroupHistory
@@ -85889,6 +85990,8 @@ $root.proto = (function() {
             if (message.outOfWindowPinnedMessages != null && message.outOfWindowPinnedMessages.length)
                 for (var i = 0; i < message.outOfWindowPinnedMessages.length; ++i)
                     $root.proto.WebMessageInfo.encode(message.outOfWindowPinnedMessages[i], writer.uint32(/* id 4, wireType 2 =*/34).fork()).ldelim();
+            if (message.themeMessage != null && Object.hasOwnProperty.call(message, "themeMessage"))
+                $root.proto.WebMessageInfo.encode(message.themeMessage, writer.uint32(/* id 5, wireType 2 =*/42).fork()).ldelim();
             return writer;
         };
 
@@ -85949,6 +86052,10 @@ $root.proto = (function() {
                         message.outOfWindowPinnedMessages.push($root.proto.WebMessageInfo.decode(reader, reader.uint32()));
                         break;
                     }
+                case 5: {
+                        message.themeMessage = $root.proto.WebMessageInfo.decode(reader, reader.uint32());
+                        break;
+                    }
                 default:
                     reader.skipType(tag & 7);
                     break;
@@ -85984,6 +86091,7 @@ $root.proto = (function() {
         GroupHistory.verify = function verify(message) {
             if (typeof message !== "object" || message === null)
                 return "object expected";
+            var properties = {};
             if (message.messages != null && message.hasOwnProperty("messages")) {
                 if (!Array.isArray(message.messages))
                     return "messages: array expected";
@@ -86018,6 +86126,14 @@ $root.proto = (function() {
                     var error = $root.proto.WebMessageInfo.verify(message.outOfWindowPinnedMessages[i]);
                     if (error)
                         return "outOfWindowPinnedMessages." + error;
+                }
+            }
+            if (message.themeMessage != null && message.hasOwnProperty("themeMessage")) {
+                properties._themeMessage = 1;
+                {
+                    var error = $root.proto.WebMessageInfo.verify(message.themeMessage);
+                    if (error)
+                        return "themeMessage." + error;
                 }
             }
             return null;
@@ -86075,6 +86191,11 @@ $root.proto = (function() {
                     message.outOfWindowPinnedMessages[i] = $root.proto.WebMessageInfo.fromObject(object.outOfWindowPinnedMessages[i]);
                 }
             }
+            if (object.themeMessage != null) {
+                if (typeof object.themeMessage !== "object")
+                    throw TypeError(".proto.GroupHistory.themeMessage: object expected");
+                message.themeMessage = $root.proto.WebMessageInfo.fromObject(object.themeMessage);
+            }
             return message;
         };
 
@@ -86116,6 +86237,11 @@ $root.proto = (function() {
                 object.outOfWindowPinnedMessages = [];
                 for (var j = 0; j < message.outOfWindowPinnedMessages.length; ++j)
                     object.outOfWindowPinnedMessages[j] = $root.proto.WebMessageInfo.toObject(message.outOfWindowPinnedMessages[j], options);
+            }
+            if (message.themeMessage != null && message.hasOwnProperty("themeMessage")) {
+                object.themeMessage = $root.proto.WebMessageInfo.toObject(message.themeMessage, options);
+                if (options.oneofs)
+                    object._themeMessage = "themeMessage";
             }
             return object;
         };
@@ -86734,6 +86860,7 @@ $root.proto = (function() {
          * @property {Array.<proto.IUnCountedAssociatedMessageListWithMessageBytes>|null} [uncountedAssociatedMessageLists] GroupHistoryWithMessageBytes uncountedAssociatedMessageLists
          * @property {Array.<proto.IWebMessageInfoWithMessageBytes>|null} [commentMessages] GroupHistoryWithMessageBytes commentMessages
          * @property {Array.<proto.IWebMessageInfoWithMessageBytes>|null} [outOfWindowPinnedMessages] GroupHistoryWithMessageBytes outOfWindowPinnedMessages
+         * @property {proto.IWebMessageInfoWithMessageBytes|null} [themeMessage] GroupHistoryWithMessageBytes themeMessage
          */
 
         /**
@@ -86788,6 +86915,23 @@ $root.proto = (function() {
         GroupHistoryWithMessageBytes.prototype.outOfWindowPinnedMessages = $util.emptyArray;
 
         /**
+         * GroupHistoryWithMessageBytes themeMessage.
+         * @member {proto.IWebMessageInfoWithMessageBytes|null|undefined} themeMessage
+         * @memberof proto.GroupHistoryWithMessageBytes
+         * @instance
+         */
+        GroupHistoryWithMessageBytes.prototype.themeMessage = null;
+
+        // OneOf field names bound to virtual getters and setters
+        var $oneOfFields;
+
+        // Virtual OneOf for proto3 optional field
+        Object.defineProperty(GroupHistoryWithMessageBytes.prototype, "_themeMessage", {
+            get: $util.oneOfGetter($oneOfFields = ["themeMessage"]),
+            set: $util.oneOfSetter($oneOfFields)
+        });
+
+        /**
          * Creates a new GroupHistoryWithMessageBytes instance using the specified properties.
          * @function create
          * @memberof proto.GroupHistoryWithMessageBytes
@@ -86823,6 +86967,8 @@ $root.proto = (function() {
             if (message.outOfWindowPinnedMessages != null && message.outOfWindowPinnedMessages.length)
                 for (var i = 0; i < message.outOfWindowPinnedMessages.length; ++i)
                     $root.proto.WebMessageInfoWithMessageBytes.encode(message.outOfWindowPinnedMessages[i], writer.uint32(/* id 4, wireType 2 =*/34).fork()).ldelim();
+            if (message.themeMessage != null && Object.hasOwnProperty.call(message, "themeMessage"))
+                $root.proto.WebMessageInfoWithMessageBytes.encode(message.themeMessage, writer.uint32(/* id 5, wireType 2 =*/42).fork()).ldelim();
             return writer;
         };
 
@@ -86883,6 +87029,10 @@ $root.proto = (function() {
                         message.outOfWindowPinnedMessages.push($root.proto.WebMessageInfoWithMessageBytes.decode(reader, reader.uint32()));
                         break;
                     }
+                case 5: {
+                        message.themeMessage = $root.proto.WebMessageInfoWithMessageBytes.decode(reader, reader.uint32());
+                        break;
+                    }
                 default:
                     reader.skipType(tag & 7);
                     break;
@@ -86918,6 +87068,7 @@ $root.proto = (function() {
         GroupHistoryWithMessageBytes.verify = function verify(message) {
             if (typeof message !== "object" || message === null)
                 return "object expected";
+            var properties = {};
             if (message.messages != null && message.hasOwnProperty("messages")) {
                 if (!Array.isArray(message.messages))
                     return "messages: array expected";
@@ -86952,6 +87103,14 @@ $root.proto = (function() {
                     var error = $root.proto.WebMessageInfoWithMessageBytes.verify(message.outOfWindowPinnedMessages[i]);
                     if (error)
                         return "outOfWindowPinnedMessages." + error;
+                }
+            }
+            if (message.themeMessage != null && message.hasOwnProperty("themeMessage")) {
+                properties._themeMessage = 1;
+                {
+                    var error = $root.proto.WebMessageInfoWithMessageBytes.verify(message.themeMessage);
+                    if (error)
+                        return "themeMessage." + error;
                 }
             }
             return null;
@@ -87009,6 +87168,11 @@ $root.proto = (function() {
                     message.outOfWindowPinnedMessages[i] = $root.proto.WebMessageInfoWithMessageBytes.fromObject(object.outOfWindowPinnedMessages[i]);
                 }
             }
+            if (object.themeMessage != null) {
+                if (typeof object.themeMessage !== "object")
+                    throw TypeError(".proto.GroupHistoryWithMessageBytes.themeMessage: object expected");
+                message.themeMessage = $root.proto.WebMessageInfoWithMessageBytes.fromObject(object.themeMessage);
+            }
             return message;
         };
 
@@ -87050,6 +87214,11 @@ $root.proto = (function() {
                 object.outOfWindowPinnedMessages = [];
                 for (var j = 0; j < message.outOfWindowPinnedMessages.length; ++j)
                     object.outOfWindowPinnedMessages[j] = $root.proto.WebMessageInfoWithMessageBytes.toObject(message.outOfWindowPinnedMessages[j], options);
+            }
+            if (message.themeMessage != null && message.hasOwnProperty("themeMessage")) {
+                object.themeMessage = $root.proto.WebMessageInfoWithMessageBytes.toObject(message.themeMessage, options);
+                if (options.oneofs)
+                    object._themeMessage = "themeMessage";
             }
             return object;
         };
@@ -140048,6 +140217,7 @@ $root.proto = (function() {
              * @property {number|Long|null} [messageCount] MessageHistoryMetadata messageCount
              * @property {Array.<string>|null} [nonHistoryReceivers] MessageHistoryMetadata nonHistoryReceivers
              * @property {number|Long|null} [oldestMessageTimestampInBundle] MessageHistoryMetadata oldestMessageTimestampInBundle
+             * @property {boolean|null} [includesChatTheme] MessageHistoryMetadata includesChatTheme
              */
 
             /**
@@ -140107,6 +140277,14 @@ $root.proto = (function() {
              */
             MessageHistoryMetadata.prototype.oldestMessageTimestampInBundle = null;
 
+            /**
+             * MessageHistoryMetadata includesChatTheme.
+             * @member {boolean|null|undefined} includesChatTheme
+             * @memberof proto.Message.MessageHistoryMetadata
+             * @instance
+             */
+            MessageHistoryMetadata.prototype.includesChatTheme = null;
+
             // OneOf field names bound to virtual getters and setters
             var $oneOfFields;
 
@@ -140125,6 +140303,12 @@ $root.proto = (function() {
             // Virtual OneOf for proto3 optional field
             Object.defineProperty(MessageHistoryMetadata.prototype, "_oldestMessageTimestampInBundle", {
                 get: $util.oneOfGetter($oneOfFields = ["oldestMessageTimestampInBundle"]),
+                set: $util.oneOfSetter($oneOfFields)
+            });
+
+            // Virtual OneOf for proto3 optional field
+            Object.defineProperty(MessageHistoryMetadata.prototype, "_includesChatTheme", {
+                get: $util.oneOfGetter($oneOfFields = ["includesChatTheme"]),
                 set: $util.oneOfSetter($oneOfFields)
             });
 
@@ -140164,6 +140348,8 @@ $root.proto = (function() {
                         writer.uint32(/* id 4, wireType 2 =*/34).string(message.nonHistoryReceivers[i]);
                 if (message.oldestMessageTimestampInBundle != null && Object.hasOwnProperty.call(message, "oldestMessageTimestampInBundle"))
                     writer.uint32(/* id 5, wireType 0 =*/40).int64(message.oldestMessageTimestampInBundle);
+                if (message.includesChatTheme != null && Object.hasOwnProperty.call(message, "includesChatTheme"))
+                    writer.uint32(/* id 6, wireType 0 =*/48).bool(message.includesChatTheme);
                 return writer;
             };
 
@@ -140222,6 +140408,10 @@ $root.proto = (function() {
                         }
                     case 5: {
                             message.oldestMessageTimestampInBundle = reader.int64();
+                            break;
+                        }
+                    case 6: {
+                            message.includesChatTheme = reader.bool();
                             break;
                         }
                     default:
@@ -140289,6 +140479,11 @@ $root.proto = (function() {
                     if (!$util.isInteger(message.oldestMessageTimestampInBundle) && !(message.oldestMessageTimestampInBundle && $util.isInteger(message.oldestMessageTimestampInBundle.low) && $util.isInteger(message.oldestMessageTimestampInBundle.high)))
                         return "oldestMessageTimestampInBundle: integer|Long expected";
                 }
+                if (message.includesChatTheme != null && message.hasOwnProperty("includesChatTheme")) {
+                    properties._includesChatTheme = 1;
+                    if (typeof message.includesChatTheme !== "boolean")
+                        return "includesChatTheme: boolean expected";
+                }
                 return null;
             };
 
@@ -140345,6 +140540,8 @@ $root.proto = (function() {
                         message.oldestMessageTimestampInBundle = object.oldestMessageTimestampInBundle;
                     else if (typeof object.oldestMessageTimestampInBundle === "object")
                         message.oldestMessageTimestampInBundle = new $util.LongBits(object.oldestMessageTimestampInBundle.low >>> 0, object.oldestMessageTimestampInBundle.high >>> 0).toNumber();
+                if (object.includesChatTheme != null)
+                    message.includesChatTheme = Boolean(object.includesChatTheme);
                 return message;
             };
 
@@ -140398,6 +140595,11 @@ $root.proto = (function() {
                         object.oldestMessageTimestampInBundle = options.longs === String ? $util.Long.prototype.toString.call(message.oldestMessageTimestampInBundle) : options.longs === Number ? new $util.LongBits(message.oldestMessageTimestampInBundle.low >>> 0, message.oldestMessageTimestampInBundle.high >>> 0).toNumber() : message.oldestMessageTimestampInBundle;
                     if (options.oneofs)
                         object._oldestMessageTimestampInBundle = "oldestMessageTimestampInBundle";
+                }
+                if (message.includesChatTheme != null && message.hasOwnProperty("includesChatTheme")) {
+                    object.includesChatTheme = message.includesChatTheme;
+                    if (options.oneofs)
+                        object._includesChatTheme = "includesChatTheme";
                 }
                 return object;
             };
@@ -173123,6 +173325,7 @@ $root.proto = (function() {
              * @property {string|null} [metadataUrl] VideoMessage metadataUrl
              * @property {proto.Message.VideoMessage.VideoSourceType|null} [videoSourceType] VideoMessage videoSourceType
              * @property {string|null} [dashManifestUrl] VideoMessage dashManifestUrl
+             * @property {number|Long|null} [smartThumbnailTs] VideoMessage smartThumbnailTs
              */
 
             /**
@@ -173391,6 +173594,14 @@ $root.proto = (function() {
              */
             VideoMessage.prototype.dashManifestUrl = null;
 
+            /**
+             * VideoMessage smartThumbnailTs.
+             * @member {number|Long|null|undefined} smartThumbnailTs
+             * @memberof proto.Message.VideoMessage
+             * @instance
+             */
+            VideoMessage.prototype.smartThumbnailTs = null;
+
             // OneOf field names bound to virtual getters and setters
             var $oneOfFields;
 
@@ -173562,6 +173773,12 @@ $root.proto = (function() {
                 set: $util.oneOfSetter($oneOfFields)
             });
 
+            // Virtual OneOf for proto3 optional field
+            Object.defineProperty(VideoMessage.prototype, "_smartThumbnailTs", {
+                get: $util.oneOfGetter($oneOfFields = ["smartThumbnailTs"]),
+                set: $util.oneOfSetter($oneOfFields)
+            });
+
             /**
              * Creates a new VideoMessage instance using the specified properties.
              * @function create
@@ -173651,6 +173868,8 @@ $root.proto = (function() {
                     writer.uint32(/* id 31, wireType 0 =*/248).int32(message.videoSourceType);
                 if (message.dashManifestUrl != null && Object.hasOwnProperty.call(message, "dashManifestUrl"))
                     writer.uint32(/* id 33, wireType 2 =*/266).string(message.dashManifestUrl);
+                if (message.smartThumbnailTs != null && Object.hasOwnProperty.call(message, "smartThumbnailTs"))
+                    writer.uint32(/* id 34, wireType 0 =*/272).int64(message.smartThumbnailTs);
                 return writer;
             };
 
@@ -173815,6 +174034,10 @@ $root.proto = (function() {
                         }
                     case 33: {
                             message.dashManifestUrl = reader.string();
+                            break;
+                        }
+                    case 34: {
+                            message.smartThumbnailTs = reader.int64();
                             break;
                         }
                     default:
@@ -174035,6 +174258,11 @@ $root.proto = (function() {
                     if (!$util.isString(message.dashManifestUrl))
                         return "dashManifestUrl: string expected";
                 }
+                if (message.smartThumbnailTs != null && message.hasOwnProperty("smartThumbnailTs")) {
+                    properties._smartThumbnailTs = 1;
+                    if (!$util.isInteger(message.smartThumbnailTs) && !(message.smartThumbnailTs && $util.isInteger(message.smartThumbnailTs.low) && $util.isInteger(message.smartThumbnailTs.high)))
+                        return "smartThumbnailTs: integer|Long expected";
+                }
                 return null;
             };
 
@@ -174217,6 +174445,15 @@ $root.proto = (function() {
                 }
                 if (object.dashManifestUrl != null)
                     message.dashManifestUrl = String(object.dashManifestUrl);
+                if (object.smartThumbnailTs != null)
+                    if ($util.Long)
+                        (message.smartThumbnailTs = $util.Long.fromValue(object.smartThumbnailTs)).unsigned = false;
+                    else if (typeof object.smartThumbnailTs === "string")
+                        message.smartThumbnailTs = parseInt(object.smartThumbnailTs, 10);
+                    else if (typeof object.smartThumbnailTs === "number")
+                        message.smartThumbnailTs = object.smartThumbnailTs;
+                    else if (typeof object.smartThumbnailTs === "object")
+                        message.smartThumbnailTs = new $util.LongBits(object.smartThumbnailTs.low >>> 0, object.smartThumbnailTs.high >>> 0).toNumber();
                 return message;
             };
 
@@ -174401,6 +174638,14 @@ $root.proto = (function() {
                     object.dashManifestUrl = message.dashManifestUrl;
                     if (options.oneofs)
                         object._dashManifestUrl = "dashManifestUrl";
+                }
+                if (message.smartThumbnailTs != null && message.hasOwnProperty("smartThumbnailTs")) {
+                    if (typeof message.smartThumbnailTs === "number")
+                        object.smartThumbnailTs = options.longs === String ? String(message.smartThumbnailTs) : message.smartThumbnailTs;
+                    else
+                        object.smartThumbnailTs = options.longs === String ? $util.Long.prototype.toString.call(message.smartThumbnailTs) : options.longs === Number ? new $util.LongBits(message.smartThumbnailTs.low >>> 0, message.smartThumbnailTs.high >>> 0).toNumber() : message.smartThumbnailTs;
+                    if (options.oneofs)
+                        object._smartThumbnailTs = "smartThumbnailTs";
                 }
                 return object;
             };
@@ -221714,6 +221959,7 @@ $root.proto = (function() {
                     case 16:
                     case 17:
                     case 18:
+                    case 19:
                         break;
                     }
                 }
@@ -221836,6 +222082,10 @@ $root.proto = (function() {
                 case "REQUESTS":
                 case 18:
                     message.type = 18;
+                    break;
+                case "BUSINESS":
+                case 19:
+                    message.type = 19;
                     break;
                 }
                 if (object.isImmutable != null)
@@ -221965,6 +222215,7 @@ $root.proto = (function() {
              * @property {number} LEAD=16 LEAD value
              * @property {number} MENTIONS_AND_REPLIES=17 MENTIONS_AND_REPLIES value
              * @property {number} REQUESTS=18 REQUESTS value
+             * @property {number} BUSINESS=19 BUSINESS value
              */
             LabelEditAction.ListType = (function() {
                 var valuesById = {}, values = Object.create(valuesById);
@@ -221987,6 +222238,7 @@ $root.proto = (function() {
                 values[valuesById[16] = "LEAD"] = 16;
                 values[valuesById[17] = "MENTIONS_AND_REPLIES"] = 17;
                 values[valuesById[18] = "REQUESTS"] = 18;
+                values[valuesById[19] = "BUSINESS"] = 19;
                 return values;
             })();
 
@@ -251910,7 +252162,14 @@ $root.proto = (function() {
                 case 228:
                 case 230:
                 case 240:
+                case 244:
+                case 247:
                 case 248:
+                case 249:
+                case 250:
+                case 254:
+                case 256:
+                case 255:
                     break;
                 }
             }
@@ -253330,9 +253589,37 @@ $root.proto = (function() {
             case 240:
                 message.messageStubType = 240;
                 break;
+            case "BIZ_CALLBACK_DISABLED":
+            case 244:
+                message.messageStubType = 244;
+                break;
+            case "BIZ_CALLBACK_ENABLED":
+            case 247:
+                message.messageStubType = 247;
+                break;
             case "EPHEMERAL_CHANGED_FOR_COEX":
             case 248:
                 message.messageStubType = 248;
+                break;
+            case "UGC_BOT_PROFILE_UPDATED":
+            case 249:
+                message.messageStubType = 249;
+                break;
+            case "ORDER_EPHEMERAL_EXEMPTION":
+            case 250:
+                message.messageStubType = 250;
+                break;
+            case "CAMEO_CHAT_CREATED":
+            case 254:
+                message.messageStubType = 254;
+                break;
+            case "CAMEO_TRANSITIONED":
+            case 256:
+                message.messageStubType = 256;
+                break;
+            case "SENDER_SIDE_CONTACT_INFO":
+            case 255:
+                message.messageStubType = 255;
                 break;
             }
             if (object.clearMedia != null)
@@ -254352,7 +254639,14 @@ $root.proto = (function() {
          * @property {number} IDENTITY_TRUST_REVOKED=228 IDENTITY_TRUST_REVOKED value
          * @property {number} CTWA_CONSUMER_DISCLOSURE=230 CTWA_CONSUMER_DISCLOSURE value
          * @property {number} CHANGE_ACP2_SETTING=240 CHANGE_ACP2_SETTING value
+         * @property {number} BIZ_CALLBACK_DISABLED=244 BIZ_CALLBACK_DISABLED value
+         * @property {number} BIZ_CALLBACK_ENABLED=247 BIZ_CALLBACK_ENABLED value
          * @property {number} EPHEMERAL_CHANGED_FOR_COEX=248 EPHEMERAL_CHANGED_FOR_COEX value
+         * @property {number} UGC_BOT_PROFILE_UPDATED=249 UGC_BOT_PROFILE_UPDATED value
+         * @property {number} ORDER_EPHEMERAL_EXEMPTION=250 ORDER_EPHEMERAL_EXEMPTION value
+         * @property {number} CAMEO_CHAT_CREATED=254 CAMEO_CHAT_CREATED value
+         * @property {number} CAMEO_TRANSITIONED=256 CAMEO_TRANSITIONED value
+         * @property {number} SENDER_SIDE_CONTACT_INFO=255 SENDER_SIDE_CONTACT_INFO value
          */
         WebMessageInfo.StubType = (function() {
             var valuesById = {}, values = Object.create(valuesById);
@@ -254587,7 +254881,14 @@ $root.proto = (function() {
             values[valuesById[228] = "IDENTITY_TRUST_REVOKED"] = 228;
             values[valuesById[230] = "CTWA_CONSUMER_DISCLOSURE"] = 230;
             values[valuesById[240] = "CHANGE_ACP2_SETTING"] = 240;
+            values[valuesById[244] = "BIZ_CALLBACK_DISABLED"] = 244;
+            values[valuesById[247] = "BIZ_CALLBACK_ENABLED"] = 247;
             values[valuesById[248] = "EPHEMERAL_CHANGED_FOR_COEX"] = 248;
+            values[valuesById[249] = "UGC_BOT_PROFILE_UPDATED"] = 249;
+            values[valuesById[250] = "ORDER_EPHEMERAL_EXEMPTION"] = 250;
+            values[valuesById[254] = "CAMEO_CHAT_CREATED"] = 254;
+            values[valuesById[256] = "CAMEO_TRANSITIONED"] = 256;
+            values[valuesById[255] = "SENDER_SIDE_CONTACT_INFO"] = 255;
             return values;
         })();
 

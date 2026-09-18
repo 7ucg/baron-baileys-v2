@@ -1,7 +1,7 @@
 syntax = "proto3";
 package proto;
 
-/// WhatsApp Version: 2.3000.1047412487
+/// WhatsApp Version: 2.3000.1047871790
 
 message ACP2Setting {
     optional bool enabled = 1;
@@ -498,6 +498,7 @@ message BotCapabilityMetadata {
         AI_RICH_RESPONSE_REMINDERS_ENABLED = 69;
         AI_STOP_GENERATION_ENABLED = 70;
         AI_RICH_RESPONSE_3P_LINKING_CARD_ENABLED = 71;
+        HATCH_NOTIFICATION_METADATA_EVENT_ENABLED = 72;
     }
 }
 
@@ -1266,6 +1267,7 @@ message ClientPayload {
     optional int32 processingQueueSize = 46;
     repeated string pairedPeripherals = 47;
     optional bytes testIsolationId = 48;
+    optional int64 messageSts = 49;
     enum AccountType {
         DEFAULT = 0;
         GUEST = 1;
@@ -1797,6 +1799,7 @@ message ContextInfo {
     optional InstagramThreadLink instagramThreadLink = 80;
     optional AIProvenance aiProvenance = 81;
     repeated uint32 experienceIds = 82 [packed=true];
+    optional string partnerDeepLinkToken = 83;
     message AdReplyInfo {
         optional string advertiserName = 1;
         optional MediaType mediaType = 2;
@@ -2487,6 +2490,7 @@ message GroupHistory {
     repeated UnCountedAssociatedMessageList uncountedAssociatedMessageLists = 2;
     repeated WebMessageInfo commentMessages = 3;
     repeated WebMessageInfo outOfWindowPinnedMessages = 4;
+    optional WebMessageInfo themeMessage = 5;
 }
 
 message GroupHistoryBundleInfo {
@@ -2512,6 +2516,7 @@ message GroupHistoryWithMessageBytes {
     repeated UnCountedAssociatedMessageListWithMessageBytes uncountedAssociatedMessageLists = 2;
     repeated WebMessageInfoWithMessageBytes commentMessages = 3;
     repeated WebMessageInfoWithMessageBytes outOfWindowPinnedMessages = 4;
+    optional WebMessageInfoWithMessageBytes themeMessage = 5;
 }
 
 message GroupMention {
@@ -3905,6 +3910,7 @@ message Message {
         optional int64 messageCount = 3;
         repeated string nonHistoryReceivers = 4;
         optional int64 oldestMessageTimestampInBundle = 5;
+        optional bool includesChatTheme = 6;
     }
     
     message MessageHistoryNotice {
@@ -4812,6 +4818,7 @@ message Message {
         optional string metadataUrl = 30;
         optional VideoSourceType videoSourceType = 31;
         optional string dashManifestUrl = 33;
+        optional int64 smartThumbnailTs = 34;
         enum Attribution {
             NONE = 0;
             GIPHY = 1;
@@ -6159,6 +6166,7 @@ message SyncActionValue {
             LEAD = 16;
             MENTIONS_AND_REPLIES = 17;
             REQUESTS = 18;
+            BUSINESS = 19;
         }
     }
     
@@ -7163,7 +7171,14 @@ message WebMessageInfo {
         IDENTITY_TRUST_REVOKED = 228;
         CTWA_CONSUMER_DISCLOSURE = 230;
         CHANGE_ACP2_SETTING = 240;
+        BIZ_CALLBACK_DISABLED = 244;
+        BIZ_CALLBACK_ENABLED = 247;
         EPHEMERAL_CHANGED_FOR_COEX = 248;
+        UGC_BOT_PROFILE_UPDATED = 249;
+        ORDER_EPHEMERAL_EXEMPTION = 250;
+        CAMEO_CHAT_CREATED = 254;
+        CAMEO_TRANSITIONED = 256;
+        SENDER_SIDE_CONTACT_INFO = 255;
     }
 }
 

@@ -6094,7 +6094,8 @@ export namespace proto {
             AI_RICH_RESPONSE_EMAIL_CALENDAR_ENABLED = 68,
             AI_RICH_RESPONSE_REMINDERS_ENABLED = 69,
             AI_STOP_GENERATION_ENABLED = 70,
-            AI_RICH_RESPONSE_3P_LINKING_CARD_ENABLED = 71
+            AI_RICH_RESPONSE_3P_LINKING_CARD_ENABLED = 71,
+            HATCH_NOTIFICATION_METADATA_EVENT_ENABLED = 72
         }
     }
 
@@ -14390,6 +14391,9 @@ export namespace proto {
 
         /** ClientPayload testIsolationId */
         testIsolationId?: (Uint8Array|null);
+
+        /** ClientPayload messageSts */
+        messageSts?: (number|Long|null);
     }
 
     /** Represents a ClientPayload. */
@@ -14508,6 +14512,9 @@ export namespace proto {
 
         /** ClientPayload testIsolationId. */
         public testIsolationId?: (Uint8Array|null);
+
+        /** ClientPayload messageSts. */
+        public messageSts?: (number|Long|null);
 
         /**
          * Creates a new ClientPayload instance using the specified properties.
@@ -20468,6 +20475,9 @@ export namespace proto {
 
         /** ContextInfo experienceIds */
         experienceIds?: (number[]|null);
+
+        /** ContextInfo partnerDeepLinkToken */
+        partnerDeepLinkToken?: (string|null);
     }
 
     /** Represents a ContextInfo. */
@@ -20673,6 +20683,9 @@ export namespace proto {
 
         /** ContextInfo experienceIds. */
         public experienceIds: number[];
+
+        /** ContextInfo partnerDeepLinkToken. */
+        public partnerDeepLinkToken?: (string|null);
 
         /**
          * Creates a new ContextInfo instance using the specified properties.
@@ -28107,6 +28120,9 @@ export namespace proto {
 
         /** GroupHistory outOfWindowPinnedMessages */
         outOfWindowPinnedMessages?: (proto.IWebMessageInfo[]|null);
+
+        /** GroupHistory themeMessage */
+        themeMessage?: (proto.IWebMessageInfo|null);
     }
 
     /** Represents a GroupHistory. */
@@ -28129,6 +28145,9 @@ export namespace proto {
 
         /** GroupHistory outOfWindowPinnedMessages. */
         public outOfWindowPinnedMessages: proto.IWebMessageInfo[];
+
+        /** GroupHistory themeMessage. */
+        public themeMessage?: (proto.IWebMessageInfo|null);
 
         /**
          * Creates a new GroupHistory instance using the specified properties.
@@ -28441,6 +28460,9 @@ export namespace proto {
 
         /** GroupHistoryWithMessageBytes outOfWindowPinnedMessages */
         outOfWindowPinnedMessages?: (proto.IWebMessageInfoWithMessageBytes[]|null);
+
+        /** GroupHistoryWithMessageBytes themeMessage */
+        themeMessage?: (proto.IWebMessageInfoWithMessageBytes|null);
     }
 
     /** Represents a GroupHistoryWithMessageBytes. */
@@ -28463,6 +28485,9 @@ export namespace proto {
 
         /** GroupHistoryWithMessageBytes outOfWindowPinnedMessages. */
         public outOfWindowPinnedMessages: proto.IWebMessageInfoWithMessageBytes[];
+
+        /** GroupHistoryWithMessageBytes themeMessage. */
+        public themeMessage?: (proto.IWebMessageInfoWithMessageBytes|null);
 
         /**
          * Creates a new GroupHistoryWithMessageBytes instance using the specified properties.
@@ -45374,6 +45399,9 @@ export namespace proto {
 
             /** MessageHistoryMetadata oldestMessageTimestampInBundle */
             oldestMessageTimestampInBundle?: (number|Long|null);
+
+            /** MessageHistoryMetadata includesChatTheme */
+            includesChatTheme?: (boolean|null);
         }
 
         /** Represents a MessageHistoryMetadata. */
@@ -45399,6 +45427,9 @@ export namespace proto {
 
             /** MessageHistoryMetadata oldestMessageTimestampInBundle. */
             public oldestMessageTimestampInBundle?: (number|Long|null);
+
+            /** MessageHistoryMetadata includesChatTheme. */
+            public includesChatTheme?: (boolean|null);
 
             /**
              * Creates a new MessageHistoryMetadata instance using the specified properties.
@@ -56301,6 +56332,9 @@ export namespace proto {
 
             /** VideoMessage dashManifestUrl */
             dashManifestUrl?: (string|null);
+
+            /** VideoMessage smartThumbnailTs */
+            smartThumbnailTs?: (number|Long|null);
         }
 
         /** Represents a VideoMessage. */
@@ -56404,6 +56438,9 @@ export namespace proto {
 
             /** VideoMessage dashManifestUrl. */
             public dashManifestUrl?: (string|null);
+
+            /** VideoMessage smartThumbnailTs. */
+            public smartThumbnailTs?: (number|Long|null);
 
             /**
              * Creates a new VideoMessage instance using the specified properties.
@@ -72298,7 +72335,8 @@ export namespace proto {
                 THIRD_PARTY = 15,
                 LEAD = 16,
                 MENTIONS_AND_REPLIES = 17,
-                REQUESTS = 18
+                REQUESTS = 18,
+                BUSINESS = 19
             }
         }
 
@@ -82693,7 +82731,14 @@ export namespace proto {
             IDENTITY_TRUST_REVOKED = 228,
             CTWA_CONSUMER_DISCLOSURE = 230,
             CHANGE_ACP2_SETTING = 240,
-            EPHEMERAL_CHANGED_FOR_COEX = 248
+            BIZ_CALLBACK_DISABLED = 244,
+            BIZ_CALLBACK_ENABLED = 247,
+            EPHEMERAL_CHANGED_FOR_COEX = 248,
+            UGC_BOT_PROFILE_UPDATED = 249,
+            ORDER_EPHEMERAL_EXEMPTION = 250,
+            CAMEO_CHAT_CREATED = 254,
+            CAMEO_TRANSITIONED = 256,
+            SENDER_SIDE_CONTACT_INFO = 255
         }
     }
 
