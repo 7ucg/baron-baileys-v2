@@ -894,6 +894,11 @@ const processMessage = async (
 					ev.emit('messages.reaction', [
 						{ reaction: { ...reactionMessage, key: message.key }, key: reactionMessage.key || targetKey }
 					])
+					// also surface it as a normal message for the upsert pipeline
+					ev.emit('messages.upsert', {
+						messages: [{ ...message, message: { reactionMessage }, reactionContext: { targetKey, reactionKey: message.key } }],
+						type: 'notify'
+					})
 				} else {
 					logger?.warn({ targetKey }, 'enc reaction: no identity combo authenticated, forwarding raw')
 					ev.emit('messages.update', [{ key: targetKey, update: { encReactionMessage: encR } }])
@@ -1034,6 +1039,10 @@ const processMessage = async (
 							update: { eventResponses: [{ eventResponseMessageKey: message.key, senderTimestampMs: responseMsg.timestampMs, response: responseMsg }] }
 						}
 					])
+					ev.emit('messages.upsert', {
+						messages: [{ ...message, message: { eventResponseMessage: responseMsg }, eventContext: { creationMsgKey, responseKey: message.key } }],
+						type: 'notify'
+					})
 				} else {
 					logger?.warn({ creationMsgKey, creators, modifiers }, 'event response: no identity combo authenticated')
 				}
@@ -1399,6 +1408,10 @@ const processMessage = async (
 							}
 						}
 					])
+					ev.emit('messages.upsert', {
+						messages: [{ ...message, message: { pollUpdateMessage: { ...content.pollUpdateMessage, vote: voteMsg } }, pollContext: { creationMsgKey, voteKey: message.key } }],
+						type: 'notify'
+					})
 				} else {
 					logger?.warn({ creationMsgKey, creators, modifiers }, 'poll: no identity combo authenticated')
 				}
