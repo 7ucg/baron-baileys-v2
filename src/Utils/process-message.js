@@ -869,6 +869,7 @@ const processMessage = async (
 		const encC = content.encCommentMessage
 		const targetKey = encC.targetMessageKey
 		let decrypted = null
+		let decryptError = null
 		try {
 			const origMsg = targetKey ? await getMessage(targetKey) : null
 			let msgEncKey = origMsg?.messageContextInfo?.messageSecret
@@ -876,6 +877,7 @@ const processMessage = async (
 				msgEncKey = require('./decode-wa-message').getBotMessageSecret(targetKey?.id)
 			}
 			if (!msgEncKey) {
+				decryptError = 'missing_secret'
 				logger?.warn({ targetKey }, 'enc comment: missing messageSecret, forwarding raw')
 			} else {
 				const creators = await expandIdentity(targetKey.participant || targetKey.remoteJid, { isMe: !!targetKey.fromMe, meId: creds.me.id, meLid: creds.me.lid, signalRepository })
@@ -884,14 +886,19 @@ const processMessage = async (
 					origMsgId: targetKey.id, creators, modifiers, msgEncKey,
 					creatorField: 'origMsgSenderJid', modifierField: 'commenterJid'
 				})
-				if (!decrypted) logger?.warn({ targetKey }, 'enc comment: no identity combo authenticated')
+				if (!decrypted) {
+					decryptError = 'no_identity:' + creators.join(',') + '|' + modifiers.join(',')
+					logger?.warn({ targetKey, creators, modifiers }, 'enc comment: no identity combo authenticated')
+				}
 			}
 		} catch (err) {
+			decryptError = 'error:' + (err?.message || err)
 			logger?.warn({ err, targetKey }, 'failed to decrypt enc comment')
 		}
 		ev.emit('message.comment', {
 			comment: encC,
 			commentKey: message.key,
+			decryptError,
 			targetKey,
 			encrypted: true,
 			decrypted
