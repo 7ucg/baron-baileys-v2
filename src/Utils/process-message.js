@@ -958,6 +958,17 @@ const processMessage = async (
 			encrypted: true,
 			decrypted
 		})
+		// also surface the decrypted comment as a normal message so the upsert pipeline
+		// (logging, command handling, rendering) processes its content like any other message
+		if (decrypted) {
+			const decMsg = {
+				...message,
+				message: decrypted,
+				// mark provenance so consumers can tell this was an encrypted comment
+				commentContext: { targetKey, commentKey: message.key }
+			}
+			ev.emit('messages.upsert', { messages: [decMsg], type: 'notify' })
+		}
 	} else if (content?.bcallMessage) {
 		ev.emit('call', [
 			{
