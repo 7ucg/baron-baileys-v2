@@ -261,6 +261,40 @@ function decryptReaction({ encPayload, encIv }, { origMsgId, origMsgSenderJid, r
 }
 exports.decryptReaction = decryptReaction
 /**
+ * Message-secret binds the sender/creator IDENTITY into the key. In LID-addressed groups the
+ * identity is the LID, in PN groups the PN (verified against real group logs: an LID group's enc
+ * comments only authenticate with the participant's @lid, not their @s.whatsapp.net). We cannot
+ * always tell which form the sender used, so expand each base jid to its known equivalents (its
+ * own form + PN<->LID counterpart, plus both of our own ids when it is us) and let GCM select.
+ */
+const expandIdentity = async (base, { isMe, meId, meLid, signalRepository }) => {
+	const out = new Set()
+	const add = j => { if (j) out.add((0, WABinary_1.jidNormalizedUser)(j)) }
+	add(base)
+	if (isMe) { add(meId); add(meLid) }
+	try {
+		const norm = (0, WABinary_1.jidNormalizedUser)(base)
+		if ((0, WABinary_1.isLidUser)(norm)) {
+			add(await signalRepository.lidMapping.getPNForLID(norm))
+		} else {
+			add(await signalRepository.lidMapping.getLIDForPN(norm))
+		}
+	} catch (e) {}
+	return [...out].filter(Boolean)
+}
+// Try a message-secret decryptor across every creator x modifier identity candidate; first that
+// authenticates (GCM) wins. Returns the decoded result or null.
+const decryptWithIdentities = (fn, enc, { origMsgId, creators, modifiers, msgEncKey, creatorField, modifierField }) => {
+	for (const c of creators) {
+		for (const mo of modifiers) {
+			try {
+				return fn(enc, { origMsgId, [creatorField]: c, [modifierField]: mo, msgEncKey })
+			} catch (e) {}
+		}
+	}
+	return null
+}
+/**
  * If the message carries a secretEncryptedMessage MESSAGE_EDIT envelope,
  * decrypt it in place so the message looks like a regular plaintext
  * protocolMessage edit to everything downstream (upsert consumers included).
@@ -804,28 +838,20 @@ const processMessage = async (
 				logger?.warn({ targetKey }, 'enc reaction: missing messageSecret, forwarding raw')
 				ev.emit('messages.update', [{ key: targetKey, update: { encReactionMessage: encR } }])
 			} else {
-				const meIdNormalised = (0, WABinary_1.jidNormalizedUser)(meId)
-				const creatorKey = targetKey.participant || targetKey.remoteJid
-				const creatorPn = (0, WABinary_1.isLidUser)(creatorKey)
-					? await signalRepository.lidMapping.getPNForLID(creatorKey)
-					: creatorKey
-				const origMsgSenderJid = (0, generics_1.getKeyAuthor)(
-					{ remoteJid: (0, WABinary_1.jidNormalizedUser)(creatorPn), fromMe: meIdNormalised === creatorPn },
-					meIdNormalised
-				)
-				const reactorJid = (0, generics_1.getKeyAuthor)(message.key, meIdNormalised)
-				const reactionMessage = decryptReaction(encR, {
-					origMsgId: targetKey.id,
-					origMsgSenderJid,
-					reactorJid,
-					msgEncKey
+				const creators = await expandIdentity(targetKey.participant || targetKey.remoteJid, { isMe: !!targetKey.fromMe, meId: creds.me.id, meLid: creds.me.lid, signalRepository })
+				const modifiers = await expandIdentity(message.key.participant || message.key.remoteJid, { isMe: !!message.key.fromMe, meId: creds.me.id, meLid: creds.me.lid, signalRepository })
+				const reactionMessage = decryptWithIdentities(decryptReaction, encR, {
+					origMsgId: targetKey.id, creators, modifiers, msgEncKey,
+					creatorField: 'origMsgSenderJid', modifierField: 'reactorJid'
 				})
-				ev.emit('messages.reaction', [
-					{
-						reaction: { ...reactionMessage, key: message.key },
-						key: reactionMessage.key || targetKey
-					}
-				])
+				if (reactionMessage) {
+					ev.emit('messages.reaction', [
+						{ reaction: { ...reactionMessage, key: message.key }, key: reactionMessage.key || targetKey }
+					])
+				} else {
+					logger?.warn({ targetKey }, 'enc reaction: no identity combo authenticated, forwarding raw')
+					ev.emit('messages.update', [{ key: targetKey, update: { encReactionMessage: encR } }])
+				}
 			}
 		} catch (err) {
 			logger?.warn({ err, targetKey }, 'failed to decrypt enc reaction')
@@ -852,22 +878,13 @@ const processMessage = async (
 			if (!msgEncKey) {
 				logger?.warn({ targetKey }, 'enc comment: missing messageSecret, forwarding raw')
 			} else {
-				const meIdNormalised = (0, WABinary_1.jidNormalizedUser)(meId)
-				const creatorKey = targetKey.participant || targetKey.remoteJid
-				const creatorPn = (0, WABinary_1.isLidUser)(creatorKey)
-					? await signalRepository.lidMapping.getPNForLID(creatorKey)
-					: creatorKey
-				const origMsgSenderJid = (0, generics_1.getKeyAuthor)(
-					{ remoteJid: (0, WABinary_1.jidNormalizedUser)(creatorPn), fromMe: meIdNormalised === creatorPn },
-					meIdNormalised
-				)
-				const commenterJid = (0, generics_1.getKeyAuthor)(message.key, meIdNormalised)
-				decrypted = decryptComment(encC, {
-					origMsgId: targetKey.id,
-					origMsgSenderJid,
-					commenterJid,
-					msgEncKey
+				const creators = await expandIdentity(targetKey.participant || targetKey.remoteJid, { isMe: !!targetKey.fromMe, meId: creds.me.id, meLid: creds.me.lid, signalRepository })
+				const modifiers = await expandIdentity(message.key.participant || message.key.remoteJid, { isMe: !!message.key.fromMe, meId: creds.me.id, meLid: creds.me.lid, signalRepository })
+				decrypted = decryptWithIdentities(decryptComment, encC, {
+					origMsgId: targetKey.id, creators, modifiers, msgEncKey,
+					creatorField: 'origMsgSenderJid', modifierField: 'commenterJid'
 				})
+				if (!decrypted) logger?.warn({ targetKey }, 'enc comment: no identity combo authenticated')
 			}
 		} catch (err) {
 			logger?.warn({ err, targetKey }, 'failed to decrypt enc comment')
