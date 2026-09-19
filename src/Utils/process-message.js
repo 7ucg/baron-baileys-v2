@@ -196,12 +196,12 @@ function decryptEventResponse({ encPayload, encIv }, { eventCreatorJid, eventMsg
  * @param ctx additional info about the original message required for decryption
  * @returns the decrypted inner message
  */
-function decryptMessageEdit({ encPayload, encIv }, { origMsgId, origMsgSenderJid, editorJid, msgEncKey }) {
+function decryptMessageEdit({ encPayload, encIv }, { origMsgId, origMsgSenderJid, editorJid, msgEncKey, label = 'Message Edit' }) {
 	const sign = Buffer.concat([
 		toBinary(origMsgId),
 		toBinary(origMsgSenderJid),
 		toBinary(editorJid),
-		toBinary('Message Edit'),
+		toBinary(label),
 		new Uint8Array([1])
 	])
 	const key0 = (0, crypto_1.hmacSign)(msgEncKey, new Uint8Array(32), 'sha256')
@@ -294,6 +294,46 @@ const decryptWithIdentities = (fn, enc, { origMsgId, creators, modifiers, msgEnc
 	}
 	return null
 }
+// Generic variant: buildCtx(creator, modifier) shapes the per-decryptor ctx (param names differ
+// between poll/event/comment/reaction). First authenticating combo wins.
+const tryIdentities = (fn, enc, { creators, modifiers, buildCtx }) => {
+	for (const c of creators) {
+		for (const mo of modifiers) {
+			try {
+				return fn(enc, buildCtx(c, mo))
+			} catch (e) {}
+		}
+	}
+	return null
+}
+// Coerce a messageSecret to a Buffer regardless of how the store/log handed it back
+// (Buffer | base64 string | number[] | {type:'Buffer',data} | Uint8Array-as-object).
+const coerceSecret = s => {
+	if (!s) return null
+	if (Buffer.isBuffer(s)) return s
+	if (typeof s === 'string') return Buffer.from(s, 'base64')
+	if (Array.isArray(s)) return Buffer.from(s)
+	if (s.type === 'Buffer' && Array.isArray(s.data)) return Buffer.from(s.data)
+	try { return Buffer.from(Object.values(s)) } catch (e) { return null }
+}
+// Resolve the target message's messageSecret from the store (via getMessage, unwrapping common
+// wrappers) with a fallback to the captured botMessageSecrets map. Returns a Buffer or null.
+const resolveMsgSecret = async (getMessage, targetKey) => {
+	let raw = null
+	if (targetKey) {
+		const msg = await getMessage(targetKey)
+		const inner = msg?.viewOnceMessage?.message || msg?.botInvokeMessage?.message || msg?.ephemeralMessage?.message || msg
+		raw = inner?.messageContextInfo?.messageSecret || msg?.messageContextInfo?.messageSecret || null
+	}
+	if (!raw) raw = require('./decode-wa-message').getBotMessageSecret(targetKey?.id)
+	return coerceSecret(raw)
+}
+// Build the PN+LID creator/modifier candidate lists for a target/actor pair.
+const secretIdentities = async (targetKey, actorKey, { creds, signalRepository }) => {
+	const creators = await expandIdentity(targetKey?.participant || targetKey?.remoteJid, { isMe: !!targetKey?.fromMe, meId: creds.me.id, meLid: creds.me.lid, signalRepository })
+	const modifiers = await expandIdentity(actorKey?.participant || actorKey?.remoteJid, { isMe: !!actorKey?.fromMe, meId: creds.me.id, meLid: creds.me.lid, signalRepository })
+	return { creators, modifiers }
+}
 /**
  * If the message carries a secretEncryptedMessage MESSAGE_EDIT envelope,
  * decrypt it in place so the message looks like a regular plaintext
@@ -303,11 +343,16 @@ const decryptWithIdentities = (fn, enc, { origMsgId, creators, modifiers, msgEnc
 const unwrapSecretEncryptedMessage = async (message, { creds, getMessage, logger }) => {
 	const content = (0, messages_1.normalizeMessageContent)(message.message)
 	const secretEnc = content?.secretEncryptedMessage
-	if (
-		!secretEnc?.encPayload ||
-		!secretEnc.encIv ||
-		secretEnc.secretEncType !== index_js_1.proto.Message.SecretEncryptedMessage.SecretEncType.MESSAGE_EDIT
-	) {
+	const SET = index_js_1.proto.Message.SecretEncryptedMessage.SecretEncType
+	const SECRET_ENC_LABELS = {
+		[SET.EVENT_EDIT]: 'Event Edit',
+		[SET.MESSAGE_EDIT]: 'Message Edit',
+		[SET.MESSAGE_SCHEDULE]: 'Message Schedule',
+		[SET.POLL_EDIT]: 'Poll Edit',
+		[SET.POLL_ADD_OPTION]: 'Poll Add Option'
+	}
+	const label = SECRET_ENC_LABELS[secretEnc?.secretEncType]
+	if (!secretEnc?.encPayload || !secretEnc.encIv || !label) {
 		return
 	}
 	const targetKey = secretEnc.targetMessageKey
@@ -352,7 +397,8 @@ const unwrapSecretEncryptedMessage = async (message, { creds, getMessage, logger
 					origMsgId: targetKey.id,
 					origMsgSenderJid: authorJid,
 					editorJid: authorJid,
-					msgEncKey
+					msgEncKey,
+					label
 				})
 				break
 			} catch (err) {
@@ -362,7 +408,7 @@ const unwrapSecretEncryptedMessage = async (message, { creds, getMessage, logger
 		if (!decoded) {
 			throw lastError
 		}
-		if (!decoded.protocolMessage) {
+		if (secretEnc.secretEncType === SET.MESSAGE_EDIT && !decoded.protocolMessage) {
 			// normalise to the plaintext edit shape consumers already understand
 			decoded = index_js_1.proto.Message.fromObject({
 				protocolMessage: {
@@ -376,7 +422,7 @@ const unwrapSecretEncryptedMessage = async (message, { creds, getMessage, logger
 			decoded.messageContextInfo = content.messageContextInfo
 		}
 		message.message = decoded
-		logger?.debug({ targetKey }, 'decrypted secretEncryptedMessage edit')
+		logger?.debug({ targetKey, label }, 'decrypted secretEncryptedMessage')
 	} catch (err) {
 		logger?.warn({ err, targetKey }, 'failed to decrypt secretEncryptedMessage edit')
 	}
@@ -960,50 +1006,29 @@ const processMessage = async (
 	} else if (content?.encEventResponseMessage) {
 		const encEventResponse = content.encEventResponseMessage
 		const creationMsgKey = encEventResponse.eventCreationMessageKey
-		// we need to fetch the event creation message to get the event enc key
-		const eventMsg = await getMessage(creationMsgKey)
-		if (eventMsg) {
-			try {
-				const meIdNormalised = (0, WABinary_1.jidNormalizedUser)(meId)
-				// all jids need to be PN
-				const eventCreatorKey = creationMsgKey.participant || creationMsgKey.remoteJid
-				const eventCreatorPn = (0, WABinary_1.isLidUser)(eventCreatorKey)
-					? await signalRepository.lidMapping.getPNForLID(eventCreatorKey)
-					: eventCreatorKey
-				const eventCreatorJid = (0, generics_1.getKeyAuthor)(
-					{ remoteJid: (0, WABinary_1.jidNormalizedUser)(eventCreatorPn), fromMe: meIdNormalised === eventCreatorPn },
-					meIdNormalised
-				)
-				const responderJid = (0, generics_1.getKeyAuthor)(message.key, meIdNormalised)
-				const eventEncKey = eventMsg?.messageContextInfo?.messageSecret
-				if (!eventEncKey) {
-					logger?.warn({ creationMsgKey }, 'event response: missing messageSecret for decryption')
-				} else {
-					const responseMsg = decryptEventResponse(encEventResponse, {
-						eventEncKey,
-						eventCreatorJid,
-						eventMsgId: creationMsgKey.id,
-						responderJid
-					})
-					const eventResponse = {
-						eventResponseMessageKey: message.key,
-						senderTimestampMs: responseMsg.timestampMs,
-						response: responseMsg
-					}
+		try {
+			const eventEncKey = await resolveMsgSecret(getMessage, creationMsgKey)
+			if (!eventEncKey) {
+				logger?.warn({ creationMsgKey }, 'event response: missing messageSecret for decryption')
+			} else {
+				const { creators, modifiers } = await secretIdentities(creationMsgKey, message.key, { creds, signalRepository })
+				const responseMsg = tryIdentities(decryptEventResponse, encEventResponse, {
+					creators, modifiers,
+					buildCtx: (c, mo) => ({ eventEncKey, eventCreatorJid: c, eventMsgId: creationMsgKey.id, responderJid: mo })
+				})
+				if (responseMsg) {
 					ev.emit('messages.update', [
 						{
 							key: creationMsgKey,
-							update: {
-								eventResponses: [eventResponse]
-							}
+							update: { eventResponses: [{ eventResponseMessageKey: message.key, senderTimestampMs: responseMsg.timestampMs, response: responseMsg }] }
 						}
 					])
+				} else {
+					logger?.warn({ creationMsgKey, creators, modifiers }, 'event response: no identity combo authenticated')
 				}
-			} catch (err) {
-				logger?.warn({ err, creationMsgKey }, 'failed to decrypt event response')
 			}
-		} else {
-			logger?.warn({ creationMsgKey }, 'event creation message not found, cannot decrypt response')
+		} catch (err) {
+			logger?.warn({ err, creationMsgKey }, 'failed to decrypt event response')
 		}
 	} else if (message.messageStubType) {
 		const jid = message.key?.remoteJid
@@ -1338,27 +1363,17 @@ const processMessage = async (
 		}
 	} else if (content?.pollUpdateMessage) {
 		const creationMsgKey = content.pollUpdateMessage.pollCreationMessageKey
-		const pollMsg = await getMessage(creationMsgKey)
-		if (pollMsg) {
-			// message may be wrapped in viewOnce or botInvoke — unwrap to find messageSecret
-			const inner = pollMsg.viewOnceMessage?.message || pollMsg.botInvokeMessage?.message || pollMsg
-			const pollEncKey = inner.messageContextInfo?.messageSecret || pollMsg.messageContextInfo?.messageSecret || null
+		try {
+			const pollEncKey = await resolveMsgSecret(getMessage, creationMsgKey)
 			if (!pollEncKey) {
 				logger?.warn({ creationMsgKey }, 'poll: messageSecret missing, cannot decrypt vote')
 			} else {
-				// prefer LID for pollCreatorJid; WA uses the addressing JID of the poll creator
-				const rawLid = creds.me?.lid
-				const meLidNorm = rawLid ? `${rawLid.split(':')[0]}@lid` : ''
-				const pollCreatorJid = meLidNorm || (0, WABinary_1.jidNormalizedUser)(meId)
-				// voterJid: use the primary addressing JID (LID or PN) from the update key
-				const voterJid = message.key.fromMe ? pollCreatorJid : message.key.participant || message.key.remoteJid
-				try {
-					const voteMsg = decryptPollVote(content.pollUpdateMessage.vote, {
-						pollEncKey,
-						pollCreatorJid,
-						pollMsgId: creationMsgKey.id,
-						voterJid
-					})
+				const { creators, modifiers } = await secretIdentities(creationMsgKey, message.key, { creds, signalRepository })
+				const voteMsg = tryIdentities(decryptPollVote, content.pollUpdateMessage.vote, {
+					creators, modifiers,
+					buildCtx: (c, mo) => ({ pollEncKey, pollCreatorJid: c, pollMsgId: creationMsgKey.id, voterJid: mo })
+				})
+				if (voteMsg) {
 					ev.emit('messages.update', [
 						{
 							key: creationMsgKey,
@@ -1373,12 +1388,12 @@ const processMessage = async (
 							}
 						}
 					])
-				} catch (err) {
-					logger?.warn({ err, creationMsgKey, pollCreatorJid, voterJid }, 'failed to decrypt poll vote')
+				} else {
+					logger?.warn({ creationMsgKey, creators, modifiers }, 'poll: no identity combo authenticated')
 				}
 			}
-		} else {
-			logger?.warn({ creationMsgKey }, 'poll: creation message not found, cannot decrypt vote')
+		} catch (err) {
+			logger?.warn({ err, creationMsgKey }, 'failed to decrypt poll vote')
 		}
 	}
 	if (Object.keys(chat).length > 1) {

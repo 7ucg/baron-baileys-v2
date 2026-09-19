@@ -65,5 +65,14 @@ const ok = (n, c) => { console.log((c ? '✓ ' : '✗ ') + n); c ? pass++ : fail
 	ok('decryptEventResponse', Number(r.response) === 1)
 }
 
+// 6 secretEncryptedMessage labels — "Event Edit"/"Message Edit"/"Poll Edit"/"Poll Add Option"/
+//    "Message Schedule", empty AAD, plaintext = Message; all via decryptMessageEdit(label)
+for (const label of ['Event Edit', 'Message Edit', 'Poll Edit', 'Poll Add Option', 'Message Schedule']) {
+	const pt = proto.Message.encode(proto.Message.fromObject({ conversation: 'x:' + label })).finish()
+	const k = mkKey([id, creator, modifier, label], secret)
+	const r = B.decryptMessageEdit(enc(pt, k, EMPTY), { origMsgId: id, origMsgSenderJid: creator, editorJid: modifier, msgEncKey: secret, label })
+	ok('secretEnc(' + label + ')', r.conversation === 'x:' + label)
+}
+
 console.log('\nresult: ' + pass + '/' + (pass + fail) + ' enc types decrypted with own messageSecret')
 process.exit(fail ? 1 : 0)
