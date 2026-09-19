@@ -873,9 +873,18 @@ const processMessage = async (
 		try {
 			const origMsg = targetKey ? await getMessage(targetKey) : null
 			let msgEncKey = origMsg?.messageContextInfo?.messageSecret
+			let secretSrc = msgEncKey ? 'getMessage' : null
 			if (!msgEncKey) {
 				msgEncKey = require('./decode-wa-message').getBotMessageSecret(targetKey?.id)
+				if (msgEncKey) secretSrc = 'botSecrets'
 			}
+			// normalise the secret to a Buffer (getMessage may hand back base64/array/{Buffer}/Uint8Array-as-object)
+			if (msgEncKey && !Buffer.isBuffer(msgEncKey)) {
+				msgEncKey = typeof msgEncKey === 'string'
+					? Buffer.from(msgEncKey, 'base64')
+					: Buffer.from(Array.isArray(msgEncKey) ? msgEncKey : (msgEncKey.type === 'Buffer' && Array.isArray(msgEncKey.data)) ? msgEncKey.data : Object.values(msgEncKey))
+			}
+			const secDbg = msgEncKey ? `${secretSrc}:${msgEncKey.length}b:${Buffer.from(msgEncKey).subarray(0, 6).toString('hex')}` : 'none'
 			if (!msgEncKey) {
 				decryptError = 'missing_secret'
 				logger?.warn({ targetKey }, 'enc comment: missing messageSecret, forwarding raw')
@@ -887,8 +896,8 @@ const processMessage = async (
 					creatorField: 'origMsgSenderJid', modifierField: 'commenterJid'
 				})
 				if (!decrypted) {
-					decryptError = 'no_identity:' + creators.join(',') + '|' + modifiers.join(',')
-					logger?.warn({ targetKey, creators, modifiers }, 'enc comment: no identity combo authenticated')
+					decryptError = 'no_identity secret=' + secDbg + ' creators=' + creators.join(',') + ' modifiers=' + modifiers.join(',')
+					logger?.warn({ targetKey, secDbg, creators, modifiers }, 'enc comment: no identity combo authenticated')
 				}
 			}
 		} catch (err) {
