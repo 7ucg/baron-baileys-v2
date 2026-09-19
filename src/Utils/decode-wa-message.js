@@ -50,6 +50,10 @@ const setBotMessageSecret = (id, secret, chatJid) => {
 	}
 }
 exports.setBotMessageSecret = setBotMessageSecret
+// Look up a stored messageSecret by message id (fallback when the store/getMessage
+// cannot return the original message but we captured its secret on arrival).
+const getBotMessageSecret = id => (id ? botMessageSecrets.get(id) || null : null)
+exports.getBotMessageSecret = getBotMessageSecret
 const getDecryptionJid = async (sender, repository) => {
 	if (
 		(0, WABinary_1.isLidUser)(sender) ||

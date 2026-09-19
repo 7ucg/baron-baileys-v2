@@ -215,6 +215,52 @@ function decryptMessageEdit({ encPayload, encIv }, { origMsgId, origMsgSenderJid
 }
 exports.decryptMessageEdit = decryptMessageEdit
 /**
+ * Decrypt an encCommentMessage (field 71). message-secret scheme, use-case "Enc Comment",
+ * sealed WITHOUT AAD (like message edits). Plaintext is a full proto.Message (the comment body).
+ * Verified against WA 2.26.37.6: comment routes through the shared message-secret decryptor
+ * (X/C29312Cqw.A04(..., "Enc Comment", ...)); see Protocols/message-secret-encryption/info.md.
+ * @returns the decrypted comment as a proto.Message
+ */
+function decryptComment({ encPayload, encIv }, { origMsgId, origMsgSenderJid, commenterJid, msgEncKey }) {
+	const sign = Buffer.concat([
+		toBinary(origMsgId),
+		toBinary(origMsgSenderJid),
+		toBinary(commenterJid),
+		toBinary('Enc Comment'),
+		new Uint8Array([1])
+	])
+	const key0 = (0, crypto_1.hmacSign)(msgEncKey, new Uint8Array(32), 'sha256')
+	const decKey = (0, crypto_1.hmacSign)(sign, key0, 'sha256')
+	const decrypted = (0, crypto_1.aesDecryptGCM)(encPayload, decKey, encIv, new Uint8Array(0))
+	return index_js_1.proto.Message.decode(decrypted)
+	function toBinary(txt) {
+		return Buffer.from(txt)
+	}
+}
+exports.decryptComment = decryptComment
+/**
+ * Decrypt an encReactionMessage (field 56). message-secret scheme, use-case "Enc Reaction",
+ * sealed WITHOUT AAD. Plaintext is a proto.Message.ReactionMessage.
+ * @returns the decrypted reaction as a proto.Message.ReactionMessage
+ */
+function decryptReaction({ encPayload, encIv }, { origMsgId, origMsgSenderJid, reactorJid, msgEncKey }) {
+	const sign = Buffer.concat([
+		toBinary(origMsgId),
+		toBinary(origMsgSenderJid),
+		toBinary(reactorJid),
+		toBinary('Enc Reaction'),
+		new Uint8Array([1])
+	])
+	const key0 = (0, crypto_1.hmacSign)(msgEncKey, new Uint8Array(32), 'sha256')
+	const decKey = (0, crypto_1.hmacSign)(sign, key0, 'sha256')
+	const decrypted = (0, crypto_1.aesDecryptGCM)(encPayload, decKey, encIv, new Uint8Array(0))
+	return index_js_1.proto.Message.ReactionMessage.decode(decrypted)
+	function toBinary(txt) {
+		return Buffer.from(txt)
+	}
+}
+exports.decryptReaction = decryptReaction
+/**
  * If the message carries a secretEncryptedMessage MESSAGE_EDIT envelope,
  * decrypt it in place so the message looks like a regular plaintext
  * protocolMessage edit to everything downstream (upsert consumers included).
@@ -746,12 +792,45 @@ const processMessage = async (
 			])
 		}
 	} else if (content?.encReactionMessage) {
-		ev.emit('messages.update', [
-			{
-				key: content.encReactionMessage.targetMessageKey,
-				update: { encReactionMessage: content.encReactionMessage }
+		const encR = content.encReactionMessage
+		const targetKey = encR.targetMessageKey
+		try {
+			const origMsg = targetKey ? await getMessage(targetKey) : null
+			let msgEncKey = origMsg?.messageContextInfo?.messageSecret
+			if (!msgEncKey) {
+				msgEncKey = require('./decode-wa-message').getBotMessageSecret(targetKey?.id)
 			}
-		])
+			if (!msgEncKey) {
+				logger?.warn({ targetKey }, 'enc reaction: missing messageSecret, forwarding raw')
+				ev.emit('messages.update', [{ key: targetKey, update: { encReactionMessage: encR } }])
+			} else {
+				const meIdNormalised = (0, WABinary_1.jidNormalizedUser)(meId)
+				const creatorKey = targetKey.participant || targetKey.remoteJid
+				const creatorPn = (0, WABinary_1.isLidUser)(creatorKey)
+					? await signalRepository.lidMapping.getPNForLID(creatorKey)
+					: creatorKey
+				const origMsgSenderJid = (0, generics_1.getKeyAuthor)(
+					{ remoteJid: (0, WABinary_1.jidNormalizedUser)(creatorPn), fromMe: meIdNormalised === creatorPn },
+					meIdNormalised
+				)
+				const reactorJid = (0, generics_1.getKeyAuthor)(message.key, meIdNormalised)
+				const reactionMessage = decryptReaction(encR, {
+					origMsgId: targetKey.id,
+					origMsgSenderJid,
+					reactorJid,
+					msgEncKey
+				})
+				ev.emit('messages.reaction', [
+					{
+						reaction: { ...reactionMessage, key: message.key },
+						key: reactionMessage.key || targetKey
+					}
+				])
+			}
+		} catch (err) {
+			logger?.warn({ err, targetKey }, 'failed to decrypt enc reaction')
+			ev.emit('messages.update', [{ key: targetKey, update: { encReactionMessage: encR } }])
+		}
 	} else if (content?.commentMessage) {
 		if (content.commentMessage.targetMessageKey) {
 			ev.emit('message.comment', {
@@ -761,11 +840,44 @@ const processMessage = async (
 			})
 		}
 	} else if (content?.encCommentMessage) {
+		const encC = content.encCommentMessage
+		const targetKey = encC.targetMessageKey
+		let decrypted = null
+		try {
+			const origMsg = targetKey ? await getMessage(targetKey) : null
+			let msgEncKey = origMsg?.messageContextInfo?.messageSecret
+			if (!msgEncKey) {
+				msgEncKey = require('./decode-wa-message').getBotMessageSecret(targetKey?.id)
+			}
+			if (!msgEncKey) {
+				logger?.warn({ targetKey }, 'enc comment: missing messageSecret, forwarding raw')
+			} else {
+				const meIdNormalised = (0, WABinary_1.jidNormalizedUser)(meId)
+				const creatorKey = targetKey.participant || targetKey.remoteJid
+				const creatorPn = (0, WABinary_1.isLidUser)(creatorKey)
+					? await signalRepository.lidMapping.getPNForLID(creatorKey)
+					: creatorKey
+				const origMsgSenderJid = (0, generics_1.getKeyAuthor)(
+					{ remoteJid: (0, WABinary_1.jidNormalizedUser)(creatorPn), fromMe: meIdNormalised === creatorPn },
+					meIdNormalised
+				)
+				const commenterJid = (0, generics_1.getKeyAuthor)(message.key, meIdNormalised)
+				decrypted = decryptComment(encC, {
+					origMsgId: targetKey.id,
+					origMsgSenderJid,
+					commenterJid,
+					msgEncKey
+				})
+			}
+		} catch (err) {
+			logger?.warn({ err, targetKey }, 'failed to decrypt enc comment')
+		}
 		ev.emit('message.comment', {
-			comment: content.encCommentMessage,
+			comment: encC,
 			commentKey: message.key,
-			targetKey: content.encCommentMessage.targetMessageKey,
-			encrypted: true
+			targetKey,
+			encrypted: true,
+			decrypted
 		})
 	} else if (content?.bcallMessage) {
 		ev.emit('call', [
