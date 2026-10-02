@@ -875,8 +875,13 @@ const makeMessagesSocket = config => {
 				for (const device of devices) {
 					const deviceJid = device.jid
 					const hasKey = !!senderKeyMap[deviceJid]
+					// A Meta AI / bot recipient must be addressed on EVERY invoke, never
+					// skipped via the sender-key cache — otherwise a follow-up ships the
+					// skmsg to 0 recipients, the bot isn't re-invoked and the server can
+					// reject the empty-fanout stanza (479).
+					const isBotRecipient = (0, WABinary_1.isJidMetaAI)(deviceJid)
 					if (
-						(!hasKey || !!participant) &&
+						(!hasKey || !!participant || isBotRecipient) &&
 						!(0, WABinary_1.isHostedLidUser)(deviceJid) &&
 						!(0, WABinary_1.isHostedPnUser)(deviceJid) &&
 						device.device !== 99
