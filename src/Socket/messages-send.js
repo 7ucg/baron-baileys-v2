@@ -2191,9 +2191,23 @@ const makeMessagesSocket = config => {
 			// opts.mention is set. Direct chat sends an extendedTextMessage.
 			let content
 			if (isGroup) {
-				content = opts.mention
-					? { extendedTextMessage: { text, contextInfo: { mentionedJid: [META_AI_BOT_JID] } } }
-					: { conversation: text }
+				// opts.mention renders a real @Meta AI mention exactly like WA-Web:
+				// the fbid token in the text, mentionedJid -> @bot, and a GROUP_MEMBER
+				// bot entry point. Otherwise a plain conversation (both invoke the bot).
+				if (opts.mention) {
+					const fbid = opts.botFbid || META_AI_FBID
+					content = {
+						extendedTextMessage: {
+							text: `@${fbid} ${text}`,
+							contextInfo: {
+								mentionedJid: [META_AI_BOT_JID],
+								botMessageSharingInfo: { botEntryPointOrigin: 'GROUP_MEMBER', forwardScore: 0 }
+							}
+						}
+					}
+				} else {
+					content = { conversation: text }
+				}
 			} else {
 				content = { extendedTextMessage: { text } }
 			}
