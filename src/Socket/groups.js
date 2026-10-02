@@ -23,7 +23,7 @@ const GROUP_MEX_QUERY_IDS = {
 	ADD_PARTICIPANTS_V3: '26581073158212628', // AddParticipantsToGroupsV3
 	SET_PROPERTY: '9418211574894172', // SetGroupProperty (WAWebMexUpdateGroupPropertyJobMutation) — verified 2026-08-28
 	RESET_INVITE_LINK: '24812851838367452', // SetGroupResetInviteLink
-	CREATE_INVITE_CODE: '26155584267463745', // CreateInviteCode (WAWebMexCreateInviteCodeJobMutation) — verified 2026-08-28
+	CREATE_INVITE_CODE: '28250338504572715', // CreateInviteCode (WAWebMexCreateInviteCodeJobMutation) — verified 2026-10-02
 	CREATE_GROUP: '32341779532133480', // CreateGroup
 	ALLOW_NON_ADMIN_GROUP_CREATION: '32024438593867696', // AllowNonAdminGroupCreation
 	GET_INVITE_INFO: '24745668928467084', // GetInviteInfo
