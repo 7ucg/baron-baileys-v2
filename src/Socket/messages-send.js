@@ -2232,13 +2232,19 @@ const makeMessagesSocket = config => {
 			}
 			const msgId = (0, Utils_1.generateMessageIDV2)(invokerJid)
 			const relayOpts = { messageId: msgId, quoted: opts.quoted, links: opts.links }
-			// Direct chat needs the <bot> persona node; the group invoke rides on
-			// botGroupMetadata instead.
-			if (!isGroup) {
-				relayOpts.additionalNodes = [
-					{ tag: 'bot', attrs: { persona_type: 'default', agent_engagement_type: 'direct_chat', mode_selected: '0' } }
-				]
-			}
+			// The <bot> persona node is what tells the server to route to the AI
+			// backend (1:1 does not get a reply without it). Group invokes need it too;
+			// the engagement type reflects the group context. Override via opts.
+			relayOpts.additionalNodes = [
+				{
+					tag: 'bot',
+					attrs: {
+						persona_type: opts.personaType || 'default',
+						agent_engagement_type: opts.agentEngagementType || (isGroup ? 'group_chat' : 'direct_chat'),
+						mode_selected: opts.modeSelected || '0'
+					}
+				}
+			]
 			await relayMessage(jid, message, relayOpts)
 			return msgId
 		}
