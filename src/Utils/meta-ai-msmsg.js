@@ -67,9 +67,9 @@ const decodeDecryptedMsmsgMessage = decrypted => {
 		const unpadded = Buffer.from(unpadRandomMax16(buf))
 		const decoded = proto.Message.decode(unpadded)
 		const hasContent = Object.keys(decoded).some(k => k !== 'messageContextInfo' && decoded[k] != null)
-		if (hasContent) return decoded
+		if (hasContent) return decodeUnifiedResponseInPlace(decoded)
 	} catch {}
-	return proto.Message.decode(buf)
+	return decodeUnifiedResponseInPlace(proto.Message.decode(buf))
 }
 
 /**
@@ -128,8 +128,8 @@ const decryptMsmsgBotMessage = async (messageSecret, messageKey, msMsg) => {
 }
 
 // unifiedResponse.data is NOT encrypted — it is base64/bytes-wrapped JSON holding
-// the GenAI unified response. Decode it and pull the markdown text out.
-const textFromUnifiedResponse = data => {
+// the GenAI unified response. Parse it into the raw JSON object.
+const parseUnifiedResponseData = data => {
 	if (!data) return null
 	try {
 		let buf
@@ -138,16 +138,22 @@ const textFromUnifiedResponse = data => {
 		else if (typeof data === 'string') buf = Buffer.from(data, 'base64')
 		else if (data.type === 'Buffer' && Array.isArray(data.data)) buf = Buffer.from(data.data)
 		else return null
-		const j = JSON.parse(buf.toString('utf8'))
-		const parts = []
-		for (const section of j.sections || []) {
-			const t = section?.view_model?.primitive?.text
-			if (t) parts.push(t)
-		}
-		return parts.length ? parts.join('\n') : null
+		return JSON.parse(buf.toString('utf8'))
 	} catch {
 		return null
 	}
+}
+
+// Flatten the unifiedResponse JSON down to its markdown text.
+const textFromUnifiedResponse = data => {
+	const j = parseUnifiedResponseData(data)
+	if (!j) return null
+	const parts = []
+	for (const section of j.sections || []) {
+		const t = section?.view_model?.primitive?.text
+		if (t) parts.push(t)
+	}
+	return parts.length ? parts.join('\n') : null
 }
 
 // richResponseMessage (field 77): text lives in submessages[].messageText, with
@@ -177,9 +183,33 @@ const extractMetaAiText = message => {
 	)
 }
 
+// When a bot msmsg carries a richResponseMessage, decode its base64/bytes
+// unifiedResponse.data IN PLACE: keep the raw `data` (row) and attach the decoded
+// JSON as `decodedData` plus the flattened markdown `text`. Idempotent — safe to
+// call more than once. Covers the plain, editedMessage and protocolMessage spots.
+const decodeUnifiedResponseInPlace = message => {
+	if (!message || typeof message !== 'object') return message
+	const bodies = [
+		message,
+		message.protocolMessage?.editedMessage,
+		message.editedMessage
+	].filter(Boolean)
+	for (const body of bodies) {
+		const ur = body.richResponseMessage?.unifiedResponse
+		if (ur && ur.data != null && ur.decodedData === undefined) {
+			ur.decodedData = parseUnifiedResponseData(ur.data)
+			const txt = textFromUnifiedResponse(ur.data)
+			if (txt != null) ur.text = txt
+		}
+	}
+	return message
+}
+
 module.exports = {
 	decodeDecryptedMsmsgMessage,
 	decryptMsmsgBotMessage,
+	parseUnifiedResponseData,
+	decodeUnifiedResponseInPlace,
 	textFromUnifiedResponse,
 	textFromRichResponse,
 	extractMetaAiText
