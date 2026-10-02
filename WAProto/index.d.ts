@@ -12979,6 +12979,103 @@ export namespace proto {
             VOICE_CHAT = 2
         }
 
+        /** Properties of a GuestInfo. */
+        interface IGuestInfo {
+
+            /** GuestInfo pushName */
+            pushName?: (string|null);
+        }
+
+        /** Represents a GuestInfo. */
+        class GuestInfo implements IGuestInfo {
+
+            /**
+             * Constructs a new GuestInfo.
+             * @param [properties] Properties to set
+             */
+            constructor(properties?: proto.CallLogRecord.IGuestInfo);
+
+            /** GuestInfo pushName. */
+            public pushName?: (string|null);
+
+            /**
+             * Creates a new GuestInfo instance using the specified properties.
+             * @param [properties] Properties to set
+             * @returns GuestInfo instance
+             */
+            public static create(properties?: proto.CallLogRecord.IGuestInfo): proto.CallLogRecord.GuestInfo;
+
+            /**
+             * Encodes the specified GuestInfo message. Does not implicitly {@link proto.CallLogRecord.GuestInfo.verify|verify} messages.
+             * @param message GuestInfo message or plain object to encode
+             * @param [writer] Writer to encode to
+             * @returns Writer
+             */
+            public static encode(message: proto.CallLogRecord.IGuestInfo, writer?: $protobuf.Writer): $protobuf.Writer;
+
+            /**
+             * Encodes the specified GuestInfo message, length delimited. Does not implicitly {@link proto.CallLogRecord.GuestInfo.verify|verify} messages.
+             * @param message GuestInfo message or plain object to encode
+             * @param [writer] Writer to encode to
+             * @returns Writer
+             */
+            public static encodeDelimited(message: proto.CallLogRecord.IGuestInfo, writer?: $protobuf.Writer): $protobuf.Writer;
+
+            /**
+             * Decodes a GuestInfo message from the specified reader or buffer.
+             * @param reader Reader or buffer to decode from
+             * @param [length] Message length if known beforehand
+             * @returns GuestInfo
+             * @throws {Error} If the payload is not a reader or valid buffer
+             * @throws {$protobuf.util.ProtocolError} If required fields are missing
+             */
+            public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): proto.CallLogRecord.GuestInfo;
+
+            /**
+             * Decodes a GuestInfo message from the specified reader or buffer, length delimited.
+             * @param reader Reader or buffer to decode from
+             * @returns GuestInfo
+             * @throws {Error} If the payload is not a reader or valid buffer
+             * @throws {$protobuf.util.ProtocolError} If required fields are missing
+             */
+            public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): proto.CallLogRecord.GuestInfo;
+
+            /**
+             * Verifies a GuestInfo message.
+             * @param message Plain object to verify
+             * @returns `null` if valid, otherwise the reason why it is not
+             */
+            public static verify(message: { [k: string]: any }): (string|null);
+
+            /**
+             * Creates a GuestInfo message from a plain object. Also converts values to their respective internal types.
+             * @param object Plain object
+             * @returns GuestInfo
+             */
+            public static fromObject(object: { [k: string]: any }): proto.CallLogRecord.GuestInfo;
+
+            /**
+             * Creates a plain object from a GuestInfo message. Also converts values to other types if specified.
+             * @param message GuestInfo
+             * @param [options] Conversion options
+             * @returns Plain object
+             */
+            public static toObject(message: proto.CallLogRecord.GuestInfo, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+            /**
+             * Converts this GuestInfo to JSON.
+             * @returns JSON object
+             */
+            public toJSON(): { [k: string]: any };
+
+            /**
+             * Gets the default type url for GuestInfo
+             * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+             * @returns The default type url
+             */
+            public static getTypeUrl(typeUrlPrefix?: string): string;
+        }
+
         /** Properties of a ParticipantInfo. */
         interface IParticipantInfo {
 
@@ -12987,6 +13084,9 @@ export namespace proto {
 
             /** ParticipantInfo callResult */
             callResult?: (proto.CallLogRecord.CallResult|null);
+
+            /** ParticipantInfo guestInfo */
+            guestInfo?: (proto.CallLogRecord.IGuestInfo|null);
         }
 
         /** Represents a ParticipantInfo. */
@@ -13003,6 +13103,9 @@ export namespace proto {
 
             /** ParticipantInfo callResult. */
             public callResult?: (proto.CallLogRecord.CallResult|null);
+
+            /** ParticipantInfo guestInfo. */
+            public guestInfo?: (proto.CallLogRecord.IGuestInfo|null);
 
             /**
              * Creates a new ParticipantInfo instance using the specified properties.
@@ -21820,6 +21923,9 @@ export namespace proto {
 
             /** ExternalAdReplyInfo containsCtwaFlowsAutoLabel */
             containsCtwaFlowsAutoLabel?: (boolean|null);
+
+            /** ExternalAdReplyInfo productId */
+            productId?: (string|null);
         }
 
         /** Represents an ExternalAdReplyInfo. */
@@ -21929,6 +22035,9 @@ export namespace proto {
 
             /** ExternalAdReplyInfo containsCtwaFlowsAutoLabel. */
             public containsCtwaFlowsAutoLabel?: (boolean|null);
+
+            /** ExternalAdReplyInfo productId. */
+            public productId?: (string|null);
 
             /**
              * Creates a new ExternalAdReplyInfo instance using the specified properties.
@@ -31878,6 +31987,118 @@ export namespace proto {
         public static getTypeUrl(typeUrlPrefix?: string): string;
     }
 
+    /** Properties of a KeyTransparencyCommand. */
+    interface IKeyTransparencyCommand {
+
+        /** KeyTransparencyCommand verifyKtForUserSignal */
+        verifyKtForUserSignal?: (proto.IVerifyKeyTransparencyForUserSignalCommand|null);
+
+        /** KeyTransparencyCommand verifyKtForUserMinos */
+        verifyKtForUserMinos?: (proto.IVerifyKeyTransparencyForUserMinosCommand|null);
+
+        /** KeyTransparencyCommand verifyKtForUserMandrake */
+        verifyKtForUserMandrake?: (proto.IVerifyKeyTransparencyForUserMandrakeCommand|null);
+    }
+
+    /** Represents a KeyTransparencyCommand. */
+    class KeyTransparencyCommand implements IKeyTransparencyCommand {
+
+        /**
+         * Constructs a new KeyTransparencyCommand.
+         * @param [properties] Properties to set
+         */
+        constructor(properties?: proto.IKeyTransparencyCommand);
+
+        /** KeyTransparencyCommand verifyKtForUserSignal. */
+        public verifyKtForUserSignal?: (proto.IVerifyKeyTransparencyForUserSignalCommand|null);
+
+        /** KeyTransparencyCommand verifyKtForUserMinos. */
+        public verifyKtForUserMinos?: (proto.IVerifyKeyTransparencyForUserMinosCommand|null);
+
+        /** KeyTransparencyCommand verifyKtForUserMandrake. */
+        public verifyKtForUserMandrake?: (proto.IVerifyKeyTransparencyForUserMandrakeCommand|null);
+
+        /** KeyTransparencyCommand commandInput. */
+        public commandInput?: ("verifyKtForUserSignal"|"verifyKtForUserMinos"|"verifyKtForUserMandrake");
+
+        /**
+         * Creates a new KeyTransparencyCommand instance using the specified properties.
+         * @param [properties] Properties to set
+         * @returns KeyTransparencyCommand instance
+         */
+        public static create(properties?: proto.IKeyTransparencyCommand): proto.KeyTransparencyCommand;
+
+        /**
+         * Encodes the specified KeyTransparencyCommand message. Does not implicitly {@link proto.KeyTransparencyCommand.verify|verify} messages.
+         * @param message KeyTransparencyCommand message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encode(message: proto.IKeyTransparencyCommand, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Encodes the specified KeyTransparencyCommand message, length delimited. Does not implicitly {@link proto.KeyTransparencyCommand.verify|verify} messages.
+         * @param message KeyTransparencyCommand message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encodeDelimited(message: proto.IKeyTransparencyCommand, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Decodes a KeyTransparencyCommand message from the specified reader or buffer.
+         * @param reader Reader or buffer to decode from
+         * @param [length] Message length if known beforehand
+         * @returns KeyTransparencyCommand
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): proto.KeyTransparencyCommand;
+
+        /**
+         * Decodes a KeyTransparencyCommand message from the specified reader or buffer, length delimited.
+         * @param reader Reader or buffer to decode from
+         * @returns KeyTransparencyCommand
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): proto.KeyTransparencyCommand;
+
+        /**
+         * Verifies a KeyTransparencyCommand message.
+         * @param message Plain object to verify
+         * @returns `null` if valid, otherwise the reason why it is not
+         */
+        public static verify(message: { [k: string]: any }): (string|null);
+
+        /**
+         * Creates a KeyTransparencyCommand message from a plain object. Also converts values to their respective internal types.
+         * @param object Plain object
+         * @returns KeyTransparencyCommand
+         */
+        public static fromObject(object: { [k: string]: any }): proto.KeyTransparencyCommand;
+
+        /**
+         * Creates a plain object from a KeyTransparencyCommand message. Also converts values to other types if specified.
+         * @param message KeyTransparencyCommand
+         * @param [options] Conversion options
+         * @returns Plain object
+         */
+        public static toObject(message: proto.KeyTransparencyCommand, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+        /**
+         * Converts this KeyTransparencyCommand to JSON.
+         * @returns JSON object
+         */
+        public toJSON(): { [k: string]: any };
+
+        /**
+         * Gets the default type url for KeyTransparencyCommand
+         * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+         * @returns The default type url
+         */
+        public static getTypeUrl(typeUrlPrefix?: string): string;
+    }
+
     /** Properties of a LIDMigrationMappingSyncMessage. */
     interface ILIDMigrationMappingSyncMessage {
 
@@ -33991,6 +34212,9 @@ export namespace proto {
 
         /** Message audioStickerMessage */
         audioStickerMessage?: (proto.Message.IFutureProofMessage|null);
+
+        /** Message botGroupParticipantMessage */
+        botGroupParticipantMessage?: (proto.Message.IFutureProofMessage|null);
     }
 
     /** Represents a Message. */
@@ -34340,6 +34564,9 @@ export namespace proto {
 
         /** Message audioStickerMessage. */
         public audioStickerMessage?: (proto.Message.IFutureProofMessage|null);
+
+        /** Message botGroupParticipantMessage. */
+        public botGroupParticipantMessage?: (proto.Message.IFutureProofMessage|null);
 
         /**
          * Creates a new Message instance using the specified properties.
@@ -58683,6 +58910,8 @@ export namespace proto {
         SHARED_DEVICE_ALLOWLIST_ACTION = 94,
         CONTACT_MANAGER_METADATA_ACTION = 95,
         BUSINESS_FOLDER_ACTIVATION_ACTION = 96,
+        GROUP_HISTORY_TOGGLE_ACTION = 97,
+        BB_PRO_PENDING_CUSTOMER_BASE_ACTION = 98,
         SHARE_OWN_PN = 10001,
         BUSINESS_BROADCAST_ACTION = 10002,
         AI_THREAD_DELETE_ACTION = 10003
@@ -67778,6 +68007,12 @@ export namespace proto {
 
         /** SyncActionValue businessFolderActivationAction */
         businessFolderActivationAction?: (proto.SyncActionValue.IBusinessFolderActivationAction|null);
+
+        /** SyncActionValue groupHistoryToggleAction */
+        groupHistoryToggleAction?: (proto.SyncActionValue.IGroupHistoryToggleAction|null);
+
+        /** SyncActionValue bbProPendingCustomerBaseAction */
+        bbProPendingCustomerBaseAction?: (proto.SyncActionValue.IBBProPendingCustomerBaseAction|null);
     }
 
     /** Represents a SyncActionValue. */
@@ -68049,6 +68284,12 @@ export namespace proto {
 
         /** SyncActionValue businessFolderActivationAction. */
         public businessFolderActivationAction?: (proto.SyncActionValue.IBusinessFolderActivationAction|null);
+
+        /** SyncActionValue groupHistoryToggleAction. */
+        public groupHistoryToggleAction?: (proto.SyncActionValue.IGroupHistoryToggleAction|null);
+
+        /** SyncActionValue bbProPendingCustomerBaseAction. */
+        public bbProPendingCustomerBaseAction?: (proto.SyncActionValue.IBBProPendingCustomerBaseAction|null);
 
         /**
          * Creates a new SyncActionValue instance using the specified properties.
@@ -68744,6 +68985,103 @@ export namespace proto {
                 CREATED = 1,
                 DELETED = 2
             }
+        }
+
+        /** Properties of a BBProPendingCustomerBaseAction. */
+        interface IBBProPendingCustomerBaseAction {
+
+            /** BBProPendingCustomerBaseAction pending */
+            pending?: (boolean|null);
+        }
+
+        /** Represents a BBProPendingCustomerBaseAction. */
+        class BBProPendingCustomerBaseAction implements IBBProPendingCustomerBaseAction {
+
+            /**
+             * Constructs a new BBProPendingCustomerBaseAction.
+             * @param [properties] Properties to set
+             */
+            constructor(properties?: proto.SyncActionValue.IBBProPendingCustomerBaseAction);
+
+            /** BBProPendingCustomerBaseAction pending. */
+            public pending?: (boolean|null);
+
+            /**
+             * Creates a new BBProPendingCustomerBaseAction instance using the specified properties.
+             * @param [properties] Properties to set
+             * @returns BBProPendingCustomerBaseAction instance
+             */
+            public static create(properties?: proto.SyncActionValue.IBBProPendingCustomerBaseAction): proto.SyncActionValue.BBProPendingCustomerBaseAction;
+
+            /**
+             * Encodes the specified BBProPendingCustomerBaseAction message. Does not implicitly {@link proto.SyncActionValue.BBProPendingCustomerBaseAction.verify|verify} messages.
+             * @param message BBProPendingCustomerBaseAction message or plain object to encode
+             * @param [writer] Writer to encode to
+             * @returns Writer
+             */
+            public static encode(message: proto.SyncActionValue.IBBProPendingCustomerBaseAction, writer?: $protobuf.Writer): $protobuf.Writer;
+
+            /**
+             * Encodes the specified BBProPendingCustomerBaseAction message, length delimited. Does not implicitly {@link proto.SyncActionValue.BBProPendingCustomerBaseAction.verify|verify} messages.
+             * @param message BBProPendingCustomerBaseAction message or plain object to encode
+             * @param [writer] Writer to encode to
+             * @returns Writer
+             */
+            public static encodeDelimited(message: proto.SyncActionValue.IBBProPendingCustomerBaseAction, writer?: $protobuf.Writer): $protobuf.Writer;
+
+            /**
+             * Decodes a BBProPendingCustomerBaseAction message from the specified reader or buffer.
+             * @param reader Reader or buffer to decode from
+             * @param [length] Message length if known beforehand
+             * @returns BBProPendingCustomerBaseAction
+             * @throws {Error} If the payload is not a reader or valid buffer
+             * @throws {$protobuf.util.ProtocolError} If required fields are missing
+             */
+            public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): proto.SyncActionValue.BBProPendingCustomerBaseAction;
+
+            /**
+             * Decodes a BBProPendingCustomerBaseAction message from the specified reader or buffer, length delimited.
+             * @param reader Reader or buffer to decode from
+             * @returns BBProPendingCustomerBaseAction
+             * @throws {Error} If the payload is not a reader or valid buffer
+             * @throws {$protobuf.util.ProtocolError} If required fields are missing
+             */
+            public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): proto.SyncActionValue.BBProPendingCustomerBaseAction;
+
+            /**
+             * Verifies a BBProPendingCustomerBaseAction message.
+             * @param message Plain object to verify
+             * @returns `null` if valid, otherwise the reason why it is not
+             */
+            public static verify(message: { [k: string]: any }): (string|null);
+
+            /**
+             * Creates a BBProPendingCustomerBaseAction message from a plain object. Also converts values to their respective internal types.
+             * @param object Plain object
+             * @returns BBProPendingCustomerBaseAction
+             */
+            public static fromObject(object: { [k: string]: any }): proto.SyncActionValue.BBProPendingCustomerBaseAction;
+
+            /**
+             * Creates a plain object from a BBProPendingCustomerBaseAction message. Also converts values to other types if specified.
+             * @param message BBProPendingCustomerBaseAction
+             * @param [options] Conversion options
+             * @returns Plain object
+             */
+            public static toObject(message: proto.SyncActionValue.BBProPendingCustomerBaseAction, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+            /**
+             * Converts this BBProPendingCustomerBaseAction to JSON.
+             * @returns JSON object
+             */
+            public toJSON(): { [k: string]: any };
+
+            /**
+             * Gets the default type url for BBProPendingCustomerBaseAction
+             * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+             * @returns The default type url
+             */
+            public static getTypeUrl(typeUrlPrefix?: string): string;
         }
 
         /** Properties of a BizAISettingsNudgeAction. */
@@ -71854,6 +72192,113 @@ export namespace proto {
                  * @returns The default type url
                  */
                 public static getTypeUrl(typeUrlPrefix?: string): string;
+            }
+        }
+
+        /** Properties of a GroupHistoryToggleAction. */
+        interface IGroupHistoryToggleAction {
+
+            /** GroupHistoryToggleAction groupHistoryToggleMode */
+            groupHistoryToggleMode?: (proto.SyncActionValue.GroupHistoryToggleAction.GroupHistoryToggleMode|null);
+        }
+
+        /** Represents a GroupHistoryToggleAction. */
+        class GroupHistoryToggleAction implements IGroupHistoryToggleAction {
+
+            /**
+             * Constructs a new GroupHistoryToggleAction.
+             * @param [properties] Properties to set
+             */
+            constructor(properties?: proto.SyncActionValue.IGroupHistoryToggleAction);
+
+            /** GroupHistoryToggleAction groupHistoryToggleMode. */
+            public groupHistoryToggleMode?: (proto.SyncActionValue.GroupHistoryToggleAction.GroupHistoryToggleMode|null);
+
+            /**
+             * Creates a new GroupHistoryToggleAction instance using the specified properties.
+             * @param [properties] Properties to set
+             * @returns GroupHistoryToggleAction instance
+             */
+            public static create(properties?: proto.SyncActionValue.IGroupHistoryToggleAction): proto.SyncActionValue.GroupHistoryToggleAction;
+
+            /**
+             * Encodes the specified GroupHistoryToggleAction message. Does not implicitly {@link proto.SyncActionValue.GroupHistoryToggleAction.verify|verify} messages.
+             * @param message GroupHistoryToggleAction message or plain object to encode
+             * @param [writer] Writer to encode to
+             * @returns Writer
+             */
+            public static encode(message: proto.SyncActionValue.IGroupHistoryToggleAction, writer?: $protobuf.Writer): $protobuf.Writer;
+
+            /**
+             * Encodes the specified GroupHistoryToggleAction message, length delimited. Does not implicitly {@link proto.SyncActionValue.GroupHistoryToggleAction.verify|verify} messages.
+             * @param message GroupHistoryToggleAction message or plain object to encode
+             * @param [writer] Writer to encode to
+             * @returns Writer
+             */
+            public static encodeDelimited(message: proto.SyncActionValue.IGroupHistoryToggleAction, writer?: $protobuf.Writer): $protobuf.Writer;
+
+            /**
+             * Decodes a GroupHistoryToggleAction message from the specified reader or buffer.
+             * @param reader Reader or buffer to decode from
+             * @param [length] Message length if known beforehand
+             * @returns GroupHistoryToggleAction
+             * @throws {Error} If the payload is not a reader or valid buffer
+             * @throws {$protobuf.util.ProtocolError} If required fields are missing
+             */
+            public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): proto.SyncActionValue.GroupHistoryToggleAction;
+
+            /**
+             * Decodes a GroupHistoryToggleAction message from the specified reader or buffer, length delimited.
+             * @param reader Reader or buffer to decode from
+             * @returns GroupHistoryToggleAction
+             * @throws {Error} If the payload is not a reader or valid buffer
+             * @throws {$protobuf.util.ProtocolError} If required fields are missing
+             */
+            public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): proto.SyncActionValue.GroupHistoryToggleAction;
+
+            /**
+             * Verifies a GroupHistoryToggleAction message.
+             * @param message Plain object to verify
+             * @returns `null` if valid, otherwise the reason why it is not
+             */
+            public static verify(message: { [k: string]: any }): (string|null);
+
+            /**
+             * Creates a GroupHistoryToggleAction message from a plain object. Also converts values to their respective internal types.
+             * @param object Plain object
+             * @returns GroupHistoryToggleAction
+             */
+            public static fromObject(object: { [k: string]: any }): proto.SyncActionValue.GroupHistoryToggleAction;
+
+            /**
+             * Creates a plain object from a GroupHistoryToggleAction message. Also converts values to other types if specified.
+             * @param message GroupHistoryToggleAction
+             * @param [options] Conversion options
+             * @returns Plain object
+             */
+            public static toObject(message: proto.SyncActionValue.GroupHistoryToggleAction, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+            /**
+             * Converts this GroupHistoryToggleAction to JSON.
+             * @returns JSON object
+             */
+            public toJSON(): { [k: string]: any };
+
+            /**
+             * Gets the default type url for GroupHistoryToggleAction
+             * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+             * @returns The default type url
+             */
+            public static getTypeUrl(typeUrlPrefix?: string): string;
+        }
+
+        namespace GroupHistoryToggleAction {
+
+            /** GroupHistoryToggleMode enum. */
+            enum GroupHistoryToggleMode {
+                GROUP_HISTORY_TOGGLE_MODE_UNKNOWN = 0,
+                GROUP_HISTORY_TOGGLE_MODE_ON = 1,
+                GROUP_HISTORY_TOGGLE_MODE_OFF = 2
             }
         }
 
@@ -81333,6 +81778,720 @@ export namespace proto {
              */
             public static getTypeUrl(typeUrlPrefix?: string): string;
         }
+    }
+
+    /** Properties of a VerifyKeyTransparencyForUserMandrakeCommand. */
+    interface IVerifyKeyTransparencyForUserMandrakeCommand {
+
+        /** VerifyKeyTransparencyForUserMandrakeCommand lookupResponse */
+        lookupResponse?: (Uint8Array|null);
+
+        /** VerifyKeyTransparencyForUserMandrakeCommand userFbid */
+        userFbid?: (number|Long|null);
+
+        /** VerifyKeyTransparencyForUserMandrakeCommand auditorSignatureTtlSecs */
+        auditorSignatureTtlSecs?: (number|Long|null);
+
+        /** VerifyKeyTransparencyForUserMandrakeCommand requestedAuditorList */
+        requestedAuditorList?: (string[]|null);
+
+        /** VerifyKeyTransparencyForUserMandrakeCommand isProductionBuild */
+        isProductionBuild?: (boolean|null);
+
+        /** VerifyKeyTransparencyForUserMandrakeCommand localMailboxHead */
+        localMailboxHead?: (Uint8Array|null);
+    }
+
+    /** Represents a VerifyKeyTransparencyForUserMandrakeCommand. */
+    class VerifyKeyTransparencyForUserMandrakeCommand implements IVerifyKeyTransparencyForUserMandrakeCommand {
+
+        /**
+         * Constructs a new VerifyKeyTransparencyForUserMandrakeCommand.
+         * @param [properties] Properties to set
+         */
+        constructor(properties?: proto.IVerifyKeyTransparencyForUserMandrakeCommand);
+
+        /** VerifyKeyTransparencyForUserMandrakeCommand lookupResponse. */
+        public lookupResponse?: (Uint8Array|null);
+
+        /** VerifyKeyTransparencyForUserMandrakeCommand userFbid. */
+        public userFbid?: (number|Long|null);
+
+        /** VerifyKeyTransparencyForUserMandrakeCommand auditorSignatureTtlSecs. */
+        public auditorSignatureTtlSecs?: (number|Long|null);
+
+        /** VerifyKeyTransparencyForUserMandrakeCommand requestedAuditorList. */
+        public requestedAuditorList: string[];
+
+        /** VerifyKeyTransparencyForUserMandrakeCommand isProductionBuild. */
+        public isProductionBuild?: (boolean|null);
+
+        /** VerifyKeyTransparencyForUserMandrakeCommand localMailboxHead. */
+        public localMailboxHead?: (Uint8Array|null);
+
+        /**
+         * Creates a new VerifyKeyTransparencyForUserMandrakeCommand instance using the specified properties.
+         * @param [properties] Properties to set
+         * @returns VerifyKeyTransparencyForUserMandrakeCommand instance
+         */
+        public static create(properties?: proto.IVerifyKeyTransparencyForUserMandrakeCommand): proto.VerifyKeyTransparencyForUserMandrakeCommand;
+
+        /**
+         * Encodes the specified VerifyKeyTransparencyForUserMandrakeCommand message. Does not implicitly {@link proto.VerifyKeyTransparencyForUserMandrakeCommand.verify|verify} messages.
+         * @param message VerifyKeyTransparencyForUserMandrakeCommand message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encode(message: proto.IVerifyKeyTransparencyForUserMandrakeCommand, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Encodes the specified VerifyKeyTransparencyForUserMandrakeCommand message, length delimited. Does not implicitly {@link proto.VerifyKeyTransparencyForUserMandrakeCommand.verify|verify} messages.
+         * @param message VerifyKeyTransparencyForUserMandrakeCommand message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encodeDelimited(message: proto.IVerifyKeyTransparencyForUserMandrakeCommand, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Decodes a VerifyKeyTransparencyForUserMandrakeCommand message from the specified reader or buffer.
+         * @param reader Reader or buffer to decode from
+         * @param [length] Message length if known beforehand
+         * @returns VerifyKeyTransparencyForUserMandrakeCommand
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): proto.VerifyKeyTransparencyForUserMandrakeCommand;
+
+        /**
+         * Decodes a VerifyKeyTransparencyForUserMandrakeCommand message from the specified reader or buffer, length delimited.
+         * @param reader Reader or buffer to decode from
+         * @returns VerifyKeyTransparencyForUserMandrakeCommand
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): proto.VerifyKeyTransparencyForUserMandrakeCommand;
+
+        /**
+         * Verifies a VerifyKeyTransparencyForUserMandrakeCommand message.
+         * @param message Plain object to verify
+         * @returns `null` if valid, otherwise the reason why it is not
+         */
+        public static verify(message: { [k: string]: any }): (string|null);
+
+        /**
+         * Creates a VerifyKeyTransparencyForUserMandrakeCommand message from a plain object. Also converts values to their respective internal types.
+         * @param object Plain object
+         * @returns VerifyKeyTransparencyForUserMandrakeCommand
+         */
+        public static fromObject(object: { [k: string]: any }): proto.VerifyKeyTransparencyForUserMandrakeCommand;
+
+        /**
+         * Creates a plain object from a VerifyKeyTransparencyForUserMandrakeCommand message. Also converts values to other types if specified.
+         * @param message VerifyKeyTransparencyForUserMandrakeCommand
+         * @param [options] Conversion options
+         * @returns Plain object
+         */
+        public static toObject(message: proto.VerifyKeyTransparencyForUserMandrakeCommand, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+        /**
+         * Converts this VerifyKeyTransparencyForUserMandrakeCommand to JSON.
+         * @returns JSON object
+         */
+        public toJSON(): { [k: string]: any };
+
+        /**
+         * Gets the default type url for VerifyKeyTransparencyForUserMandrakeCommand
+         * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+         * @returns The default type url
+         */
+        public static getTypeUrl(typeUrlPrefix?: string): string;
+    }
+
+    /** Properties of a VerifyKeyTransparencyForUserMandrakeResult. */
+    interface IVerifyKeyTransparencyForUserMandrakeResult {
+
+        /** VerifyKeyTransparencyForUserMandrakeResult success */
+        success?: (boolean|null);
+
+        /** VerifyKeyTransparencyForUserMandrakeResult error */
+        error?: (string|null);
+    }
+
+    /** Represents a VerifyKeyTransparencyForUserMandrakeResult. */
+    class VerifyKeyTransparencyForUserMandrakeResult implements IVerifyKeyTransparencyForUserMandrakeResult {
+
+        /**
+         * Constructs a new VerifyKeyTransparencyForUserMandrakeResult.
+         * @param [properties] Properties to set
+         */
+        constructor(properties?: proto.IVerifyKeyTransparencyForUserMandrakeResult);
+
+        /** VerifyKeyTransparencyForUserMandrakeResult success. */
+        public success?: (boolean|null);
+
+        /** VerifyKeyTransparencyForUserMandrakeResult error. */
+        public error?: (string|null);
+
+        /**
+         * Creates a new VerifyKeyTransparencyForUserMandrakeResult instance using the specified properties.
+         * @param [properties] Properties to set
+         * @returns VerifyKeyTransparencyForUserMandrakeResult instance
+         */
+        public static create(properties?: proto.IVerifyKeyTransparencyForUserMandrakeResult): proto.VerifyKeyTransparencyForUserMandrakeResult;
+
+        /**
+         * Encodes the specified VerifyKeyTransparencyForUserMandrakeResult message. Does not implicitly {@link proto.VerifyKeyTransparencyForUserMandrakeResult.verify|verify} messages.
+         * @param message VerifyKeyTransparencyForUserMandrakeResult message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encode(message: proto.IVerifyKeyTransparencyForUserMandrakeResult, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Encodes the specified VerifyKeyTransparencyForUserMandrakeResult message, length delimited. Does not implicitly {@link proto.VerifyKeyTransparencyForUserMandrakeResult.verify|verify} messages.
+         * @param message VerifyKeyTransparencyForUserMandrakeResult message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encodeDelimited(message: proto.IVerifyKeyTransparencyForUserMandrakeResult, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Decodes a VerifyKeyTransparencyForUserMandrakeResult message from the specified reader or buffer.
+         * @param reader Reader or buffer to decode from
+         * @param [length] Message length if known beforehand
+         * @returns VerifyKeyTransparencyForUserMandrakeResult
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): proto.VerifyKeyTransparencyForUserMandrakeResult;
+
+        /**
+         * Decodes a VerifyKeyTransparencyForUserMandrakeResult message from the specified reader or buffer, length delimited.
+         * @param reader Reader or buffer to decode from
+         * @returns VerifyKeyTransparencyForUserMandrakeResult
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): proto.VerifyKeyTransparencyForUserMandrakeResult;
+
+        /**
+         * Verifies a VerifyKeyTransparencyForUserMandrakeResult message.
+         * @param message Plain object to verify
+         * @returns `null` if valid, otherwise the reason why it is not
+         */
+        public static verify(message: { [k: string]: any }): (string|null);
+
+        /**
+         * Creates a VerifyKeyTransparencyForUserMandrakeResult message from a plain object. Also converts values to their respective internal types.
+         * @param object Plain object
+         * @returns VerifyKeyTransparencyForUserMandrakeResult
+         */
+        public static fromObject(object: { [k: string]: any }): proto.VerifyKeyTransparencyForUserMandrakeResult;
+
+        /**
+         * Creates a plain object from a VerifyKeyTransparencyForUserMandrakeResult message. Also converts values to other types if specified.
+         * @param message VerifyKeyTransparencyForUserMandrakeResult
+         * @param [options] Conversion options
+         * @returns Plain object
+         */
+        public static toObject(message: proto.VerifyKeyTransparencyForUserMandrakeResult, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+        /**
+         * Converts this VerifyKeyTransparencyForUserMandrakeResult to JSON.
+         * @returns JSON object
+         */
+        public toJSON(): { [k: string]: any };
+
+        /**
+         * Gets the default type url for VerifyKeyTransparencyForUserMandrakeResult
+         * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+         * @returns The default type url
+         */
+        public static getTypeUrl(typeUrlPrefix?: string): string;
+    }
+
+    /** Properties of a VerifyKeyTransparencyForUserMinosCommand. */
+    interface IVerifyKeyTransparencyForUserMinosCommand {
+
+        /** VerifyKeyTransparencyForUserMinosCommand lookupResponse */
+        lookupResponse?: (Uint8Array|null);
+
+        /** VerifyKeyTransparencyForUserMinosCommand userFbid */
+        userFbid?: (number|Long|null);
+
+        /** VerifyKeyTransparencyForUserMinosCommand auditorSignatureTtlSecs */
+        auditorSignatureTtlSecs?: (number|Long|null);
+
+        /** VerifyKeyTransparencyForUserMinosCommand requestedAuditorList */
+        requestedAuditorList?: (string[]|null);
+
+        /** VerifyKeyTransparencyForUserMinosCommand isProductionBuild */
+        isProductionBuild?: (boolean|null);
+
+        /** VerifyKeyTransparencyForUserMinosCommand localEpochHead */
+        localEpochHead?: (Uint8Array|null);
+    }
+
+    /** Represents a VerifyKeyTransparencyForUserMinosCommand. */
+    class VerifyKeyTransparencyForUserMinosCommand implements IVerifyKeyTransparencyForUserMinosCommand {
+
+        /**
+         * Constructs a new VerifyKeyTransparencyForUserMinosCommand.
+         * @param [properties] Properties to set
+         */
+        constructor(properties?: proto.IVerifyKeyTransparencyForUserMinosCommand);
+
+        /** VerifyKeyTransparencyForUserMinosCommand lookupResponse. */
+        public lookupResponse?: (Uint8Array|null);
+
+        /** VerifyKeyTransparencyForUserMinosCommand userFbid. */
+        public userFbid?: (number|Long|null);
+
+        /** VerifyKeyTransparencyForUserMinosCommand auditorSignatureTtlSecs. */
+        public auditorSignatureTtlSecs?: (number|Long|null);
+
+        /** VerifyKeyTransparencyForUserMinosCommand requestedAuditorList. */
+        public requestedAuditorList: string[];
+
+        /** VerifyKeyTransparencyForUserMinosCommand isProductionBuild. */
+        public isProductionBuild?: (boolean|null);
+
+        /** VerifyKeyTransparencyForUserMinosCommand localEpochHead. */
+        public localEpochHead?: (Uint8Array|null);
+
+        /**
+         * Creates a new VerifyKeyTransparencyForUserMinosCommand instance using the specified properties.
+         * @param [properties] Properties to set
+         * @returns VerifyKeyTransparencyForUserMinosCommand instance
+         */
+        public static create(properties?: proto.IVerifyKeyTransparencyForUserMinosCommand): proto.VerifyKeyTransparencyForUserMinosCommand;
+
+        /**
+         * Encodes the specified VerifyKeyTransparencyForUserMinosCommand message. Does not implicitly {@link proto.VerifyKeyTransparencyForUserMinosCommand.verify|verify} messages.
+         * @param message VerifyKeyTransparencyForUserMinosCommand message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encode(message: proto.IVerifyKeyTransparencyForUserMinosCommand, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Encodes the specified VerifyKeyTransparencyForUserMinosCommand message, length delimited. Does not implicitly {@link proto.VerifyKeyTransparencyForUserMinosCommand.verify|verify} messages.
+         * @param message VerifyKeyTransparencyForUserMinosCommand message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encodeDelimited(message: proto.IVerifyKeyTransparencyForUserMinosCommand, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Decodes a VerifyKeyTransparencyForUserMinosCommand message from the specified reader or buffer.
+         * @param reader Reader or buffer to decode from
+         * @param [length] Message length if known beforehand
+         * @returns VerifyKeyTransparencyForUserMinosCommand
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): proto.VerifyKeyTransparencyForUserMinosCommand;
+
+        /**
+         * Decodes a VerifyKeyTransparencyForUserMinosCommand message from the specified reader or buffer, length delimited.
+         * @param reader Reader or buffer to decode from
+         * @returns VerifyKeyTransparencyForUserMinosCommand
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): proto.VerifyKeyTransparencyForUserMinosCommand;
+
+        /**
+         * Verifies a VerifyKeyTransparencyForUserMinosCommand message.
+         * @param message Plain object to verify
+         * @returns `null` if valid, otherwise the reason why it is not
+         */
+        public static verify(message: { [k: string]: any }): (string|null);
+
+        /**
+         * Creates a VerifyKeyTransparencyForUserMinosCommand message from a plain object. Also converts values to their respective internal types.
+         * @param object Plain object
+         * @returns VerifyKeyTransparencyForUserMinosCommand
+         */
+        public static fromObject(object: { [k: string]: any }): proto.VerifyKeyTransparencyForUserMinosCommand;
+
+        /**
+         * Creates a plain object from a VerifyKeyTransparencyForUserMinosCommand message. Also converts values to other types if specified.
+         * @param message VerifyKeyTransparencyForUserMinosCommand
+         * @param [options] Conversion options
+         * @returns Plain object
+         */
+        public static toObject(message: proto.VerifyKeyTransparencyForUserMinosCommand, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+        /**
+         * Converts this VerifyKeyTransparencyForUserMinosCommand to JSON.
+         * @returns JSON object
+         */
+        public toJSON(): { [k: string]: any };
+
+        /**
+         * Gets the default type url for VerifyKeyTransparencyForUserMinosCommand
+         * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+         * @returns The default type url
+         */
+        public static getTypeUrl(typeUrlPrefix?: string): string;
+    }
+
+    /** Properties of a VerifyKeyTransparencyForUserMinosResult. */
+    interface IVerifyKeyTransparencyForUserMinosResult {
+
+        /** VerifyKeyTransparencyForUserMinosResult success */
+        success?: (boolean|null);
+
+        /** VerifyKeyTransparencyForUserMinosResult error */
+        error?: (string|null);
+    }
+
+    /** Represents a VerifyKeyTransparencyForUserMinosResult. */
+    class VerifyKeyTransparencyForUserMinosResult implements IVerifyKeyTransparencyForUserMinosResult {
+
+        /**
+         * Constructs a new VerifyKeyTransparencyForUserMinosResult.
+         * @param [properties] Properties to set
+         */
+        constructor(properties?: proto.IVerifyKeyTransparencyForUserMinosResult);
+
+        /** VerifyKeyTransparencyForUserMinosResult success. */
+        public success?: (boolean|null);
+
+        /** VerifyKeyTransparencyForUserMinosResult error. */
+        public error?: (string|null);
+
+        /**
+         * Creates a new VerifyKeyTransparencyForUserMinosResult instance using the specified properties.
+         * @param [properties] Properties to set
+         * @returns VerifyKeyTransparencyForUserMinosResult instance
+         */
+        public static create(properties?: proto.IVerifyKeyTransparencyForUserMinosResult): proto.VerifyKeyTransparencyForUserMinosResult;
+
+        /**
+         * Encodes the specified VerifyKeyTransparencyForUserMinosResult message. Does not implicitly {@link proto.VerifyKeyTransparencyForUserMinosResult.verify|verify} messages.
+         * @param message VerifyKeyTransparencyForUserMinosResult message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encode(message: proto.IVerifyKeyTransparencyForUserMinosResult, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Encodes the specified VerifyKeyTransparencyForUserMinosResult message, length delimited. Does not implicitly {@link proto.VerifyKeyTransparencyForUserMinosResult.verify|verify} messages.
+         * @param message VerifyKeyTransparencyForUserMinosResult message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encodeDelimited(message: proto.IVerifyKeyTransparencyForUserMinosResult, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Decodes a VerifyKeyTransparencyForUserMinosResult message from the specified reader or buffer.
+         * @param reader Reader or buffer to decode from
+         * @param [length] Message length if known beforehand
+         * @returns VerifyKeyTransparencyForUserMinosResult
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): proto.VerifyKeyTransparencyForUserMinosResult;
+
+        /**
+         * Decodes a VerifyKeyTransparencyForUserMinosResult message from the specified reader or buffer, length delimited.
+         * @param reader Reader or buffer to decode from
+         * @returns VerifyKeyTransparencyForUserMinosResult
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): proto.VerifyKeyTransparencyForUserMinosResult;
+
+        /**
+         * Verifies a VerifyKeyTransparencyForUserMinosResult message.
+         * @param message Plain object to verify
+         * @returns `null` if valid, otherwise the reason why it is not
+         */
+        public static verify(message: { [k: string]: any }): (string|null);
+
+        /**
+         * Creates a VerifyKeyTransparencyForUserMinosResult message from a plain object. Also converts values to their respective internal types.
+         * @param object Plain object
+         * @returns VerifyKeyTransparencyForUserMinosResult
+         */
+        public static fromObject(object: { [k: string]: any }): proto.VerifyKeyTransparencyForUserMinosResult;
+
+        /**
+         * Creates a plain object from a VerifyKeyTransparencyForUserMinosResult message. Also converts values to other types if specified.
+         * @param message VerifyKeyTransparencyForUserMinosResult
+         * @param [options] Conversion options
+         * @returns Plain object
+         */
+        public static toObject(message: proto.VerifyKeyTransparencyForUserMinosResult, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+        /**
+         * Converts this VerifyKeyTransparencyForUserMinosResult to JSON.
+         * @returns JSON object
+         */
+        public toJSON(): { [k: string]: any };
+
+        /**
+         * Gets the default type url for VerifyKeyTransparencyForUserMinosResult
+         * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+         * @returns The default type url
+         */
+        public static getTypeUrl(typeUrlPrefix?: string): string;
+    }
+
+    /** Properties of a VerifyKeyTransparencyForUserSignalCommand. */
+    interface IVerifyKeyTransparencyForUserSignalCommand {
+
+        /** VerifyKeyTransparencyForUserSignalCommand rootHash */
+        rootHash?: (Uint8Array|null);
+
+        /** VerifyKeyTransparencyForUserSignalCommand currentEpoch */
+        currentEpoch?: (number|Long|null);
+
+        /** VerifyKeyTransparencyForUserSignalCommand userFbid */
+        userFbid?: (number|Long|null);
+
+        /** VerifyKeyTransparencyForUserSignalCommand historyProof */
+        historyProof?: (Uint8Array|null);
+
+        /** VerifyKeyTransparencyForUserSignalCommand metaSignature */
+        metaSignature?: (Uint8Array|null);
+
+        /** VerifyKeyTransparencyForUserSignalCommand cloudflareSignature */
+        cloudflareSignature?: (Uint8Array|null);
+
+        /** VerifyKeyTransparencyForUserSignalCommand cloudflareMessage */
+        cloudflareMessage?: (Uint8Array|null);
+
+        /** VerifyKeyTransparencyForUserSignalCommand cloudflarePubKey */
+        cloudflarePubKey?: (Uint8Array|null);
+
+        /** VerifyKeyTransparencyForUserSignalCommand auditorSignatureTtlSecs */
+        auditorSignatureTtlSecs?: (number|Long|null);
+
+        /** VerifyKeyTransparencyForUserSignalCommand localDeviceKeys */
+        localDeviceKeys?: ({ [k: string]: Uint8Array }|null);
+    }
+
+    /** Represents a VerifyKeyTransparencyForUserSignalCommand. */
+    class VerifyKeyTransparencyForUserSignalCommand implements IVerifyKeyTransparencyForUserSignalCommand {
+
+        /**
+         * Constructs a new VerifyKeyTransparencyForUserSignalCommand.
+         * @param [properties] Properties to set
+         */
+        constructor(properties?: proto.IVerifyKeyTransparencyForUserSignalCommand);
+
+        /** VerifyKeyTransparencyForUserSignalCommand rootHash. */
+        public rootHash?: (Uint8Array|null);
+
+        /** VerifyKeyTransparencyForUserSignalCommand currentEpoch. */
+        public currentEpoch?: (number|Long|null);
+
+        /** VerifyKeyTransparencyForUserSignalCommand userFbid. */
+        public userFbid?: (number|Long|null);
+
+        /** VerifyKeyTransparencyForUserSignalCommand historyProof. */
+        public historyProof?: (Uint8Array|null);
+
+        /** VerifyKeyTransparencyForUserSignalCommand metaSignature. */
+        public metaSignature?: (Uint8Array|null);
+
+        /** VerifyKeyTransparencyForUserSignalCommand cloudflareSignature. */
+        public cloudflareSignature?: (Uint8Array|null);
+
+        /** VerifyKeyTransparencyForUserSignalCommand cloudflareMessage. */
+        public cloudflareMessage?: (Uint8Array|null);
+
+        /** VerifyKeyTransparencyForUserSignalCommand cloudflarePubKey. */
+        public cloudflarePubKey?: (Uint8Array|null);
+
+        /** VerifyKeyTransparencyForUserSignalCommand auditorSignatureTtlSecs. */
+        public auditorSignatureTtlSecs?: (number|Long|null);
+
+        /** VerifyKeyTransparencyForUserSignalCommand localDeviceKeys. */
+        public localDeviceKeys: { [k: string]: Uint8Array };
+
+        /**
+         * Creates a new VerifyKeyTransparencyForUserSignalCommand instance using the specified properties.
+         * @param [properties] Properties to set
+         * @returns VerifyKeyTransparencyForUserSignalCommand instance
+         */
+        public static create(properties?: proto.IVerifyKeyTransparencyForUserSignalCommand): proto.VerifyKeyTransparencyForUserSignalCommand;
+
+        /**
+         * Encodes the specified VerifyKeyTransparencyForUserSignalCommand message. Does not implicitly {@link proto.VerifyKeyTransparencyForUserSignalCommand.verify|verify} messages.
+         * @param message VerifyKeyTransparencyForUserSignalCommand message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encode(message: proto.IVerifyKeyTransparencyForUserSignalCommand, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Encodes the specified VerifyKeyTransparencyForUserSignalCommand message, length delimited. Does not implicitly {@link proto.VerifyKeyTransparencyForUserSignalCommand.verify|verify} messages.
+         * @param message VerifyKeyTransparencyForUserSignalCommand message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encodeDelimited(message: proto.IVerifyKeyTransparencyForUserSignalCommand, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Decodes a VerifyKeyTransparencyForUserSignalCommand message from the specified reader or buffer.
+         * @param reader Reader or buffer to decode from
+         * @param [length] Message length if known beforehand
+         * @returns VerifyKeyTransparencyForUserSignalCommand
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): proto.VerifyKeyTransparencyForUserSignalCommand;
+
+        /**
+         * Decodes a VerifyKeyTransparencyForUserSignalCommand message from the specified reader or buffer, length delimited.
+         * @param reader Reader or buffer to decode from
+         * @returns VerifyKeyTransparencyForUserSignalCommand
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): proto.VerifyKeyTransparencyForUserSignalCommand;
+
+        /**
+         * Verifies a VerifyKeyTransparencyForUserSignalCommand message.
+         * @param message Plain object to verify
+         * @returns `null` if valid, otherwise the reason why it is not
+         */
+        public static verify(message: { [k: string]: any }): (string|null);
+
+        /**
+         * Creates a VerifyKeyTransparencyForUserSignalCommand message from a plain object. Also converts values to their respective internal types.
+         * @param object Plain object
+         * @returns VerifyKeyTransparencyForUserSignalCommand
+         */
+        public static fromObject(object: { [k: string]: any }): proto.VerifyKeyTransparencyForUserSignalCommand;
+
+        /**
+         * Creates a plain object from a VerifyKeyTransparencyForUserSignalCommand message. Also converts values to other types if specified.
+         * @param message VerifyKeyTransparencyForUserSignalCommand
+         * @param [options] Conversion options
+         * @returns Plain object
+         */
+        public static toObject(message: proto.VerifyKeyTransparencyForUserSignalCommand, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+        /**
+         * Converts this VerifyKeyTransparencyForUserSignalCommand to JSON.
+         * @returns JSON object
+         */
+        public toJSON(): { [k: string]: any };
+
+        /**
+         * Gets the default type url for VerifyKeyTransparencyForUserSignalCommand
+         * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+         * @returns The default type url
+         */
+        public static getTypeUrl(typeUrlPrefix?: string): string;
+    }
+
+    /** Properties of a VerifyKeyTransparencyForUserSignalResult. */
+    interface IVerifyKeyTransparencyForUserSignalResult {
+
+        /** VerifyKeyTransparencyForUserSignalResult success */
+        success?: (boolean|null);
+
+        /** VerifyKeyTransparencyForUserSignalResult error */
+        error?: (string|null);
+    }
+
+    /** Represents a VerifyKeyTransparencyForUserSignalResult. */
+    class VerifyKeyTransparencyForUserSignalResult implements IVerifyKeyTransparencyForUserSignalResult {
+
+        /**
+         * Constructs a new VerifyKeyTransparencyForUserSignalResult.
+         * @param [properties] Properties to set
+         */
+        constructor(properties?: proto.IVerifyKeyTransparencyForUserSignalResult);
+
+        /** VerifyKeyTransparencyForUserSignalResult success. */
+        public success?: (boolean|null);
+
+        /** VerifyKeyTransparencyForUserSignalResult error. */
+        public error?: (string|null);
+
+        /**
+         * Creates a new VerifyKeyTransparencyForUserSignalResult instance using the specified properties.
+         * @param [properties] Properties to set
+         * @returns VerifyKeyTransparencyForUserSignalResult instance
+         */
+        public static create(properties?: proto.IVerifyKeyTransparencyForUserSignalResult): proto.VerifyKeyTransparencyForUserSignalResult;
+
+        /**
+         * Encodes the specified VerifyKeyTransparencyForUserSignalResult message. Does not implicitly {@link proto.VerifyKeyTransparencyForUserSignalResult.verify|verify} messages.
+         * @param message VerifyKeyTransparencyForUserSignalResult message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encode(message: proto.IVerifyKeyTransparencyForUserSignalResult, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Encodes the specified VerifyKeyTransparencyForUserSignalResult message, length delimited. Does not implicitly {@link proto.VerifyKeyTransparencyForUserSignalResult.verify|verify} messages.
+         * @param message VerifyKeyTransparencyForUserSignalResult message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encodeDelimited(message: proto.IVerifyKeyTransparencyForUserSignalResult, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Decodes a VerifyKeyTransparencyForUserSignalResult message from the specified reader or buffer.
+         * @param reader Reader or buffer to decode from
+         * @param [length] Message length if known beforehand
+         * @returns VerifyKeyTransparencyForUserSignalResult
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): proto.VerifyKeyTransparencyForUserSignalResult;
+
+        /**
+         * Decodes a VerifyKeyTransparencyForUserSignalResult message from the specified reader or buffer, length delimited.
+         * @param reader Reader or buffer to decode from
+         * @returns VerifyKeyTransparencyForUserSignalResult
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): proto.VerifyKeyTransparencyForUserSignalResult;
+
+        /**
+         * Verifies a VerifyKeyTransparencyForUserSignalResult message.
+         * @param message Plain object to verify
+         * @returns `null` if valid, otherwise the reason why it is not
+         */
+        public static verify(message: { [k: string]: any }): (string|null);
+
+        /**
+         * Creates a VerifyKeyTransparencyForUserSignalResult message from a plain object. Also converts values to their respective internal types.
+         * @param object Plain object
+         * @returns VerifyKeyTransparencyForUserSignalResult
+         */
+        public static fromObject(object: { [k: string]: any }): proto.VerifyKeyTransparencyForUserSignalResult;
+
+        /**
+         * Creates a plain object from a VerifyKeyTransparencyForUserSignalResult message. Also converts values to other types if specified.
+         * @param message VerifyKeyTransparencyForUserSignalResult
+         * @param [options] Conversion options
+         * @returns Plain object
+         */
+        public static toObject(message: proto.VerifyKeyTransparencyForUserSignalResult, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+        /**
+         * Converts this VerifyKeyTransparencyForUserSignalResult to JSON.
+         * @returns JSON object
+         */
+        public toJSON(): { [k: string]: any };
+
+        /**
+         * Gets the default type url for VerifyKeyTransparencyForUserSignalResult
+         * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+         * @returns The default type url
+         */
+        public static getTypeUrl(typeUrlPrefix?: string): string;
     }
 
     /** Properties of a VirtualDeviceOutput. */

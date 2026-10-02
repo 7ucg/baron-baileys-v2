@@ -37662,6 +37662,224 @@ $root.proto = (function() {
             return values;
         })();
 
+        CallLogRecord.GuestInfo = (function() {
+
+            /**
+             * Properties of a GuestInfo.
+             * @memberof proto.CallLogRecord
+             * @interface IGuestInfo
+             * @property {string|null} [pushName] GuestInfo pushName
+             */
+
+            /**
+             * Constructs a new GuestInfo.
+             * @memberof proto.CallLogRecord
+             * @classdesc Represents a GuestInfo.
+             * @implements IGuestInfo
+             * @constructor
+             * @param {proto.CallLogRecord.IGuestInfo=} [properties] Properties to set
+             */
+            function GuestInfo(properties) {
+                if (properties)
+                    for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                        if (properties[keys[i]] != null)
+                            this[keys[i]] = properties[keys[i]];
+            }
+
+            /**
+             * GuestInfo pushName.
+             * @member {string|null|undefined} pushName
+             * @memberof proto.CallLogRecord.GuestInfo
+             * @instance
+             */
+            GuestInfo.prototype.pushName = null;
+
+            // OneOf field names bound to virtual getters and setters
+            var $oneOfFields;
+
+            // Virtual OneOf for proto3 optional field
+            Object.defineProperty(GuestInfo.prototype, "_pushName", {
+                get: $util.oneOfGetter($oneOfFields = ["pushName"]),
+                set: $util.oneOfSetter($oneOfFields)
+            });
+
+            /**
+             * Creates a new GuestInfo instance using the specified properties.
+             * @function create
+             * @memberof proto.CallLogRecord.GuestInfo
+             * @static
+             * @param {proto.CallLogRecord.IGuestInfo=} [properties] Properties to set
+             * @returns {proto.CallLogRecord.GuestInfo} GuestInfo instance
+             */
+            GuestInfo.create = function create(properties) {
+                return new GuestInfo(properties);
+            };
+
+            /**
+             * Encodes the specified GuestInfo message. Does not implicitly {@link proto.CallLogRecord.GuestInfo.verify|verify} messages.
+             * @function encode
+             * @memberof proto.CallLogRecord.GuestInfo
+             * @static
+             * @param {proto.CallLogRecord.IGuestInfo} message GuestInfo message or plain object to encode
+             * @param {$protobuf.Writer} [writer] Writer to encode to
+             * @returns {$protobuf.Writer} Writer
+             */
+            GuestInfo.encode = function encode(message, writer) {
+                if (!writer)
+                    writer = $Writer.create();
+                if (message.pushName != null && Object.hasOwnProperty.call(message, "pushName"))
+                    writer.uint32(/* id 1, wireType 2 =*/10).string(message.pushName);
+                return writer;
+            };
+
+            /**
+             * Encodes the specified GuestInfo message, length delimited. Does not implicitly {@link proto.CallLogRecord.GuestInfo.verify|verify} messages.
+             * @function encodeDelimited
+             * @memberof proto.CallLogRecord.GuestInfo
+             * @static
+             * @param {proto.CallLogRecord.IGuestInfo} message GuestInfo message or plain object to encode
+             * @param {$protobuf.Writer} [writer] Writer to encode to
+             * @returns {$protobuf.Writer} Writer
+             */
+            GuestInfo.encodeDelimited = function encodeDelimited(message, writer) {
+                return this.encode(message, writer).ldelim();
+            };
+
+            /**
+             * Decodes a GuestInfo message from the specified reader or buffer.
+             * @function decode
+             * @memberof proto.CallLogRecord.GuestInfo
+             * @static
+             * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+             * @param {number} [length] Message length if known beforehand
+             * @returns {proto.CallLogRecord.GuestInfo} GuestInfo
+             * @throws {Error} If the payload is not a reader or valid buffer
+             * @throws {$protobuf.util.ProtocolError} If required fields are missing
+             */
+            GuestInfo.decode = function decode(reader, length, error) {
+                if (!(reader instanceof $Reader))
+                    reader = $Reader.create(reader);
+                var end = length === undefined ? reader.len : reader.pos + length, message = new $root.proto.CallLogRecord.GuestInfo();
+                while (reader.pos < end) {
+                    var tag = reader.uint32();
+                    if (tag === error)
+                        break;
+                    switch (tag >>> 3) {
+                    case 1: {
+                            message.pushName = reader.string();
+                            break;
+                        }
+                    default:
+                        reader.skipType(tag & 7);
+                        break;
+                    }
+                }
+                return message;
+            };
+
+            /**
+             * Decodes a GuestInfo message from the specified reader or buffer, length delimited.
+             * @function decodeDelimited
+             * @memberof proto.CallLogRecord.GuestInfo
+             * @static
+             * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+             * @returns {proto.CallLogRecord.GuestInfo} GuestInfo
+             * @throws {Error} If the payload is not a reader or valid buffer
+             * @throws {$protobuf.util.ProtocolError} If required fields are missing
+             */
+            GuestInfo.decodeDelimited = function decodeDelimited(reader) {
+                if (!(reader instanceof $Reader))
+                    reader = new $Reader(reader);
+                return this.decode(reader, reader.uint32());
+            };
+
+            /**
+             * Verifies a GuestInfo message.
+             * @function verify
+             * @memberof proto.CallLogRecord.GuestInfo
+             * @static
+             * @param {Object.<string,*>} message Plain object to verify
+             * @returns {string|null} `null` if valid, otherwise the reason why it is not
+             */
+            GuestInfo.verify = function verify(message) {
+                if (typeof message !== "object" || message === null)
+                    return "object expected";
+                var properties = {};
+                if (message.pushName != null && message.hasOwnProperty("pushName")) {
+                    properties._pushName = 1;
+                    if (!$util.isString(message.pushName))
+                        return "pushName: string expected";
+                }
+                return null;
+            };
+
+            /**
+             * Creates a GuestInfo message from a plain object. Also converts values to their respective internal types.
+             * @function fromObject
+             * @memberof proto.CallLogRecord.GuestInfo
+             * @static
+             * @param {Object.<string,*>} object Plain object
+             * @returns {proto.CallLogRecord.GuestInfo} GuestInfo
+             */
+            GuestInfo.fromObject = function fromObject(object) {
+                if (object instanceof $root.proto.CallLogRecord.GuestInfo)
+                    return object;
+                var message = new $root.proto.CallLogRecord.GuestInfo();
+                if (object.pushName != null)
+                    message.pushName = String(object.pushName);
+                return message;
+            };
+
+            /**
+             * Creates a plain object from a GuestInfo message. Also converts values to other types if specified.
+             * @function toObject
+             * @memberof proto.CallLogRecord.GuestInfo
+             * @static
+             * @param {proto.CallLogRecord.GuestInfo} message GuestInfo
+             * @param {$protobuf.IConversionOptions} [options] Conversion options
+             * @returns {Object.<string,*>} Plain object
+             */
+            GuestInfo.toObject = function toObject(message, options) {
+                if (!options)
+                    options = {};
+                var object = {};
+                if (message.pushName != null && message.hasOwnProperty("pushName")) {
+                    object.pushName = message.pushName;
+                    if (options.oneofs)
+                        object._pushName = "pushName";
+                }
+                return object;
+            };
+
+            /**
+             * Converts this GuestInfo to JSON.
+             * @function toJSON
+             * @memberof proto.CallLogRecord.GuestInfo
+             * @instance
+             * @returns {Object.<string,*>} JSON object
+             */
+            GuestInfo.prototype.toJSON = function toJSON() {
+                return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+            };
+
+            /**
+             * Gets the default type url for GuestInfo
+             * @function getTypeUrl
+             * @memberof proto.CallLogRecord.GuestInfo
+             * @static
+             * @param {string} [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+             * @returns {string} The default type url
+             */
+            GuestInfo.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
+                if (typeUrlPrefix === undefined) {
+                    typeUrlPrefix = "type.googleapis.com";
+                }
+                return typeUrlPrefix + "/proto.CallLogRecord.GuestInfo";
+            };
+
+            return GuestInfo;
+        })();
+
         CallLogRecord.ParticipantInfo = (function() {
 
             /**
@@ -37670,6 +37888,7 @@ $root.proto = (function() {
              * @interface IParticipantInfo
              * @property {string|null} [userJid] ParticipantInfo userJid
              * @property {proto.CallLogRecord.CallResult|null} [callResult] ParticipantInfo callResult
+             * @property {proto.CallLogRecord.IGuestInfo|null} [guestInfo] ParticipantInfo guestInfo
              */
 
             /**
@@ -37703,6 +37922,14 @@ $root.proto = (function() {
              */
             ParticipantInfo.prototype.callResult = null;
 
+            /**
+             * ParticipantInfo guestInfo.
+             * @member {proto.CallLogRecord.IGuestInfo|null|undefined} guestInfo
+             * @memberof proto.CallLogRecord.ParticipantInfo
+             * @instance
+             */
+            ParticipantInfo.prototype.guestInfo = null;
+
             // OneOf field names bound to virtual getters and setters
             var $oneOfFields;
 
@@ -37715,6 +37942,12 @@ $root.proto = (function() {
             // Virtual OneOf for proto3 optional field
             Object.defineProperty(ParticipantInfo.prototype, "_callResult", {
                 get: $util.oneOfGetter($oneOfFields = ["callResult"]),
+                set: $util.oneOfSetter($oneOfFields)
+            });
+
+            // Virtual OneOf for proto3 optional field
+            Object.defineProperty(ParticipantInfo.prototype, "_guestInfo", {
+                get: $util.oneOfGetter($oneOfFields = ["guestInfo"]),
                 set: $util.oneOfSetter($oneOfFields)
             });
 
@@ -37746,6 +37979,8 @@ $root.proto = (function() {
                     writer.uint32(/* id 1, wireType 2 =*/10).string(message.userJid);
                 if (message.callResult != null && Object.hasOwnProperty.call(message, "callResult"))
                     writer.uint32(/* id 2, wireType 0 =*/16).int32(message.callResult);
+                if (message.guestInfo != null && Object.hasOwnProperty.call(message, "guestInfo"))
+                    $root.proto.CallLogRecord.GuestInfo.encode(message.guestInfo, writer.uint32(/* id 3, wireType 2 =*/26).fork()).ldelim();
                 return writer;
             };
 
@@ -37788,6 +38023,10 @@ $root.proto = (function() {
                         }
                     case 2: {
                             message.callResult = reader.int32();
+                            break;
+                        }
+                    case 3: {
+                            message.guestInfo = $root.proto.CallLogRecord.GuestInfo.decode(reader, reader.uint32());
                             break;
                         }
                     default:
@@ -37848,6 +38087,14 @@ $root.proto = (function() {
                     case 9:
                     case 10:
                         break;
+                    }
+                }
+                if (message.guestInfo != null && message.hasOwnProperty("guestInfo")) {
+                    properties._guestInfo = 1;
+                    {
+                        var error = $root.proto.CallLogRecord.GuestInfo.verify(message.guestInfo);
+                        if (error)
+                            return "guestInfo." + error;
                     }
                 }
                 return null;
@@ -37919,6 +38166,11 @@ $root.proto = (function() {
                     message.callResult = 10;
                     break;
                 }
+                if (object.guestInfo != null) {
+                    if (typeof object.guestInfo !== "object")
+                        throw TypeError(".proto.CallLogRecord.ParticipantInfo.guestInfo: object expected");
+                    message.guestInfo = $root.proto.CallLogRecord.GuestInfo.fromObject(object.guestInfo);
+                }
                 return message;
             };
 
@@ -37944,6 +38196,11 @@ $root.proto = (function() {
                     object.callResult = options.enums === String ? $root.proto.CallLogRecord.CallResult[message.callResult] === undefined ? message.callResult : $root.proto.CallLogRecord.CallResult[message.callResult] : message.callResult;
                     if (options.oneofs)
                         object._callResult = "callResult";
+                }
+                if (message.guestInfo != null && message.hasOwnProperty("guestInfo")) {
+                    object.guestInfo = $root.proto.CallLogRecord.GuestInfo.toObject(message.guestInfo, options);
+                    if (options.oneofs)
+                        object._guestInfo = "guestInfo";
                 }
                 return object;
             };
@@ -64937,6 +65194,7 @@ $root.proto = (function() {
              * @property {number|null} [agmSubtitleStrategy] ExternalAdReplyInfo agmSubtitleStrategy
              * @property {number|null} [agmHeaderInteractionStrategy] ExternalAdReplyInfo agmHeaderInteractionStrategy
              * @property {boolean|null} [containsCtwaFlowsAutoLabel] ExternalAdReplyInfo containsCtwaFlowsAutoLabel
+             * @property {string|null} [productId] ExternalAdReplyInfo productId
              */
 
             /**
@@ -65218,6 +65476,14 @@ $root.proto = (function() {
              */
             ExternalAdReplyInfo.prototype.containsCtwaFlowsAutoLabel = null;
 
+            /**
+             * ExternalAdReplyInfo productId.
+             * @member {string|null|undefined} productId
+             * @memberof proto.ContextInfo.ExternalAdReplyInfo
+             * @instance
+             */
+            ExternalAdReplyInfo.prototype.productId = null;
+
             // OneOf field names bound to virtual getters and setters
             var $oneOfFields;
 
@@ -65419,6 +65685,12 @@ $root.proto = (function() {
                 set: $util.oneOfSetter($oneOfFields)
             });
 
+            // Virtual OneOf for proto3 optional field
+            Object.defineProperty(ExternalAdReplyInfo.prototype, "_productId", {
+                get: $util.oneOfGetter($oneOfFields = ["productId"]),
+                set: $util.oneOfSetter($oneOfFields)
+            });
+
             /**
              * Creates a new ExternalAdReplyInfo instance using the specified properties.
              * @function create
@@ -65509,6 +65781,8 @@ $root.proto = (function() {
                     writer.uint32(/* id 32, wireType 0 =*/256).int32(message.agmHeaderInteractionStrategy);
                 if (message.containsCtwaFlowsAutoLabel != null && Object.hasOwnProperty.call(message, "containsCtwaFlowsAutoLabel"))
                     writer.uint32(/* id 33, wireType 0 =*/264).bool(message.containsCtwaFlowsAutoLabel);
+                if (message.productId != null && Object.hasOwnProperty.call(message, "productId"))
+                    writer.uint32(/* id 34, wireType 2 =*/274).string(message.productId);
                 return writer;
             };
 
@@ -65675,6 +65949,10 @@ $root.proto = (function() {
                         }
                     case 33: {
                             message.containsCtwaFlowsAutoLabel = reader.bool();
+                            break;
+                        }
+                    case 34: {
+                            message.productId = reader.string();
                             break;
                         }
                     default:
@@ -65889,6 +66167,11 @@ $root.proto = (function() {
                     if (typeof message.containsCtwaFlowsAutoLabel !== "boolean")
                         return "containsCtwaFlowsAutoLabel: boolean expected";
                 }
+                if (message.productId != null && message.hasOwnProperty("productId")) {
+                    properties._productId = 1;
+                    if (!$util.isString(message.productId))
+                        return "productId: string expected";
+                }
                 return null;
             };
 
@@ -66005,6 +66288,8 @@ $root.proto = (function() {
                     message.agmHeaderInteractionStrategy = object.agmHeaderInteractionStrategy | 0;
                 if (object.containsCtwaFlowsAutoLabel != null)
                     message.containsCtwaFlowsAutoLabel = Boolean(object.containsCtwaFlowsAutoLabel);
+                if (object.productId != null)
+                    message.productId = String(object.productId);
                 return message;
             };
 
@@ -66185,6 +66470,11 @@ $root.proto = (function() {
                     object.containsCtwaFlowsAutoLabel = message.containsCtwaFlowsAutoLabel;
                     if (options.oneofs)
                         object._containsCtwaFlowsAutoLabel = "containsCtwaFlowsAutoLabel";
+                }
+                if (message.productId != null && message.hasOwnProperty("productId")) {
+                    object.productId = message.productId;
+                    if (options.oneofs)
+                        object._productId = "productId";
                 }
                 return object;
             };
@@ -97197,6 +97487,305 @@ $root.proto = (function() {
         return KeyId;
     })();
 
+    proto.KeyTransparencyCommand = (function() {
+
+        /**
+         * Properties of a KeyTransparencyCommand.
+         * @memberof proto
+         * @interface IKeyTransparencyCommand
+         * @property {proto.IVerifyKeyTransparencyForUserSignalCommand|null} [verifyKtForUserSignal] KeyTransparencyCommand verifyKtForUserSignal
+         * @property {proto.IVerifyKeyTransparencyForUserMinosCommand|null} [verifyKtForUserMinos] KeyTransparencyCommand verifyKtForUserMinos
+         * @property {proto.IVerifyKeyTransparencyForUserMandrakeCommand|null} [verifyKtForUserMandrake] KeyTransparencyCommand verifyKtForUserMandrake
+         */
+
+        /**
+         * Constructs a new KeyTransparencyCommand.
+         * @memberof proto
+         * @classdesc Represents a KeyTransparencyCommand.
+         * @implements IKeyTransparencyCommand
+         * @constructor
+         * @param {proto.IKeyTransparencyCommand=} [properties] Properties to set
+         */
+        function KeyTransparencyCommand(properties) {
+            if (properties)
+                for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                    if (properties[keys[i]] != null)
+                        this[keys[i]] = properties[keys[i]];
+        }
+
+        /**
+         * KeyTransparencyCommand verifyKtForUserSignal.
+         * @member {proto.IVerifyKeyTransparencyForUserSignalCommand|null|undefined} verifyKtForUserSignal
+         * @memberof proto.KeyTransparencyCommand
+         * @instance
+         */
+        KeyTransparencyCommand.prototype.verifyKtForUserSignal = null;
+
+        /**
+         * KeyTransparencyCommand verifyKtForUserMinos.
+         * @member {proto.IVerifyKeyTransparencyForUserMinosCommand|null|undefined} verifyKtForUserMinos
+         * @memberof proto.KeyTransparencyCommand
+         * @instance
+         */
+        KeyTransparencyCommand.prototype.verifyKtForUserMinos = null;
+
+        /**
+         * KeyTransparencyCommand verifyKtForUserMandrake.
+         * @member {proto.IVerifyKeyTransparencyForUserMandrakeCommand|null|undefined} verifyKtForUserMandrake
+         * @memberof proto.KeyTransparencyCommand
+         * @instance
+         */
+        KeyTransparencyCommand.prototype.verifyKtForUserMandrake = null;
+
+        // OneOf field names bound to virtual getters and setters
+        var $oneOfFields;
+
+        /**
+         * KeyTransparencyCommand commandInput.
+         * @member {"verifyKtForUserSignal"|"verifyKtForUserMinos"|"verifyKtForUserMandrake"|undefined} commandInput
+         * @memberof proto.KeyTransparencyCommand
+         * @instance
+         */
+        Object.defineProperty(KeyTransparencyCommand.prototype, "commandInput", {
+            get: $util.oneOfGetter($oneOfFields = ["verifyKtForUserSignal", "verifyKtForUserMinos", "verifyKtForUserMandrake"]),
+            set: $util.oneOfSetter($oneOfFields)
+        });
+
+        /**
+         * Creates a new KeyTransparencyCommand instance using the specified properties.
+         * @function create
+         * @memberof proto.KeyTransparencyCommand
+         * @static
+         * @param {proto.IKeyTransparencyCommand=} [properties] Properties to set
+         * @returns {proto.KeyTransparencyCommand} KeyTransparencyCommand instance
+         */
+        KeyTransparencyCommand.create = function create(properties) {
+            return new KeyTransparencyCommand(properties);
+        };
+
+        /**
+         * Encodes the specified KeyTransparencyCommand message. Does not implicitly {@link proto.KeyTransparencyCommand.verify|verify} messages.
+         * @function encode
+         * @memberof proto.KeyTransparencyCommand
+         * @static
+         * @param {proto.IKeyTransparencyCommand} message KeyTransparencyCommand message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        KeyTransparencyCommand.encode = function encode(message, writer) {
+            if (!writer)
+                writer = $Writer.create();
+            if (message.verifyKtForUserSignal != null && Object.hasOwnProperty.call(message, "verifyKtForUserSignal"))
+                $root.proto.VerifyKeyTransparencyForUserSignalCommand.encode(message.verifyKtForUserSignal, writer.uint32(/* id 5, wireType 2 =*/42).fork()).ldelim();
+            if (message.verifyKtForUserMinos != null && Object.hasOwnProperty.call(message, "verifyKtForUserMinos"))
+                $root.proto.VerifyKeyTransparencyForUserMinosCommand.encode(message.verifyKtForUserMinos, writer.uint32(/* id 6, wireType 2 =*/50).fork()).ldelim();
+            if (message.verifyKtForUserMandrake != null && Object.hasOwnProperty.call(message, "verifyKtForUserMandrake"))
+                $root.proto.VerifyKeyTransparencyForUserMandrakeCommand.encode(message.verifyKtForUserMandrake, writer.uint32(/* id 7, wireType 2 =*/58).fork()).ldelim();
+            return writer;
+        };
+
+        /**
+         * Encodes the specified KeyTransparencyCommand message, length delimited. Does not implicitly {@link proto.KeyTransparencyCommand.verify|verify} messages.
+         * @function encodeDelimited
+         * @memberof proto.KeyTransparencyCommand
+         * @static
+         * @param {proto.IKeyTransparencyCommand} message KeyTransparencyCommand message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        KeyTransparencyCommand.encodeDelimited = function encodeDelimited(message, writer) {
+            return this.encode(message, writer).ldelim();
+        };
+
+        /**
+         * Decodes a KeyTransparencyCommand message from the specified reader or buffer.
+         * @function decode
+         * @memberof proto.KeyTransparencyCommand
+         * @static
+         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+         * @param {number} [length] Message length if known beforehand
+         * @returns {proto.KeyTransparencyCommand} KeyTransparencyCommand
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        KeyTransparencyCommand.decode = function decode(reader, length, error) {
+            if (!(reader instanceof $Reader))
+                reader = $Reader.create(reader);
+            var end = length === undefined ? reader.len : reader.pos + length, message = new $root.proto.KeyTransparencyCommand();
+            while (reader.pos < end) {
+                var tag = reader.uint32();
+                if (tag === error)
+                    break;
+                switch (tag >>> 3) {
+                case 5: {
+                        message.verifyKtForUserSignal = $root.proto.VerifyKeyTransparencyForUserSignalCommand.decode(reader, reader.uint32());
+                        break;
+                    }
+                case 6: {
+                        message.verifyKtForUserMinos = $root.proto.VerifyKeyTransparencyForUserMinosCommand.decode(reader, reader.uint32());
+                        break;
+                    }
+                case 7: {
+                        message.verifyKtForUserMandrake = $root.proto.VerifyKeyTransparencyForUserMandrakeCommand.decode(reader, reader.uint32());
+                        break;
+                    }
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+                }
+            }
+            return message;
+        };
+
+        /**
+         * Decodes a KeyTransparencyCommand message from the specified reader or buffer, length delimited.
+         * @function decodeDelimited
+         * @memberof proto.KeyTransparencyCommand
+         * @static
+         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+         * @returns {proto.KeyTransparencyCommand} KeyTransparencyCommand
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        KeyTransparencyCommand.decodeDelimited = function decodeDelimited(reader) {
+            if (!(reader instanceof $Reader))
+                reader = new $Reader(reader);
+            return this.decode(reader, reader.uint32());
+        };
+
+        /**
+         * Verifies a KeyTransparencyCommand message.
+         * @function verify
+         * @memberof proto.KeyTransparencyCommand
+         * @static
+         * @param {Object.<string,*>} message Plain object to verify
+         * @returns {string|null} `null` if valid, otherwise the reason why it is not
+         */
+        KeyTransparencyCommand.verify = function verify(message) {
+            if (typeof message !== "object" || message === null)
+                return "object expected";
+            var properties = {};
+            if (message.verifyKtForUserSignal != null && message.hasOwnProperty("verifyKtForUserSignal")) {
+                properties.commandInput = 1;
+                {
+                    var error = $root.proto.VerifyKeyTransparencyForUserSignalCommand.verify(message.verifyKtForUserSignal);
+                    if (error)
+                        return "verifyKtForUserSignal." + error;
+                }
+            }
+            if (message.verifyKtForUserMinos != null && message.hasOwnProperty("verifyKtForUserMinos")) {
+                if (properties.commandInput === 1)
+                    return "commandInput: multiple values";
+                properties.commandInput = 1;
+                {
+                    var error = $root.proto.VerifyKeyTransparencyForUserMinosCommand.verify(message.verifyKtForUserMinos);
+                    if (error)
+                        return "verifyKtForUserMinos." + error;
+                }
+            }
+            if (message.verifyKtForUserMandrake != null && message.hasOwnProperty("verifyKtForUserMandrake")) {
+                if (properties.commandInput === 1)
+                    return "commandInput: multiple values";
+                properties.commandInput = 1;
+                {
+                    var error = $root.proto.VerifyKeyTransparencyForUserMandrakeCommand.verify(message.verifyKtForUserMandrake);
+                    if (error)
+                        return "verifyKtForUserMandrake." + error;
+                }
+            }
+            return null;
+        };
+
+        /**
+         * Creates a KeyTransparencyCommand message from a plain object. Also converts values to their respective internal types.
+         * @function fromObject
+         * @memberof proto.KeyTransparencyCommand
+         * @static
+         * @param {Object.<string,*>} object Plain object
+         * @returns {proto.KeyTransparencyCommand} KeyTransparencyCommand
+         */
+        KeyTransparencyCommand.fromObject = function fromObject(object) {
+            if (object instanceof $root.proto.KeyTransparencyCommand)
+                return object;
+            var message = new $root.proto.KeyTransparencyCommand();
+            if (object.verifyKtForUserSignal != null) {
+                if (typeof object.verifyKtForUserSignal !== "object")
+                    throw TypeError(".proto.KeyTransparencyCommand.verifyKtForUserSignal: object expected");
+                message.verifyKtForUserSignal = $root.proto.VerifyKeyTransparencyForUserSignalCommand.fromObject(object.verifyKtForUserSignal);
+            }
+            if (object.verifyKtForUserMinos != null) {
+                if (typeof object.verifyKtForUserMinos !== "object")
+                    throw TypeError(".proto.KeyTransparencyCommand.verifyKtForUserMinos: object expected");
+                message.verifyKtForUserMinos = $root.proto.VerifyKeyTransparencyForUserMinosCommand.fromObject(object.verifyKtForUserMinos);
+            }
+            if (object.verifyKtForUserMandrake != null) {
+                if (typeof object.verifyKtForUserMandrake !== "object")
+                    throw TypeError(".proto.KeyTransparencyCommand.verifyKtForUserMandrake: object expected");
+                message.verifyKtForUserMandrake = $root.proto.VerifyKeyTransparencyForUserMandrakeCommand.fromObject(object.verifyKtForUserMandrake);
+            }
+            return message;
+        };
+
+        /**
+         * Creates a plain object from a KeyTransparencyCommand message. Also converts values to other types if specified.
+         * @function toObject
+         * @memberof proto.KeyTransparencyCommand
+         * @static
+         * @param {proto.KeyTransparencyCommand} message KeyTransparencyCommand
+         * @param {$protobuf.IConversionOptions} [options] Conversion options
+         * @returns {Object.<string,*>} Plain object
+         */
+        KeyTransparencyCommand.toObject = function toObject(message, options) {
+            if (!options)
+                options = {};
+            var object = {};
+            if (message.verifyKtForUserSignal != null && message.hasOwnProperty("verifyKtForUserSignal")) {
+                object.verifyKtForUserSignal = $root.proto.VerifyKeyTransparencyForUserSignalCommand.toObject(message.verifyKtForUserSignal, options);
+                if (options.oneofs)
+                    object.commandInput = "verifyKtForUserSignal";
+            }
+            if (message.verifyKtForUserMinos != null && message.hasOwnProperty("verifyKtForUserMinos")) {
+                object.verifyKtForUserMinos = $root.proto.VerifyKeyTransparencyForUserMinosCommand.toObject(message.verifyKtForUserMinos, options);
+                if (options.oneofs)
+                    object.commandInput = "verifyKtForUserMinos";
+            }
+            if (message.verifyKtForUserMandrake != null && message.hasOwnProperty("verifyKtForUserMandrake")) {
+                object.verifyKtForUserMandrake = $root.proto.VerifyKeyTransparencyForUserMandrakeCommand.toObject(message.verifyKtForUserMandrake, options);
+                if (options.oneofs)
+                    object.commandInput = "verifyKtForUserMandrake";
+            }
+            return object;
+        };
+
+        /**
+         * Converts this KeyTransparencyCommand to JSON.
+         * @function toJSON
+         * @memberof proto.KeyTransparencyCommand
+         * @instance
+         * @returns {Object.<string,*>} JSON object
+         */
+        KeyTransparencyCommand.prototype.toJSON = function toJSON() {
+            return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+        };
+
+        /**
+         * Gets the default type url for KeyTransparencyCommand
+         * @function getTypeUrl
+         * @memberof proto.KeyTransparencyCommand
+         * @static
+         * @param {string} [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+         * @returns {string} The default type url
+         */
+        KeyTransparencyCommand.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
+            if (typeUrlPrefix === undefined) {
+                typeUrlPrefix = "type.googleapis.com";
+            }
+            return typeUrlPrefix + "/proto.KeyTransparencyCommand";
+        };
+
+        return KeyTransparencyCommand;
+    })();
+
     proto.LIDMigrationMappingSyncMessage = (function() {
 
         /**
@@ -102419,6 +103008,7 @@ $root.proto = (function() {
          * @property {proto.Message.IFutureProofMessage|null} [newsletterScheduledMessage] Message newsletterScheduledMessage
          * @property {proto.Message.IFutureProofMessage|null} [acp2SettingMessage] Message acp2SettingMessage
          * @property {proto.Message.IFutureProofMessage|null} [audioStickerMessage] Message audioStickerMessage
+         * @property {proto.Message.IFutureProofMessage|null} [botGroupParticipantMessage] Message botGroupParticipantMessage
          */
 
         /**
@@ -103340,6 +103930,14 @@ $root.proto = (function() {
          */
         Message.prototype.audioStickerMessage = null;
 
+        /**
+         * Message botGroupParticipantMessage.
+         * @member {proto.Message.IFutureProofMessage|null|undefined} botGroupParticipantMessage
+         * @memberof proto.Message
+         * @instance
+         */
+        Message.prototype.botGroupParticipantMessage = null;
+
         // OneOf field names bound to virtual getters and setters
         var $oneOfFields;
 
@@ -104021,6 +104619,12 @@ $root.proto = (function() {
             set: $util.oneOfSetter($oneOfFields)
         });
 
+        // Virtual OneOf for proto3 optional field
+        Object.defineProperty(Message.prototype, "_botGroupParticipantMessage", {
+            get: $util.oneOfGetter($oneOfFields = ["botGroupParticipantMessage"]),
+            set: $util.oneOfSetter($oneOfFields)
+        });
+
         /**
          * Creates a new Message instance using the specified properties.
          * @function create
@@ -104271,6 +104875,8 @@ $root.proto = (function() {
                 $root.proto.Message.FutureProofMessage.encode(message.acp2SettingMessage, writer.uint32(/* id 133, wireType 2 =*/1066).fork()).ldelim();
             if (message.audioStickerMessage != null && Object.hasOwnProperty.call(message, "audioStickerMessage"))
                 $root.proto.Message.FutureProofMessage.encode(message.audioStickerMessage, writer.uint32(/* id 134, wireType 2 =*/1074).fork()).ldelim();
+            if (message.botGroupParticipantMessage != null && Object.hasOwnProperty.call(message, "botGroupParticipantMessage"))
+                $root.proto.Message.FutureProofMessage.encode(message.botGroupParticipantMessage, writer.uint32(/* id 137, wireType 2 =*/1098).fork()).ldelim();
             return writer;
         };
 
@@ -104757,6 +105363,10 @@ $root.proto = (function() {
                     }
                 case 134: {
                         message.audioStickerMessage = $root.proto.Message.FutureProofMessage.decode(reader, reader.uint32());
+                        break;
+                    }
+                case 137: {
+                        message.botGroupParticipantMessage = $root.proto.Message.FutureProofMessage.decode(reader, reader.uint32());
                         break;
                     }
                 default:
@@ -105696,6 +106306,14 @@ $root.proto = (function() {
                         return "audioStickerMessage." + error;
                 }
             }
+            if (message.botGroupParticipantMessage != null && message.hasOwnProperty("botGroupParticipantMessage")) {
+                properties._botGroupParticipantMessage = 1;
+                {
+                    var error = $root.proto.Message.FutureProofMessage.verify(message.botGroupParticipantMessage);
+                    if (error)
+                        return "botGroupParticipantMessage." + error;
+                }
+            }
             return null;
         };
 
@@ -106272,6 +106890,11 @@ $root.proto = (function() {
                 if (typeof object.audioStickerMessage !== "object")
                     throw TypeError(".proto.Message.audioStickerMessage: object expected");
                 message.audioStickerMessage = $root.proto.Message.FutureProofMessage.fromObject(object.audioStickerMessage);
+            }
+            if (object.botGroupParticipantMessage != null) {
+                if (typeof object.botGroupParticipantMessage !== "object")
+                    throw TypeError(".proto.Message.botGroupParticipantMessage: object expected");
+                message.botGroupParticipantMessage = $root.proto.Message.FutureProofMessage.fromObject(object.botGroupParticipantMessage);
             }
             return message;
         };
@@ -106853,6 +107476,11 @@ $root.proto = (function() {
                 object.audioStickerMessage = $root.proto.Message.FutureProofMessage.toObject(message.audioStickerMessage, options);
                 if (options.oneofs)
                     object._audioStickerMessage = "audioStickerMessage";
+            }
+            if (message.botGroupParticipantMessage != null && message.hasOwnProperty("botGroupParticipantMessage")) {
+                object.botGroupParticipantMessage = $root.proto.Message.FutureProofMessage.toObject(message.botGroupParticipantMessage, options);
+                if (options.oneofs)
+                    object._botGroupParticipantMessage = "botGroupParticipantMessage";
             }
             return object;
         };
@@ -182039,6 +182667,8 @@ $root.proto = (function() {
      * @property {number} SHARED_DEVICE_ALLOWLIST_ACTION=94 SHARED_DEVICE_ALLOWLIST_ACTION value
      * @property {number} CONTACT_MANAGER_METADATA_ACTION=95 CONTACT_MANAGER_METADATA_ACTION value
      * @property {number} BUSINESS_FOLDER_ACTIVATION_ACTION=96 BUSINESS_FOLDER_ACTIVATION_ACTION value
+     * @property {number} GROUP_HISTORY_TOGGLE_ACTION=97 GROUP_HISTORY_TOGGLE_ACTION value
+     * @property {number} BB_PRO_PENDING_CUSTOMER_BASE_ACTION=98 BB_PRO_PENDING_CUSTOMER_BASE_ACTION value
      * @property {number} SHARE_OWN_PN=10001 SHARE_OWN_PN value
      * @property {number} BUSINESS_BROADCAST_ACTION=10002 BUSINESS_BROADCAST_ACTION value
      * @property {number} AI_THREAD_DELETE_ACTION=10003 AI_THREAD_DELETE_ACTION value
@@ -182135,6 +182765,8 @@ $root.proto = (function() {
         values[valuesById[94] = "SHARED_DEVICE_ALLOWLIST_ACTION"] = 94;
         values[valuesById[95] = "CONTACT_MANAGER_METADATA_ACTION"] = 95;
         values[valuesById[96] = "BUSINESS_FOLDER_ACTIVATION_ACTION"] = 96;
+        values[valuesById[97] = "GROUP_HISTORY_TOGGLE_ACTION"] = 97;
+        values[valuesById[98] = "BB_PRO_PENDING_CUSTOMER_BASE_ACTION"] = 98;
         values[valuesById[10001] = "SHARE_OWN_PN"] = 10001;
         values[valuesById[10002] = "BUSINESS_BROADCAST_ACTION"] = 10002;
         values[valuesById[10003] = "AI_THREAD_DELETE_ACTION"] = 10003;
@@ -207747,6 +208379,8 @@ $root.proto = (function() {
          * @property {proto.SyncActionValue.ISharedDeviceAllowlistAction|null} [sharedDeviceAllowlistAction] SyncActionValue sharedDeviceAllowlistAction
          * @property {proto.SyncActionValue.IContactManagerMetadataAction|null} [contactManagerMetadataAction] SyncActionValue contactManagerMetadataAction
          * @property {proto.SyncActionValue.IBusinessFolderActivationAction|null} [businessFolderActivationAction] SyncActionValue businessFolderActivationAction
+         * @property {proto.SyncActionValue.IGroupHistoryToggleAction|null} [groupHistoryToggleAction] SyncActionValue groupHistoryToggleAction
+         * @property {proto.SyncActionValue.IBBProPendingCustomerBaseAction|null} [bbProPendingCustomerBaseAction] SyncActionValue bbProPendingCustomerBaseAction
          */
 
         /**
@@ -208460,6 +209094,22 @@ $root.proto = (function() {
          */
         SyncActionValue.prototype.businessFolderActivationAction = null;
 
+        /**
+         * SyncActionValue groupHistoryToggleAction.
+         * @member {proto.SyncActionValue.IGroupHistoryToggleAction|null|undefined} groupHistoryToggleAction
+         * @memberof proto.SyncActionValue
+         * @instance
+         */
+        SyncActionValue.prototype.groupHistoryToggleAction = null;
+
+        /**
+         * SyncActionValue bbProPendingCustomerBaseAction.
+         * @member {proto.SyncActionValue.IBBProPendingCustomerBaseAction|null|undefined} bbProPendingCustomerBaseAction
+         * @memberof proto.SyncActionValue
+         * @instance
+         */
+        SyncActionValue.prototype.bbProPendingCustomerBaseAction = null;
+
         // OneOf field names bound to virtual getters and setters
         var $oneOfFields;
 
@@ -208985,6 +209635,18 @@ $root.proto = (function() {
             set: $util.oneOfSetter($oneOfFields)
         });
 
+        // Virtual OneOf for proto3 optional field
+        Object.defineProperty(SyncActionValue.prototype, "_groupHistoryToggleAction", {
+            get: $util.oneOfGetter($oneOfFields = ["groupHistoryToggleAction"]),
+            set: $util.oneOfSetter($oneOfFields)
+        });
+
+        // Virtual OneOf for proto3 optional field
+        Object.defineProperty(SyncActionValue.prototype, "_bbProPendingCustomerBaseAction", {
+            get: $util.oneOfGetter($oneOfFields = ["bbProPendingCustomerBaseAction"]),
+            set: $util.oneOfSetter($oneOfFields)
+        });
+
         /**
          * Creates a new SyncActionValue instance using the specified properties.
          * @function create
@@ -209183,6 +209845,10 @@ $root.proto = (function() {
                 $root.proto.SyncActionValue.ContactManagerMetadataAction.encode(message.contactManagerMetadataAction, writer.uint32(/* id 95, wireType 2 =*/762).fork()).ldelim();
             if (message.businessFolderActivationAction != null && Object.hasOwnProperty.call(message, "businessFolderActivationAction"))
                 $root.proto.SyncActionValue.BusinessFolderActivationAction.encode(message.businessFolderActivationAction, writer.uint32(/* id 96, wireType 2 =*/770).fork()).ldelim();
+            if (message.groupHistoryToggleAction != null && Object.hasOwnProperty.call(message, "groupHistoryToggleAction"))
+                $root.proto.SyncActionValue.GroupHistoryToggleAction.encode(message.groupHistoryToggleAction, writer.uint32(/* id 97, wireType 2 =*/778).fork()).ldelim();
+            if (message.bbProPendingCustomerBaseAction != null && Object.hasOwnProperty.call(message, "bbProPendingCustomerBaseAction"))
+                $root.proto.SyncActionValue.BBProPendingCustomerBaseAction.encode(message.bbProPendingCustomerBaseAction, writer.uint32(/* id 98, wireType 2 =*/786).fork()).ldelim();
             return writer;
         };
 
@@ -209565,6 +210231,14 @@ $root.proto = (function() {
                     }
                 case 96: {
                         message.businessFolderActivationAction = $root.proto.SyncActionValue.BusinessFolderActivationAction.decode(reader, reader.uint32());
+                        break;
+                    }
+                case 97: {
+                        message.groupHistoryToggleAction = $root.proto.SyncActionValue.GroupHistoryToggleAction.decode(reader, reader.uint32());
+                        break;
+                    }
+                case 98: {
+                        message.bbProPendingCustomerBaseAction = $root.proto.SyncActionValue.BBProPendingCustomerBaseAction.decode(reader, reader.uint32());
                         break;
                     }
                 default:
@@ -210296,6 +210970,22 @@ $root.proto = (function() {
                         return "businessFolderActivationAction." + error;
                 }
             }
+            if (message.groupHistoryToggleAction != null && message.hasOwnProperty("groupHistoryToggleAction")) {
+                properties._groupHistoryToggleAction = 1;
+                {
+                    var error = $root.proto.SyncActionValue.GroupHistoryToggleAction.verify(message.groupHistoryToggleAction);
+                    if (error)
+                        return "groupHistoryToggleAction." + error;
+                }
+            }
+            if (message.bbProPendingCustomerBaseAction != null && message.hasOwnProperty("bbProPendingCustomerBaseAction")) {
+                properties._bbProPendingCustomerBaseAction = 1;
+                {
+                    var error = $root.proto.SyncActionValue.BBProPendingCustomerBaseAction.verify(message.bbProPendingCustomerBaseAction);
+                    if (error)
+                        return "bbProPendingCustomerBaseAction." + error;
+                }
+            }
             return null;
         };
 
@@ -210750,6 +211440,16 @@ $root.proto = (function() {
                     throw TypeError(".proto.SyncActionValue.businessFolderActivationAction: object expected");
                 message.businessFolderActivationAction = $root.proto.SyncActionValue.BusinessFolderActivationAction.fromObject(object.businessFolderActivationAction);
             }
+            if (object.groupHistoryToggleAction != null) {
+                if (typeof object.groupHistoryToggleAction !== "object")
+                    throw TypeError(".proto.SyncActionValue.groupHistoryToggleAction: object expected");
+                message.groupHistoryToggleAction = $root.proto.SyncActionValue.GroupHistoryToggleAction.fromObject(object.groupHistoryToggleAction);
+            }
+            if (object.bbProPendingCustomerBaseAction != null) {
+                if (typeof object.bbProPendingCustomerBaseAction !== "object")
+                    throw TypeError(".proto.SyncActionValue.bbProPendingCustomerBaseAction: object expected");
+                message.bbProPendingCustomerBaseAction = $root.proto.SyncActionValue.BBProPendingCustomerBaseAction.fromObject(object.bbProPendingCustomerBaseAction);
+            }
             return message;
         };
 
@@ -211203,6 +211903,16 @@ $root.proto = (function() {
                 object.businessFolderActivationAction = $root.proto.SyncActionValue.BusinessFolderActivationAction.toObject(message.businessFolderActivationAction, options);
                 if (options.oneofs)
                     object._businessFolderActivationAction = "businessFolderActivationAction";
+            }
+            if (message.groupHistoryToggleAction != null && message.hasOwnProperty("groupHistoryToggleAction")) {
+                object.groupHistoryToggleAction = $root.proto.SyncActionValue.GroupHistoryToggleAction.toObject(message.groupHistoryToggleAction, options);
+                if (options.oneofs)
+                    object._groupHistoryToggleAction = "groupHistoryToggleAction";
+            }
+            if (message.bbProPendingCustomerBaseAction != null && message.hasOwnProperty("bbProPendingCustomerBaseAction")) {
+                object.bbProPendingCustomerBaseAction = $root.proto.SyncActionValue.BBProPendingCustomerBaseAction.toObject(message.bbProPendingCustomerBaseAction, options);
+                if (options.oneofs)
+                    object._bbProPendingCustomerBaseAction = "bbProPendingCustomerBaseAction";
             }
             return object;
         };
@@ -212729,6 +213439,224 @@ $root.proto = (function() {
             })();
 
             return AvatarUpdatedAction;
+        })();
+
+        SyncActionValue.BBProPendingCustomerBaseAction = (function() {
+
+            /**
+             * Properties of a BBProPendingCustomerBaseAction.
+             * @memberof proto.SyncActionValue
+             * @interface IBBProPendingCustomerBaseAction
+             * @property {boolean|null} [pending] BBProPendingCustomerBaseAction pending
+             */
+
+            /**
+             * Constructs a new BBProPendingCustomerBaseAction.
+             * @memberof proto.SyncActionValue
+             * @classdesc Represents a BBProPendingCustomerBaseAction.
+             * @implements IBBProPendingCustomerBaseAction
+             * @constructor
+             * @param {proto.SyncActionValue.IBBProPendingCustomerBaseAction=} [properties] Properties to set
+             */
+            function BBProPendingCustomerBaseAction(properties) {
+                if (properties)
+                    for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                        if (properties[keys[i]] != null)
+                            this[keys[i]] = properties[keys[i]];
+            }
+
+            /**
+             * BBProPendingCustomerBaseAction pending.
+             * @member {boolean|null|undefined} pending
+             * @memberof proto.SyncActionValue.BBProPendingCustomerBaseAction
+             * @instance
+             */
+            BBProPendingCustomerBaseAction.prototype.pending = null;
+
+            // OneOf field names bound to virtual getters and setters
+            var $oneOfFields;
+
+            // Virtual OneOf for proto3 optional field
+            Object.defineProperty(BBProPendingCustomerBaseAction.prototype, "_pending", {
+                get: $util.oneOfGetter($oneOfFields = ["pending"]),
+                set: $util.oneOfSetter($oneOfFields)
+            });
+
+            /**
+             * Creates a new BBProPendingCustomerBaseAction instance using the specified properties.
+             * @function create
+             * @memberof proto.SyncActionValue.BBProPendingCustomerBaseAction
+             * @static
+             * @param {proto.SyncActionValue.IBBProPendingCustomerBaseAction=} [properties] Properties to set
+             * @returns {proto.SyncActionValue.BBProPendingCustomerBaseAction} BBProPendingCustomerBaseAction instance
+             */
+            BBProPendingCustomerBaseAction.create = function create(properties) {
+                return new BBProPendingCustomerBaseAction(properties);
+            };
+
+            /**
+             * Encodes the specified BBProPendingCustomerBaseAction message. Does not implicitly {@link proto.SyncActionValue.BBProPendingCustomerBaseAction.verify|verify} messages.
+             * @function encode
+             * @memberof proto.SyncActionValue.BBProPendingCustomerBaseAction
+             * @static
+             * @param {proto.SyncActionValue.IBBProPendingCustomerBaseAction} message BBProPendingCustomerBaseAction message or plain object to encode
+             * @param {$protobuf.Writer} [writer] Writer to encode to
+             * @returns {$protobuf.Writer} Writer
+             */
+            BBProPendingCustomerBaseAction.encode = function encode(message, writer) {
+                if (!writer)
+                    writer = $Writer.create();
+                if (message.pending != null && Object.hasOwnProperty.call(message, "pending"))
+                    writer.uint32(/* id 1, wireType 0 =*/8).bool(message.pending);
+                return writer;
+            };
+
+            /**
+             * Encodes the specified BBProPendingCustomerBaseAction message, length delimited. Does not implicitly {@link proto.SyncActionValue.BBProPendingCustomerBaseAction.verify|verify} messages.
+             * @function encodeDelimited
+             * @memberof proto.SyncActionValue.BBProPendingCustomerBaseAction
+             * @static
+             * @param {proto.SyncActionValue.IBBProPendingCustomerBaseAction} message BBProPendingCustomerBaseAction message or plain object to encode
+             * @param {$protobuf.Writer} [writer] Writer to encode to
+             * @returns {$protobuf.Writer} Writer
+             */
+            BBProPendingCustomerBaseAction.encodeDelimited = function encodeDelimited(message, writer) {
+                return this.encode(message, writer).ldelim();
+            };
+
+            /**
+             * Decodes a BBProPendingCustomerBaseAction message from the specified reader or buffer.
+             * @function decode
+             * @memberof proto.SyncActionValue.BBProPendingCustomerBaseAction
+             * @static
+             * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+             * @param {number} [length] Message length if known beforehand
+             * @returns {proto.SyncActionValue.BBProPendingCustomerBaseAction} BBProPendingCustomerBaseAction
+             * @throws {Error} If the payload is not a reader or valid buffer
+             * @throws {$protobuf.util.ProtocolError} If required fields are missing
+             */
+            BBProPendingCustomerBaseAction.decode = function decode(reader, length, error) {
+                if (!(reader instanceof $Reader))
+                    reader = $Reader.create(reader);
+                var end = length === undefined ? reader.len : reader.pos + length, message = new $root.proto.SyncActionValue.BBProPendingCustomerBaseAction();
+                while (reader.pos < end) {
+                    var tag = reader.uint32();
+                    if (tag === error)
+                        break;
+                    switch (tag >>> 3) {
+                    case 1: {
+                            message.pending = reader.bool();
+                            break;
+                        }
+                    default:
+                        reader.skipType(tag & 7);
+                        break;
+                    }
+                }
+                return message;
+            };
+
+            /**
+             * Decodes a BBProPendingCustomerBaseAction message from the specified reader or buffer, length delimited.
+             * @function decodeDelimited
+             * @memberof proto.SyncActionValue.BBProPendingCustomerBaseAction
+             * @static
+             * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+             * @returns {proto.SyncActionValue.BBProPendingCustomerBaseAction} BBProPendingCustomerBaseAction
+             * @throws {Error} If the payload is not a reader or valid buffer
+             * @throws {$protobuf.util.ProtocolError} If required fields are missing
+             */
+            BBProPendingCustomerBaseAction.decodeDelimited = function decodeDelimited(reader) {
+                if (!(reader instanceof $Reader))
+                    reader = new $Reader(reader);
+                return this.decode(reader, reader.uint32());
+            };
+
+            /**
+             * Verifies a BBProPendingCustomerBaseAction message.
+             * @function verify
+             * @memberof proto.SyncActionValue.BBProPendingCustomerBaseAction
+             * @static
+             * @param {Object.<string,*>} message Plain object to verify
+             * @returns {string|null} `null` if valid, otherwise the reason why it is not
+             */
+            BBProPendingCustomerBaseAction.verify = function verify(message) {
+                if (typeof message !== "object" || message === null)
+                    return "object expected";
+                var properties = {};
+                if (message.pending != null && message.hasOwnProperty("pending")) {
+                    properties._pending = 1;
+                    if (typeof message.pending !== "boolean")
+                        return "pending: boolean expected";
+                }
+                return null;
+            };
+
+            /**
+             * Creates a BBProPendingCustomerBaseAction message from a plain object. Also converts values to their respective internal types.
+             * @function fromObject
+             * @memberof proto.SyncActionValue.BBProPendingCustomerBaseAction
+             * @static
+             * @param {Object.<string,*>} object Plain object
+             * @returns {proto.SyncActionValue.BBProPendingCustomerBaseAction} BBProPendingCustomerBaseAction
+             */
+            BBProPendingCustomerBaseAction.fromObject = function fromObject(object) {
+                if (object instanceof $root.proto.SyncActionValue.BBProPendingCustomerBaseAction)
+                    return object;
+                var message = new $root.proto.SyncActionValue.BBProPendingCustomerBaseAction();
+                if (object.pending != null)
+                    message.pending = Boolean(object.pending);
+                return message;
+            };
+
+            /**
+             * Creates a plain object from a BBProPendingCustomerBaseAction message. Also converts values to other types if specified.
+             * @function toObject
+             * @memberof proto.SyncActionValue.BBProPendingCustomerBaseAction
+             * @static
+             * @param {proto.SyncActionValue.BBProPendingCustomerBaseAction} message BBProPendingCustomerBaseAction
+             * @param {$protobuf.IConversionOptions} [options] Conversion options
+             * @returns {Object.<string,*>} Plain object
+             */
+            BBProPendingCustomerBaseAction.toObject = function toObject(message, options) {
+                if (!options)
+                    options = {};
+                var object = {};
+                if (message.pending != null && message.hasOwnProperty("pending")) {
+                    object.pending = message.pending;
+                    if (options.oneofs)
+                        object._pending = "pending";
+                }
+                return object;
+            };
+
+            /**
+             * Converts this BBProPendingCustomerBaseAction to JSON.
+             * @function toJSON
+             * @memberof proto.SyncActionValue.BBProPendingCustomerBaseAction
+             * @instance
+             * @returns {Object.<string,*>} JSON object
+             */
+            BBProPendingCustomerBaseAction.prototype.toJSON = function toJSON() {
+                return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+            };
+
+            /**
+             * Gets the default type url for BBProPendingCustomerBaseAction
+             * @function getTypeUrl
+             * @memberof proto.SyncActionValue.BBProPendingCustomerBaseAction
+             * @static
+             * @param {string} [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+             * @returns {string} The default type url
+             */
+            BBProPendingCustomerBaseAction.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
+                if (typeUrlPrefix === undefined) {
+                    typeUrlPrefix = "type.googleapis.com";
+                }
+                return typeUrlPrefix + "/proto.SyncActionValue.BBProPendingCustomerBaseAction";
+            };
+
+            return BBProPendingCustomerBaseAction;
         })();
 
         SyncActionValue.BizAISettingsNudgeAction = (function() {
@@ -220846,6 +221774,264 @@ $root.proto = (function() {
             })();
 
             return FavoritesAction;
+        })();
+
+        SyncActionValue.GroupHistoryToggleAction = (function() {
+
+            /**
+             * Properties of a GroupHistoryToggleAction.
+             * @memberof proto.SyncActionValue
+             * @interface IGroupHistoryToggleAction
+             * @property {proto.SyncActionValue.GroupHistoryToggleAction.GroupHistoryToggleMode|null} [groupHistoryToggleMode] GroupHistoryToggleAction groupHistoryToggleMode
+             */
+
+            /**
+             * Constructs a new GroupHistoryToggleAction.
+             * @memberof proto.SyncActionValue
+             * @classdesc Represents a GroupHistoryToggleAction.
+             * @implements IGroupHistoryToggleAction
+             * @constructor
+             * @param {proto.SyncActionValue.IGroupHistoryToggleAction=} [properties] Properties to set
+             */
+            function GroupHistoryToggleAction(properties) {
+                if (properties)
+                    for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                        if (properties[keys[i]] != null)
+                            this[keys[i]] = properties[keys[i]];
+            }
+
+            /**
+             * GroupHistoryToggleAction groupHistoryToggleMode.
+             * @member {proto.SyncActionValue.GroupHistoryToggleAction.GroupHistoryToggleMode|null|undefined} groupHistoryToggleMode
+             * @memberof proto.SyncActionValue.GroupHistoryToggleAction
+             * @instance
+             */
+            GroupHistoryToggleAction.prototype.groupHistoryToggleMode = null;
+
+            // OneOf field names bound to virtual getters and setters
+            var $oneOfFields;
+
+            // Virtual OneOf for proto3 optional field
+            Object.defineProperty(GroupHistoryToggleAction.prototype, "_groupHistoryToggleMode", {
+                get: $util.oneOfGetter($oneOfFields = ["groupHistoryToggleMode"]),
+                set: $util.oneOfSetter($oneOfFields)
+            });
+
+            /**
+             * Creates a new GroupHistoryToggleAction instance using the specified properties.
+             * @function create
+             * @memberof proto.SyncActionValue.GroupHistoryToggleAction
+             * @static
+             * @param {proto.SyncActionValue.IGroupHistoryToggleAction=} [properties] Properties to set
+             * @returns {proto.SyncActionValue.GroupHistoryToggleAction} GroupHistoryToggleAction instance
+             */
+            GroupHistoryToggleAction.create = function create(properties) {
+                return new GroupHistoryToggleAction(properties);
+            };
+
+            /**
+             * Encodes the specified GroupHistoryToggleAction message. Does not implicitly {@link proto.SyncActionValue.GroupHistoryToggleAction.verify|verify} messages.
+             * @function encode
+             * @memberof proto.SyncActionValue.GroupHistoryToggleAction
+             * @static
+             * @param {proto.SyncActionValue.IGroupHistoryToggleAction} message GroupHistoryToggleAction message or plain object to encode
+             * @param {$protobuf.Writer} [writer] Writer to encode to
+             * @returns {$protobuf.Writer} Writer
+             */
+            GroupHistoryToggleAction.encode = function encode(message, writer) {
+                if (!writer)
+                    writer = $Writer.create();
+                if (message.groupHistoryToggleMode != null && Object.hasOwnProperty.call(message, "groupHistoryToggleMode"))
+                    writer.uint32(/* id 1, wireType 0 =*/8).int32(message.groupHistoryToggleMode);
+                return writer;
+            };
+
+            /**
+             * Encodes the specified GroupHistoryToggleAction message, length delimited. Does not implicitly {@link proto.SyncActionValue.GroupHistoryToggleAction.verify|verify} messages.
+             * @function encodeDelimited
+             * @memberof proto.SyncActionValue.GroupHistoryToggleAction
+             * @static
+             * @param {proto.SyncActionValue.IGroupHistoryToggleAction} message GroupHistoryToggleAction message or plain object to encode
+             * @param {$protobuf.Writer} [writer] Writer to encode to
+             * @returns {$protobuf.Writer} Writer
+             */
+            GroupHistoryToggleAction.encodeDelimited = function encodeDelimited(message, writer) {
+                return this.encode(message, writer).ldelim();
+            };
+
+            /**
+             * Decodes a GroupHistoryToggleAction message from the specified reader or buffer.
+             * @function decode
+             * @memberof proto.SyncActionValue.GroupHistoryToggleAction
+             * @static
+             * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+             * @param {number} [length] Message length if known beforehand
+             * @returns {proto.SyncActionValue.GroupHistoryToggleAction} GroupHistoryToggleAction
+             * @throws {Error} If the payload is not a reader or valid buffer
+             * @throws {$protobuf.util.ProtocolError} If required fields are missing
+             */
+            GroupHistoryToggleAction.decode = function decode(reader, length, error) {
+                if (!(reader instanceof $Reader))
+                    reader = $Reader.create(reader);
+                var end = length === undefined ? reader.len : reader.pos + length, message = new $root.proto.SyncActionValue.GroupHistoryToggleAction();
+                while (reader.pos < end) {
+                    var tag = reader.uint32();
+                    if (tag === error)
+                        break;
+                    switch (tag >>> 3) {
+                    case 1: {
+                            message.groupHistoryToggleMode = reader.int32();
+                            break;
+                        }
+                    default:
+                        reader.skipType(tag & 7);
+                        break;
+                    }
+                }
+                return message;
+            };
+
+            /**
+             * Decodes a GroupHistoryToggleAction message from the specified reader or buffer, length delimited.
+             * @function decodeDelimited
+             * @memberof proto.SyncActionValue.GroupHistoryToggleAction
+             * @static
+             * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+             * @returns {proto.SyncActionValue.GroupHistoryToggleAction} GroupHistoryToggleAction
+             * @throws {Error} If the payload is not a reader or valid buffer
+             * @throws {$protobuf.util.ProtocolError} If required fields are missing
+             */
+            GroupHistoryToggleAction.decodeDelimited = function decodeDelimited(reader) {
+                if (!(reader instanceof $Reader))
+                    reader = new $Reader(reader);
+                return this.decode(reader, reader.uint32());
+            };
+
+            /**
+             * Verifies a GroupHistoryToggleAction message.
+             * @function verify
+             * @memberof proto.SyncActionValue.GroupHistoryToggleAction
+             * @static
+             * @param {Object.<string,*>} message Plain object to verify
+             * @returns {string|null} `null` if valid, otherwise the reason why it is not
+             */
+            GroupHistoryToggleAction.verify = function verify(message) {
+                if (typeof message !== "object" || message === null)
+                    return "object expected";
+                var properties = {};
+                if (message.groupHistoryToggleMode != null && message.hasOwnProperty("groupHistoryToggleMode")) {
+                    properties._groupHistoryToggleMode = 1;
+                    switch (message.groupHistoryToggleMode) {
+                    default:
+                        return "groupHistoryToggleMode: enum value expected";
+                    case 0:
+                    case 1:
+                    case 2:
+                        break;
+                    }
+                }
+                return null;
+            };
+
+            /**
+             * Creates a GroupHistoryToggleAction message from a plain object. Also converts values to their respective internal types.
+             * @function fromObject
+             * @memberof proto.SyncActionValue.GroupHistoryToggleAction
+             * @static
+             * @param {Object.<string,*>} object Plain object
+             * @returns {proto.SyncActionValue.GroupHistoryToggleAction} GroupHistoryToggleAction
+             */
+            GroupHistoryToggleAction.fromObject = function fromObject(object) {
+                if (object instanceof $root.proto.SyncActionValue.GroupHistoryToggleAction)
+                    return object;
+                var message = new $root.proto.SyncActionValue.GroupHistoryToggleAction();
+                switch (object.groupHistoryToggleMode) {
+                default:
+                    if (typeof object.groupHistoryToggleMode === "number") {
+                        message.groupHistoryToggleMode = object.groupHistoryToggleMode;
+                        break;
+                    }
+                    break;
+                case "GROUP_HISTORY_TOGGLE_MODE_UNKNOWN":
+                case 0:
+                    message.groupHistoryToggleMode = 0;
+                    break;
+                case "GROUP_HISTORY_TOGGLE_MODE_ON":
+                case 1:
+                    message.groupHistoryToggleMode = 1;
+                    break;
+                case "GROUP_HISTORY_TOGGLE_MODE_OFF":
+                case 2:
+                    message.groupHistoryToggleMode = 2;
+                    break;
+                }
+                return message;
+            };
+
+            /**
+             * Creates a plain object from a GroupHistoryToggleAction message. Also converts values to other types if specified.
+             * @function toObject
+             * @memberof proto.SyncActionValue.GroupHistoryToggleAction
+             * @static
+             * @param {proto.SyncActionValue.GroupHistoryToggleAction} message GroupHistoryToggleAction
+             * @param {$protobuf.IConversionOptions} [options] Conversion options
+             * @returns {Object.<string,*>} Plain object
+             */
+            GroupHistoryToggleAction.toObject = function toObject(message, options) {
+                if (!options)
+                    options = {};
+                var object = {};
+                if (message.groupHistoryToggleMode != null && message.hasOwnProperty("groupHistoryToggleMode")) {
+                    object.groupHistoryToggleMode = options.enums === String ? $root.proto.SyncActionValue.GroupHistoryToggleAction.GroupHistoryToggleMode[message.groupHistoryToggleMode] === undefined ? message.groupHistoryToggleMode : $root.proto.SyncActionValue.GroupHistoryToggleAction.GroupHistoryToggleMode[message.groupHistoryToggleMode] : message.groupHistoryToggleMode;
+                    if (options.oneofs)
+                        object._groupHistoryToggleMode = "groupHistoryToggleMode";
+                }
+                return object;
+            };
+
+            /**
+             * Converts this GroupHistoryToggleAction to JSON.
+             * @function toJSON
+             * @memberof proto.SyncActionValue.GroupHistoryToggleAction
+             * @instance
+             * @returns {Object.<string,*>} JSON object
+             */
+            GroupHistoryToggleAction.prototype.toJSON = function toJSON() {
+                return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+            };
+
+            /**
+             * Gets the default type url for GroupHistoryToggleAction
+             * @function getTypeUrl
+             * @memberof proto.SyncActionValue.GroupHistoryToggleAction
+             * @static
+             * @param {string} [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+             * @returns {string} The default type url
+             */
+            GroupHistoryToggleAction.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
+                if (typeUrlPrefix === undefined) {
+                    typeUrlPrefix = "type.googleapis.com";
+                }
+                return typeUrlPrefix + "/proto.SyncActionValue.GroupHistoryToggleAction";
+            };
+
+            /**
+             * GroupHistoryToggleMode enum.
+             * @name proto.SyncActionValue.GroupHistoryToggleAction.GroupHistoryToggleMode
+             * @enum {number}
+             * @property {number} GROUP_HISTORY_TOGGLE_MODE_UNKNOWN=0 GROUP_HISTORY_TOGGLE_MODE_UNKNOWN value
+             * @property {number} GROUP_HISTORY_TOGGLE_MODE_ON=1 GROUP_HISTORY_TOGGLE_MODE_ON value
+             * @property {number} GROUP_HISTORY_TOGGLE_MODE_OFF=2 GROUP_HISTORY_TOGGLE_MODE_OFF value
+             */
+            GroupHistoryToggleAction.GroupHistoryToggleMode = (function() {
+                var valuesById = {}, values = Object.create(valuesById);
+                values[valuesById[0] = "GROUP_HISTORY_TOGGLE_MODE_UNKNOWN"] = 0;
+                values[valuesById[1] = "GROUP_HISTORY_TOGGLE_MODE_ON"] = 1;
+                values[valuesById[2] = "GROUP_HISTORY_TOGGLE_MODE_OFF"] = 2;
+                return values;
+            })();
+
+            return GroupHistoryToggleAction;
         })();
 
         SyncActionValue.InteractiveMessageAction = (function() {
@@ -246496,6 +247682,2186 @@ $root.proto = (function() {
         })();
 
         return VerifiedNameCertificate;
+    })();
+
+    proto.VerifyKeyTransparencyForUserMandrakeCommand = (function() {
+
+        /**
+         * Properties of a VerifyKeyTransparencyForUserMandrakeCommand.
+         * @memberof proto
+         * @interface IVerifyKeyTransparencyForUserMandrakeCommand
+         * @property {Uint8Array|null} [lookupResponse] VerifyKeyTransparencyForUserMandrakeCommand lookupResponse
+         * @property {number|Long|null} [userFbid] VerifyKeyTransparencyForUserMandrakeCommand userFbid
+         * @property {number|Long|null} [auditorSignatureTtlSecs] VerifyKeyTransparencyForUserMandrakeCommand auditorSignatureTtlSecs
+         * @property {Array.<string>|null} [requestedAuditorList] VerifyKeyTransparencyForUserMandrakeCommand requestedAuditorList
+         * @property {boolean|null} [isProductionBuild] VerifyKeyTransparencyForUserMandrakeCommand isProductionBuild
+         * @property {Uint8Array|null} [localMailboxHead] VerifyKeyTransparencyForUserMandrakeCommand localMailboxHead
+         */
+
+        /**
+         * Constructs a new VerifyKeyTransparencyForUserMandrakeCommand.
+         * @memberof proto
+         * @classdesc Represents a VerifyKeyTransparencyForUserMandrakeCommand.
+         * @implements IVerifyKeyTransparencyForUserMandrakeCommand
+         * @constructor
+         * @param {proto.IVerifyKeyTransparencyForUserMandrakeCommand=} [properties] Properties to set
+         */
+        function VerifyKeyTransparencyForUserMandrakeCommand(properties) {
+            this.requestedAuditorList = [];
+            if (properties)
+                for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                    if (properties[keys[i]] != null)
+                        this[keys[i]] = properties[keys[i]];
+        }
+
+        /**
+         * VerifyKeyTransparencyForUserMandrakeCommand lookupResponse.
+         * @member {Uint8Array|null|undefined} lookupResponse
+         * @memberof proto.VerifyKeyTransparencyForUserMandrakeCommand
+         * @instance
+         */
+        VerifyKeyTransparencyForUserMandrakeCommand.prototype.lookupResponse = null;
+
+        /**
+         * VerifyKeyTransparencyForUserMandrakeCommand userFbid.
+         * @member {number|Long|null|undefined} userFbid
+         * @memberof proto.VerifyKeyTransparencyForUserMandrakeCommand
+         * @instance
+         */
+        VerifyKeyTransparencyForUserMandrakeCommand.prototype.userFbid = null;
+
+        /**
+         * VerifyKeyTransparencyForUserMandrakeCommand auditorSignatureTtlSecs.
+         * @member {number|Long|null|undefined} auditorSignatureTtlSecs
+         * @memberof proto.VerifyKeyTransparencyForUserMandrakeCommand
+         * @instance
+         */
+        VerifyKeyTransparencyForUserMandrakeCommand.prototype.auditorSignatureTtlSecs = null;
+
+        /**
+         * VerifyKeyTransparencyForUserMandrakeCommand requestedAuditorList.
+         * @member {Array.<string>} requestedAuditorList
+         * @memberof proto.VerifyKeyTransparencyForUserMandrakeCommand
+         * @instance
+         */
+        VerifyKeyTransparencyForUserMandrakeCommand.prototype.requestedAuditorList = $util.emptyArray;
+
+        /**
+         * VerifyKeyTransparencyForUserMandrakeCommand isProductionBuild.
+         * @member {boolean|null|undefined} isProductionBuild
+         * @memberof proto.VerifyKeyTransparencyForUserMandrakeCommand
+         * @instance
+         */
+        VerifyKeyTransparencyForUserMandrakeCommand.prototype.isProductionBuild = null;
+
+        /**
+         * VerifyKeyTransparencyForUserMandrakeCommand localMailboxHead.
+         * @member {Uint8Array|null|undefined} localMailboxHead
+         * @memberof proto.VerifyKeyTransparencyForUserMandrakeCommand
+         * @instance
+         */
+        VerifyKeyTransparencyForUserMandrakeCommand.prototype.localMailboxHead = null;
+
+        // OneOf field names bound to virtual getters and setters
+        var $oneOfFields;
+
+        // Virtual OneOf for proto3 optional field
+        Object.defineProperty(VerifyKeyTransparencyForUserMandrakeCommand.prototype, "_lookupResponse", {
+            get: $util.oneOfGetter($oneOfFields = ["lookupResponse"]),
+            set: $util.oneOfSetter($oneOfFields)
+        });
+
+        // Virtual OneOf for proto3 optional field
+        Object.defineProperty(VerifyKeyTransparencyForUserMandrakeCommand.prototype, "_userFbid", {
+            get: $util.oneOfGetter($oneOfFields = ["userFbid"]),
+            set: $util.oneOfSetter($oneOfFields)
+        });
+
+        // Virtual OneOf for proto3 optional field
+        Object.defineProperty(VerifyKeyTransparencyForUserMandrakeCommand.prototype, "_auditorSignatureTtlSecs", {
+            get: $util.oneOfGetter($oneOfFields = ["auditorSignatureTtlSecs"]),
+            set: $util.oneOfSetter($oneOfFields)
+        });
+
+        // Virtual OneOf for proto3 optional field
+        Object.defineProperty(VerifyKeyTransparencyForUserMandrakeCommand.prototype, "_isProductionBuild", {
+            get: $util.oneOfGetter($oneOfFields = ["isProductionBuild"]),
+            set: $util.oneOfSetter($oneOfFields)
+        });
+
+        // Virtual OneOf for proto3 optional field
+        Object.defineProperty(VerifyKeyTransparencyForUserMandrakeCommand.prototype, "_localMailboxHead", {
+            get: $util.oneOfGetter($oneOfFields = ["localMailboxHead"]),
+            set: $util.oneOfSetter($oneOfFields)
+        });
+
+        /**
+         * Creates a new VerifyKeyTransparencyForUserMandrakeCommand instance using the specified properties.
+         * @function create
+         * @memberof proto.VerifyKeyTransparencyForUserMandrakeCommand
+         * @static
+         * @param {proto.IVerifyKeyTransparencyForUserMandrakeCommand=} [properties] Properties to set
+         * @returns {proto.VerifyKeyTransparencyForUserMandrakeCommand} VerifyKeyTransparencyForUserMandrakeCommand instance
+         */
+        VerifyKeyTransparencyForUserMandrakeCommand.create = function create(properties) {
+            return new VerifyKeyTransparencyForUserMandrakeCommand(properties);
+        };
+
+        /**
+         * Encodes the specified VerifyKeyTransparencyForUserMandrakeCommand message. Does not implicitly {@link proto.VerifyKeyTransparencyForUserMandrakeCommand.verify|verify} messages.
+         * @function encode
+         * @memberof proto.VerifyKeyTransparencyForUserMandrakeCommand
+         * @static
+         * @param {proto.IVerifyKeyTransparencyForUserMandrakeCommand} message VerifyKeyTransparencyForUserMandrakeCommand message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        VerifyKeyTransparencyForUserMandrakeCommand.encode = function encode(message, writer) {
+            if (!writer)
+                writer = $Writer.create();
+            if (message.lookupResponse != null && Object.hasOwnProperty.call(message, "lookupResponse"))
+                writer.uint32(/* id 1, wireType 2 =*/10).bytes(message.lookupResponse);
+            if (message.userFbid != null && Object.hasOwnProperty.call(message, "userFbid"))
+                writer.uint32(/* id 2, wireType 0 =*/16).int64(message.userFbid);
+            if (message.auditorSignatureTtlSecs != null && Object.hasOwnProperty.call(message, "auditorSignatureTtlSecs"))
+                writer.uint32(/* id 3, wireType 0 =*/24).uint64(message.auditorSignatureTtlSecs);
+            if (message.requestedAuditorList != null && message.requestedAuditorList.length)
+                for (var i = 0; i < message.requestedAuditorList.length; ++i)
+                    writer.uint32(/* id 4, wireType 2 =*/34).string(message.requestedAuditorList[i]);
+            if (message.isProductionBuild != null && Object.hasOwnProperty.call(message, "isProductionBuild"))
+                writer.uint32(/* id 5, wireType 0 =*/40).bool(message.isProductionBuild);
+            if (message.localMailboxHead != null && Object.hasOwnProperty.call(message, "localMailboxHead"))
+                writer.uint32(/* id 6, wireType 2 =*/50).bytes(message.localMailboxHead);
+            return writer;
+        };
+
+        /**
+         * Encodes the specified VerifyKeyTransparencyForUserMandrakeCommand message, length delimited. Does not implicitly {@link proto.VerifyKeyTransparencyForUserMandrakeCommand.verify|verify} messages.
+         * @function encodeDelimited
+         * @memberof proto.VerifyKeyTransparencyForUserMandrakeCommand
+         * @static
+         * @param {proto.IVerifyKeyTransparencyForUserMandrakeCommand} message VerifyKeyTransparencyForUserMandrakeCommand message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        VerifyKeyTransparencyForUserMandrakeCommand.encodeDelimited = function encodeDelimited(message, writer) {
+            return this.encode(message, writer).ldelim();
+        };
+
+        /**
+         * Decodes a VerifyKeyTransparencyForUserMandrakeCommand message from the specified reader or buffer.
+         * @function decode
+         * @memberof proto.VerifyKeyTransparencyForUserMandrakeCommand
+         * @static
+         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+         * @param {number} [length] Message length if known beforehand
+         * @returns {proto.VerifyKeyTransparencyForUserMandrakeCommand} VerifyKeyTransparencyForUserMandrakeCommand
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        VerifyKeyTransparencyForUserMandrakeCommand.decode = function decode(reader, length, error) {
+            if (!(reader instanceof $Reader))
+                reader = $Reader.create(reader);
+            var end = length === undefined ? reader.len : reader.pos + length, message = new $root.proto.VerifyKeyTransparencyForUserMandrakeCommand();
+            while (reader.pos < end) {
+                var tag = reader.uint32();
+                if (tag === error)
+                    break;
+                switch (tag >>> 3) {
+                case 1: {
+                        message.lookupResponse = reader.bytes();
+                        break;
+                    }
+                case 2: {
+                        message.userFbid = reader.int64();
+                        break;
+                    }
+                case 3: {
+                        message.auditorSignatureTtlSecs = reader.uint64();
+                        break;
+                    }
+                case 4: {
+                        if (!(message.requestedAuditorList && message.requestedAuditorList.length))
+                            message.requestedAuditorList = [];
+                        message.requestedAuditorList.push(reader.string());
+                        break;
+                    }
+                case 5: {
+                        message.isProductionBuild = reader.bool();
+                        break;
+                    }
+                case 6: {
+                        message.localMailboxHead = reader.bytes();
+                        break;
+                    }
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+                }
+            }
+            return message;
+        };
+
+        /**
+         * Decodes a VerifyKeyTransparencyForUserMandrakeCommand message from the specified reader or buffer, length delimited.
+         * @function decodeDelimited
+         * @memberof proto.VerifyKeyTransparencyForUserMandrakeCommand
+         * @static
+         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+         * @returns {proto.VerifyKeyTransparencyForUserMandrakeCommand} VerifyKeyTransparencyForUserMandrakeCommand
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        VerifyKeyTransparencyForUserMandrakeCommand.decodeDelimited = function decodeDelimited(reader) {
+            if (!(reader instanceof $Reader))
+                reader = new $Reader(reader);
+            return this.decode(reader, reader.uint32());
+        };
+
+        /**
+         * Verifies a VerifyKeyTransparencyForUserMandrakeCommand message.
+         * @function verify
+         * @memberof proto.VerifyKeyTransparencyForUserMandrakeCommand
+         * @static
+         * @param {Object.<string,*>} message Plain object to verify
+         * @returns {string|null} `null` if valid, otherwise the reason why it is not
+         */
+        VerifyKeyTransparencyForUserMandrakeCommand.verify = function verify(message) {
+            if (typeof message !== "object" || message === null)
+                return "object expected";
+            var properties = {};
+            if (message.lookupResponse != null && message.hasOwnProperty("lookupResponse")) {
+                properties._lookupResponse = 1;
+                if (!(message.lookupResponse && typeof message.lookupResponse.length === "number" || $util.isString(message.lookupResponse)))
+                    return "lookupResponse: buffer expected";
+            }
+            if (message.userFbid != null && message.hasOwnProperty("userFbid")) {
+                properties._userFbid = 1;
+                if (!$util.isInteger(message.userFbid) && !(message.userFbid && $util.isInteger(message.userFbid.low) && $util.isInteger(message.userFbid.high)))
+                    return "userFbid: integer|Long expected";
+            }
+            if (message.auditorSignatureTtlSecs != null && message.hasOwnProperty("auditorSignatureTtlSecs")) {
+                properties._auditorSignatureTtlSecs = 1;
+                if (!$util.isInteger(message.auditorSignatureTtlSecs) && !(message.auditorSignatureTtlSecs && $util.isInteger(message.auditorSignatureTtlSecs.low) && $util.isInteger(message.auditorSignatureTtlSecs.high)))
+                    return "auditorSignatureTtlSecs: integer|Long expected";
+            }
+            if (message.requestedAuditorList != null && message.hasOwnProperty("requestedAuditorList")) {
+                if (!Array.isArray(message.requestedAuditorList))
+                    return "requestedAuditorList: array expected";
+                for (var i = 0; i < message.requestedAuditorList.length; ++i)
+                    if (!$util.isString(message.requestedAuditorList[i]))
+                        return "requestedAuditorList: string[] expected";
+            }
+            if (message.isProductionBuild != null && message.hasOwnProperty("isProductionBuild")) {
+                properties._isProductionBuild = 1;
+                if (typeof message.isProductionBuild !== "boolean")
+                    return "isProductionBuild: boolean expected";
+            }
+            if (message.localMailboxHead != null && message.hasOwnProperty("localMailboxHead")) {
+                properties._localMailboxHead = 1;
+                if (!(message.localMailboxHead && typeof message.localMailboxHead.length === "number" || $util.isString(message.localMailboxHead)))
+                    return "localMailboxHead: buffer expected";
+            }
+            return null;
+        };
+
+        /**
+         * Creates a VerifyKeyTransparencyForUserMandrakeCommand message from a plain object. Also converts values to their respective internal types.
+         * @function fromObject
+         * @memberof proto.VerifyKeyTransparencyForUserMandrakeCommand
+         * @static
+         * @param {Object.<string,*>} object Plain object
+         * @returns {proto.VerifyKeyTransparencyForUserMandrakeCommand} VerifyKeyTransparencyForUserMandrakeCommand
+         */
+        VerifyKeyTransparencyForUserMandrakeCommand.fromObject = function fromObject(object) {
+            if (object instanceof $root.proto.VerifyKeyTransparencyForUserMandrakeCommand)
+                return object;
+            var message = new $root.proto.VerifyKeyTransparencyForUserMandrakeCommand();
+            if (object.lookupResponse != null)
+                if (typeof object.lookupResponse === "string")
+                    $util.base64.decode(object.lookupResponse, message.lookupResponse = $util.newBuffer($util.base64.length(object.lookupResponse)), 0);
+                else if (object.lookupResponse.length >= 0)
+                    message.lookupResponse = object.lookupResponse;
+            if (object.userFbid != null)
+                if ($util.Long)
+                    (message.userFbid = $util.Long.fromValue(object.userFbid)).unsigned = false;
+                else if (typeof object.userFbid === "string")
+                    message.userFbid = parseInt(object.userFbid, 10);
+                else if (typeof object.userFbid === "number")
+                    message.userFbid = object.userFbid;
+                else if (typeof object.userFbid === "object")
+                    message.userFbid = new $util.LongBits(object.userFbid.low >>> 0, object.userFbid.high >>> 0).toNumber();
+            if (object.auditorSignatureTtlSecs != null)
+                if ($util.Long)
+                    (message.auditorSignatureTtlSecs = $util.Long.fromValue(object.auditorSignatureTtlSecs)).unsigned = true;
+                else if (typeof object.auditorSignatureTtlSecs === "string")
+                    message.auditorSignatureTtlSecs = parseInt(object.auditorSignatureTtlSecs, 10);
+                else if (typeof object.auditorSignatureTtlSecs === "number")
+                    message.auditorSignatureTtlSecs = object.auditorSignatureTtlSecs;
+                else if (typeof object.auditorSignatureTtlSecs === "object")
+                    message.auditorSignatureTtlSecs = new $util.LongBits(object.auditorSignatureTtlSecs.low >>> 0, object.auditorSignatureTtlSecs.high >>> 0).toNumber(true);
+            if (object.requestedAuditorList) {
+                if (!Array.isArray(object.requestedAuditorList))
+                    throw TypeError(".proto.VerifyKeyTransparencyForUserMandrakeCommand.requestedAuditorList: array expected");
+                message.requestedAuditorList = [];
+                for (var i = 0; i < object.requestedAuditorList.length; ++i)
+                    message.requestedAuditorList[i] = String(object.requestedAuditorList[i]);
+            }
+            if (object.isProductionBuild != null)
+                message.isProductionBuild = Boolean(object.isProductionBuild);
+            if (object.localMailboxHead != null)
+                if (typeof object.localMailboxHead === "string")
+                    $util.base64.decode(object.localMailboxHead, message.localMailboxHead = $util.newBuffer($util.base64.length(object.localMailboxHead)), 0);
+                else if (object.localMailboxHead.length >= 0)
+                    message.localMailboxHead = object.localMailboxHead;
+            return message;
+        };
+
+        /**
+         * Creates a plain object from a VerifyKeyTransparencyForUserMandrakeCommand message. Also converts values to other types if specified.
+         * @function toObject
+         * @memberof proto.VerifyKeyTransparencyForUserMandrakeCommand
+         * @static
+         * @param {proto.VerifyKeyTransparencyForUserMandrakeCommand} message VerifyKeyTransparencyForUserMandrakeCommand
+         * @param {$protobuf.IConversionOptions} [options] Conversion options
+         * @returns {Object.<string,*>} Plain object
+         */
+        VerifyKeyTransparencyForUserMandrakeCommand.toObject = function toObject(message, options) {
+            if (!options)
+                options = {};
+            var object = {};
+            if (options.arrays || options.defaults)
+                object.requestedAuditorList = [];
+            if (message.lookupResponse != null && message.hasOwnProperty("lookupResponse")) {
+                object.lookupResponse = options.bytes === String ? $util.base64.encode(message.lookupResponse, 0, message.lookupResponse.length) : options.bytes === Array ? Array.prototype.slice.call(message.lookupResponse) : message.lookupResponse;
+                if (options.oneofs)
+                    object._lookupResponse = "lookupResponse";
+            }
+            if (message.userFbid != null && message.hasOwnProperty("userFbid")) {
+                if (typeof message.userFbid === "number")
+                    object.userFbid = options.longs === String ? String(message.userFbid) : message.userFbid;
+                else
+                    object.userFbid = options.longs === String ? $util.Long.prototype.toString.call(message.userFbid) : options.longs === Number ? new $util.LongBits(message.userFbid.low >>> 0, message.userFbid.high >>> 0).toNumber() : message.userFbid;
+                if (options.oneofs)
+                    object._userFbid = "userFbid";
+            }
+            if (message.auditorSignatureTtlSecs != null && message.hasOwnProperty("auditorSignatureTtlSecs")) {
+                if (typeof message.auditorSignatureTtlSecs === "number")
+                    object.auditorSignatureTtlSecs = options.longs === String ? String(message.auditorSignatureTtlSecs) : message.auditorSignatureTtlSecs;
+                else
+                    object.auditorSignatureTtlSecs = options.longs === String ? $util.Long.prototype.toString.call(message.auditorSignatureTtlSecs) : options.longs === Number ? new $util.LongBits(message.auditorSignatureTtlSecs.low >>> 0, message.auditorSignatureTtlSecs.high >>> 0).toNumber(true) : message.auditorSignatureTtlSecs;
+                if (options.oneofs)
+                    object._auditorSignatureTtlSecs = "auditorSignatureTtlSecs";
+            }
+            if (message.requestedAuditorList && message.requestedAuditorList.length) {
+                object.requestedAuditorList = [];
+                for (var j = 0; j < message.requestedAuditorList.length; ++j)
+                    object.requestedAuditorList[j] = message.requestedAuditorList[j];
+            }
+            if (message.isProductionBuild != null && message.hasOwnProperty("isProductionBuild")) {
+                object.isProductionBuild = message.isProductionBuild;
+                if (options.oneofs)
+                    object._isProductionBuild = "isProductionBuild";
+            }
+            if (message.localMailboxHead != null && message.hasOwnProperty("localMailboxHead")) {
+                object.localMailboxHead = options.bytes === String ? $util.base64.encode(message.localMailboxHead, 0, message.localMailboxHead.length) : options.bytes === Array ? Array.prototype.slice.call(message.localMailboxHead) : message.localMailboxHead;
+                if (options.oneofs)
+                    object._localMailboxHead = "localMailboxHead";
+            }
+            return object;
+        };
+
+        /**
+         * Converts this VerifyKeyTransparencyForUserMandrakeCommand to JSON.
+         * @function toJSON
+         * @memberof proto.VerifyKeyTransparencyForUserMandrakeCommand
+         * @instance
+         * @returns {Object.<string,*>} JSON object
+         */
+        VerifyKeyTransparencyForUserMandrakeCommand.prototype.toJSON = function toJSON() {
+            return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+        };
+
+        /**
+         * Gets the default type url for VerifyKeyTransparencyForUserMandrakeCommand
+         * @function getTypeUrl
+         * @memberof proto.VerifyKeyTransparencyForUserMandrakeCommand
+         * @static
+         * @param {string} [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+         * @returns {string} The default type url
+         */
+        VerifyKeyTransparencyForUserMandrakeCommand.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
+            if (typeUrlPrefix === undefined) {
+                typeUrlPrefix = "type.googleapis.com";
+            }
+            return typeUrlPrefix + "/proto.VerifyKeyTransparencyForUserMandrakeCommand";
+        };
+
+        return VerifyKeyTransparencyForUserMandrakeCommand;
+    })();
+
+    proto.VerifyKeyTransparencyForUserMandrakeResult = (function() {
+
+        /**
+         * Properties of a VerifyKeyTransparencyForUserMandrakeResult.
+         * @memberof proto
+         * @interface IVerifyKeyTransparencyForUserMandrakeResult
+         * @property {boolean|null} [success] VerifyKeyTransparencyForUserMandrakeResult success
+         * @property {string|null} [error] VerifyKeyTransparencyForUserMandrakeResult error
+         */
+
+        /**
+         * Constructs a new VerifyKeyTransparencyForUserMandrakeResult.
+         * @memberof proto
+         * @classdesc Represents a VerifyKeyTransparencyForUserMandrakeResult.
+         * @implements IVerifyKeyTransparencyForUserMandrakeResult
+         * @constructor
+         * @param {proto.IVerifyKeyTransparencyForUserMandrakeResult=} [properties] Properties to set
+         */
+        function VerifyKeyTransparencyForUserMandrakeResult(properties) {
+            if (properties)
+                for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                    if (properties[keys[i]] != null)
+                        this[keys[i]] = properties[keys[i]];
+        }
+
+        /**
+         * VerifyKeyTransparencyForUserMandrakeResult success.
+         * @member {boolean|null|undefined} success
+         * @memberof proto.VerifyKeyTransparencyForUserMandrakeResult
+         * @instance
+         */
+        VerifyKeyTransparencyForUserMandrakeResult.prototype.success = null;
+
+        /**
+         * VerifyKeyTransparencyForUserMandrakeResult error.
+         * @member {string|null|undefined} error
+         * @memberof proto.VerifyKeyTransparencyForUserMandrakeResult
+         * @instance
+         */
+        VerifyKeyTransparencyForUserMandrakeResult.prototype.error = null;
+
+        // OneOf field names bound to virtual getters and setters
+        var $oneOfFields;
+
+        // Virtual OneOf for proto3 optional field
+        Object.defineProperty(VerifyKeyTransparencyForUserMandrakeResult.prototype, "_success", {
+            get: $util.oneOfGetter($oneOfFields = ["success"]),
+            set: $util.oneOfSetter($oneOfFields)
+        });
+
+        // Virtual OneOf for proto3 optional field
+        Object.defineProperty(VerifyKeyTransparencyForUserMandrakeResult.prototype, "_error", {
+            get: $util.oneOfGetter($oneOfFields = ["error"]),
+            set: $util.oneOfSetter($oneOfFields)
+        });
+
+        /**
+         * Creates a new VerifyKeyTransparencyForUserMandrakeResult instance using the specified properties.
+         * @function create
+         * @memberof proto.VerifyKeyTransparencyForUserMandrakeResult
+         * @static
+         * @param {proto.IVerifyKeyTransparencyForUserMandrakeResult=} [properties] Properties to set
+         * @returns {proto.VerifyKeyTransparencyForUserMandrakeResult} VerifyKeyTransparencyForUserMandrakeResult instance
+         */
+        VerifyKeyTransparencyForUserMandrakeResult.create = function create(properties) {
+            return new VerifyKeyTransparencyForUserMandrakeResult(properties);
+        };
+
+        /**
+         * Encodes the specified VerifyKeyTransparencyForUserMandrakeResult message. Does not implicitly {@link proto.VerifyKeyTransparencyForUserMandrakeResult.verify|verify} messages.
+         * @function encode
+         * @memberof proto.VerifyKeyTransparencyForUserMandrakeResult
+         * @static
+         * @param {proto.IVerifyKeyTransparencyForUserMandrakeResult} message VerifyKeyTransparencyForUserMandrakeResult message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        VerifyKeyTransparencyForUserMandrakeResult.encode = function encode(message, writer) {
+            if (!writer)
+                writer = $Writer.create();
+            if (message.success != null && Object.hasOwnProperty.call(message, "success"))
+                writer.uint32(/* id 1, wireType 0 =*/8).bool(message.success);
+            if (message.error != null && Object.hasOwnProperty.call(message, "error"))
+                writer.uint32(/* id 2, wireType 2 =*/18).string(message.error);
+            return writer;
+        };
+
+        /**
+         * Encodes the specified VerifyKeyTransparencyForUserMandrakeResult message, length delimited. Does not implicitly {@link proto.VerifyKeyTransparencyForUserMandrakeResult.verify|verify} messages.
+         * @function encodeDelimited
+         * @memberof proto.VerifyKeyTransparencyForUserMandrakeResult
+         * @static
+         * @param {proto.IVerifyKeyTransparencyForUserMandrakeResult} message VerifyKeyTransparencyForUserMandrakeResult message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        VerifyKeyTransparencyForUserMandrakeResult.encodeDelimited = function encodeDelimited(message, writer) {
+            return this.encode(message, writer).ldelim();
+        };
+
+        /**
+         * Decodes a VerifyKeyTransparencyForUserMandrakeResult message from the specified reader or buffer.
+         * @function decode
+         * @memberof proto.VerifyKeyTransparencyForUserMandrakeResult
+         * @static
+         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+         * @param {number} [length] Message length if known beforehand
+         * @returns {proto.VerifyKeyTransparencyForUserMandrakeResult} VerifyKeyTransparencyForUserMandrakeResult
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        VerifyKeyTransparencyForUserMandrakeResult.decode = function decode(reader, length, error) {
+            if (!(reader instanceof $Reader))
+                reader = $Reader.create(reader);
+            var end = length === undefined ? reader.len : reader.pos + length, message = new $root.proto.VerifyKeyTransparencyForUserMandrakeResult();
+            while (reader.pos < end) {
+                var tag = reader.uint32();
+                if (tag === error)
+                    break;
+                switch (tag >>> 3) {
+                case 1: {
+                        message.success = reader.bool();
+                        break;
+                    }
+                case 2: {
+                        message.error = reader.string();
+                        break;
+                    }
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+                }
+            }
+            return message;
+        };
+
+        /**
+         * Decodes a VerifyKeyTransparencyForUserMandrakeResult message from the specified reader or buffer, length delimited.
+         * @function decodeDelimited
+         * @memberof proto.VerifyKeyTransparencyForUserMandrakeResult
+         * @static
+         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+         * @returns {proto.VerifyKeyTransparencyForUserMandrakeResult} VerifyKeyTransparencyForUserMandrakeResult
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        VerifyKeyTransparencyForUserMandrakeResult.decodeDelimited = function decodeDelimited(reader) {
+            if (!(reader instanceof $Reader))
+                reader = new $Reader(reader);
+            return this.decode(reader, reader.uint32());
+        };
+
+        /**
+         * Verifies a VerifyKeyTransparencyForUserMandrakeResult message.
+         * @function verify
+         * @memberof proto.VerifyKeyTransparencyForUserMandrakeResult
+         * @static
+         * @param {Object.<string,*>} message Plain object to verify
+         * @returns {string|null} `null` if valid, otherwise the reason why it is not
+         */
+        VerifyKeyTransparencyForUserMandrakeResult.verify = function verify(message) {
+            if (typeof message !== "object" || message === null)
+                return "object expected";
+            var properties = {};
+            if (message.success != null && message.hasOwnProperty("success")) {
+                properties._success = 1;
+                if (typeof message.success !== "boolean")
+                    return "success: boolean expected";
+            }
+            if (message.error != null && message.hasOwnProperty("error")) {
+                properties._error = 1;
+                if (!$util.isString(message.error))
+                    return "error: string expected";
+            }
+            return null;
+        };
+
+        /**
+         * Creates a VerifyKeyTransparencyForUserMandrakeResult message from a plain object. Also converts values to their respective internal types.
+         * @function fromObject
+         * @memberof proto.VerifyKeyTransparencyForUserMandrakeResult
+         * @static
+         * @param {Object.<string,*>} object Plain object
+         * @returns {proto.VerifyKeyTransparencyForUserMandrakeResult} VerifyKeyTransparencyForUserMandrakeResult
+         */
+        VerifyKeyTransparencyForUserMandrakeResult.fromObject = function fromObject(object) {
+            if (object instanceof $root.proto.VerifyKeyTransparencyForUserMandrakeResult)
+                return object;
+            var message = new $root.proto.VerifyKeyTransparencyForUserMandrakeResult();
+            if (object.success != null)
+                message.success = Boolean(object.success);
+            if (object.error != null)
+                message.error = String(object.error);
+            return message;
+        };
+
+        /**
+         * Creates a plain object from a VerifyKeyTransparencyForUserMandrakeResult message. Also converts values to other types if specified.
+         * @function toObject
+         * @memberof proto.VerifyKeyTransparencyForUserMandrakeResult
+         * @static
+         * @param {proto.VerifyKeyTransparencyForUserMandrakeResult} message VerifyKeyTransparencyForUserMandrakeResult
+         * @param {$protobuf.IConversionOptions} [options] Conversion options
+         * @returns {Object.<string,*>} Plain object
+         */
+        VerifyKeyTransparencyForUserMandrakeResult.toObject = function toObject(message, options) {
+            if (!options)
+                options = {};
+            var object = {};
+            if (message.success != null && message.hasOwnProperty("success")) {
+                object.success = message.success;
+                if (options.oneofs)
+                    object._success = "success";
+            }
+            if (message.error != null && message.hasOwnProperty("error")) {
+                object.error = message.error;
+                if (options.oneofs)
+                    object._error = "error";
+            }
+            return object;
+        };
+
+        /**
+         * Converts this VerifyKeyTransparencyForUserMandrakeResult to JSON.
+         * @function toJSON
+         * @memberof proto.VerifyKeyTransparencyForUserMandrakeResult
+         * @instance
+         * @returns {Object.<string,*>} JSON object
+         */
+        VerifyKeyTransparencyForUserMandrakeResult.prototype.toJSON = function toJSON() {
+            return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+        };
+
+        /**
+         * Gets the default type url for VerifyKeyTransparencyForUserMandrakeResult
+         * @function getTypeUrl
+         * @memberof proto.VerifyKeyTransparencyForUserMandrakeResult
+         * @static
+         * @param {string} [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+         * @returns {string} The default type url
+         */
+        VerifyKeyTransparencyForUserMandrakeResult.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
+            if (typeUrlPrefix === undefined) {
+                typeUrlPrefix = "type.googleapis.com";
+            }
+            return typeUrlPrefix + "/proto.VerifyKeyTransparencyForUserMandrakeResult";
+        };
+
+        return VerifyKeyTransparencyForUserMandrakeResult;
+    })();
+
+    proto.VerifyKeyTransparencyForUserMinosCommand = (function() {
+
+        /**
+         * Properties of a VerifyKeyTransparencyForUserMinosCommand.
+         * @memberof proto
+         * @interface IVerifyKeyTransparencyForUserMinosCommand
+         * @property {Uint8Array|null} [lookupResponse] VerifyKeyTransparencyForUserMinosCommand lookupResponse
+         * @property {number|Long|null} [userFbid] VerifyKeyTransparencyForUserMinosCommand userFbid
+         * @property {number|Long|null} [auditorSignatureTtlSecs] VerifyKeyTransparencyForUserMinosCommand auditorSignatureTtlSecs
+         * @property {Array.<string>|null} [requestedAuditorList] VerifyKeyTransparencyForUserMinosCommand requestedAuditorList
+         * @property {boolean|null} [isProductionBuild] VerifyKeyTransparencyForUserMinosCommand isProductionBuild
+         * @property {Uint8Array|null} [localEpochHead] VerifyKeyTransparencyForUserMinosCommand localEpochHead
+         */
+
+        /**
+         * Constructs a new VerifyKeyTransparencyForUserMinosCommand.
+         * @memberof proto
+         * @classdesc Represents a VerifyKeyTransparencyForUserMinosCommand.
+         * @implements IVerifyKeyTransparencyForUserMinosCommand
+         * @constructor
+         * @param {proto.IVerifyKeyTransparencyForUserMinosCommand=} [properties] Properties to set
+         */
+        function VerifyKeyTransparencyForUserMinosCommand(properties) {
+            this.requestedAuditorList = [];
+            if (properties)
+                for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                    if (properties[keys[i]] != null)
+                        this[keys[i]] = properties[keys[i]];
+        }
+
+        /**
+         * VerifyKeyTransparencyForUserMinosCommand lookupResponse.
+         * @member {Uint8Array|null|undefined} lookupResponse
+         * @memberof proto.VerifyKeyTransparencyForUserMinosCommand
+         * @instance
+         */
+        VerifyKeyTransparencyForUserMinosCommand.prototype.lookupResponse = null;
+
+        /**
+         * VerifyKeyTransparencyForUserMinosCommand userFbid.
+         * @member {number|Long|null|undefined} userFbid
+         * @memberof proto.VerifyKeyTransparencyForUserMinosCommand
+         * @instance
+         */
+        VerifyKeyTransparencyForUserMinosCommand.prototype.userFbid = null;
+
+        /**
+         * VerifyKeyTransparencyForUserMinosCommand auditorSignatureTtlSecs.
+         * @member {number|Long|null|undefined} auditorSignatureTtlSecs
+         * @memberof proto.VerifyKeyTransparencyForUserMinosCommand
+         * @instance
+         */
+        VerifyKeyTransparencyForUserMinosCommand.prototype.auditorSignatureTtlSecs = null;
+
+        /**
+         * VerifyKeyTransparencyForUserMinosCommand requestedAuditorList.
+         * @member {Array.<string>} requestedAuditorList
+         * @memberof proto.VerifyKeyTransparencyForUserMinosCommand
+         * @instance
+         */
+        VerifyKeyTransparencyForUserMinosCommand.prototype.requestedAuditorList = $util.emptyArray;
+
+        /**
+         * VerifyKeyTransparencyForUserMinosCommand isProductionBuild.
+         * @member {boolean|null|undefined} isProductionBuild
+         * @memberof proto.VerifyKeyTransparencyForUserMinosCommand
+         * @instance
+         */
+        VerifyKeyTransparencyForUserMinosCommand.prototype.isProductionBuild = null;
+
+        /**
+         * VerifyKeyTransparencyForUserMinosCommand localEpochHead.
+         * @member {Uint8Array|null|undefined} localEpochHead
+         * @memberof proto.VerifyKeyTransparencyForUserMinosCommand
+         * @instance
+         */
+        VerifyKeyTransparencyForUserMinosCommand.prototype.localEpochHead = null;
+
+        // OneOf field names bound to virtual getters and setters
+        var $oneOfFields;
+
+        // Virtual OneOf for proto3 optional field
+        Object.defineProperty(VerifyKeyTransparencyForUserMinosCommand.prototype, "_lookupResponse", {
+            get: $util.oneOfGetter($oneOfFields = ["lookupResponse"]),
+            set: $util.oneOfSetter($oneOfFields)
+        });
+
+        // Virtual OneOf for proto3 optional field
+        Object.defineProperty(VerifyKeyTransparencyForUserMinosCommand.prototype, "_userFbid", {
+            get: $util.oneOfGetter($oneOfFields = ["userFbid"]),
+            set: $util.oneOfSetter($oneOfFields)
+        });
+
+        // Virtual OneOf for proto3 optional field
+        Object.defineProperty(VerifyKeyTransparencyForUserMinosCommand.prototype, "_auditorSignatureTtlSecs", {
+            get: $util.oneOfGetter($oneOfFields = ["auditorSignatureTtlSecs"]),
+            set: $util.oneOfSetter($oneOfFields)
+        });
+
+        // Virtual OneOf for proto3 optional field
+        Object.defineProperty(VerifyKeyTransparencyForUserMinosCommand.prototype, "_isProductionBuild", {
+            get: $util.oneOfGetter($oneOfFields = ["isProductionBuild"]),
+            set: $util.oneOfSetter($oneOfFields)
+        });
+
+        // Virtual OneOf for proto3 optional field
+        Object.defineProperty(VerifyKeyTransparencyForUserMinosCommand.prototype, "_localEpochHead", {
+            get: $util.oneOfGetter($oneOfFields = ["localEpochHead"]),
+            set: $util.oneOfSetter($oneOfFields)
+        });
+
+        /**
+         * Creates a new VerifyKeyTransparencyForUserMinosCommand instance using the specified properties.
+         * @function create
+         * @memberof proto.VerifyKeyTransparencyForUserMinosCommand
+         * @static
+         * @param {proto.IVerifyKeyTransparencyForUserMinosCommand=} [properties] Properties to set
+         * @returns {proto.VerifyKeyTransparencyForUserMinosCommand} VerifyKeyTransparencyForUserMinosCommand instance
+         */
+        VerifyKeyTransparencyForUserMinosCommand.create = function create(properties) {
+            return new VerifyKeyTransparencyForUserMinosCommand(properties);
+        };
+
+        /**
+         * Encodes the specified VerifyKeyTransparencyForUserMinosCommand message. Does not implicitly {@link proto.VerifyKeyTransparencyForUserMinosCommand.verify|verify} messages.
+         * @function encode
+         * @memberof proto.VerifyKeyTransparencyForUserMinosCommand
+         * @static
+         * @param {proto.IVerifyKeyTransparencyForUserMinosCommand} message VerifyKeyTransparencyForUserMinosCommand message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        VerifyKeyTransparencyForUserMinosCommand.encode = function encode(message, writer) {
+            if (!writer)
+                writer = $Writer.create();
+            if (message.lookupResponse != null && Object.hasOwnProperty.call(message, "lookupResponse"))
+                writer.uint32(/* id 1, wireType 2 =*/10).bytes(message.lookupResponse);
+            if (message.userFbid != null && Object.hasOwnProperty.call(message, "userFbid"))
+                writer.uint32(/* id 2, wireType 0 =*/16).int64(message.userFbid);
+            if (message.auditorSignatureTtlSecs != null && Object.hasOwnProperty.call(message, "auditorSignatureTtlSecs"))
+                writer.uint32(/* id 3, wireType 0 =*/24).uint64(message.auditorSignatureTtlSecs);
+            if (message.requestedAuditorList != null && message.requestedAuditorList.length)
+                for (var i = 0; i < message.requestedAuditorList.length; ++i)
+                    writer.uint32(/* id 4, wireType 2 =*/34).string(message.requestedAuditorList[i]);
+            if (message.isProductionBuild != null && Object.hasOwnProperty.call(message, "isProductionBuild"))
+                writer.uint32(/* id 5, wireType 0 =*/40).bool(message.isProductionBuild);
+            if (message.localEpochHead != null && Object.hasOwnProperty.call(message, "localEpochHead"))
+                writer.uint32(/* id 6, wireType 2 =*/50).bytes(message.localEpochHead);
+            return writer;
+        };
+
+        /**
+         * Encodes the specified VerifyKeyTransparencyForUserMinosCommand message, length delimited. Does not implicitly {@link proto.VerifyKeyTransparencyForUserMinosCommand.verify|verify} messages.
+         * @function encodeDelimited
+         * @memberof proto.VerifyKeyTransparencyForUserMinosCommand
+         * @static
+         * @param {proto.IVerifyKeyTransparencyForUserMinosCommand} message VerifyKeyTransparencyForUserMinosCommand message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        VerifyKeyTransparencyForUserMinosCommand.encodeDelimited = function encodeDelimited(message, writer) {
+            return this.encode(message, writer).ldelim();
+        };
+
+        /**
+         * Decodes a VerifyKeyTransparencyForUserMinosCommand message from the specified reader or buffer.
+         * @function decode
+         * @memberof proto.VerifyKeyTransparencyForUserMinosCommand
+         * @static
+         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+         * @param {number} [length] Message length if known beforehand
+         * @returns {proto.VerifyKeyTransparencyForUserMinosCommand} VerifyKeyTransparencyForUserMinosCommand
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        VerifyKeyTransparencyForUserMinosCommand.decode = function decode(reader, length, error) {
+            if (!(reader instanceof $Reader))
+                reader = $Reader.create(reader);
+            var end = length === undefined ? reader.len : reader.pos + length, message = new $root.proto.VerifyKeyTransparencyForUserMinosCommand();
+            while (reader.pos < end) {
+                var tag = reader.uint32();
+                if (tag === error)
+                    break;
+                switch (tag >>> 3) {
+                case 1: {
+                        message.lookupResponse = reader.bytes();
+                        break;
+                    }
+                case 2: {
+                        message.userFbid = reader.int64();
+                        break;
+                    }
+                case 3: {
+                        message.auditorSignatureTtlSecs = reader.uint64();
+                        break;
+                    }
+                case 4: {
+                        if (!(message.requestedAuditorList && message.requestedAuditorList.length))
+                            message.requestedAuditorList = [];
+                        message.requestedAuditorList.push(reader.string());
+                        break;
+                    }
+                case 5: {
+                        message.isProductionBuild = reader.bool();
+                        break;
+                    }
+                case 6: {
+                        message.localEpochHead = reader.bytes();
+                        break;
+                    }
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+                }
+            }
+            return message;
+        };
+
+        /**
+         * Decodes a VerifyKeyTransparencyForUserMinosCommand message from the specified reader or buffer, length delimited.
+         * @function decodeDelimited
+         * @memberof proto.VerifyKeyTransparencyForUserMinosCommand
+         * @static
+         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+         * @returns {proto.VerifyKeyTransparencyForUserMinosCommand} VerifyKeyTransparencyForUserMinosCommand
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        VerifyKeyTransparencyForUserMinosCommand.decodeDelimited = function decodeDelimited(reader) {
+            if (!(reader instanceof $Reader))
+                reader = new $Reader(reader);
+            return this.decode(reader, reader.uint32());
+        };
+
+        /**
+         * Verifies a VerifyKeyTransparencyForUserMinosCommand message.
+         * @function verify
+         * @memberof proto.VerifyKeyTransparencyForUserMinosCommand
+         * @static
+         * @param {Object.<string,*>} message Plain object to verify
+         * @returns {string|null} `null` if valid, otherwise the reason why it is not
+         */
+        VerifyKeyTransparencyForUserMinosCommand.verify = function verify(message) {
+            if (typeof message !== "object" || message === null)
+                return "object expected";
+            var properties = {};
+            if (message.lookupResponse != null && message.hasOwnProperty("lookupResponse")) {
+                properties._lookupResponse = 1;
+                if (!(message.lookupResponse && typeof message.lookupResponse.length === "number" || $util.isString(message.lookupResponse)))
+                    return "lookupResponse: buffer expected";
+            }
+            if (message.userFbid != null && message.hasOwnProperty("userFbid")) {
+                properties._userFbid = 1;
+                if (!$util.isInteger(message.userFbid) && !(message.userFbid && $util.isInteger(message.userFbid.low) && $util.isInteger(message.userFbid.high)))
+                    return "userFbid: integer|Long expected";
+            }
+            if (message.auditorSignatureTtlSecs != null && message.hasOwnProperty("auditorSignatureTtlSecs")) {
+                properties._auditorSignatureTtlSecs = 1;
+                if (!$util.isInteger(message.auditorSignatureTtlSecs) && !(message.auditorSignatureTtlSecs && $util.isInteger(message.auditorSignatureTtlSecs.low) && $util.isInteger(message.auditorSignatureTtlSecs.high)))
+                    return "auditorSignatureTtlSecs: integer|Long expected";
+            }
+            if (message.requestedAuditorList != null && message.hasOwnProperty("requestedAuditorList")) {
+                if (!Array.isArray(message.requestedAuditorList))
+                    return "requestedAuditorList: array expected";
+                for (var i = 0; i < message.requestedAuditorList.length; ++i)
+                    if (!$util.isString(message.requestedAuditorList[i]))
+                        return "requestedAuditorList: string[] expected";
+            }
+            if (message.isProductionBuild != null && message.hasOwnProperty("isProductionBuild")) {
+                properties._isProductionBuild = 1;
+                if (typeof message.isProductionBuild !== "boolean")
+                    return "isProductionBuild: boolean expected";
+            }
+            if (message.localEpochHead != null && message.hasOwnProperty("localEpochHead")) {
+                properties._localEpochHead = 1;
+                if (!(message.localEpochHead && typeof message.localEpochHead.length === "number" || $util.isString(message.localEpochHead)))
+                    return "localEpochHead: buffer expected";
+            }
+            return null;
+        };
+
+        /**
+         * Creates a VerifyKeyTransparencyForUserMinosCommand message from a plain object. Also converts values to their respective internal types.
+         * @function fromObject
+         * @memberof proto.VerifyKeyTransparencyForUserMinosCommand
+         * @static
+         * @param {Object.<string,*>} object Plain object
+         * @returns {proto.VerifyKeyTransparencyForUserMinosCommand} VerifyKeyTransparencyForUserMinosCommand
+         */
+        VerifyKeyTransparencyForUserMinosCommand.fromObject = function fromObject(object) {
+            if (object instanceof $root.proto.VerifyKeyTransparencyForUserMinosCommand)
+                return object;
+            var message = new $root.proto.VerifyKeyTransparencyForUserMinosCommand();
+            if (object.lookupResponse != null)
+                if (typeof object.lookupResponse === "string")
+                    $util.base64.decode(object.lookupResponse, message.lookupResponse = $util.newBuffer($util.base64.length(object.lookupResponse)), 0);
+                else if (object.lookupResponse.length >= 0)
+                    message.lookupResponse = object.lookupResponse;
+            if (object.userFbid != null)
+                if ($util.Long)
+                    (message.userFbid = $util.Long.fromValue(object.userFbid)).unsigned = false;
+                else if (typeof object.userFbid === "string")
+                    message.userFbid = parseInt(object.userFbid, 10);
+                else if (typeof object.userFbid === "number")
+                    message.userFbid = object.userFbid;
+                else if (typeof object.userFbid === "object")
+                    message.userFbid = new $util.LongBits(object.userFbid.low >>> 0, object.userFbid.high >>> 0).toNumber();
+            if (object.auditorSignatureTtlSecs != null)
+                if ($util.Long)
+                    (message.auditorSignatureTtlSecs = $util.Long.fromValue(object.auditorSignatureTtlSecs)).unsigned = true;
+                else if (typeof object.auditorSignatureTtlSecs === "string")
+                    message.auditorSignatureTtlSecs = parseInt(object.auditorSignatureTtlSecs, 10);
+                else if (typeof object.auditorSignatureTtlSecs === "number")
+                    message.auditorSignatureTtlSecs = object.auditorSignatureTtlSecs;
+                else if (typeof object.auditorSignatureTtlSecs === "object")
+                    message.auditorSignatureTtlSecs = new $util.LongBits(object.auditorSignatureTtlSecs.low >>> 0, object.auditorSignatureTtlSecs.high >>> 0).toNumber(true);
+            if (object.requestedAuditorList) {
+                if (!Array.isArray(object.requestedAuditorList))
+                    throw TypeError(".proto.VerifyKeyTransparencyForUserMinosCommand.requestedAuditorList: array expected");
+                message.requestedAuditorList = [];
+                for (var i = 0; i < object.requestedAuditorList.length; ++i)
+                    message.requestedAuditorList[i] = String(object.requestedAuditorList[i]);
+            }
+            if (object.isProductionBuild != null)
+                message.isProductionBuild = Boolean(object.isProductionBuild);
+            if (object.localEpochHead != null)
+                if (typeof object.localEpochHead === "string")
+                    $util.base64.decode(object.localEpochHead, message.localEpochHead = $util.newBuffer($util.base64.length(object.localEpochHead)), 0);
+                else if (object.localEpochHead.length >= 0)
+                    message.localEpochHead = object.localEpochHead;
+            return message;
+        };
+
+        /**
+         * Creates a plain object from a VerifyKeyTransparencyForUserMinosCommand message. Also converts values to other types if specified.
+         * @function toObject
+         * @memberof proto.VerifyKeyTransparencyForUserMinosCommand
+         * @static
+         * @param {proto.VerifyKeyTransparencyForUserMinosCommand} message VerifyKeyTransparencyForUserMinosCommand
+         * @param {$protobuf.IConversionOptions} [options] Conversion options
+         * @returns {Object.<string,*>} Plain object
+         */
+        VerifyKeyTransparencyForUserMinosCommand.toObject = function toObject(message, options) {
+            if (!options)
+                options = {};
+            var object = {};
+            if (options.arrays || options.defaults)
+                object.requestedAuditorList = [];
+            if (message.lookupResponse != null && message.hasOwnProperty("lookupResponse")) {
+                object.lookupResponse = options.bytes === String ? $util.base64.encode(message.lookupResponse, 0, message.lookupResponse.length) : options.bytes === Array ? Array.prototype.slice.call(message.lookupResponse) : message.lookupResponse;
+                if (options.oneofs)
+                    object._lookupResponse = "lookupResponse";
+            }
+            if (message.userFbid != null && message.hasOwnProperty("userFbid")) {
+                if (typeof message.userFbid === "number")
+                    object.userFbid = options.longs === String ? String(message.userFbid) : message.userFbid;
+                else
+                    object.userFbid = options.longs === String ? $util.Long.prototype.toString.call(message.userFbid) : options.longs === Number ? new $util.LongBits(message.userFbid.low >>> 0, message.userFbid.high >>> 0).toNumber() : message.userFbid;
+                if (options.oneofs)
+                    object._userFbid = "userFbid";
+            }
+            if (message.auditorSignatureTtlSecs != null && message.hasOwnProperty("auditorSignatureTtlSecs")) {
+                if (typeof message.auditorSignatureTtlSecs === "number")
+                    object.auditorSignatureTtlSecs = options.longs === String ? String(message.auditorSignatureTtlSecs) : message.auditorSignatureTtlSecs;
+                else
+                    object.auditorSignatureTtlSecs = options.longs === String ? $util.Long.prototype.toString.call(message.auditorSignatureTtlSecs) : options.longs === Number ? new $util.LongBits(message.auditorSignatureTtlSecs.low >>> 0, message.auditorSignatureTtlSecs.high >>> 0).toNumber(true) : message.auditorSignatureTtlSecs;
+                if (options.oneofs)
+                    object._auditorSignatureTtlSecs = "auditorSignatureTtlSecs";
+            }
+            if (message.requestedAuditorList && message.requestedAuditorList.length) {
+                object.requestedAuditorList = [];
+                for (var j = 0; j < message.requestedAuditorList.length; ++j)
+                    object.requestedAuditorList[j] = message.requestedAuditorList[j];
+            }
+            if (message.isProductionBuild != null && message.hasOwnProperty("isProductionBuild")) {
+                object.isProductionBuild = message.isProductionBuild;
+                if (options.oneofs)
+                    object._isProductionBuild = "isProductionBuild";
+            }
+            if (message.localEpochHead != null && message.hasOwnProperty("localEpochHead")) {
+                object.localEpochHead = options.bytes === String ? $util.base64.encode(message.localEpochHead, 0, message.localEpochHead.length) : options.bytes === Array ? Array.prototype.slice.call(message.localEpochHead) : message.localEpochHead;
+                if (options.oneofs)
+                    object._localEpochHead = "localEpochHead";
+            }
+            return object;
+        };
+
+        /**
+         * Converts this VerifyKeyTransparencyForUserMinosCommand to JSON.
+         * @function toJSON
+         * @memberof proto.VerifyKeyTransparencyForUserMinosCommand
+         * @instance
+         * @returns {Object.<string,*>} JSON object
+         */
+        VerifyKeyTransparencyForUserMinosCommand.prototype.toJSON = function toJSON() {
+            return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+        };
+
+        /**
+         * Gets the default type url for VerifyKeyTransparencyForUserMinosCommand
+         * @function getTypeUrl
+         * @memberof proto.VerifyKeyTransparencyForUserMinosCommand
+         * @static
+         * @param {string} [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+         * @returns {string} The default type url
+         */
+        VerifyKeyTransparencyForUserMinosCommand.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
+            if (typeUrlPrefix === undefined) {
+                typeUrlPrefix = "type.googleapis.com";
+            }
+            return typeUrlPrefix + "/proto.VerifyKeyTransparencyForUserMinosCommand";
+        };
+
+        return VerifyKeyTransparencyForUserMinosCommand;
+    })();
+
+    proto.VerifyKeyTransparencyForUserMinosResult = (function() {
+
+        /**
+         * Properties of a VerifyKeyTransparencyForUserMinosResult.
+         * @memberof proto
+         * @interface IVerifyKeyTransparencyForUserMinosResult
+         * @property {boolean|null} [success] VerifyKeyTransparencyForUserMinosResult success
+         * @property {string|null} [error] VerifyKeyTransparencyForUserMinosResult error
+         */
+
+        /**
+         * Constructs a new VerifyKeyTransparencyForUserMinosResult.
+         * @memberof proto
+         * @classdesc Represents a VerifyKeyTransparencyForUserMinosResult.
+         * @implements IVerifyKeyTransparencyForUserMinosResult
+         * @constructor
+         * @param {proto.IVerifyKeyTransparencyForUserMinosResult=} [properties] Properties to set
+         */
+        function VerifyKeyTransparencyForUserMinosResult(properties) {
+            if (properties)
+                for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                    if (properties[keys[i]] != null)
+                        this[keys[i]] = properties[keys[i]];
+        }
+
+        /**
+         * VerifyKeyTransparencyForUserMinosResult success.
+         * @member {boolean|null|undefined} success
+         * @memberof proto.VerifyKeyTransparencyForUserMinosResult
+         * @instance
+         */
+        VerifyKeyTransparencyForUserMinosResult.prototype.success = null;
+
+        /**
+         * VerifyKeyTransparencyForUserMinosResult error.
+         * @member {string|null|undefined} error
+         * @memberof proto.VerifyKeyTransparencyForUserMinosResult
+         * @instance
+         */
+        VerifyKeyTransparencyForUserMinosResult.prototype.error = null;
+
+        // OneOf field names bound to virtual getters and setters
+        var $oneOfFields;
+
+        // Virtual OneOf for proto3 optional field
+        Object.defineProperty(VerifyKeyTransparencyForUserMinosResult.prototype, "_success", {
+            get: $util.oneOfGetter($oneOfFields = ["success"]),
+            set: $util.oneOfSetter($oneOfFields)
+        });
+
+        // Virtual OneOf for proto3 optional field
+        Object.defineProperty(VerifyKeyTransparencyForUserMinosResult.prototype, "_error", {
+            get: $util.oneOfGetter($oneOfFields = ["error"]),
+            set: $util.oneOfSetter($oneOfFields)
+        });
+
+        /**
+         * Creates a new VerifyKeyTransparencyForUserMinosResult instance using the specified properties.
+         * @function create
+         * @memberof proto.VerifyKeyTransparencyForUserMinosResult
+         * @static
+         * @param {proto.IVerifyKeyTransparencyForUserMinosResult=} [properties] Properties to set
+         * @returns {proto.VerifyKeyTransparencyForUserMinosResult} VerifyKeyTransparencyForUserMinosResult instance
+         */
+        VerifyKeyTransparencyForUserMinosResult.create = function create(properties) {
+            return new VerifyKeyTransparencyForUserMinosResult(properties);
+        };
+
+        /**
+         * Encodes the specified VerifyKeyTransparencyForUserMinosResult message. Does not implicitly {@link proto.VerifyKeyTransparencyForUserMinosResult.verify|verify} messages.
+         * @function encode
+         * @memberof proto.VerifyKeyTransparencyForUserMinosResult
+         * @static
+         * @param {proto.IVerifyKeyTransparencyForUserMinosResult} message VerifyKeyTransparencyForUserMinosResult message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        VerifyKeyTransparencyForUserMinosResult.encode = function encode(message, writer) {
+            if (!writer)
+                writer = $Writer.create();
+            if (message.success != null && Object.hasOwnProperty.call(message, "success"))
+                writer.uint32(/* id 1, wireType 0 =*/8).bool(message.success);
+            if (message.error != null && Object.hasOwnProperty.call(message, "error"))
+                writer.uint32(/* id 2, wireType 2 =*/18).string(message.error);
+            return writer;
+        };
+
+        /**
+         * Encodes the specified VerifyKeyTransparencyForUserMinosResult message, length delimited. Does not implicitly {@link proto.VerifyKeyTransparencyForUserMinosResult.verify|verify} messages.
+         * @function encodeDelimited
+         * @memberof proto.VerifyKeyTransparencyForUserMinosResult
+         * @static
+         * @param {proto.IVerifyKeyTransparencyForUserMinosResult} message VerifyKeyTransparencyForUserMinosResult message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        VerifyKeyTransparencyForUserMinosResult.encodeDelimited = function encodeDelimited(message, writer) {
+            return this.encode(message, writer).ldelim();
+        };
+
+        /**
+         * Decodes a VerifyKeyTransparencyForUserMinosResult message from the specified reader or buffer.
+         * @function decode
+         * @memberof proto.VerifyKeyTransparencyForUserMinosResult
+         * @static
+         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+         * @param {number} [length] Message length if known beforehand
+         * @returns {proto.VerifyKeyTransparencyForUserMinosResult} VerifyKeyTransparencyForUserMinosResult
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        VerifyKeyTransparencyForUserMinosResult.decode = function decode(reader, length, error) {
+            if (!(reader instanceof $Reader))
+                reader = $Reader.create(reader);
+            var end = length === undefined ? reader.len : reader.pos + length, message = new $root.proto.VerifyKeyTransparencyForUserMinosResult();
+            while (reader.pos < end) {
+                var tag = reader.uint32();
+                if (tag === error)
+                    break;
+                switch (tag >>> 3) {
+                case 1: {
+                        message.success = reader.bool();
+                        break;
+                    }
+                case 2: {
+                        message.error = reader.string();
+                        break;
+                    }
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+                }
+            }
+            return message;
+        };
+
+        /**
+         * Decodes a VerifyKeyTransparencyForUserMinosResult message from the specified reader or buffer, length delimited.
+         * @function decodeDelimited
+         * @memberof proto.VerifyKeyTransparencyForUserMinosResult
+         * @static
+         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+         * @returns {proto.VerifyKeyTransparencyForUserMinosResult} VerifyKeyTransparencyForUserMinosResult
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        VerifyKeyTransparencyForUserMinosResult.decodeDelimited = function decodeDelimited(reader) {
+            if (!(reader instanceof $Reader))
+                reader = new $Reader(reader);
+            return this.decode(reader, reader.uint32());
+        };
+
+        /**
+         * Verifies a VerifyKeyTransparencyForUserMinosResult message.
+         * @function verify
+         * @memberof proto.VerifyKeyTransparencyForUserMinosResult
+         * @static
+         * @param {Object.<string,*>} message Plain object to verify
+         * @returns {string|null} `null` if valid, otherwise the reason why it is not
+         */
+        VerifyKeyTransparencyForUserMinosResult.verify = function verify(message) {
+            if (typeof message !== "object" || message === null)
+                return "object expected";
+            var properties = {};
+            if (message.success != null && message.hasOwnProperty("success")) {
+                properties._success = 1;
+                if (typeof message.success !== "boolean")
+                    return "success: boolean expected";
+            }
+            if (message.error != null && message.hasOwnProperty("error")) {
+                properties._error = 1;
+                if (!$util.isString(message.error))
+                    return "error: string expected";
+            }
+            return null;
+        };
+
+        /**
+         * Creates a VerifyKeyTransparencyForUserMinosResult message from a plain object. Also converts values to their respective internal types.
+         * @function fromObject
+         * @memberof proto.VerifyKeyTransparencyForUserMinosResult
+         * @static
+         * @param {Object.<string,*>} object Plain object
+         * @returns {proto.VerifyKeyTransparencyForUserMinosResult} VerifyKeyTransparencyForUserMinosResult
+         */
+        VerifyKeyTransparencyForUserMinosResult.fromObject = function fromObject(object) {
+            if (object instanceof $root.proto.VerifyKeyTransparencyForUserMinosResult)
+                return object;
+            var message = new $root.proto.VerifyKeyTransparencyForUserMinosResult();
+            if (object.success != null)
+                message.success = Boolean(object.success);
+            if (object.error != null)
+                message.error = String(object.error);
+            return message;
+        };
+
+        /**
+         * Creates a plain object from a VerifyKeyTransparencyForUserMinosResult message. Also converts values to other types if specified.
+         * @function toObject
+         * @memberof proto.VerifyKeyTransparencyForUserMinosResult
+         * @static
+         * @param {proto.VerifyKeyTransparencyForUserMinosResult} message VerifyKeyTransparencyForUserMinosResult
+         * @param {$protobuf.IConversionOptions} [options] Conversion options
+         * @returns {Object.<string,*>} Plain object
+         */
+        VerifyKeyTransparencyForUserMinosResult.toObject = function toObject(message, options) {
+            if (!options)
+                options = {};
+            var object = {};
+            if (message.success != null && message.hasOwnProperty("success")) {
+                object.success = message.success;
+                if (options.oneofs)
+                    object._success = "success";
+            }
+            if (message.error != null && message.hasOwnProperty("error")) {
+                object.error = message.error;
+                if (options.oneofs)
+                    object._error = "error";
+            }
+            return object;
+        };
+
+        /**
+         * Converts this VerifyKeyTransparencyForUserMinosResult to JSON.
+         * @function toJSON
+         * @memberof proto.VerifyKeyTransparencyForUserMinosResult
+         * @instance
+         * @returns {Object.<string,*>} JSON object
+         */
+        VerifyKeyTransparencyForUserMinosResult.prototype.toJSON = function toJSON() {
+            return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+        };
+
+        /**
+         * Gets the default type url for VerifyKeyTransparencyForUserMinosResult
+         * @function getTypeUrl
+         * @memberof proto.VerifyKeyTransparencyForUserMinosResult
+         * @static
+         * @param {string} [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+         * @returns {string} The default type url
+         */
+        VerifyKeyTransparencyForUserMinosResult.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
+            if (typeUrlPrefix === undefined) {
+                typeUrlPrefix = "type.googleapis.com";
+            }
+            return typeUrlPrefix + "/proto.VerifyKeyTransparencyForUserMinosResult";
+        };
+
+        return VerifyKeyTransparencyForUserMinosResult;
+    })();
+
+    proto.VerifyKeyTransparencyForUserSignalCommand = (function() {
+
+        /**
+         * Properties of a VerifyKeyTransparencyForUserSignalCommand.
+         * @memberof proto
+         * @interface IVerifyKeyTransparencyForUserSignalCommand
+         * @property {Uint8Array|null} [rootHash] VerifyKeyTransparencyForUserSignalCommand rootHash
+         * @property {number|Long|null} [currentEpoch] VerifyKeyTransparencyForUserSignalCommand currentEpoch
+         * @property {number|Long|null} [userFbid] VerifyKeyTransparencyForUserSignalCommand userFbid
+         * @property {Uint8Array|null} [historyProof] VerifyKeyTransparencyForUserSignalCommand historyProof
+         * @property {Uint8Array|null} [metaSignature] VerifyKeyTransparencyForUserSignalCommand metaSignature
+         * @property {Uint8Array|null} [cloudflareSignature] VerifyKeyTransparencyForUserSignalCommand cloudflareSignature
+         * @property {Uint8Array|null} [cloudflareMessage] VerifyKeyTransparencyForUserSignalCommand cloudflareMessage
+         * @property {Uint8Array|null} [cloudflarePubKey] VerifyKeyTransparencyForUserSignalCommand cloudflarePubKey
+         * @property {number|Long|null} [auditorSignatureTtlSecs] VerifyKeyTransparencyForUserSignalCommand auditorSignatureTtlSecs
+         * @property {Object.<string,Uint8Array>|null} [localDeviceKeys] VerifyKeyTransparencyForUserSignalCommand localDeviceKeys
+         */
+
+        /**
+         * Constructs a new VerifyKeyTransparencyForUserSignalCommand.
+         * @memberof proto
+         * @classdesc Represents a VerifyKeyTransparencyForUserSignalCommand.
+         * @implements IVerifyKeyTransparencyForUserSignalCommand
+         * @constructor
+         * @param {proto.IVerifyKeyTransparencyForUserSignalCommand=} [properties] Properties to set
+         */
+        function VerifyKeyTransparencyForUserSignalCommand(properties) {
+            this.localDeviceKeys = {};
+            if (properties)
+                for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                    if (properties[keys[i]] != null)
+                        this[keys[i]] = properties[keys[i]];
+        }
+
+        /**
+         * VerifyKeyTransparencyForUserSignalCommand rootHash.
+         * @member {Uint8Array|null|undefined} rootHash
+         * @memberof proto.VerifyKeyTransparencyForUserSignalCommand
+         * @instance
+         */
+        VerifyKeyTransparencyForUserSignalCommand.prototype.rootHash = null;
+
+        /**
+         * VerifyKeyTransparencyForUserSignalCommand currentEpoch.
+         * @member {number|Long|null|undefined} currentEpoch
+         * @memberof proto.VerifyKeyTransparencyForUserSignalCommand
+         * @instance
+         */
+        VerifyKeyTransparencyForUserSignalCommand.prototype.currentEpoch = null;
+
+        /**
+         * VerifyKeyTransparencyForUserSignalCommand userFbid.
+         * @member {number|Long|null|undefined} userFbid
+         * @memberof proto.VerifyKeyTransparencyForUserSignalCommand
+         * @instance
+         */
+        VerifyKeyTransparencyForUserSignalCommand.prototype.userFbid = null;
+
+        /**
+         * VerifyKeyTransparencyForUserSignalCommand historyProof.
+         * @member {Uint8Array|null|undefined} historyProof
+         * @memberof proto.VerifyKeyTransparencyForUserSignalCommand
+         * @instance
+         */
+        VerifyKeyTransparencyForUserSignalCommand.prototype.historyProof = null;
+
+        /**
+         * VerifyKeyTransparencyForUserSignalCommand metaSignature.
+         * @member {Uint8Array|null|undefined} metaSignature
+         * @memberof proto.VerifyKeyTransparencyForUserSignalCommand
+         * @instance
+         */
+        VerifyKeyTransparencyForUserSignalCommand.prototype.metaSignature = null;
+
+        /**
+         * VerifyKeyTransparencyForUserSignalCommand cloudflareSignature.
+         * @member {Uint8Array|null|undefined} cloudflareSignature
+         * @memberof proto.VerifyKeyTransparencyForUserSignalCommand
+         * @instance
+         */
+        VerifyKeyTransparencyForUserSignalCommand.prototype.cloudflareSignature = null;
+
+        /**
+         * VerifyKeyTransparencyForUserSignalCommand cloudflareMessage.
+         * @member {Uint8Array|null|undefined} cloudflareMessage
+         * @memberof proto.VerifyKeyTransparencyForUserSignalCommand
+         * @instance
+         */
+        VerifyKeyTransparencyForUserSignalCommand.prototype.cloudflareMessage = null;
+
+        /**
+         * VerifyKeyTransparencyForUserSignalCommand cloudflarePubKey.
+         * @member {Uint8Array|null|undefined} cloudflarePubKey
+         * @memberof proto.VerifyKeyTransparencyForUserSignalCommand
+         * @instance
+         */
+        VerifyKeyTransparencyForUserSignalCommand.prototype.cloudflarePubKey = null;
+
+        /**
+         * VerifyKeyTransparencyForUserSignalCommand auditorSignatureTtlSecs.
+         * @member {number|Long|null|undefined} auditorSignatureTtlSecs
+         * @memberof proto.VerifyKeyTransparencyForUserSignalCommand
+         * @instance
+         */
+        VerifyKeyTransparencyForUserSignalCommand.prototype.auditorSignatureTtlSecs = null;
+
+        /**
+         * VerifyKeyTransparencyForUserSignalCommand localDeviceKeys.
+         * @member {Object.<string,Uint8Array>} localDeviceKeys
+         * @memberof proto.VerifyKeyTransparencyForUserSignalCommand
+         * @instance
+         */
+        VerifyKeyTransparencyForUserSignalCommand.prototype.localDeviceKeys = $util.emptyObject;
+
+        // OneOf field names bound to virtual getters and setters
+        var $oneOfFields;
+
+        // Virtual OneOf for proto3 optional field
+        Object.defineProperty(VerifyKeyTransparencyForUserSignalCommand.prototype, "_rootHash", {
+            get: $util.oneOfGetter($oneOfFields = ["rootHash"]),
+            set: $util.oneOfSetter($oneOfFields)
+        });
+
+        // Virtual OneOf for proto3 optional field
+        Object.defineProperty(VerifyKeyTransparencyForUserSignalCommand.prototype, "_currentEpoch", {
+            get: $util.oneOfGetter($oneOfFields = ["currentEpoch"]),
+            set: $util.oneOfSetter($oneOfFields)
+        });
+
+        // Virtual OneOf for proto3 optional field
+        Object.defineProperty(VerifyKeyTransparencyForUserSignalCommand.prototype, "_userFbid", {
+            get: $util.oneOfGetter($oneOfFields = ["userFbid"]),
+            set: $util.oneOfSetter($oneOfFields)
+        });
+
+        // Virtual OneOf for proto3 optional field
+        Object.defineProperty(VerifyKeyTransparencyForUserSignalCommand.prototype, "_historyProof", {
+            get: $util.oneOfGetter($oneOfFields = ["historyProof"]),
+            set: $util.oneOfSetter($oneOfFields)
+        });
+
+        // Virtual OneOf for proto3 optional field
+        Object.defineProperty(VerifyKeyTransparencyForUserSignalCommand.prototype, "_metaSignature", {
+            get: $util.oneOfGetter($oneOfFields = ["metaSignature"]),
+            set: $util.oneOfSetter($oneOfFields)
+        });
+
+        // Virtual OneOf for proto3 optional field
+        Object.defineProperty(VerifyKeyTransparencyForUserSignalCommand.prototype, "_cloudflareSignature", {
+            get: $util.oneOfGetter($oneOfFields = ["cloudflareSignature"]),
+            set: $util.oneOfSetter($oneOfFields)
+        });
+
+        // Virtual OneOf for proto3 optional field
+        Object.defineProperty(VerifyKeyTransparencyForUserSignalCommand.prototype, "_cloudflareMessage", {
+            get: $util.oneOfGetter($oneOfFields = ["cloudflareMessage"]),
+            set: $util.oneOfSetter($oneOfFields)
+        });
+
+        // Virtual OneOf for proto3 optional field
+        Object.defineProperty(VerifyKeyTransparencyForUserSignalCommand.prototype, "_cloudflarePubKey", {
+            get: $util.oneOfGetter($oneOfFields = ["cloudflarePubKey"]),
+            set: $util.oneOfSetter($oneOfFields)
+        });
+
+        // Virtual OneOf for proto3 optional field
+        Object.defineProperty(VerifyKeyTransparencyForUserSignalCommand.prototype, "_auditorSignatureTtlSecs", {
+            get: $util.oneOfGetter($oneOfFields = ["auditorSignatureTtlSecs"]),
+            set: $util.oneOfSetter($oneOfFields)
+        });
+
+        /**
+         * Creates a new VerifyKeyTransparencyForUserSignalCommand instance using the specified properties.
+         * @function create
+         * @memberof proto.VerifyKeyTransparencyForUserSignalCommand
+         * @static
+         * @param {proto.IVerifyKeyTransparencyForUserSignalCommand=} [properties] Properties to set
+         * @returns {proto.VerifyKeyTransparencyForUserSignalCommand} VerifyKeyTransparencyForUserSignalCommand instance
+         */
+        VerifyKeyTransparencyForUserSignalCommand.create = function create(properties) {
+            return new VerifyKeyTransparencyForUserSignalCommand(properties);
+        };
+
+        /**
+         * Encodes the specified VerifyKeyTransparencyForUserSignalCommand message. Does not implicitly {@link proto.VerifyKeyTransparencyForUserSignalCommand.verify|verify} messages.
+         * @function encode
+         * @memberof proto.VerifyKeyTransparencyForUserSignalCommand
+         * @static
+         * @param {proto.IVerifyKeyTransparencyForUserSignalCommand} message VerifyKeyTransparencyForUserSignalCommand message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        VerifyKeyTransparencyForUserSignalCommand.encode = function encode(message, writer) {
+            if (!writer)
+                writer = $Writer.create();
+            if (message.rootHash != null && Object.hasOwnProperty.call(message, "rootHash"))
+                writer.uint32(/* id 1, wireType 2 =*/10).bytes(message.rootHash);
+            if (message.currentEpoch != null && Object.hasOwnProperty.call(message, "currentEpoch"))
+                writer.uint32(/* id 2, wireType 0 =*/16).uint64(message.currentEpoch);
+            if (message.userFbid != null && Object.hasOwnProperty.call(message, "userFbid"))
+                writer.uint32(/* id 3, wireType 0 =*/24).int64(message.userFbid);
+            if (message.historyProof != null && Object.hasOwnProperty.call(message, "historyProof"))
+                writer.uint32(/* id 4, wireType 2 =*/34).bytes(message.historyProof);
+            if (message.metaSignature != null && Object.hasOwnProperty.call(message, "metaSignature"))
+                writer.uint32(/* id 5, wireType 2 =*/42).bytes(message.metaSignature);
+            if (message.cloudflareSignature != null && Object.hasOwnProperty.call(message, "cloudflareSignature"))
+                writer.uint32(/* id 6, wireType 2 =*/50).bytes(message.cloudflareSignature);
+            if (message.cloudflareMessage != null && Object.hasOwnProperty.call(message, "cloudflareMessage"))
+                writer.uint32(/* id 7, wireType 2 =*/58).bytes(message.cloudflareMessage);
+            if (message.cloudflarePubKey != null && Object.hasOwnProperty.call(message, "cloudflarePubKey"))
+                writer.uint32(/* id 8, wireType 2 =*/66).bytes(message.cloudflarePubKey);
+            if (message.auditorSignatureTtlSecs != null && Object.hasOwnProperty.call(message, "auditorSignatureTtlSecs"))
+                writer.uint32(/* id 9, wireType 0 =*/72).uint64(message.auditorSignatureTtlSecs);
+            if (message.localDeviceKeys != null && Object.hasOwnProperty.call(message, "localDeviceKeys"))
+                for (var keys = Object.keys(message.localDeviceKeys), i = 0; i < keys.length; ++i)
+                    writer.uint32(/* id 10, wireType 2 =*/82).fork().uint32(/* id 1, wireType 0 =*/8).uint64(keys[i]).uint32(/* id 2, wireType 2 =*/18).bytes(message.localDeviceKeys[keys[i]]).ldelim();
+            return writer;
+        };
+
+        /**
+         * Encodes the specified VerifyKeyTransparencyForUserSignalCommand message, length delimited. Does not implicitly {@link proto.VerifyKeyTransparencyForUserSignalCommand.verify|verify} messages.
+         * @function encodeDelimited
+         * @memberof proto.VerifyKeyTransparencyForUserSignalCommand
+         * @static
+         * @param {proto.IVerifyKeyTransparencyForUserSignalCommand} message VerifyKeyTransparencyForUserSignalCommand message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        VerifyKeyTransparencyForUserSignalCommand.encodeDelimited = function encodeDelimited(message, writer) {
+            return this.encode(message, writer).ldelim();
+        };
+
+        /**
+         * Decodes a VerifyKeyTransparencyForUserSignalCommand message from the specified reader or buffer.
+         * @function decode
+         * @memberof proto.VerifyKeyTransparencyForUserSignalCommand
+         * @static
+         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+         * @param {number} [length] Message length if known beforehand
+         * @returns {proto.VerifyKeyTransparencyForUserSignalCommand} VerifyKeyTransparencyForUserSignalCommand
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        VerifyKeyTransparencyForUserSignalCommand.decode = function decode(reader, length, error) {
+            if (!(reader instanceof $Reader))
+                reader = $Reader.create(reader);
+            var end = length === undefined ? reader.len : reader.pos + length, message = new $root.proto.VerifyKeyTransparencyForUserSignalCommand(), key, value;
+            while (reader.pos < end) {
+                var tag = reader.uint32();
+                if (tag === error)
+                    break;
+                switch (tag >>> 3) {
+                case 1: {
+                        message.rootHash = reader.bytes();
+                        break;
+                    }
+                case 2: {
+                        message.currentEpoch = reader.uint64();
+                        break;
+                    }
+                case 3: {
+                        message.userFbid = reader.int64();
+                        break;
+                    }
+                case 4: {
+                        message.historyProof = reader.bytes();
+                        break;
+                    }
+                case 5: {
+                        message.metaSignature = reader.bytes();
+                        break;
+                    }
+                case 6: {
+                        message.cloudflareSignature = reader.bytes();
+                        break;
+                    }
+                case 7: {
+                        message.cloudflareMessage = reader.bytes();
+                        break;
+                    }
+                case 8: {
+                        message.cloudflarePubKey = reader.bytes();
+                        break;
+                    }
+                case 9: {
+                        message.auditorSignatureTtlSecs = reader.uint64();
+                        break;
+                    }
+                case 10: {
+                        if (message.localDeviceKeys === $util.emptyObject)
+                            message.localDeviceKeys = {};
+                        var end2 = reader.uint32() + reader.pos;
+                        key = 0;
+                        value = [];
+                        while (reader.pos < end2) {
+                            var tag2 = reader.uint32();
+                            switch (tag2 >>> 3) {
+                            case 1:
+                                key = reader.uint64();
+                                break;
+                            case 2:
+                                value = reader.bytes();
+                                break;
+                            default:
+                                reader.skipType(tag2 & 7);
+                                break;
+                            }
+                        }
+                        message.localDeviceKeys[typeof key === "object" ? $util.longToHash(key) : key] = value;
+                        break;
+                    }
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+                }
+            }
+            return message;
+        };
+
+        /**
+         * Decodes a VerifyKeyTransparencyForUserSignalCommand message from the specified reader or buffer, length delimited.
+         * @function decodeDelimited
+         * @memberof proto.VerifyKeyTransparencyForUserSignalCommand
+         * @static
+         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+         * @returns {proto.VerifyKeyTransparencyForUserSignalCommand} VerifyKeyTransparencyForUserSignalCommand
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        VerifyKeyTransparencyForUserSignalCommand.decodeDelimited = function decodeDelimited(reader) {
+            if (!(reader instanceof $Reader))
+                reader = new $Reader(reader);
+            return this.decode(reader, reader.uint32());
+        };
+
+        /**
+         * Verifies a VerifyKeyTransparencyForUserSignalCommand message.
+         * @function verify
+         * @memberof proto.VerifyKeyTransparencyForUserSignalCommand
+         * @static
+         * @param {Object.<string,*>} message Plain object to verify
+         * @returns {string|null} `null` if valid, otherwise the reason why it is not
+         */
+        VerifyKeyTransparencyForUserSignalCommand.verify = function verify(message) {
+            if (typeof message !== "object" || message === null)
+                return "object expected";
+            var properties = {};
+            if (message.rootHash != null && message.hasOwnProperty("rootHash")) {
+                properties._rootHash = 1;
+                if (!(message.rootHash && typeof message.rootHash.length === "number" || $util.isString(message.rootHash)))
+                    return "rootHash: buffer expected";
+            }
+            if (message.currentEpoch != null && message.hasOwnProperty("currentEpoch")) {
+                properties._currentEpoch = 1;
+                if (!$util.isInteger(message.currentEpoch) && !(message.currentEpoch && $util.isInteger(message.currentEpoch.low) && $util.isInteger(message.currentEpoch.high)))
+                    return "currentEpoch: integer|Long expected";
+            }
+            if (message.userFbid != null && message.hasOwnProperty("userFbid")) {
+                properties._userFbid = 1;
+                if (!$util.isInteger(message.userFbid) && !(message.userFbid && $util.isInteger(message.userFbid.low) && $util.isInteger(message.userFbid.high)))
+                    return "userFbid: integer|Long expected";
+            }
+            if (message.historyProof != null && message.hasOwnProperty("historyProof")) {
+                properties._historyProof = 1;
+                if (!(message.historyProof && typeof message.historyProof.length === "number" || $util.isString(message.historyProof)))
+                    return "historyProof: buffer expected";
+            }
+            if (message.metaSignature != null && message.hasOwnProperty("metaSignature")) {
+                properties._metaSignature = 1;
+                if (!(message.metaSignature && typeof message.metaSignature.length === "number" || $util.isString(message.metaSignature)))
+                    return "metaSignature: buffer expected";
+            }
+            if (message.cloudflareSignature != null && message.hasOwnProperty("cloudflareSignature")) {
+                properties._cloudflareSignature = 1;
+                if (!(message.cloudflareSignature && typeof message.cloudflareSignature.length === "number" || $util.isString(message.cloudflareSignature)))
+                    return "cloudflareSignature: buffer expected";
+            }
+            if (message.cloudflareMessage != null && message.hasOwnProperty("cloudflareMessage")) {
+                properties._cloudflareMessage = 1;
+                if (!(message.cloudflareMessage && typeof message.cloudflareMessage.length === "number" || $util.isString(message.cloudflareMessage)))
+                    return "cloudflareMessage: buffer expected";
+            }
+            if (message.cloudflarePubKey != null && message.hasOwnProperty("cloudflarePubKey")) {
+                properties._cloudflarePubKey = 1;
+                if (!(message.cloudflarePubKey && typeof message.cloudflarePubKey.length === "number" || $util.isString(message.cloudflarePubKey)))
+                    return "cloudflarePubKey: buffer expected";
+            }
+            if (message.auditorSignatureTtlSecs != null && message.hasOwnProperty("auditorSignatureTtlSecs")) {
+                properties._auditorSignatureTtlSecs = 1;
+                if (!$util.isInteger(message.auditorSignatureTtlSecs) && !(message.auditorSignatureTtlSecs && $util.isInteger(message.auditorSignatureTtlSecs.low) && $util.isInteger(message.auditorSignatureTtlSecs.high)))
+                    return "auditorSignatureTtlSecs: integer|Long expected";
+            }
+            if (message.localDeviceKeys != null && message.hasOwnProperty("localDeviceKeys")) {
+                if (!$util.isObject(message.localDeviceKeys))
+                    return "localDeviceKeys: object expected";
+                var key = Object.keys(message.localDeviceKeys);
+                for (var i = 0; i < key.length; ++i) {
+                    if (!$util.key64Re.test(key[i]))
+                        return "localDeviceKeys: integer|Long key{k:uint64} expected";
+                    if (!(message.localDeviceKeys[key[i]] && typeof message.localDeviceKeys[key[i]].length === "number" || $util.isString(message.localDeviceKeys[key[i]])))
+                        return "localDeviceKeys: buffer{k:uint64} expected";
+                }
+            }
+            return null;
+        };
+
+        /**
+         * Creates a VerifyKeyTransparencyForUserSignalCommand message from a plain object. Also converts values to their respective internal types.
+         * @function fromObject
+         * @memberof proto.VerifyKeyTransparencyForUserSignalCommand
+         * @static
+         * @param {Object.<string,*>} object Plain object
+         * @returns {proto.VerifyKeyTransparencyForUserSignalCommand} VerifyKeyTransparencyForUserSignalCommand
+         */
+        VerifyKeyTransparencyForUserSignalCommand.fromObject = function fromObject(object) {
+            if (object instanceof $root.proto.VerifyKeyTransparencyForUserSignalCommand)
+                return object;
+            var message = new $root.proto.VerifyKeyTransparencyForUserSignalCommand();
+            if (object.rootHash != null)
+                if (typeof object.rootHash === "string")
+                    $util.base64.decode(object.rootHash, message.rootHash = $util.newBuffer($util.base64.length(object.rootHash)), 0);
+                else if (object.rootHash.length >= 0)
+                    message.rootHash = object.rootHash;
+            if (object.currentEpoch != null)
+                if ($util.Long)
+                    (message.currentEpoch = $util.Long.fromValue(object.currentEpoch)).unsigned = true;
+                else if (typeof object.currentEpoch === "string")
+                    message.currentEpoch = parseInt(object.currentEpoch, 10);
+                else if (typeof object.currentEpoch === "number")
+                    message.currentEpoch = object.currentEpoch;
+                else if (typeof object.currentEpoch === "object")
+                    message.currentEpoch = new $util.LongBits(object.currentEpoch.low >>> 0, object.currentEpoch.high >>> 0).toNumber(true);
+            if (object.userFbid != null)
+                if ($util.Long)
+                    (message.userFbid = $util.Long.fromValue(object.userFbid)).unsigned = false;
+                else if (typeof object.userFbid === "string")
+                    message.userFbid = parseInt(object.userFbid, 10);
+                else if (typeof object.userFbid === "number")
+                    message.userFbid = object.userFbid;
+                else if (typeof object.userFbid === "object")
+                    message.userFbid = new $util.LongBits(object.userFbid.low >>> 0, object.userFbid.high >>> 0).toNumber();
+            if (object.historyProof != null)
+                if (typeof object.historyProof === "string")
+                    $util.base64.decode(object.historyProof, message.historyProof = $util.newBuffer($util.base64.length(object.historyProof)), 0);
+                else if (object.historyProof.length >= 0)
+                    message.historyProof = object.historyProof;
+            if (object.metaSignature != null)
+                if (typeof object.metaSignature === "string")
+                    $util.base64.decode(object.metaSignature, message.metaSignature = $util.newBuffer($util.base64.length(object.metaSignature)), 0);
+                else if (object.metaSignature.length >= 0)
+                    message.metaSignature = object.metaSignature;
+            if (object.cloudflareSignature != null)
+                if (typeof object.cloudflareSignature === "string")
+                    $util.base64.decode(object.cloudflareSignature, message.cloudflareSignature = $util.newBuffer($util.base64.length(object.cloudflareSignature)), 0);
+                else if (object.cloudflareSignature.length >= 0)
+                    message.cloudflareSignature = object.cloudflareSignature;
+            if (object.cloudflareMessage != null)
+                if (typeof object.cloudflareMessage === "string")
+                    $util.base64.decode(object.cloudflareMessage, message.cloudflareMessage = $util.newBuffer($util.base64.length(object.cloudflareMessage)), 0);
+                else if (object.cloudflareMessage.length >= 0)
+                    message.cloudflareMessage = object.cloudflareMessage;
+            if (object.cloudflarePubKey != null)
+                if (typeof object.cloudflarePubKey === "string")
+                    $util.base64.decode(object.cloudflarePubKey, message.cloudflarePubKey = $util.newBuffer($util.base64.length(object.cloudflarePubKey)), 0);
+                else if (object.cloudflarePubKey.length >= 0)
+                    message.cloudflarePubKey = object.cloudflarePubKey;
+            if (object.auditorSignatureTtlSecs != null)
+                if ($util.Long)
+                    (message.auditorSignatureTtlSecs = $util.Long.fromValue(object.auditorSignatureTtlSecs)).unsigned = true;
+                else if (typeof object.auditorSignatureTtlSecs === "string")
+                    message.auditorSignatureTtlSecs = parseInt(object.auditorSignatureTtlSecs, 10);
+                else if (typeof object.auditorSignatureTtlSecs === "number")
+                    message.auditorSignatureTtlSecs = object.auditorSignatureTtlSecs;
+                else if (typeof object.auditorSignatureTtlSecs === "object")
+                    message.auditorSignatureTtlSecs = new $util.LongBits(object.auditorSignatureTtlSecs.low >>> 0, object.auditorSignatureTtlSecs.high >>> 0).toNumber(true);
+            if (object.localDeviceKeys) {
+                if (typeof object.localDeviceKeys !== "object")
+                    throw TypeError(".proto.VerifyKeyTransparencyForUserSignalCommand.localDeviceKeys: object expected");
+                message.localDeviceKeys = {};
+                for (var keys = Object.keys(object.localDeviceKeys), i = 0; i < keys.length; ++i)
+                    if (typeof object.localDeviceKeys[keys[i]] === "string")
+                        $util.base64.decode(object.localDeviceKeys[keys[i]], message.localDeviceKeys[keys[i]] = $util.newBuffer($util.base64.length(object.localDeviceKeys[keys[i]])), 0);
+                    else if (object.localDeviceKeys[keys[i]].length >= 0)
+                        message.localDeviceKeys[keys[i]] = object.localDeviceKeys[keys[i]];
+            }
+            return message;
+        };
+
+        /**
+         * Creates a plain object from a VerifyKeyTransparencyForUserSignalCommand message. Also converts values to other types if specified.
+         * @function toObject
+         * @memberof proto.VerifyKeyTransparencyForUserSignalCommand
+         * @static
+         * @param {proto.VerifyKeyTransparencyForUserSignalCommand} message VerifyKeyTransparencyForUserSignalCommand
+         * @param {$protobuf.IConversionOptions} [options] Conversion options
+         * @returns {Object.<string,*>} Plain object
+         */
+        VerifyKeyTransparencyForUserSignalCommand.toObject = function toObject(message, options) {
+            if (!options)
+                options = {};
+            var object = {};
+            if (options.objects || options.defaults)
+                object.localDeviceKeys = {};
+            if (message.rootHash != null && message.hasOwnProperty("rootHash")) {
+                object.rootHash = options.bytes === String ? $util.base64.encode(message.rootHash, 0, message.rootHash.length) : options.bytes === Array ? Array.prototype.slice.call(message.rootHash) : message.rootHash;
+                if (options.oneofs)
+                    object._rootHash = "rootHash";
+            }
+            if (message.currentEpoch != null && message.hasOwnProperty("currentEpoch")) {
+                if (typeof message.currentEpoch === "number")
+                    object.currentEpoch = options.longs === String ? String(message.currentEpoch) : message.currentEpoch;
+                else
+                    object.currentEpoch = options.longs === String ? $util.Long.prototype.toString.call(message.currentEpoch) : options.longs === Number ? new $util.LongBits(message.currentEpoch.low >>> 0, message.currentEpoch.high >>> 0).toNumber(true) : message.currentEpoch;
+                if (options.oneofs)
+                    object._currentEpoch = "currentEpoch";
+            }
+            if (message.userFbid != null && message.hasOwnProperty("userFbid")) {
+                if (typeof message.userFbid === "number")
+                    object.userFbid = options.longs === String ? String(message.userFbid) : message.userFbid;
+                else
+                    object.userFbid = options.longs === String ? $util.Long.prototype.toString.call(message.userFbid) : options.longs === Number ? new $util.LongBits(message.userFbid.low >>> 0, message.userFbid.high >>> 0).toNumber() : message.userFbid;
+                if (options.oneofs)
+                    object._userFbid = "userFbid";
+            }
+            if (message.historyProof != null && message.hasOwnProperty("historyProof")) {
+                object.historyProof = options.bytes === String ? $util.base64.encode(message.historyProof, 0, message.historyProof.length) : options.bytes === Array ? Array.prototype.slice.call(message.historyProof) : message.historyProof;
+                if (options.oneofs)
+                    object._historyProof = "historyProof";
+            }
+            if (message.metaSignature != null && message.hasOwnProperty("metaSignature")) {
+                object.metaSignature = options.bytes === String ? $util.base64.encode(message.metaSignature, 0, message.metaSignature.length) : options.bytes === Array ? Array.prototype.slice.call(message.metaSignature) : message.metaSignature;
+                if (options.oneofs)
+                    object._metaSignature = "metaSignature";
+            }
+            if (message.cloudflareSignature != null && message.hasOwnProperty("cloudflareSignature")) {
+                object.cloudflareSignature = options.bytes === String ? $util.base64.encode(message.cloudflareSignature, 0, message.cloudflareSignature.length) : options.bytes === Array ? Array.prototype.slice.call(message.cloudflareSignature) : message.cloudflareSignature;
+                if (options.oneofs)
+                    object._cloudflareSignature = "cloudflareSignature";
+            }
+            if (message.cloudflareMessage != null && message.hasOwnProperty("cloudflareMessage")) {
+                object.cloudflareMessage = options.bytes === String ? $util.base64.encode(message.cloudflareMessage, 0, message.cloudflareMessage.length) : options.bytes === Array ? Array.prototype.slice.call(message.cloudflareMessage) : message.cloudflareMessage;
+                if (options.oneofs)
+                    object._cloudflareMessage = "cloudflareMessage";
+            }
+            if (message.cloudflarePubKey != null && message.hasOwnProperty("cloudflarePubKey")) {
+                object.cloudflarePubKey = options.bytes === String ? $util.base64.encode(message.cloudflarePubKey, 0, message.cloudflarePubKey.length) : options.bytes === Array ? Array.prototype.slice.call(message.cloudflarePubKey) : message.cloudflarePubKey;
+                if (options.oneofs)
+                    object._cloudflarePubKey = "cloudflarePubKey";
+            }
+            if (message.auditorSignatureTtlSecs != null && message.hasOwnProperty("auditorSignatureTtlSecs")) {
+                if (typeof message.auditorSignatureTtlSecs === "number")
+                    object.auditorSignatureTtlSecs = options.longs === String ? String(message.auditorSignatureTtlSecs) : message.auditorSignatureTtlSecs;
+                else
+                    object.auditorSignatureTtlSecs = options.longs === String ? $util.Long.prototype.toString.call(message.auditorSignatureTtlSecs) : options.longs === Number ? new $util.LongBits(message.auditorSignatureTtlSecs.low >>> 0, message.auditorSignatureTtlSecs.high >>> 0).toNumber(true) : message.auditorSignatureTtlSecs;
+                if (options.oneofs)
+                    object._auditorSignatureTtlSecs = "auditorSignatureTtlSecs";
+            }
+            var keys2;
+            if (message.localDeviceKeys && (keys2 = Object.keys(message.localDeviceKeys)).length) {
+                object.localDeviceKeys = {};
+                for (var j = 0; j < keys2.length; ++j)
+                    object.localDeviceKeys[keys2[j]] = options.bytes === String ? $util.base64.encode(message.localDeviceKeys[keys2[j]], 0, message.localDeviceKeys[keys2[j]].length) : options.bytes === Array ? Array.prototype.slice.call(message.localDeviceKeys[keys2[j]]) : message.localDeviceKeys[keys2[j]];
+            }
+            return object;
+        };
+
+        /**
+         * Converts this VerifyKeyTransparencyForUserSignalCommand to JSON.
+         * @function toJSON
+         * @memberof proto.VerifyKeyTransparencyForUserSignalCommand
+         * @instance
+         * @returns {Object.<string,*>} JSON object
+         */
+        VerifyKeyTransparencyForUserSignalCommand.prototype.toJSON = function toJSON() {
+            return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+        };
+
+        /**
+         * Gets the default type url for VerifyKeyTransparencyForUserSignalCommand
+         * @function getTypeUrl
+         * @memberof proto.VerifyKeyTransparencyForUserSignalCommand
+         * @static
+         * @param {string} [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+         * @returns {string} The default type url
+         */
+        VerifyKeyTransparencyForUserSignalCommand.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
+            if (typeUrlPrefix === undefined) {
+                typeUrlPrefix = "type.googleapis.com";
+            }
+            return typeUrlPrefix + "/proto.VerifyKeyTransparencyForUserSignalCommand";
+        };
+
+        return VerifyKeyTransparencyForUserSignalCommand;
+    })();
+
+    proto.VerifyKeyTransparencyForUserSignalResult = (function() {
+
+        /**
+         * Properties of a VerifyKeyTransparencyForUserSignalResult.
+         * @memberof proto
+         * @interface IVerifyKeyTransparencyForUserSignalResult
+         * @property {boolean|null} [success] VerifyKeyTransparencyForUserSignalResult success
+         * @property {string|null} [error] VerifyKeyTransparencyForUserSignalResult error
+         */
+
+        /**
+         * Constructs a new VerifyKeyTransparencyForUserSignalResult.
+         * @memberof proto
+         * @classdesc Represents a VerifyKeyTransparencyForUserSignalResult.
+         * @implements IVerifyKeyTransparencyForUserSignalResult
+         * @constructor
+         * @param {proto.IVerifyKeyTransparencyForUserSignalResult=} [properties] Properties to set
+         */
+        function VerifyKeyTransparencyForUserSignalResult(properties) {
+            if (properties)
+                for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                    if (properties[keys[i]] != null)
+                        this[keys[i]] = properties[keys[i]];
+        }
+
+        /**
+         * VerifyKeyTransparencyForUserSignalResult success.
+         * @member {boolean|null|undefined} success
+         * @memberof proto.VerifyKeyTransparencyForUserSignalResult
+         * @instance
+         */
+        VerifyKeyTransparencyForUserSignalResult.prototype.success = null;
+
+        /**
+         * VerifyKeyTransparencyForUserSignalResult error.
+         * @member {string|null|undefined} error
+         * @memberof proto.VerifyKeyTransparencyForUserSignalResult
+         * @instance
+         */
+        VerifyKeyTransparencyForUserSignalResult.prototype.error = null;
+
+        // OneOf field names bound to virtual getters and setters
+        var $oneOfFields;
+
+        // Virtual OneOf for proto3 optional field
+        Object.defineProperty(VerifyKeyTransparencyForUserSignalResult.prototype, "_success", {
+            get: $util.oneOfGetter($oneOfFields = ["success"]),
+            set: $util.oneOfSetter($oneOfFields)
+        });
+
+        // Virtual OneOf for proto3 optional field
+        Object.defineProperty(VerifyKeyTransparencyForUserSignalResult.prototype, "_error", {
+            get: $util.oneOfGetter($oneOfFields = ["error"]),
+            set: $util.oneOfSetter($oneOfFields)
+        });
+
+        /**
+         * Creates a new VerifyKeyTransparencyForUserSignalResult instance using the specified properties.
+         * @function create
+         * @memberof proto.VerifyKeyTransparencyForUserSignalResult
+         * @static
+         * @param {proto.IVerifyKeyTransparencyForUserSignalResult=} [properties] Properties to set
+         * @returns {proto.VerifyKeyTransparencyForUserSignalResult} VerifyKeyTransparencyForUserSignalResult instance
+         */
+        VerifyKeyTransparencyForUserSignalResult.create = function create(properties) {
+            return new VerifyKeyTransparencyForUserSignalResult(properties);
+        };
+
+        /**
+         * Encodes the specified VerifyKeyTransparencyForUserSignalResult message. Does not implicitly {@link proto.VerifyKeyTransparencyForUserSignalResult.verify|verify} messages.
+         * @function encode
+         * @memberof proto.VerifyKeyTransparencyForUserSignalResult
+         * @static
+         * @param {proto.IVerifyKeyTransparencyForUserSignalResult} message VerifyKeyTransparencyForUserSignalResult message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        VerifyKeyTransparencyForUserSignalResult.encode = function encode(message, writer) {
+            if (!writer)
+                writer = $Writer.create();
+            if (message.success != null && Object.hasOwnProperty.call(message, "success"))
+                writer.uint32(/* id 1, wireType 0 =*/8).bool(message.success);
+            if (message.error != null && Object.hasOwnProperty.call(message, "error"))
+                writer.uint32(/* id 2, wireType 2 =*/18).string(message.error);
+            return writer;
+        };
+
+        /**
+         * Encodes the specified VerifyKeyTransparencyForUserSignalResult message, length delimited. Does not implicitly {@link proto.VerifyKeyTransparencyForUserSignalResult.verify|verify} messages.
+         * @function encodeDelimited
+         * @memberof proto.VerifyKeyTransparencyForUserSignalResult
+         * @static
+         * @param {proto.IVerifyKeyTransparencyForUserSignalResult} message VerifyKeyTransparencyForUserSignalResult message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        VerifyKeyTransparencyForUserSignalResult.encodeDelimited = function encodeDelimited(message, writer) {
+            return this.encode(message, writer).ldelim();
+        };
+
+        /**
+         * Decodes a VerifyKeyTransparencyForUserSignalResult message from the specified reader or buffer.
+         * @function decode
+         * @memberof proto.VerifyKeyTransparencyForUserSignalResult
+         * @static
+         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+         * @param {number} [length] Message length if known beforehand
+         * @returns {proto.VerifyKeyTransparencyForUserSignalResult} VerifyKeyTransparencyForUserSignalResult
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        VerifyKeyTransparencyForUserSignalResult.decode = function decode(reader, length, error) {
+            if (!(reader instanceof $Reader))
+                reader = $Reader.create(reader);
+            var end = length === undefined ? reader.len : reader.pos + length, message = new $root.proto.VerifyKeyTransparencyForUserSignalResult();
+            while (reader.pos < end) {
+                var tag = reader.uint32();
+                if (tag === error)
+                    break;
+                switch (tag >>> 3) {
+                case 1: {
+                        message.success = reader.bool();
+                        break;
+                    }
+                case 2: {
+                        message.error = reader.string();
+                        break;
+                    }
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+                }
+            }
+            return message;
+        };
+
+        /**
+         * Decodes a VerifyKeyTransparencyForUserSignalResult message from the specified reader or buffer, length delimited.
+         * @function decodeDelimited
+         * @memberof proto.VerifyKeyTransparencyForUserSignalResult
+         * @static
+         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+         * @returns {proto.VerifyKeyTransparencyForUserSignalResult} VerifyKeyTransparencyForUserSignalResult
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        VerifyKeyTransparencyForUserSignalResult.decodeDelimited = function decodeDelimited(reader) {
+            if (!(reader instanceof $Reader))
+                reader = new $Reader(reader);
+            return this.decode(reader, reader.uint32());
+        };
+
+        /**
+         * Verifies a VerifyKeyTransparencyForUserSignalResult message.
+         * @function verify
+         * @memberof proto.VerifyKeyTransparencyForUserSignalResult
+         * @static
+         * @param {Object.<string,*>} message Plain object to verify
+         * @returns {string|null} `null` if valid, otherwise the reason why it is not
+         */
+        VerifyKeyTransparencyForUserSignalResult.verify = function verify(message) {
+            if (typeof message !== "object" || message === null)
+                return "object expected";
+            var properties = {};
+            if (message.success != null && message.hasOwnProperty("success")) {
+                properties._success = 1;
+                if (typeof message.success !== "boolean")
+                    return "success: boolean expected";
+            }
+            if (message.error != null && message.hasOwnProperty("error")) {
+                properties._error = 1;
+                if (!$util.isString(message.error))
+                    return "error: string expected";
+            }
+            return null;
+        };
+
+        /**
+         * Creates a VerifyKeyTransparencyForUserSignalResult message from a plain object. Also converts values to their respective internal types.
+         * @function fromObject
+         * @memberof proto.VerifyKeyTransparencyForUserSignalResult
+         * @static
+         * @param {Object.<string,*>} object Plain object
+         * @returns {proto.VerifyKeyTransparencyForUserSignalResult} VerifyKeyTransparencyForUserSignalResult
+         */
+        VerifyKeyTransparencyForUserSignalResult.fromObject = function fromObject(object) {
+            if (object instanceof $root.proto.VerifyKeyTransparencyForUserSignalResult)
+                return object;
+            var message = new $root.proto.VerifyKeyTransparencyForUserSignalResult();
+            if (object.success != null)
+                message.success = Boolean(object.success);
+            if (object.error != null)
+                message.error = String(object.error);
+            return message;
+        };
+
+        /**
+         * Creates a plain object from a VerifyKeyTransparencyForUserSignalResult message. Also converts values to other types if specified.
+         * @function toObject
+         * @memberof proto.VerifyKeyTransparencyForUserSignalResult
+         * @static
+         * @param {proto.VerifyKeyTransparencyForUserSignalResult} message VerifyKeyTransparencyForUserSignalResult
+         * @param {$protobuf.IConversionOptions} [options] Conversion options
+         * @returns {Object.<string,*>} Plain object
+         */
+        VerifyKeyTransparencyForUserSignalResult.toObject = function toObject(message, options) {
+            if (!options)
+                options = {};
+            var object = {};
+            if (message.success != null && message.hasOwnProperty("success")) {
+                object.success = message.success;
+                if (options.oneofs)
+                    object._success = "success";
+            }
+            if (message.error != null && message.hasOwnProperty("error")) {
+                object.error = message.error;
+                if (options.oneofs)
+                    object._error = "error";
+            }
+            return object;
+        };
+
+        /**
+         * Converts this VerifyKeyTransparencyForUserSignalResult to JSON.
+         * @function toJSON
+         * @memberof proto.VerifyKeyTransparencyForUserSignalResult
+         * @instance
+         * @returns {Object.<string,*>} JSON object
+         */
+        VerifyKeyTransparencyForUserSignalResult.prototype.toJSON = function toJSON() {
+            return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+        };
+
+        /**
+         * Gets the default type url for VerifyKeyTransparencyForUserSignalResult
+         * @function getTypeUrl
+         * @memberof proto.VerifyKeyTransparencyForUserSignalResult
+         * @static
+         * @param {string} [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+         * @returns {string} The default type url
+         */
+        VerifyKeyTransparencyForUserSignalResult.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
+            if (typeUrlPrefix === undefined) {
+                typeUrlPrefix = "type.googleapis.com";
+            }
+            return typeUrlPrefix + "/proto.VerifyKeyTransparencyForUserSignalResult";
+        };
+
+        return VerifyKeyTransparencyForUserSignalResult;
     })();
 
     proto.VirtualDeviceOutput = (function() {

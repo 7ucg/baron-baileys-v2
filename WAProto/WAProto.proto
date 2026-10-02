@@ -1,7 +1,7 @@
 syntax = "proto3";
 package proto;
 
-/// WhatsApp Version: 2.3000.1047871790
+/// WhatsApp Version: 2.3000.1049110567
 
 message ACP2Setting {
     optional bool enabled = 1;
@@ -1139,9 +1139,14 @@ message CallLogRecord {
         SCHEDULED_CALL = 1;
         VOICE_CHAT = 2;
     }
+    message GuestInfo {
+        optional string pushName = 1;
+    }
+    
     message ParticipantInfo {
         optional string userJid = 1;
         optional CallLogRecord.CallResult callResult = 2;
+        optional CallLogRecord.GuestInfo guestInfo = 3;
     }
     
     enum SilenceReason {
@@ -1923,6 +1928,7 @@ message ContextInfo {
         optional int32 agmSubtitleStrategy = 31;
         optional int32 agmHeaderInteractionStrategy = 32;
         optional bool containsCtwaFlowsAutoLabel = 33;
+        optional string productId = 34;
         enum AdType {
             CTWA = 0;
             CAWC = 1;
@@ -2780,6 +2786,14 @@ message KeyId {
     optional bytes id = 1;
 }
 
+message KeyTransparencyCommand {
+    oneof commandInput {
+        VerifyKeyTransparencyForUserSignalCommand verifyKtForUserSignal = 5;
+        VerifyKeyTransparencyForUserMinosCommand verifyKtForUserMinos = 6;
+        VerifyKeyTransparencyForUserMandrakeCommand verifyKtForUserMandrake = 7;
+    }
+}
+
 message LIDMigrationMappingSyncMessage {
     optional bytes encodedMappingPayload = 1;
 }
@@ -3026,6 +3040,7 @@ message Message {
     optional FutureProofMessage newsletterScheduledMessage = 132;
     optional FutureProofMessage acp2SettingMessage = 133;
     optional FutureProofMessage audioStickerMessage = 134;
+    optional FutureProofMessage botGroupParticipantMessage = 137;
     message AlbumMessage {
         optional uint32 expectedImageCount = 2;
         optional uint32 expectedVideoCount = 3;
@@ -5128,6 +5143,8 @@ enum MutationProps {
     SHARED_DEVICE_ALLOWLIST_ACTION = 94;
     CONTACT_MANAGER_METADATA_ACTION = 95;
     BUSINESS_FOLDER_ACTIVATION_ACTION = 96;
+    GROUP_HISTORY_TOGGLE_ACTION = 97;
+    BB_PRO_PENDING_CUSTOMER_BASE_ACTION = 98;
     SHARE_OWN_PN = 10001;
     BUSINESS_BROADCAST_ACTION = 10002;
     AI_THREAD_DELETE_ACTION = 10003;
@@ -5899,6 +5916,8 @@ message SyncActionValue {
     optional SharedDeviceAllowlistAction sharedDeviceAllowlistAction = 94;
     optional ContactManagerMetadataAction contactManagerMetadataAction = 95;
     optional BusinessFolderActivationAction businessFolderActivationAction = 96;
+    optional GroupHistoryToggleAction groupHistoryToggleAction = 97;
+    optional BBProPendingCustomerBaseAction bbProPendingCustomerBaseAction = 98;
     message AgentAction {
         optional string name = 1;
         optional int32 deviceId = 2;
@@ -5930,6 +5949,10 @@ message SyncActionValue {
             CREATED = 1;
             DELETED = 2;
         }
+    }
+    
+    message BBProPendingCustomerBaseAction {
+        optional bool pending = 1;
     }
     
     message BizAISettingsNudgeAction {
@@ -6117,6 +6140,15 @@ message SyncActionValue {
             optional string id = 1;
         }
         
+    }
+    
+    message GroupHistoryToggleAction {
+        optional GroupHistoryToggleMode groupHistoryToggleMode = 1;
+        enum GroupHistoryToggleMode {
+            GROUP_HISTORY_TOGGLE_MODE_UNKNOWN = 0;
+            GROUP_HISTORY_TOGGLE_MODE_ON = 1;
+            GROUP_HISTORY_TOGGLE_MODE_OFF = 2;
+        }
     }
     
     message InteractiveMessageAction {
@@ -6776,6 +6808,52 @@ message VerifiedNameCertificate {
         optional uint64 issueTime = 10;
     }
     
+}
+
+message VerifyKeyTransparencyForUserMandrakeCommand {
+    optional bytes lookupResponse = 1;
+    optional int64 userFbid = 2;
+    optional uint64 auditorSignatureTtlSecs = 3;
+    repeated string requestedAuditorList = 4;
+    optional bool isProductionBuild = 5;
+    optional bytes localMailboxHead = 6;
+}
+
+message VerifyKeyTransparencyForUserMandrakeResult {
+    optional bool success = 1;
+    optional string error = 2;
+}
+
+message VerifyKeyTransparencyForUserMinosCommand {
+    optional bytes lookupResponse = 1;
+    optional int64 userFbid = 2;
+    optional uint64 auditorSignatureTtlSecs = 3;
+    repeated string requestedAuditorList = 4;
+    optional bool isProductionBuild = 5;
+    optional bytes localEpochHead = 6;
+}
+
+message VerifyKeyTransparencyForUserMinosResult {
+    optional bool success = 1;
+    optional string error = 2;
+}
+
+message VerifyKeyTransparencyForUserSignalCommand {
+    optional bytes rootHash = 1;
+    optional uint64 currentEpoch = 2;
+    optional int64 userFbid = 3;
+    optional bytes historyProof = 4;
+    optional bytes metaSignature = 5;
+    optional bytes cloudflareSignature = 6;
+    optional bytes cloudflareMessage = 7;
+    optional bytes cloudflarePubKey = 8;
+    optional uint64 auditorSignatureTtlSecs = 9;
+    map<uint64, bytes> local_device_keys = 10;
+}
+
+message VerifyKeyTransparencyForUserSignalResult {
+    optional bool success = 1;
+    optional string error = 2;
 }
 
 message VirtualDeviceOutput {
