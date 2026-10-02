@@ -1,6 +1,6 @@
 {
   "name": "baron-baileys-v2",
-  "version": "1.5.16",
+  "version": "1.5.17",
   "description": "A high-performance WhatsApp Web library with Rust WASM acceleration",
   "keywords": [
     "whatsapp",

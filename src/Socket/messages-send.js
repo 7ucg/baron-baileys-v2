@@ -2240,7 +2240,9 @@ const makeMessagesSocket = config => {
 					tag: 'bot',
 					attrs: {
 						persona_type: opts.personaType || 'default',
-						agent_engagement_type: opts.agentEngagementType || (isGroup ? 'group_chat' : 'direct_chat'),
+						// APK DAH.smali enum: 0=direct_chat (1:1), 1=invoked (summoned in a
+						// group), 2=member (ambient group member). A group invoke is "invoked".
+						agent_engagement_type: opts.agentEngagementType || (isGroup ? 'invoked' : 'direct_chat'),
 						mode_selected: opts.modeSelected || '0'
 					}
 				}
