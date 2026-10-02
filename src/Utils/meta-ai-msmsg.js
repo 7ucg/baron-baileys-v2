@@ -127,7 +127,60 @@ const decryptMsmsgBotMessage = async (messageSecret, messageKey, msMsg) => {
 	throw err
 }
 
+// unifiedResponse.data is NOT encrypted — it is base64/bytes-wrapped JSON holding
+// the GenAI unified response. Decode it and pull the markdown text out.
+const textFromUnifiedResponse = data => {
+	if (!data) return null
+	try {
+		let buf
+		if (Buffer.isBuffer(data)) buf = data
+		else if (data instanceof Uint8Array) buf = Buffer.from(data)
+		else if (typeof data === 'string') buf = Buffer.from(data, 'base64')
+		else if (data.type === 'Buffer' && Array.isArray(data.data)) buf = Buffer.from(data.data)
+		else return null
+		const j = JSON.parse(buf.toString('utf8'))
+		const parts = []
+		for (const section of j.sections || []) {
+			const t = section?.view_model?.primitive?.text
+			if (t) parts.push(t)
+		}
+		return parts.length ? parts.join('\n') : null
+	} catch {
+		return null
+	}
+}
+
+// richResponseMessage (field 77): text lives in submessages[].messageText, with
+// unifiedResponse.data as a base64/bytes fallback carrying the same markdown.
+const textFromRichResponse = rr => {
+	if (!rr) return null
+	if (Array.isArray(rr.submessages)) {
+		const parts = rr.submessages
+			.map(sm => sm?.messageText)
+			.filter(t => typeof t === 'string' && t.length)
+		if (parts.length) return parts.join('\n')
+	}
+	return textFromUnifiedResponse(rr.unifiedResponse?.data)
+}
+
+// Extract the answer text from any Meta AI message body — a plain message, a
+// protocolMessage/MESSAGE_EDIT streaming chunk, or a richResponseMessage.
+// Accepts a full proto.Message or an inner editedMessage body.
+const extractMetaAiText = message => {
+	if (!message) return null
+	const body = message.protocolMessage?.editedMessage || message
+	return (
+		body.extendedTextMessage?.text ??
+		body.conversation ??
+		textFromRichResponse(body.richResponseMessage) ??
+		null
+	)
+}
+
 module.exports = {
 	decodeDecryptedMsmsgMessage,
-	decryptMsmsgBotMessage
+	decryptMsmsgBotMessage,
+	textFromUnifiedResponse,
+	textFromRichResponse,
+	extractMetaAiText
 }
