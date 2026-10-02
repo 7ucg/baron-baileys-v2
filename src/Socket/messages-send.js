@@ -2162,41 +2162,55 @@ const makeMessagesSocket = config => {
 
 		sendMetaAI: async (text, opts = {}) => {
 			const crypto = require('crypto')
-			// Working Meta AI (Hatch) recipe — mirrors real WA-Web send. All fields below are
-			// required: messageSecret (bot derives its msmsg reply key from it), the three
-			// botMetadata routing fields, and the <bot> persona node in additionalNodes.
+			// Meta AI (Hatch). Direct 1:1 -> send to the @bot JID. Group -> send to the
+			// group and invoke the bot by its fbid in botGroupMetadata (this is how you
+			// "mention"/summon Meta AI inside a group). messageSecret is required either
+			// way — the bot derives its msmsg reply key from it.
 			const META_AI_BOT_JID = '867051314767696@bot'
+			const META_AI_FBID = '867051314767696'
 			const jid = opts.jid || META_AI_BOT_JID
-			// invokerJid must be our own jid WITH device suffix (e.g. 1234:20@s.whatsapp.net)
+			const isGroup = jid.endsWith('@g.us')
 			const invokerJid = opts.invokerJid || authState.creds.me?.id
-			const message = {
-				extendedTextMessage: { text },
-				messageContextInfo: {
-					messageSecret: opts.messageSecret || crypto.randomBytes(32),
-					botMetadata: {
+			const RENDERING = {
+				bloksVersioningId: 'd7c89519fd412464e4a4ddd60b2e5fa57c5000766a697d60835246ef0952daba',
+				pixelDensity: 2.625
+			}
+			const botMetadata = isGroup
+				? {
+						botGroupMetadata: { participantsMetadata: [{ botFbid: opts.botFbid || META_AI_FBID }] },
+						botRenderingConfigMetadata: RENDERING
+					}
+				: {
 						personaId: jid,
 						invokerJid,
-						sessionMetadata: {
-							sessionId: opts.sessionId || crypto.randomUUID(),
-							sessionSource: 3
-						},
+						sessionMetadata: { sessionId: opts.sessionId || crypto.randomUUID(), sessionSource: 3 },
 						capabilityMetadata: { capabilities: opts.capabilities || Array.from({ length: 72 }, (_, i) => i + 1) },
 						botMetricsMetadata: { destinationId: jid, destinationEntryPoint: 2 }
 					}
-				}
+			// Group invoke sends a plain conversation; add a visible @Meta AI mention when
+			// opts.mention is set. Direct chat sends an extendedTextMessage.
+			let content
+			if (isGroup) {
+				content = opts.mention
+					? { extendedTextMessage: { text, contextInfo: { mentionedJid: [META_AI_BOT_JID] } } }
+					: { conversation: text }
+			} else {
+				content = { extendedTextMessage: { text } }
+			}
+			const message = {
+				...content,
+				messageContextInfo: { messageSecret: opts.messageSecret || crypto.randomBytes(32), botMetadata }
 			}
 			const msgId = (0, Utils_1.generateMessageIDV2)(invokerJid)
-			await relayMessage(jid, message, {
-				messageId: msgId,
-				quoted: opts.quoted,
-				links: opts.links,
-				additionalNodes: [
-					{
-						tag: 'bot',
-						attrs: { persona_type: 'default', agent_engagement_type: 'direct_chat', mode_selected: '0' }
-					}
+			const relayOpts = { messageId: msgId, quoted: opts.quoted, links: opts.links }
+			// Direct chat needs the <bot> persona node; the group invoke rides on
+			// botGroupMetadata instead.
+			if (!isGroup) {
+				relayOpts.additionalNodes = [
+					{ tag: 'bot', attrs: { persona_type: 'default', agent_engagement_type: 'direct_chat', mode_selected: '0' } }
 				]
-			})
+			}
+			await relayMessage(jid, message, relayOpts)
 			return msgId
 		}
 	}
