@@ -1,5 +1,21 @@
 # Changelog
 
+## 2026-10-02
+
+Meta AI (Hatch) interop made to actually work end-to-end — send a prompt to the
+`@bot` server and receive the streamed reply — verified against a real WA-Web
+capture, and the `sendMetaAI` helper rewritten to that verified recipe. Versions
+`1.5.9` → `1.5.11`.
+
+| Area | What changed |
+| --- | --- |
+| **Signal session to `@bot`** | `assertSessions` now includes `@bot`/MetaAI JIDs in `wireJids` so a pre-key bundle is fetched (they are not LID/PN/interop and were being filtered out → no session → the `pkmsg` to the bot failed to encrypt and the bot was silently dropped from recipients, so the message only reached own devices: one checkmark, no AI reply). `getUSyncDevices` injects `@bot`/MetaAI JIDs directly as device 0, since usync never enumerates bot devices and the bot was dropped before `assertSessions` even saw it. |
+| **`sendMetaAI(text, opts)`** | Rewritten to mirror the real WA-Web send: `messageContextInfo.messageSecret` (the bot derives its `msmsg` reply key from it — without it no decryptable reply), `botMetadata` with `personaId`/`invokerJid`/`sessionMetadata{sessionSource:3}`/`capabilityMetadata` (all `1..72`, overridable via `opts.capabilities`)/`botMetricsMetadata{destinationEntryPoint:2}`, and the `<bot persona_type="default" agent_engagement_type="direct_chat" mode_selected="0">` node. Dropped the old `biz_bot`/`threadId`/`botThreadInfo` guesswork that never got a reply. |
+| **Meta AI reply parsing** | New `extractMetaAiText(message)` (exported from the root) normalizes every reply shape — plain `extendedTextMessage`, streaming `protocolMessage`/`MESSAGE_EDIT`, and `richResponseMessage` (field 77) via `submessages[].messageText` or the base64 `unifiedResponse` — to a single string. Plus `textFromRichResponse` / `textFromUnifiedResponse` / `parseUnifiedResponseData`. |
+| **Auto-decode `unifiedResponse`** | On an incoming bot `msmsg`, `decodeDecryptedMsmsgMessage` now decodes `richResponseMessage.unifiedResponse.data` in place: the raw base64/bytes stays in `.data`, the decoded GenAI JSON is attached as `.decodedData` and the flattened markdown as `.text` (idempotent, via the new `decodeUnifiedResponseInPlace`). The `unifiedResponse` payload is base64-wrapped JSON — it is NOT encrypted. |
+
+---
+
 ## 2026-09-13
 
 WAProto updated to `2.3000.1047412487` (from `1046909856`, two versions in one pass), cross-checked

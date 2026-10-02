@@ -651,23 +651,32 @@ await sock.sendAlbumMessage(
 ### Meta AI / Rich Responses
 
 ```js
-// Send a message to Meta AI (Hatch bot) and receive the reply via messages.upsert
+// Send a prompt to Meta AI. Targets the @bot wire JID (867051314767696@bot),
+// attaches the required messageSecret + botMetadata and the <bot> persona node,
+// and registers the secret so the reply can be decrypted. Returns the message id.
 const msgId = await sock.sendMetaAI('Was ist die Hauptstadt von Deutschland?')
+// opts: { jid, invokerJid, sessionId, messageSecret, capabilities, quoted, links }
 
-// Multi-turn: pass aiConversationContext from the previous AI reply
-let conversationCtx
+// Receive the reply. Meta AI STREAMS its answer as protocolMessage/MESSAGE_EDIT
+// chunks from 867051314767696@bot (enc type "msmsg", decrypted with the
+// messageSecret the send registered). Each edit carries the full text-so-far.
+// extractMetaAiText() normalizes every reply shape — plain extendedTextMessage,
+// richResponseMessage.submessages[].messageText, or the base64 unifiedResponse —
+// into one string.
+const { extractMetaAiText } = require('baron-baileys-v2')
 sock.ev.on('messages.upsert', ({ messages }) => {
   for (const msg of messages) {
-    if (msg.key.remoteJid !== '1807055946647697@s.whatsapp.net') continue
-    const text = msg.message?.conversation || msg.message?.extendedTextMessage?.text
+    if (!msg.key.remoteJid?.endsWith('@bot')) continue
+    const text = extractMetaAiText(msg.message)
     if (text) console.log('[Meta AI]', text)
-    const ctx = msg.message?.messageContextInfo?.botMetadata?.aiConversationContext
-    if (ctx?.length) conversationCtx = ctx
   }
 })
 
-// Follow-up in the same conversation thread
-await sock.sendMetaAI('Und die Bevölkerung?', { conversationContext: conversationCtx })
+// A richResponseMessage's unifiedResponse is auto-decoded on arrival: the raw
+// bytes stay in `.data` while the decoded GenAI JSON is attached as `.decodedData`
+// and the flattened markdown as `.text`.
+// const ur = msg.message?.protocolMessage?.editedMessage?.richResponseMessage?.unifiedResponse
+// ur.data / ur.decodedData / ur.text
 
 // Rich AI response (table, list, code, LaTeX)
 await sock.sendTable(jid, 'Comparison', ['Name', 'Value'], [
