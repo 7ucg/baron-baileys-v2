@@ -657,6 +657,13 @@ await sock.sendAlbumMessage(
 const msgId = await sock.sendMetaAI('Was ist die Hauptstadt von Deutschland?')
 // opts: { jid, invokerJid, sessionId, messageSecret, capabilities, quoted, links }
 
+// In a group (Meta AI must already be a member — add it with
+// groupParticipantsUpdate(group, ['867051314767696@bot'], 'add')): pass the
+// group jid. It summons Meta AI via botGroupMetadata.participantsMetadata; the
+// reply comes from 867051314767696@bot as a group participant.
+await sock.sendMetaAI('meta, fass das zusammen', { jid: groupJid })
+await sock.sendMetaAI('meta?', { jid: groupJid, mention: true }) // visible @Meta AI
+
 // Receive the reply. Meta AI STREAMS its answer as protocolMessage/MESSAGE_EDIT
 // chunks from 867051314767696@bot (enc type "msmsg", decrypted with the
 // messageSecret the send registered). Each edit carries the full text-so-far.
