@@ -703,6 +703,16 @@ const makeMessagesSocket = config => {
 				if (isStatus && statusJidList) {
 					participantsList.push(...statusJidList)
 				}
+				// Meta AI / bots invoked via botGroupMetadata are NOT in the group's member
+				// list, so without this they miss the sender-key distribution and can never
+				// decrypt the group message (-> no AI reply). Add their <fbid>@bot JIDs.
+				const botGroupParticipants =
+					message?.messageContextInfo?.botMetadata?.botGroupMetadata?.participantsMetadata || []
+				for (const bp of botGroupParticipants) {
+					if (!bp?.botFbid) continue
+					const botJid = `${bp.botFbid}@bot`
+					if (!participantsList.includes(botJid)) participantsList.push(botJid)
+				}
 				const additionalDevices = await getUSyncDevices(participantsList, !!useUserDevicesCache, false)
 				devices.push(...additionalDevices)
 				if (isGroup) {
