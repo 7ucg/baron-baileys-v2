@@ -205,6 +205,13 @@ const makeMessagesSocket = config => {
 				const decoded = (0, WABinary_1.jidDecode)(jid)
 				const user = decoded?.user
 				const device = decoded?.device
+				// Meta AI / bot (@bot server): a single device-0 endpoint that usync does NOT
+				// enumerate — left to the usync fetch it returns no devices and the bot is
+				// silently dropped from recipients. Inject it directly as device 0.
+				if (user && ((0, WABinary_1.isJidMetaAI)(jid) || (0, WABinary_1.isJidBot)(jid))) {
+					deviceResults.push({ user, device: typeof device === 'number' ? device : 0, jid })
+					return null
+				}
 				const isExplicitDevice = typeof device === 'number' && device >= 0
 				if (isExplicitDevice && user) {
 					deviceResults.push({
@@ -403,7 +410,11 @@ const makeMessagesSocket = config => {
 						jidsRequiringFetch.filter(jid => !!(0, WABinary_1.isPnUser)(jid) || !!(0, WABinary_1.isHostedPnUser)(jid))
 					)) || []
 				).map(a => a.lid),
-				...jidsRequiringFetch.filter(jid => (0, WABinary_1.isInteropUser)(jid))
+				...jidsRequiringFetch.filter(jid => (0, WABinary_1.isInteropUser)(jid)),
+				// Meta AI / bot JIDs (@bot server) also need a pre-key fetch, otherwise no
+				// Signal session is ever built, the pkmsg to the bot fails to encrypt, the bot
+				// is silently dropped from recipients and the AI never receives the message.
+				...jidsRequiringFetch.filter(jid => (0, WABinary_1.isJidMetaAI)(jid) || (0, WABinary_1.isJidBot)(jid))
 			]
 			const interopFetches = wireJids.filter(j => (0, WABinary_1.isInteropUser)(j))
 			if (interopFetches.length) {
@@ -2149,68 +2160,43 @@ const makeMessagesSocket = config => {
 			}
 		},
 
-		sendMetaAI: async (jid1, text, opts = {}) => {
+		sendMetaAI: async (text, opts = {}) => {
 			const crypto = require('crypto')
-			const { proto } = require('../../WAProto/index.js')
+			// Working Meta AI (Hatch) recipe — mirrors real WA-Web send. All fields below are
+			// required: messageSecret (bot derives its msmsg reply key from it), the three
+			// botMetadata routing fields, and the <bot> persona node in additionalNodes.
 			const META_AI_BOT_JID = '867051314767696@bot'
-			const yourJid = jid1 || ''
 			const jid = opts.jid || META_AI_BOT_JID
-			const threadId = opts.threadId || Utils_1.generateMessageIDV2(yourJid)
-			const now = Date.now()
-			const senderTimestamp = opts.senderTimestamp || String(Math.floor(now / 1000))
-			const messageSecret = opts.messageSecret || crypto.randomBytes(32)
-			const senderKeyHash = opts.senderKeyHash || crypto.randomBytes(8).toString('base64')
+			// invokerJid must be our own jid WITH device suffix (e.g. 1234:20@s.whatsapp.net)
+			const invokerJid = opts.invokerJid || authState.creds.me?.id
 			const message = {
-				extendedTextMessage: proto.Message.ExtendedTextMessage.fromObject({
-					text,
-					previewType: 'NONE',
-					contextInfo: proto.ContextInfo.fromObject({
-						botMessageSharingInfo: {
-							botEntryPointOrigin: 'FAVICON',
-							forwardScore: 0
-						}
-					}),
-					inviteLinkGroupTypeV2: 'DEFAULT'
-				}),
-				messageContextInfo: proto.MessageContextInfo.fromObject({
-					deviceListMetadata: {
-						senderKeyHash,
-						senderTimestamp
-					},
-					deviceListMetadataVersion: 2,
-					messageSecret,
+				extendedTextMessage: { text },
+				messageContextInfo: {
+					messageSecret: opts.messageSecret || crypto.randomBytes(32),
 					botMetadata: {
-						botModeSelectionMetadata: {
-							overrideMode: [0]
+						personaId: jid,
+						invokerJid,
+						sessionMetadata: {
+							sessionId: opts.sessionId || crypto.randomUUID(),
+							sessionSource: 3
 						},
-						botThreadInfo: {
-							serverInfo: { title: text.substring(0, 50) },
-							clientInfo: { type: 'DEFAULT' }
-						},
-						botRenderingConfigMetadata: {
-							bloksVersioningId: '1eb86e6f4117d052e6bab62fe758a2e2af43747b85c5c1a886c8262bac462ea4',
-							pixelDensity: 2.625
-						}
-					},
-					threadId: [
-						{
-							threadType: 'AI_THREAD',
-							threadKey: {
-								remoteJid: '0002@s.whatsapp.net',
-								fromMe: true,
-								id: threadId
-							}
-						}
-					]
-				})
+						capabilityMetadata: { capabilities: opts.capabilities || Array.from({ length: 72 }, (_, i) => i + 1) },
+						botMetricsMetadata: { destinationId: jid, destinationEntryPoint: 2 }
+					}
+				}
 			}
-			const msgId = (0, Utils_1.generateMessageIDV2)(yourJid)
-			const messageOptions = {
+			const msgId = (0, Utils_1.generateMessageIDV2)(invokerJid)
+			await relayMessage(jid, message, {
 				messageId: msgId,
 				quoted: opts.quoted,
-				links: opts.links
-			}
-			await relayMessage(jid, message, messageOptions)
+				links: opts.links,
+				additionalNodes: [
+					{
+						tag: 'bot',
+						attrs: { persona_type: 'default', agent_engagement_type: 'direct_chat', mode_selected: '0' }
+					}
+				]
+			})
 			return msgId
 		}
 	}
