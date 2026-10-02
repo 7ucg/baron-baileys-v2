@@ -196,7 +196,10 @@ function decryptEventResponse({ encPayload, encIv }, { eventCreatorJid, eventMsg
  * @param ctx additional info about the original message required for decryption
  * @returns the decrypted inner message
  */
-function decryptMessageEdit({ encPayload, encIv }, { origMsgId, origMsgSenderJid, editorJid, msgEncKey, label = 'Message Edit' }) {
+function decryptMessageEdit(
+	{ encPayload, encIv },
+	{ origMsgId, origMsgSenderJid, editorJid, msgEncKey, label = 'Message Edit' }
+) {
 	const sign = Buffer.concat([
 		toBinary(origMsgId),
 		toBinary(origMsgSenderJid),
@@ -269,9 +272,14 @@ exports.decryptReaction = decryptReaction
  */
 const expandIdentity = async (base, { isMe, meId, meLid, signalRepository }) => {
 	const out = new Set()
-	const add = j => { if (j) out.add((0, WABinary_1.jidNormalizedUser)(j)) }
+	const add = j => {
+		if (j) out.add((0, WABinary_1.jidNormalizedUser)(j))
+	}
 	add(base)
-	if (isMe) { add(meId); add(meLid) }
+	if (isMe) {
+		add(meId)
+		add(meLid)
+	}
 	try {
 		const norm = (0, WABinary_1.jidNormalizedUser)(base)
 		if ((0, WABinary_1.isLidUser)(norm)) {
@@ -314,7 +322,11 @@ const coerceSecret = s => {
 	if (typeof s === 'string') return Buffer.from(s, 'base64')
 	if (Array.isArray(s)) return Buffer.from(s)
 	if (s.type === 'Buffer' && Array.isArray(s.data)) return Buffer.from(s.data)
-	try { return Buffer.from(Object.values(s)) } catch (e) { return null }
+	try {
+		return Buffer.from(Object.values(s))
+	} catch (e) {
+		return null
+	}
 }
 // Resolve the target message's messageSecret from the store (via getMessage, unwrapping common
 // wrappers) with a fallback to the captured botMessageSecrets map. Returns a Buffer or null.
@@ -322,7 +334,8 @@ const resolveMsgSecret = async (getMessage, targetKey) => {
 	let raw = null
 	if (targetKey) {
 		const msg = await getMessage(targetKey)
-		const inner = msg?.viewOnceMessage?.message || msg?.botInvokeMessage?.message || msg?.ephemeralMessage?.message || msg
+		const inner =
+			msg?.viewOnceMessage?.message || msg?.botInvokeMessage?.message || msg?.ephemeralMessage?.message || msg
 		raw = inner?.messageContextInfo?.messageSecret || msg?.messageContextInfo?.messageSecret || null
 	}
 	if (!raw) raw = require('./decode-wa-message').getBotMessageSecret(targetKey?.id)
@@ -330,8 +343,18 @@ const resolveMsgSecret = async (getMessage, targetKey) => {
 }
 // Build the PN+LID creator/modifier candidate lists for a target/actor pair.
 const secretIdentities = async (targetKey, actorKey, { creds, signalRepository }) => {
-	const creators = await expandIdentity(targetKey?.participant || targetKey?.remoteJid, { isMe: !!targetKey?.fromMe, meId: creds.me.id, meLid: creds.me.lid, signalRepository })
-	const modifiers = await expandIdentity(actorKey?.participant || actorKey?.remoteJid, { isMe: !!actorKey?.fromMe, meId: creds.me.id, meLid: creds.me.lid, signalRepository })
+	const creators = await expandIdentity(targetKey?.participant || targetKey?.remoteJid, {
+		isMe: !!targetKey?.fromMe,
+		meId: creds.me.id,
+		meLid: creds.me.lid,
+		signalRepository
+	})
+	const modifiers = await expandIdentity(actorKey?.participant || actorKey?.remoteJid, {
+		isMe: !!actorKey?.fromMe,
+		meId: creds.me.id,
+		meLid: creds.me.lid,
+		signalRepository
+	})
 	return { creators, modifiers }
 }
 /**
@@ -479,17 +502,20 @@ const processMessage = async (
 			ephemeralExpirationTimestamp: (0, generics_1.toNumber)(message.ephemeralExpirationTimestamp)
 		})
 	}
-	if (message.message?.acp2SettingMessage) {
-		const acp2Setting = message.messageContextInfo?.acp2Setting
-		if (acp2Setting) {
-			Object.assign(chat, {
-				acp2Enabled: acp2Setting.enabled || false,
-				acp2SettingTimestamp:
-					(0, generics_1.toNumber)(acp2Setting.settingTimestamp) || (0, generics_1.toNumber)(message.messageTimestamp),
-				acp2Trigger: acp2Setting.trigger,
-				acp2InitiatedByMe: acp2Setting.initiatedByMe || false
-			})
+	const applyAcp2Setting = acp2Setting => {
+		if (!acp2Setting) {
+			return
 		}
+		Object.assign(chat, {
+			acp2Enabled: acp2Setting.enabled || false,
+			acp2SettingTimestamp:
+				(0, generics_1.toNumber)(acp2Setting.settingTimestamp) || (0, generics_1.toNumber)(message.messageTimestamp),
+			acp2Trigger: acp2Setting.trigger,
+			acp2InitiatedByMe: acp2Setting.initiatedByMe || false
+		})
+	}
+	if (message.message?.acp2SettingMessage) {
+		applyAcp2Setting(message.messageContextInfo?.acp2Setting)
 	}
 	const content = (0, messages_1.normalizeMessageContent)(message.message)
 	// unarchive chat if it's a real message, or someone reacted to our message
@@ -658,6 +684,9 @@ const processMessage = async (
 					ephemeralSettingTimestamp: (0, generics_1.toNumber)(message.messageTimestamp),
 					ephemeralExpiration: protocolMsg.ephemeralExpiration || null
 				})
+				break
+			case index_js_1.proto.Message.ProtocolMessage.Type.ACP2_SETTING:
+				applyAcp2Setting(protocolMsg.acp2Setting)
 				break
 			case index_js_1.proto.Message.ProtocolMessage.Type.PEER_DATA_OPERATION_REQUEST_RESPONSE_MESSAGE:
 				const response = protocolMsg.peerDataOperationRequestResponseMessage
@@ -884,11 +913,25 @@ const processMessage = async (
 				logger?.warn({ targetKey }, 'enc reaction: missing messageSecret, forwarding raw')
 				ev.emit('messages.update', [{ key: targetKey, update: { encReactionMessage: encR } }])
 			} else {
-				const creators = await expandIdentity(targetKey.participant || targetKey.remoteJid, { isMe: !!targetKey.fromMe, meId: creds.me.id, meLid: creds.me.lid, signalRepository })
-				const modifiers = await expandIdentity(message.key.participant || message.key.remoteJid, { isMe: !!message.key.fromMe, meId: creds.me.id, meLid: creds.me.lid, signalRepository })
+				const creators = await expandIdentity(targetKey.participant || targetKey.remoteJid, {
+					isMe: !!targetKey.fromMe,
+					meId: creds.me.id,
+					meLid: creds.me.lid,
+					signalRepository
+				})
+				const modifiers = await expandIdentity(message.key.participant || message.key.remoteJid, {
+					isMe: !!message.key.fromMe,
+					meId: creds.me.id,
+					meLid: creds.me.lid,
+					signalRepository
+				})
 				const reactionMessage = decryptWithIdentities(decryptReaction, encR, {
-					origMsgId: targetKey.id, creators, modifiers, msgEncKey,
-					creatorField: 'origMsgSenderJid', modifierField: 'reactorJid'
+					origMsgId: targetKey.id,
+					creators,
+					modifiers,
+					msgEncKey,
+					creatorField: 'origMsgSenderJid',
+					modifierField: 'reactorJid'
 				})
 				if (reactionMessage) {
 					ev.emit('messages.reaction', [
@@ -896,7 +939,9 @@ const processMessage = async (
 					])
 					// also surface it as a normal message for the upsert pipeline
 					ev.emit('messages.upsert', {
-						messages: [{ ...message, message: { reactionMessage }, reactionContext: { targetKey, reactionKey: message.key } }],
+						messages: [
+							{ ...message, message: { reactionMessage }, reactionContext: { targetKey, reactionKey: message.key } }
+						],
 						type: 'notify'
 					})
 				} else {
@@ -931,23 +976,47 @@ const processMessage = async (
 			}
 			// normalise the secret to a Buffer (getMessage may hand back base64/array/{Buffer}/Uint8Array-as-object)
 			if (msgEncKey && !Buffer.isBuffer(msgEncKey)) {
-				msgEncKey = typeof msgEncKey === 'string'
-					? Buffer.from(msgEncKey, 'base64')
-					: Buffer.from(Array.isArray(msgEncKey) ? msgEncKey : (msgEncKey.type === 'Buffer' && Array.isArray(msgEncKey.data)) ? msgEncKey.data : Object.values(msgEncKey))
+				msgEncKey =
+					typeof msgEncKey === 'string'
+						? Buffer.from(msgEncKey, 'base64')
+						: Buffer.from(
+								Array.isArray(msgEncKey)
+									? msgEncKey
+									: msgEncKey.type === 'Buffer' && Array.isArray(msgEncKey.data)
+										? msgEncKey.data
+										: Object.values(msgEncKey)
+							)
 			}
-			const secDbg = msgEncKey ? `${secretSrc}:${msgEncKey.length}b:${Buffer.from(msgEncKey).subarray(0, 6).toString('hex')}` : 'none'
+			const secDbg = msgEncKey
+				? `${secretSrc}:${msgEncKey.length}b:${Buffer.from(msgEncKey).subarray(0, 6).toString('hex')}`
+				: 'none'
 			if (!msgEncKey) {
 				decryptError = 'missing_secret'
 				logger?.warn({ targetKey }, 'enc comment: missing messageSecret, forwarding raw')
 			} else {
-				const creators = await expandIdentity(targetKey.participant || targetKey.remoteJid, { isMe: !!targetKey.fromMe, meId: creds.me.id, meLid: creds.me.lid, signalRepository })
-				const modifiers = await expandIdentity(message.key.participant || message.key.remoteJid, { isMe: !!message.key.fromMe, meId: creds.me.id, meLid: creds.me.lid, signalRepository })
+				const creators = await expandIdentity(targetKey.participant || targetKey.remoteJid, {
+					isMe: !!targetKey.fromMe,
+					meId: creds.me.id,
+					meLid: creds.me.lid,
+					signalRepository
+				})
+				const modifiers = await expandIdentity(message.key.participant || message.key.remoteJid, {
+					isMe: !!message.key.fromMe,
+					meId: creds.me.id,
+					meLid: creds.me.lid,
+					signalRepository
+				})
 				decrypted = decryptWithIdentities(decryptComment, encC, {
-					origMsgId: targetKey.id, creators, modifiers, msgEncKey,
-					creatorField: 'origMsgSenderJid', modifierField: 'commenterJid'
+					origMsgId: targetKey.id,
+					creators,
+					modifiers,
+					msgEncKey,
+					creatorField: 'origMsgSenderJid',
+					modifierField: 'commenterJid'
 				})
 				if (!decrypted) {
-					decryptError = 'no_identity secret=' + secDbg + ' creators=' + creators.join(',') + ' modifiers=' + modifiers.join(',')
+					decryptError =
+						'no_identity secret=' + secDbg + ' creators=' + creators.join(',') + ' modifiers=' + modifiers.join(',')
 					logger?.warn({ targetKey, secDbg, creators, modifiers }, 'enc comment: no identity combo authenticated')
 				}
 			}
@@ -1029,18 +1098,33 @@ const processMessage = async (
 			} else {
 				const { creators, modifiers } = await secretIdentities(creationMsgKey, message.key, { creds, signalRepository })
 				const responseMsg = tryIdentities(decryptEventResponse, encEventResponse, {
-					creators, modifiers,
+					creators,
+					modifiers,
 					buildCtx: (c, mo) => ({ eventEncKey, eventCreatorJid: c, eventMsgId: creationMsgKey.id, responderJid: mo })
 				})
 				if (responseMsg) {
 					ev.emit('messages.update', [
 						{
 							key: creationMsgKey,
-							update: { eventResponses: [{ eventResponseMessageKey: message.key, senderTimestampMs: responseMsg.timestampMs, response: responseMsg }] }
+							update: {
+								eventResponses: [
+									{
+										eventResponseMessageKey: message.key,
+										senderTimestampMs: responseMsg.timestampMs,
+										response: responseMsg
+									}
+								]
+							}
 						}
 					])
 					ev.emit('messages.upsert', {
-						messages: [{ ...message, message: { eventResponseMessage: responseMsg }, eventContext: { creationMsgKey, responseKey: message.key } }],
+						messages: [
+							{
+								...message,
+								message: { eventResponseMessage: responseMsg },
+								eventContext: { creationMsgKey, responseKey: message.key }
+							}
+						],
 						type: 'notify'
 					})
 				} else {
@@ -1390,7 +1474,8 @@ const processMessage = async (
 			} else {
 				const { creators, modifiers } = await secretIdentities(creationMsgKey, message.key, { creds, signalRepository })
 				const voteMsg = tryIdentities(decryptPollVote, content.pollUpdateMessage.vote, {
-					creators, modifiers,
+					creators,
+					modifiers,
 					buildCtx: (c, mo) => ({ pollEncKey, pollCreatorJid: c, pollMsgId: creationMsgKey.id, voterJid: mo })
 				})
 				if (voteMsg) {
@@ -1409,7 +1494,13 @@ const processMessage = async (
 						}
 					])
 					ev.emit('messages.upsert', {
-						messages: [{ ...message, message: { pollUpdateMessage: { ...content.pollUpdateMessage, vote: voteMsg } }, pollContext: { creationMsgKey, voteKey: message.key } }],
+						messages: [
+							{
+								...message,
+								message: { pollUpdateMessage: { ...content.pollUpdateMessage, vote: voteMsg } },
+								pollContext: { creationMsgKey, voteKey: message.key }
+							}
+						],
 						type: 'notify'
 					})
 				} else {
