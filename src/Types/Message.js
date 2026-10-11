@@ -13,6 +13,7 @@ exports.WAMessageAddressingMode =
 	exports.P2PPaymentReminderState =
 	exports.ConditionalRevealType =
 	exports.EventResponseType =
+	exports.EventInviteStatus =
 	exports.PrivateProcessingStatus =
 	exports.PaymentInfoStatus =
 	exports.PaymentInfoTxnStatus =
@@ -39,6 +40,7 @@ exports.P2PPaymentReminderFrequency = index_js_1.proto.Message.P2PPaymentReminde
 exports.P2PPaymentReminderState = index_js_1.proto.Message.P2PPaymentReminderNotification?.ReminderState
 exports.ConditionalRevealType = index_js_1.proto.Message.ConditionalRevealMessage.ConditionalRevealMessageType
 exports.EventResponseType = index_js_1.proto.Message.EventResponseMessage.EventResponseType
+exports.EventInviteStatus = index_js_1.proto.Message.EventInviteMessage.EventStatus
 exports.PrivateProcessingStatus =
 	index_js_1.proto.SyncActionValue.PrivateProcessingSettingAction.PrivateProcessingStatus
 exports.BusinessBroadcastCampaignStatus = index_js_1.proto.SyncActionValue.BusinessBroadcastCampaignStatus
