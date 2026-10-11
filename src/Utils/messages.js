@@ -1754,11 +1754,29 @@ const generateWAMessageContent = async (message, options) => {
 		}
 		if (ct.solidColor) {
 			const sc = typeof ct.solidColor === 'object' ? ct.solidColor : {}
-			themeSetting.solidColor = WAProto_1.proto.Message.ChatSolidColorWallpaper.fromObject({
-				colorLight: sc.colorLight || sc.color || '#FFFFFF',
-				colorDark: sc.colorDark || sc.color || '#000000',
+			// WA Web 2.3000.1049983640 dropped colorLight/colorDark (hex strings) in favor of
+			// backgroundLightArgb/backgroundDarkArgb (fixed32 ARGB) — accept both hex ("#RRGGBB"/
+			// "#AARRGGBB") and raw ARGB numbers for the color inputs.
+			const hexToArgb = (hex, fallbackArgb) => {
+				if (typeof hex === 'number') return hex >>> 0
+				if (typeof hex !== 'string') return fallbackArgb
+				const h = hex.replace('#', '')
+				if (h.length === 6) return (0xff000000 | parseInt(h, 16)) >>> 0
+				if (h.length === 8) return parseInt(h, 16) >>> 0
+				return fallbackArgb
+			}
+			const solid = {
+				backgroundLightArgb: hexToArgb(sc.colorLight || sc.color, 0xffffffff),
+				backgroundDarkArgb: hexToArgb(sc.colorDark || sc.color, 0xff000000),
 				isDoodleEnabled: sc.isDoodleEnabled ?? false
-			})
+			}
+			if (sc.doodleColorLight != null) {
+				solid.doodleLightArgb = hexToArgb(sc.doodleColorLight)
+			}
+			if (sc.doodleColorDark != null) {
+				solid.doodleDarkArgb = hexToArgb(sc.doodleColorDark)
+			}
+			themeSetting.solidColor = WAProto_1.proto.Message.ChatSolidColorWallpaper.fromObject(solid)
 		} else if (ct.stockImage) {
 			const si = typeof ct.stockImage === 'object' ? ct.stockImage : {}
 			themeSetting.stockImage = WAProto_1.proto.Message.ChatStockImageWallpaper.fromObject({
