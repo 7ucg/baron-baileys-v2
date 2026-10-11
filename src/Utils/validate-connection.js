@@ -146,7 +146,9 @@ const generateRegistrationNode = ({ registrationId, signedPreKey, signedIdentity
 			supportHatchHistory: true,
 			supportedBotChannelFbids: undefined,
 			supportInlineContacts: true,
-			supportNewsletter: true
+			supportNewsletter: true,
+			supportOmittedConversationIndex: true,
+			supportUniversalReachChat: true
 		},
 		version: {
 			primary: 10,
