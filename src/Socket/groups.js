@@ -30,7 +30,7 @@ const GROUP_MEX_QUERY_IDS = {
 	GET_PRE_REG_ADD_REQUESTS: '25018599251091280', // GetPreRegGroupAddRequestsQuery
 	GET_SUGGESTED_CONTACTS: '27208468032086900', // GetSuggestedContacts
 	STORE_INVITES_SMS: '26810859745268181', // GroupsStoreInvitesSMSMutation (WAWebMexGroupStoreInviteSmsJobMutation) — verified 2026-08-28
-	LOG_SERVER_SENT_INVITE: '26580640204871220', // LogServerSentInviteIntent
+	LOG_SERVER_SENT_INVITE: '28486062674347663', // LogServerSentInviteIntent (WAWebMexLogServerSentInviteIntentJobMutation) — verified 2026-10-11
 	QUERY_ONLINE_STATUS: '24599444653063564', // QueryOnlineStatusFromPDP
 	QUERY_ONLINE_STATUS_LAST_SEEN: '24653084284365540' // QueryOnlineStatusLastSeenFromPDP
 }

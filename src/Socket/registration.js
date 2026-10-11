@@ -35,7 +35,7 @@ const REGISTRATION_MEX_IDS = {
 	CONTACTS_BACKUP_QUERY: '25885591041046968', // ContactsBackupQuery
 	SELF_CONTACTS: '25273846082242404', // SelfContactsQuery
 	SUGGESTED_CONTACTS_V2: '31663643799945793', // SuggestedContactsV2
-	USYNC: '29829202653362039', // UsyncQuery (WAWebMexUsyncQuery) — verified 2026-08-28
+	USYNC: '28496738596651319', // UsyncQuery (WAWebMexUsyncQuery) — verified 2026-10-11
 	USER_COUNTRY_CODE: '25292528387076991', // UserCountryCodeGet
 	// Age verification
 	AGE_COLLECTION: '33502711132676934', // AgeCollection
