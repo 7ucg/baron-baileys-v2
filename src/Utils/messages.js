@@ -1438,6 +1438,11 @@ const generateWAMessageContent = async (message, options) => {
 			endTime,
 			isCanceled: ei.isCancelled ?? ei.isCanceled ?? false,
 			jpegThumbnail: ei.thumbnail || ei.jpegThumbnail,
+			callLink: ei.callLink,
+			coverImageHandle: ei.coverImageHandle,
+			locationName: ei.locationName,
+			lastUpdatedTsUsec: ei.lastUpdatedTsUsec,
+			status: ei.status,
 			contextInfo: ei.contextInfo
 		})
 	} else if ('comment' in message || 'commentMessage' in message) {
@@ -1855,6 +1860,18 @@ const generateWAMessageContent = async (message, options) => {
 			type: WAProto_1.proto.Message.ProtocolMessage.Type.REVOKE,
 			key: sll.key || sll
 		}
+	}
+	if ('requestLocation' in message) {
+		m.requestLocationMessage = WAProto_1.proto.Message.RequestLocationMessage.fromObject({})
+	}
+	if ('requestLocationUpdate' in message) {
+		const rlu = message.requestLocationUpdate
+		const updateTypeEnum = WAProto_1.proto.Message.RequestLocationUpdateMessage.UpdateType
+		m.requestLocationUpdateMessage = WAProto_1.proto.Message.RequestLocationUpdateMessage.fromObject({
+			key: rlu.key,
+			updateType: rlu.cancel ? updateTypeEnum.CANCEL : (rlu.updateType ?? updateTypeEnum.UNKNOWN),
+			senderTimestampMs: rlu.senderTimestampMs ?? Date.now()
+		})
 	}
 	if ('carousel' in message || 'carouselMessage' in message) {
 		const c = message.carousel || message.carouselMessage
