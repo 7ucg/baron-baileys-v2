@@ -1044,6 +1044,17 @@ const processSyncAction = (syncAction, ev, me, initialSyncOpts, logger) => {
 		ev.emit('settings.update', { setting: 'statusPrivacy', value: action.statusPrivacy })
 	} else if (action?.lockChatAction) {
 		ev.emit('chats.lock', { id: id, locked: !!action.lockChatAction.locked })
+	} else if (action?.communityNestingStateAction) {
+		const nestingState = action.communityNestingStateAction.nestingState
+		ev.emit('groups.update', [
+			{
+				id,
+				nestingState,
+				nested:
+					nestingState ===
+					index_js_1.proto.SyncActionValue.CommunityNestingStateAction.NestingState.NESTING_STATE_NESTED
+			}
+		])
 	} else if (action?.privacySettingDisableLinkPreviewsAction) {
 		ev.emit('settings.update', {
 			setting: 'disableLinkPreviews',
