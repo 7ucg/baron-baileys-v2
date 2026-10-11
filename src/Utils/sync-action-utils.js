@@ -28,7 +28,8 @@ const processContactAction = (action, id, logger) => {
 				name: action.fullName || action.firstName || action.username || undefined,
 				username: action.username || undefined,
 				lid: lidJid || undefined,
-				phoneNumber
+				phoneNumber,
+				birthday: action.birthday || undefined
 			}
 		]
 	})

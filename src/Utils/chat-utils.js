@@ -1065,7 +1065,8 @@ const processSyncAction = (syncAction, ev, me, initialSyncOpts, logger) => {
 					undefined,
 				username: action.lidContactAction.username || undefined,
 				lid: id,
-				phoneNumber: undefined
+				phoneNumber: undefined,
+				birthday: action.lidContactAction.birthday || undefined
 			}
 		])
 	} else if (action?.privacySettingChannelsPersonalisedRecommendationAction) {
