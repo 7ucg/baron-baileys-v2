@@ -50,6 +50,8 @@ const processHistoryMessage = (item, logger) => {
 	const callLogRecords = []
 	const pastParticipants = []
 	const recentStickers = []
+	const favoriteStickers = []
+	const omittedConversations = []
 	let globalSettings = undefined
 	let statusV3Messages = undefined
 	logger?.trace({ progress: item.progress }, 'processing history of type ' + item.syncType?.toString())
@@ -97,6 +99,20 @@ const processHistoryMessage = (item, logger) => {
 			if (stickerKey) stickerKeys.add(stickerKey)
 			recentStickers.push(s)
 		}
+	}
+	// Extract favorite stickers with metadata, deduped by key
+	const favoriteStickerKeys = new Set()
+	for (const s of item.favoriteStickers || []) {
+		const stickerKey = s.fileSha256 ? Buffer.from(s.fileSha256).toString('base64') : undefined
+		if (!stickerKey || !favoriteStickerKeys.has(stickerKey)) {
+			if (stickerKey) favoriteStickerKeys.add(stickerKey)
+			favoriteStickers.push(s)
+		}
+	}
+	// Chats intentionally left out of this sync (e.g. still mid-migration) — surfaced
+	// so consumers don't mistake a partial sync for a complete one.
+	for (const oc of item.omittedConversations || []) {
+		omittedConversations.push({ id: oc.historyChatId, accountLid: oc.accountLid || undefined })
 	}
 	switch (item.syncType) {
 		case index_js_1.proto.HistorySync.HistorySyncType.INITIAL_BOOTSTRAP:
@@ -221,6 +237,9 @@ const processHistoryMessage = (item, logger) => {
 		globalSettings,
 		callLogRecords,
 		recentStickers,
+		favoriteStickers,
+		omittedConversations,
+		omittedConversationsProvided: item.omittedConversationsProvided ?? false,
 		pastParticipants,
 		statusV3Messages
 	}
