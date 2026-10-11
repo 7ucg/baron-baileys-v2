@@ -117,7 +117,7 @@ async function derivePairingCodeKey(pairingCode, salt) {
 	const saltBuffer = new Uint8Array(salt instanceof Uint8Array ? salt : new Uint8Array(salt))
 	const keyMaterial = await subtle.importKey('raw', pairingCodeBuffer, { name: 'PBKDF2' }, false, ['deriveBits'])
 	const derivedBits = await subtle.deriveBits(
-		{ name: 'PBKDF2', salt: saltBuffer, iterations: 2 << 16, hash: 'SHA-256' },
+		{ name: 'PBKDF2', salt: saltBuffer, iterations: 600000, hash: 'SHA-256' },
 		keyMaterial,
 		256
 	)
