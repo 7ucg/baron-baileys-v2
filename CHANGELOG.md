@@ -1,5 +1,25 @@
 # Changelog
 
+## 2026-10-11
+
+WAProto updated twice in one pass (`2.3000.1049110567` then `2.3000.1049983640`), cross-checked
+against `wa-proto-baron`'s CHANGELOG/PROTO_INDEX and fresh `wa-spec` extractions. New surfaces wired
+into the JS layer; stale Mex query IDs re-verified and fixed.
+
+| Area | What changed |
+| --- | --- |
+| **WAProto** | Two bumps: key-transparency verification commands (Mandrake/Minos/Signal), `BBProPendingCustomerBaseAction`, `CallLogRecord.GuestInfo`, `botGroupParticipantMessage` — then a much larger one adding a new Mandrake/Minos messaging-mailbox key-distribution subsystem (MEK generation/encryption/decryption, detached-device key derivation, epoch signing), `requestLocationMessage`/`requestLocationUpdateMessage`, `instantImageMessage`, CTWA promo fields, event-invite status/location/cover-image fields, `HistorySync` omitted-conversations/favorite-stickers, `CommunityNestingStateAction`, and assorted enum additions. Mandrake/Minos is deep new crypto infrastructure — left unwired, same as the still-open OPAQUE/WASafe items. |
+| **ACP2 setting fix** | `Message.ProtocolMessage.acp2Setting` (type `ACP2_SETTING=39`, mirrors `EPHEMERAL_SETTING`'s pattern) shipped in the same bump as the `acp2SettingMessage`/`MessageContextInfo` path wired up last time — that second delivery path had been missed. Both now go through one shared `applyAcp2Setting` helper. |
+| **Chat wallpaper fix** | `Message.ChatSolidColorWallpaper.colorLight`/`colorDark` (hex strings) were dropped in favor of `backgroundLightArgb`/`backgroundDarkArgb` (fixed32 ARGB) plus new `doodleLightArgb`/`doodleDarkArgb` — the `chatTheme` solidColor builder was silently dropping color input once the bump landed. Now accepts hex (`"#RRGGBB"`/`"#AARRGGBB"`) or raw ARGB numbers. |
+| **Mex query IDs** | Three rotated/stale doc IDs found and fixed across two passes: `CREATE_INVITE_CODE` (groups.js), `USYNC` (registration.js), `LOG_SERVER_SENT_INVITE` (groups.js). |
+| **wa-spec tooling fix** | The vendored `wa-spec` Mex extractor (`extract-mex.cjs`) hit a genuine infinite loop on `WAWebEmailInviteSendGroupMutation`'s caller body: a bare `[].concat(t)` value left a stray `.` that its object-shape parser couldn't make progress past, spinning forever. Patched to force-advance on an unrecognized character instead of re-matching the same position — not part of this repo (tool lives outside it), noted for anyone else hitting the same hang. |
+| **New content types** | `requestLocation`/`requestLocationUpdate` message options (ask a chat to share location, or request/cancel a live-location refresh). `eventInvite` builder gained `callLink`, `coverImageHandle`, `locationName`, `lastUpdatedTsUsec`, `status` (new `EventInviteStatus` enum exported). |
+| **Contact sync** | `birthday` now included on `contacts.upsert` from both `ContactAction` and `LidContactAction`. |
+| **History sync** | `favoriteStickers` (same dedup as the existing `recentStickers`) and `omittedConversations`/`omittedConversationsProvided` (chats deliberately left out of a sync) now flow through `messaging-history.set`; `supportOmittedConversationIndex`/`supportUniversalReachChat` declared in `HistorySyncConfig` so the server actually sends that data. |
+| **Community nesting** | New `SyncActionValue.CommunityNestingStateAction` now emits `groups.update` with the raw `nestingState` enum plus a `nested` convenience boolean. |
+
+---
+
 ## 2026-10-02
 
 Meta AI (Hatch) interop made to actually work end-to-end — send a prompt to the
