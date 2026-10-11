@@ -4128,7 +4128,8 @@ export namespace proto {
                 UNKNOWN = 0,
                 DEFAULT = 1,
                 INCOGNITO = 2,
-                SIDE_CHAT = 3
+                SIDE_CHAT = 3,
+                PRIVATE_SEARCH_CHAT = 4
             }
         }
 
@@ -6095,7 +6096,16 @@ export namespace proto {
             AI_RICH_RESPONSE_REMINDERS_ENABLED = 69,
             AI_STOP_GENERATION_ENABLED = 70,
             AI_RICH_RESPONSE_3P_LINKING_CARD_ENABLED = 71,
-            HATCH_NOTIFICATION_METADATA_EVENT_ENABLED = 72
+            HATCH_NOTIFICATION_METADATA_EVENT_ENABLED = 72,
+            AI_SUGGESTED_REPLIES_ENABLED = 73,
+            RICH_RESPONSE_IN_APP_SURVEY_BLOKS = 74,
+            RICH_RESPONSE_IMAGE_SOURCE_ATTRIBUTION = 75,
+            HATCH_CONNECTOR_ACTION_CARD_ENABLED = 76,
+            HATCH_SECURE_CREDENTIAL_CARD_ENABLED = 77,
+            HATCH_BROWSER_TASK_CARD_ENABLED = 78,
+            HATCH_ARTIFACT_CARD_ENABLED = 79,
+            AI_STUDY_CENTER_ENABLED = 80,
+            AI_MUSE_JARVIS_SCHEMA_ENABLED = 81
         }
     }
 
@@ -21926,6 +21936,27 @@ export namespace proto {
 
             /** ExternalAdReplyInfo productId */
             productId?: (string|null);
+
+            /** ExternalAdReplyInfo containsCtwaPromo */
+            containsCtwaPromo?: (boolean|null);
+
+            /** ExternalAdReplyInfo ctwaPromoResponseId */
+            ctwaPromoResponseId?: (string|null);
+
+            /** ExternalAdReplyInfo ctwaPromoOfferId */
+            ctwaPromoOfferId?: (string|null);
+
+            /** ExternalAdReplyInfo ctwaPromoAdEntryId */
+            ctwaPromoAdEntryId?: (string|null);
+
+            /** ExternalAdReplyInfo ctwaPromoResponseExpiresAtSeconds */
+            ctwaPromoResponseExpiresAtSeconds?: (number|Long|null);
+
+            /** ExternalAdReplyInfo ctwaPromoSchemaVersion */
+            ctwaPromoSchemaVersion?: (number|null);
+
+            /** ExternalAdReplyInfo ctwaPromoAdgroupId */
+            ctwaPromoAdgroupId?: (string|null);
         }
 
         /** Represents an ExternalAdReplyInfo. */
@@ -22038,6 +22069,27 @@ export namespace proto {
 
             /** ExternalAdReplyInfo productId. */
             public productId?: (string|null);
+
+            /** ExternalAdReplyInfo containsCtwaPromo. */
+            public containsCtwaPromo?: (boolean|null);
+
+            /** ExternalAdReplyInfo ctwaPromoResponseId. */
+            public ctwaPromoResponseId?: (string|null);
+
+            /** ExternalAdReplyInfo ctwaPromoOfferId. */
+            public ctwaPromoOfferId?: (string|null);
+
+            /** ExternalAdReplyInfo ctwaPromoAdEntryId. */
+            public ctwaPromoAdEntryId?: (string|null);
+
+            /** ExternalAdReplyInfo ctwaPromoResponseExpiresAtSeconds. */
+            public ctwaPromoResponseExpiresAtSeconds?: (number|Long|null);
+
+            /** ExternalAdReplyInfo ctwaPromoSchemaVersion. */
+            public ctwaPromoSchemaVersion?: (number|null);
+
+            /** ExternalAdReplyInfo ctwaPromoAdgroupId. */
+            public ctwaPromoAdgroupId?: (string|null);
 
             /**
              * Creates a new ExternalAdReplyInfo instance using the specified properties.
@@ -22508,7 +22560,11 @@ export namespace proto {
             MOTION_PHOTO_PARENT = 5,
             MOTION_PHOTO_CHILD = 6,
             HEVC_VIDEO_PARENT = 7,
-            HEVC_VIDEO_CHILD = 8
+            HEVC_VIDEO_CHILD = 8,
+            AV1_VIDEO_PARENT = 9,
+            AV1_VIDEO_CHILD = 10,
+            STREAMED_VIDEO_PARENT = 11,
+            STREAMED_VIDEO_CHILD = 12
         }
 
         /** Properties of a PartiallySelectedContent. */
@@ -23158,6 +23214,9 @@ export namespace proto {
 
         /** Conversation acp2Setting */
         acp2Setting?: (proto.IACP2Setting|null);
+
+        /** Conversation acp2HistoryWithheld */
+        acp2HistoryWithheld?: (boolean|null);
     }
 
     /** Represents a Conversation. */
@@ -23360,6 +23419,9 @@ export namespace proto {
 
         /** Conversation acp2Setting. */
         public acp2Setting?: (proto.IACP2Setting|null);
+
+        /** Conversation acp2HistoryWithheld. */
+        public acp2HistoryWithheld?: (boolean|null);
 
         /**
          * Creates a new Conversation instance using the specified properties.
@@ -23682,6 +23744,808 @@ export namespace proto {
         public static getTypeUrl(typeUrlPrefix?: string): string;
     }
 
+    /** Properties of a DecryptMekForDistributionFromTransportSenderInput. */
+    interface IDecryptMekForDistributionFromTransportSenderInput {
+
+        /** DecryptMekForDistributionFromTransportSenderInput mekDistribution */
+        mekDistribution?: (proto.DecryptMekForDistributionFromTransportSenderInput.ITransportSenderMEKDistributionSingleRecipient|null);
+
+        /** DecryptMekForDistributionFromTransportSenderInput mekId */
+        mekId?: (Uint8Array|null);
+
+        /** DecryptMekForDistributionFromTransportSenderInput rosterHash */
+        rosterHash?: (Uint8Array|null);
+
+        /** DecryptMekForDistributionFromTransportSenderInput recipientEncSk */
+        recipientEncSk?: (Uint8Array|null);
+
+        /** DecryptMekForDistributionFromTransportSenderInput version */
+        version?: (number|Long|null);
+
+        /** DecryptMekForDistributionFromTransportSenderInput conf */
+        conf?: (proto.IMinosClientConfig|null);
+    }
+
+    /** Represents a DecryptMekForDistributionFromTransportSenderInput. */
+    class DecryptMekForDistributionFromTransportSenderInput implements IDecryptMekForDistributionFromTransportSenderInput {
+
+        /**
+         * Constructs a new DecryptMekForDistributionFromTransportSenderInput.
+         * @param [properties] Properties to set
+         */
+        constructor(properties?: proto.IDecryptMekForDistributionFromTransportSenderInput);
+
+        /** DecryptMekForDistributionFromTransportSenderInput mekDistribution. */
+        public mekDistribution?: (proto.DecryptMekForDistributionFromTransportSenderInput.ITransportSenderMEKDistributionSingleRecipient|null);
+
+        /** DecryptMekForDistributionFromTransportSenderInput mekId. */
+        public mekId?: (Uint8Array|null);
+
+        /** DecryptMekForDistributionFromTransportSenderInput rosterHash. */
+        public rosterHash?: (Uint8Array|null);
+
+        /** DecryptMekForDistributionFromTransportSenderInput recipientEncSk. */
+        public recipientEncSk?: (Uint8Array|null);
+
+        /** DecryptMekForDistributionFromTransportSenderInput version. */
+        public version?: (number|Long|null);
+
+        /** DecryptMekForDistributionFromTransportSenderInput conf. */
+        public conf?: (proto.IMinosClientConfig|null);
+
+        /**
+         * Creates a new DecryptMekForDistributionFromTransportSenderInput instance using the specified properties.
+         * @param [properties] Properties to set
+         * @returns DecryptMekForDistributionFromTransportSenderInput instance
+         */
+        public static create(properties?: proto.IDecryptMekForDistributionFromTransportSenderInput): proto.DecryptMekForDistributionFromTransportSenderInput;
+
+        /**
+         * Encodes the specified DecryptMekForDistributionFromTransportSenderInput message. Does not implicitly {@link proto.DecryptMekForDistributionFromTransportSenderInput.verify|verify} messages.
+         * @param message DecryptMekForDistributionFromTransportSenderInput message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encode(message: proto.IDecryptMekForDistributionFromTransportSenderInput, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Encodes the specified DecryptMekForDistributionFromTransportSenderInput message, length delimited. Does not implicitly {@link proto.DecryptMekForDistributionFromTransportSenderInput.verify|verify} messages.
+         * @param message DecryptMekForDistributionFromTransportSenderInput message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encodeDelimited(message: proto.IDecryptMekForDistributionFromTransportSenderInput, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Decodes a DecryptMekForDistributionFromTransportSenderInput message from the specified reader or buffer.
+         * @param reader Reader or buffer to decode from
+         * @param [length] Message length if known beforehand
+         * @returns DecryptMekForDistributionFromTransportSenderInput
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): proto.DecryptMekForDistributionFromTransportSenderInput;
+
+        /**
+         * Decodes a DecryptMekForDistributionFromTransportSenderInput message from the specified reader or buffer, length delimited.
+         * @param reader Reader or buffer to decode from
+         * @returns DecryptMekForDistributionFromTransportSenderInput
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): proto.DecryptMekForDistributionFromTransportSenderInput;
+
+        /**
+         * Verifies a DecryptMekForDistributionFromTransportSenderInput message.
+         * @param message Plain object to verify
+         * @returns `null` if valid, otherwise the reason why it is not
+         */
+        public static verify(message: { [k: string]: any }): (string|null);
+
+        /**
+         * Creates a DecryptMekForDistributionFromTransportSenderInput message from a plain object. Also converts values to their respective internal types.
+         * @param object Plain object
+         * @returns DecryptMekForDistributionFromTransportSenderInput
+         */
+        public static fromObject(object: { [k: string]: any }): proto.DecryptMekForDistributionFromTransportSenderInput;
+
+        /**
+         * Creates a plain object from a DecryptMekForDistributionFromTransportSenderInput message. Also converts values to other types if specified.
+         * @param message DecryptMekForDistributionFromTransportSenderInput
+         * @param [options] Conversion options
+         * @returns Plain object
+         */
+        public static toObject(message: proto.DecryptMekForDistributionFromTransportSenderInput, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+        /**
+         * Converts this DecryptMekForDistributionFromTransportSenderInput to JSON.
+         * @returns JSON object
+         */
+        public toJSON(): { [k: string]: any };
+
+        /**
+         * Gets the default type url for DecryptMekForDistributionFromTransportSenderInput
+         * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+         * @returns The default type url
+         */
+        public static getTypeUrl(typeUrlPrefix?: string): string;
+    }
+
+    namespace DecryptMekForDistributionFromTransportSenderInput {
+
+        /** Properties of a TransportSenderMEKDistributionSingleRecipient. */
+        interface ITransportSenderMEKDistributionSingleRecipient {
+
+            /** TransportSenderMEKDistributionSingleRecipient encryptedMek */
+            encryptedMek?: (Uint8Array|null);
+
+            /** TransportSenderMEKDistributionSingleRecipient ephemeralEncryptionPk */
+            ephemeralEncryptionPk?: (Uint8Array|null);
+
+            /** TransportSenderMEKDistributionSingleRecipient signingPk */
+            signingPk?: (Uint8Array|null);
+
+            /** TransportSenderMEKDistributionSingleRecipient signature */
+            signature?: (Uint8Array|null);
+
+            /** TransportSenderMEKDistributionSingleRecipient recipientEpochHead */
+            recipientEpochHead?: (Uint8Array|null);
+        }
+
+        /** Represents a TransportSenderMEKDistributionSingleRecipient. */
+        class TransportSenderMEKDistributionSingleRecipient implements ITransportSenderMEKDistributionSingleRecipient {
+
+            /**
+             * Constructs a new TransportSenderMEKDistributionSingleRecipient.
+             * @param [properties] Properties to set
+             */
+            constructor(properties?: proto.DecryptMekForDistributionFromTransportSenderInput.ITransportSenderMEKDistributionSingleRecipient);
+
+            /** TransportSenderMEKDistributionSingleRecipient encryptedMek. */
+            public encryptedMek?: (Uint8Array|null);
+
+            /** TransportSenderMEKDistributionSingleRecipient ephemeralEncryptionPk. */
+            public ephemeralEncryptionPk?: (Uint8Array|null);
+
+            /** TransportSenderMEKDistributionSingleRecipient signingPk. */
+            public signingPk?: (Uint8Array|null);
+
+            /** TransportSenderMEKDistributionSingleRecipient signature. */
+            public signature?: (Uint8Array|null);
+
+            /** TransportSenderMEKDistributionSingleRecipient recipientEpochHead. */
+            public recipientEpochHead?: (Uint8Array|null);
+
+            /**
+             * Creates a new TransportSenderMEKDistributionSingleRecipient instance using the specified properties.
+             * @param [properties] Properties to set
+             * @returns TransportSenderMEKDistributionSingleRecipient instance
+             */
+            public static create(properties?: proto.DecryptMekForDistributionFromTransportSenderInput.ITransportSenderMEKDistributionSingleRecipient): proto.DecryptMekForDistributionFromTransportSenderInput.TransportSenderMEKDistributionSingleRecipient;
+
+            /**
+             * Encodes the specified TransportSenderMEKDistributionSingleRecipient message. Does not implicitly {@link proto.DecryptMekForDistributionFromTransportSenderInput.TransportSenderMEKDistributionSingleRecipient.verify|verify} messages.
+             * @param message TransportSenderMEKDistributionSingleRecipient message or plain object to encode
+             * @param [writer] Writer to encode to
+             * @returns Writer
+             */
+            public static encode(message: proto.DecryptMekForDistributionFromTransportSenderInput.ITransportSenderMEKDistributionSingleRecipient, writer?: $protobuf.Writer): $protobuf.Writer;
+
+            /**
+             * Encodes the specified TransportSenderMEKDistributionSingleRecipient message, length delimited. Does not implicitly {@link proto.DecryptMekForDistributionFromTransportSenderInput.TransportSenderMEKDistributionSingleRecipient.verify|verify} messages.
+             * @param message TransportSenderMEKDistributionSingleRecipient message or plain object to encode
+             * @param [writer] Writer to encode to
+             * @returns Writer
+             */
+            public static encodeDelimited(message: proto.DecryptMekForDistributionFromTransportSenderInput.ITransportSenderMEKDistributionSingleRecipient, writer?: $protobuf.Writer): $protobuf.Writer;
+
+            /**
+             * Decodes a TransportSenderMEKDistributionSingleRecipient message from the specified reader or buffer.
+             * @param reader Reader or buffer to decode from
+             * @param [length] Message length if known beforehand
+             * @returns TransportSenderMEKDistributionSingleRecipient
+             * @throws {Error} If the payload is not a reader or valid buffer
+             * @throws {$protobuf.util.ProtocolError} If required fields are missing
+             */
+            public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): proto.DecryptMekForDistributionFromTransportSenderInput.TransportSenderMEKDistributionSingleRecipient;
+
+            /**
+             * Decodes a TransportSenderMEKDistributionSingleRecipient message from the specified reader or buffer, length delimited.
+             * @param reader Reader or buffer to decode from
+             * @returns TransportSenderMEKDistributionSingleRecipient
+             * @throws {Error} If the payload is not a reader or valid buffer
+             * @throws {$protobuf.util.ProtocolError} If required fields are missing
+             */
+            public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): proto.DecryptMekForDistributionFromTransportSenderInput.TransportSenderMEKDistributionSingleRecipient;
+
+            /**
+             * Verifies a TransportSenderMEKDistributionSingleRecipient message.
+             * @param message Plain object to verify
+             * @returns `null` if valid, otherwise the reason why it is not
+             */
+            public static verify(message: { [k: string]: any }): (string|null);
+
+            /**
+             * Creates a TransportSenderMEKDistributionSingleRecipient message from a plain object. Also converts values to their respective internal types.
+             * @param object Plain object
+             * @returns TransportSenderMEKDistributionSingleRecipient
+             */
+            public static fromObject(object: { [k: string]: any }): proto.DecryptMekForDistributionFromTransportSenderInput.TransportSenderMEKDistributionSingleRecipient;
+
+            /**
+             * Creates a plain object from a TransportSenderMEKDistributionSingleRecipient message. Also converts values to other types if specified.
+             * @param message TransportSenderMEKDistributionSingleRecipient
+             * @param [options] Conversion options
+             * @returns Plain object
+             */
+            public static toObject(message: proto.DecryptMekForDistributionFromTransportSenderInput.TransportSenderMEKDistributionSingleRecipient, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+            /**
+             * Converts this TransportSenderMEKDistributionSingleRecipient to JSON.
+             * @returns JSON object
+             */
+            public toJSON(): { [k: string]: any };
+
+            /**
+             * Gets the default type url for TransportSenderMEKDistributionSingleRecipient
+             * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+             * @returns The default type url
+             */
+            public static getTypeUrl(typeUrlPrefix?: string): string;
+        }
+    }
+
+    /** Properties of a DecryptMekForDistributionFromTransportSenderResult. */
+    interface IDecryptMekForDistributionFromTransportSenderResult {
+
+        /** DecryptMekForDistributionFromTransportSenderResult success */
+        success?: (proto.IDecryptMekForDistributionFromTransportSenderSuccess|null);
+
+        /** DecryptMekForDistributionFromTransportSenderResult errorMessage */
+        errorMessage?: (string|null);
+    }
+
+    /** Represents a DecryptMekForDistributionFromTransportSenderResult. */
+    class DecryptMekForDistributionFromTransportSenderResult implements IDecryptMekForDistributionFromTransportSenderResult {
+
+        /**
+         * Constructs a new DecryptMekForDistributionFromTransportSenderResult.
+         * @param [properties] Properties to set
+         */
+        constructor(properties?: proto.IDecryptMekForDistributionFromTransportSenderResult);
+
+        /** DecryptMekForDistributionFromTransportSenderResult success. */
+        public success?: (proto.IDecryptMekForDistributionFromTransportSenderSuccess|null);
+
+        /** DecryptMekForDistributionFromTransportSenderResult errorMessage. */
+        public errorMessage?: (string|null);
+
+        /** DecryptMekForDistributionFromTransportSenderResult result. */
+        public result?: ("success"|"errorMessage");
+
+        /**
+         * Creates a new DecryptMekForDistributionFromTransportSenderResult instance using the specified properties.
+         * @param [properties] Properties to set
+         * @returns DecryptMekForDistributionFromTransportSenderResult instance
+         */
+        public static create(properties?: proto.IDecryptMekForDistributionFromTransportSenderResult): proto.DecryptMekForDistributionFromTransportSenderResult;
+
+        /**
+         * Encodes the specified DecryptMekForDistributionFromTransportSenderResult message. Does not implicitly {@link proto.DecryptMekForDistributionFromTransportSenderResult.verify|verify} messages.
+         * @param message DecryptMekForDistributionFromTransportSenderResult message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encode(message: proto.IDecryptMekForDistributionFromTransportSenderResult, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Encodes the specified DecryptMekForDistributionFromTransportSenderResult message, length delimited. Does not implicitly {@link proto.DecryptMekForDistributionFromTransportSenderResult.verify|verify} messages.
+         * @param message DecryptMekForDistributionFromTransportSenderResult message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encodeDelimited(message: proto.IDecryptMekForDistributionFromTransportSenderResult, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Decodes a DecryptMekForDistributionFromTransportSenderResult message from the specified reader or buffer.
+         * @param reader Reader or buffer to decode from
+         * @param [length] Message length if known beforehand
+         * @returns DecryptMekForDistributionFromTransportSenderResult
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): proto.DecryptMekForDistributionFromTransportSenderResult;
+
+        /**
+         * Decodes a DecryptMekForDistributionFromTransportSenderResult message from the specified reader or buffer, length delimited.
+         * @param reader Reader or buffer to decode from
+         * @returns DecryptMekForDistributionFromTransportSenderResult
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): proto.DecryptMekForDistributionFromTransportSenderResult;
+
+        /**
+         * Verifies a DecryptMekForDistributionFromTransportSenderResult message.
+         * @param message Plain object to verify
+         * @returns `null` if valid, otherwise the reason why it is not
+         */
+        public static verify(message: { [k: string]: any }): (string|null);
+
+        /**
+         * Creates a DecryptMekForDistributionFromTransportSenderResult message from a plain object. Also converts values to their respective internal types.
+         * @param object Plain object
+         * @returns DecryptMekForDistributionFromTransportSenderResult
+         */
+        public static fromObject(object: { [k: string]: any }): proto.DecryptMekForDistributionFromTransportSenderResult;
+
+        /**
+         * Creates a plain object from a DecryptMekForDistributionFromTransportSenderResult message. Also converts values to other types if specified.
+         * @param message DecryptMekForDistributionFromTransportSenderResult
+         * @param [options] Conversion options
+         * @returns Plain object
+         */
+        public static toObject(message: proto.DecryptMekForDistributionFromTransportSenderResult, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+        /**
+         * Converts this DecryptMekForDistributionFromTransportSenderResult to JSON.
+         * @returns JSON object
+         */
+        public toJSON(): { [k: string]: any };
+
+        /**
+         * Gets the default type url for DecryptMekForDistributionFromTransportSenderResult
+         * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+         * @returns The default type url
+         */
+        public static getTypeUrl(typeUrlPrefix?: string): string;
+    }
+
+    /** Properties of a DecryptMekForDistributionFromTransportSenderSuccess. */
+    interface IDecryptMekForDistributionFromTransportSenderSuccess {
+
+        /** DecryptMekForDistributionFromTransportSenderSuccess mek */
+        mek?: (Uint8Array|null);
+    }
+
+    /** Represents a DecryptMekForDistributionFromTransportSenderSuccess. */
+    class DecryptMekForDistributionFromTransportSenderSuccess implements IDecryptMekForDistributionFromTransportSenderSuccess {
+
+        /**
+         * Constructs a new DecryptMekForDistributionFromTransportSenderSuccess.
+         * @param [properties] Properties to set
+         */
+        constructor(properties?: proto.IDecryptMekForDistributionFromTransportSenderSuccess);
+
+        /** DecryptMekForDistributionFromTransportSenderSuccess mek. */
+        public mek?: (Uint8Array|null);
+
+        /**
+         * Creates a new DecryptMekForDistributionFromTransportSenderSuccess instance using the specified properties.
+         * @param [properties] Properties to set
+         * @returns DecryptMekForDistributionFromTransportSenderSuccess instance
+         */
+        public static create(properties?: proto.IDecryptMekForDistributionFromTransportSenderSuccess): proto.DecryptMekForDistributionFromTransportSenderSuccess;
+
+        /**
+         * Encodes the specified DecryptMekForDistributionFromTransportSenderSuccess message. Does not implicitly {@link proto.DecryptMekForDistributionFromTransportSenderSuccess.verify|verify} messages.
+         * @param message DecryptMekForDistributionFromTransportSenderSuccess message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encode(message: proto.IDecryptMekForDistributionFromTransportSenderSuccess, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Encodes the specified DecryptMekForDistributionFromTransportSenderSuccess message, length delimited. Does not implicitly {@link proto.DecryptMekForDistributionFromTransportSenderSuccess.verify|verify} messages.
+         * @param message DecryptMekForDistributionFromTransportSenderSuccess message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encodeDelimited(message: proto.IDecryptMekForDistributionFromTransportSenderSuccess, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Decodes a DecryptMekForDistributionFromTransportSenderSuccess message from the specified reader or buffer.
+         * @param reader Reader or buffer to decode from
+         * @param [length] Message length if known beforehand
+         * @returns DecryptMekForDistributionFromTransportSenderSuccess
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): proto.DecryptMekForDistributionFromTransportSenderSuccess;
+
+        /**
+         * Decodes a DecryptMekForDistributionFromTransportSenderSuccess message from the specified reader or buffer, length delimited.
+         * @param reader Reader or buffer to decode from
+         * @returns DecryptMekForDistributionFromTransportSenderSuccess
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): proto.DecryptMekForDistributionFromTransportSenderSuccess;
+
+        /**
+         * Verifies a DecryptMekForDistributionFromTransportSenderSuccess message.
+         * @param message Plain object to verify
+         * @returns `null` if valid, otherwise the reason why it is not
+         */
+        public static verify(message: { [k: string]: any }): (string|null);
+
+        /**
+         * Creates a DecryptMekForDistributionFromTransportSenderSuccess message from a plain object. Also converts values to their respective internal types.
+         * @param object Plain object
+         * @returns DecryptMekForDistributionFromTransportSenderSuccess
+         */
+        public static fromObject(object: { [k: string]: any }): proto.DecryptMekForDistributionFromTransportSenderSuccess;
+
+        /**
+         * Creates a plain object from a DecryptMekForDistributionFromTransportSenderSuccess message. Also converts values to other types if specified.
+         * @param message DecryptMekForDistributionFromTransportSenderSuccess
+         * @param [options] Conversion options
+         * @returns Plain object
+         */
+        public static toObject(message: proto.DecryptMekForDistributionFromTransportSenderSuccess, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+        /**
+         * Converts this DecryptMekForDistributionFromTransportSenderSuccess to JSON.
+         * @returns JSON object
+         */
+        public toJSON(): { [k: string]: any };
+
+        /**
+         * Gets the default type url for DecryptMekForDistributionFromTransportSenderSuccess
+         * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+         * @returns The default type url
+         */
+        public static getTypeUrl(typeUrlPrefix?: string): string;
+    }
+
+    /** Properties of a DecryptMekForDistributionInput. */
+    interface IDecryptMekForDistributionInput {
+
+        /** DecryptMekForDistributionInput toMailboxSk */
+        toMailboxSk?: (Uint8Array|null);
+
+        /** DecryptMekForDistributionInput fromPk */
+        fromPk?: (Uint8Array|null);
+
+        /** DecryptMekForDistributionInput mekId */
+        mekId?: (Uint8Array|null);
+
+        /** DecryptMekForDistributionInput senderEpochHead */
+        senderEpochHead?: (Uint8Array|null);
+
+        /** DecryptMekForDistributionInput rosterHash */
+        rosterHash?: (Uint8Array|null);
+
+        /** DecryptMekForDistributionInput ciphertext */
+        ciphertext?: (Uint8Array|null);
+
+        /** DecryptMekForDistributionInput toEpochHead */
+        toEpochHead?: (Uint8Array|null);
+
+        /** DecryptMekForDistributionInput mekEncryptionVersion */
+        mekEncryptionVersion?: (number|null);
+
+        /** DecryptMekForDistributionInput conf */
+        conf?: (proto.IMinosClientConfig|null);
+    }
+
+    /** Represents a DecryptMekForDistributionInput. */
+    class DecryptMekForDistributionInput implements IDecryptMekForDistributionInput {
+
+        /**
+         * Constructs a new DecryptMekForDistributionInput.
+         * @param [properties] Properties to set
+         */
+        constructor(properties?: proto.IDecryptMekForDistributionInput);
+
+        /** DecryptMekForDistributionInput toMailboxSk. */
+        public toMailboxSk?: (Uint8Array|null);
+
+        /** DecryptMekForDistributionInput fromPk. */
+        public fromPk?: (Uint8Array|null);
+
+        /** DecryptMekForDistributionInput mekId. */
+        public mekId?: (Uint8Array|null);
+
+        /** DecryptMekForDistributionInput senderEpochHead. */
+        public senderEpochHead?: (Uint8Array|null);
+
+        /** DecryptMekForDistributionInput rosterHash. */
+        public rosterHash?: (Uint8Array|null);
+
+        /** DecryptMekForDistributionInput ciphertext. */
+        public ciphertext?: (Uint8Array|null);
+
+        /** DecryptMekForDistributionInput toEpochHead. */
+        public toEpochHead?: (Uint8Array|null);
+
+        /** DecryptMekForDistributionInput mekEncryptionVersion. */
+        public mekEncryptionVersion?: (number|null);
+
+        /** DecryptMekForDistributionInput conf. */
+        public conf?: (proto.IMinosClientConfig|null);
+
+        /**
+         * Creates a new DecryptMekForDistributionInput instance using the specified properties.
+         * @param [properties] Properties to set
+         * @returns DecryptMekForDistributionInput instance
+         */
+        public static create(properties?: proto.IDecryptMekForDistributionInput): proto.DecryptMekForDistributionInput;
+
+        /**
+         * Encodes the specified DecryptMekForDistributionInput message. Does not implicitly {@link proto.DecryptMekForDistributionInput.verify|verify} messages.
+         * @param message DecryptMekForDistributionInput message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encode(message: proto.IDecryptMekForDistributionInput, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Encodes the specified DecryptMekForDistributionInput message, length delimited. Does not implicitly {@link proto.DecryptMekForDistributionInput.verify|verify} messages.
+         * @param message DecryptMekForDistributionInput message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encodeDelimited(message: proto.IDecryptMekForDistributionInput, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Decodes a DecryptMekForDistributionInput message from the specified reader or buffer.
+         * @param reader Reader or buffer to decode from
+         * @param [length] Message length if known beforehand
+         * @returns DecryptMekForDistributionInput
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): proto.DecryptMekForDistributionInput;
+
+        /**
+         * Decodes a DecryptMekForDistributionInput message from the specified reader or buffer, length delimited.
+         * @param reader Reader or buffer to decode from
+         * @returns DecryptMekForDistributionInput
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): proto.DecryptMekForDistributionInput;
+
+        /**
+         * Verifies a DecryptMekForDistributionInput message.
+         * @param message Plain object to verify
+         * @returns `null` if valid, otherwise the reason why it is not
+         */
+        public static verify(message: { [k: string]: any }): (string|null);
+
+        /**
+         * Creates a DecryptMekForDistributionInput message from a plain object. Also converts values to their respective internal types.
+         * @param object Plain object
+         * @returns DecryptMekForDistributionInput
+         */
+        public static fromObject(object: { [k: string]: any }): proto.DecryptMekForDistributionInput;
+
+        /**
+         * Creates a plain object from a DecryptMekForDistributionInput message. Also converts values to other types if specified.
+         * @param message DecryptMekForDistributionInput
+         * @param [options] Conversion options
+         * @returns Plain object
+         */
+        public static toObject(message: proto.DecryptMekForDistributionInput, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+        /**
+         * Converts this DecryptMekForDistributionInput to JSON.
+         * @returns JSON object
+         */
+        public toJSON(): { [k: string]: any };
+
+        /**
+         * Gets the default type url for DecryptMekForDistributionInput
+         * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+         * @returns The default type url
+         */
+        public static getTypeUrl(typeUrlPrefix?: string): string;
+    }
+
+    /** Properties of a DecryptMekForDistributionResult. */
+    interface IDecryptMekForDistributionResult {
+
+        /** DecryptMekForDistributionResult success */
+        success?: (proto.IDecryptMekForDistributionSuccess|null);
+
+        /** DecryptMekForDistributionResult errorMessage */
+        errorMessage?: (string|null);
+    }
+
+    /** Represents a DecryptMekForDistributionResult. */
+    class DecryptMekForDistributionResult implements IDecryptMekForDistributionResult {
+
+        /**
+         * Constructs a new DecryptMekForDistributionResult.
+         * @param [properties] Properties to set
+         */
+        constructor(properties?: proto.IDecryptMekForDistributionResult);
+
+        /** DecryptMekForDistributionResult success. */
+        public success?: (proto.IDecryptMekForDistributionSuccess|null);
+
+        /** DecryptMekForDistributionResult errorMessage. */
+        public errorMessage?: (string|null);
+
+        /** DecryptMekForDistributionResult result. */
+        public result?: ("success"|"errorMessage");
+
+        /**
+         * Creates a new DecryptMekForDistributionResult instance using the specified properties.
+         * @param [properties] Properties to set
+         * @returns DecryptMekForDistributionResult instance
+         */
+        public static create(properties?: proto.IDecryptMekForDistributionResult): proto.DecryptMekForDistributionResult;
+
+        /**
+         * Encodes the specified DecryptMekForDistributionResult message. Does not implicitly {@link proto.DecryptMekForDistributionResult.verify|verify} messages.
+         * @param message DecryptMekForDistributionResult message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encode(message: proto.IDecryptMekForDistributionResult, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Encodes the specified DecryptMekForDistributionResult message, length delimited. Does not implicitly {@link proto.DecryptMekForDistributionResult.verify|verify} messages.
+         * @param message DecryptMekForDistributionResult message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encodeDelimited(message: proto.IDecryptMekForDistributionResult, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Decodes a DecryptMekForDistributionResult message from the specified reader or buffer.
+         * @param reader Reader or buffer to decode from
+         * @param [length] Message length if known beforehand
+         * @returns DecryptMekForDistributionResult
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): proto.DecryptMekForDistributionResult;
+
+        /**
+         * Decodes a DecryptMekForDistributionResult message from the specified reader or buffer, length delimited.
+         * @param reader Reader or buffer to decode from
+         * @returns DecryptMekForDistributionResult
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): proto.DecryptMekForDistributionResult;
+
+        /**
+         * Verifies a DecryptMekForDistributionResult message.
+         * @param message Plain object to verify
+         * @returns `null` if valid, otherwise the reason why it is not
+         */
+        public static verify(message: { [k: string]: any }): (string|null);
+
+        /**
+         * Creates a DecryptMekForDistributionResult message from a plain object. Also converts values to their respective internal types.
+         * @param object Plain object
+         * @returns DecryptMekForDistributionResult
+         */
+        public static fromObject(object: { [k: string]: any }): proto.DecryptMekForDistributionResult;
+
+        /**
+         * Creates a plain object from a DecryptMekForDistributionResult message. Also converts values to other types if specified.
+         * @param message DecryptMekForDistributionResult
+         * @param [options] Conversion options
+         * @returns Plain object
+         */
+        public static toObject(message: proto.DecryptMekForDistributionResult, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+        /**
+         * Converts this DecryptMekForDistributionResult to JSON.
+         * @returns JSON object
+         */
+        public toJSON(): { [k: string]: any };
+
+        /**
+         * Gets the default type url for DecryptMekForDistributionResult
+         * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+         * @returns The default type url
+         */
+        public static getTypeUrl(typeUrlPrefix?: string): string;
+    }
+
+    /** Properties of a DecryptMekForDistributionSuccess. */
+    interface IDecryptMekForDistributionSuccess {
+
+        /** DecryptMekForDistributionSuccess mek */
+        mek?: (Uint8Array|null);
+    }
+
+    /** Represents a DecryptMekForDistributionSuccess. */
+    class DecryptMekForDistributionSuccess implements IDecryptMekForDistributionSuccess {
+
+        /**
+         * Constructs a new DecryptMekForDistributionSuccess.
+         * @param [properties] Properties to set
+         */
+        constructor(properties?: proto.IDecryptMekForDistributionSuccess);
+
+        /** DecryptMekForDistributionSuccess mek. */
+        public mek?: (Uint8Array|null);
+
+        /**
+         * Creates a new DecryptMekForDistributionSuccess instance using the specified properties.
+         * @param [properties] Properties to set
+         * @returns DecryptMekForDistributionSuccess instance
+         */
+        public static create(properties?: proto.IDecryptMekForDistributionSuccess): proto.DecryptMekForDistributionSuccess;
+
+        /**
+         * Encodes the specified DecryptMekForDistributionSuccess message. Does not implicitly {@link proto.DecryptMekForDistributionSuccess.verify|verify} messages.
+         * @param message DecryptMekForDistributionSuccess message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encode(message: proto.IDecryptMekForDistributionSuccess, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Encodes the specified DecryptMekForDistributionSuccess message, length delimited. Does not implicitly {@link proto.DecryptMekForDistributionSuccess.verify|verify} messages.
+         * @param message DecryptMekForDistributionSuccess message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encodeDelimited(message: proto.IDecryptMekForDistributionSuccess, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Decodes a DecryptMekForDistributionSuccess message from the specified reader or buffer.
+         * @param reader Reader or buffer to decode from
+         * @param [length] Message length if known beforehand
+         * @returns DecryptMekForDistributionSuccess
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): proto.DecryptMekForDistributionSuccess;
+
+        /**
+         * Decodes a DecryptMekForDistributionSuccess message from the specified reader or buffer, length delimited.
+         * @param reader Reader or buffer to decode from
+         * @returns DecryptMekForDistributionSuccess
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): proto.DecryptMekForDistributionSuccess;
+
+        /**
+         * Verifies a DecryptMekForDistributionSuccess message.
+         * @param message Plain object to verify
+         * @returns `null` if valid, otherwise the reason why it is not
+         */
+        public static verify(message: { [k: string]: any }): (string|null);
+
+        /**
+         * Creates a DecryptMekForDistributionSuccess message from a plain object. Also converts values to their respective internal types.
+         * @param object Plain object
+         * @returns DecryptMekForDistributionSuccess
+         */
+        public static fromObject(object: { [k: string]: any }): proto.DecryptMekForDistributionSuccess;
+
+        /**
+         * Creates a plain object from a DecryptMekForDistributionSuccess message. Also converts values to other types if specified.
+         * @param message DecryptMekForDistributionSuccess
+         * @param [options] Conversion options
+         * @returns Plain object
+         */
+        public static toObject(message: proto.DecryptMekForDistributionSuccess, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+        /**
+         * Converts this DecryptMekForDistributionSuccess to JSON.
+         * @returns JSON object
+         */
+        public toJSON(): { [k: string]: any };
+
+        /**
+         * Gets the default type url for DecryptMekForDistributionSuccess
+         * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+         * @returns The default type url
+         */
+        public static getTypeUrl(typeUrlPrefix?: string): string;
+    }
+
     /** Properties of a DecryptMessageInput. */
     interface IDecryptMessageInput {
 
@@ -23906,6 +24770,1430 @@ export namespace proto {
         public static getTypeUrl(typeUrlPrefix?: string): string;
     }
 
+    /** Properties of a DecryptSelfMmkDistributionInput. */
+    interface IDecryptSelfMmkDistributionInput {
+
+        /** DecryptSelfMmkDistributionInput encryptedMmk */
+        encryptedMmk?: (Uint8Array|null);
+
+        /** DecryptSelfMmkDistributionInput exportRootKey */
+        exportRootKey?: (Uint8Array|null);
+
+        /** DecryptSelfMmkDistributionInput mmkPublicData */
+        mmkPublicData?: (proto.IMessagingMailboxPublicData|null);
+    }
+
+    /** Represents a DecryptSelfMmkDistributionInput. */
+    class DecryptSelfMmkDistributionInput implements IDecryptSelfMmkDistributionInput {
+
+        /**
+         * Constructs a new DecryptSelfMmkDistributionInput.
+         * @param [properties] Properties to set
+         */
+        constructor(properties?: proto.IDecryptSelfMmkDistributionInput);
+
+        /** DecryptSelfMmkDistributionInput encryptedMmk. */
+        public encryptedMmk?: (Uint8Array|null);
+
+        /** DecryptSelfMmkDistributionInput exportRootKey. */
+        public exportRootKey?: (Uint8Array|null);
+
+        /** DecryptSelfMmkDistributionInput mmkPublicData. */
+        public mmkPublicData?: (proto.IMessagingMailboxPublicData|null);
+
+        /**
+         * Creates a new DecryptSelfMmkDistributionInput instance using the specified properties.
+         * @param [properties] Properties to set
+         * @returns DecryptSelfMmkDistributionInput instance
+         */
+        public static create(properties?: proto.IDecryptSelfMmkDistributionInput): proto.DecryptSelfMmkDistributionInput;
+
+        /**
+         * Encodes the specified DecryptSelfMmkDistributionInput message. Does not implicitly {@link proto.DecryptSelfMmkDistributionInput.verify|verify} messages.
+         * @param message DecryptSelfMmkDistributionInput message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encode(message: proto.IDecryptSelfMmkDistributionInput, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Encodes the specified DecryptSelfMmkDistributionInput message, length delimited. Does not implicitly {@link proto.DecryptSelfMmkDistributionInput.verify|verify} messages.
+         * @param message DecryptSelfMmkDistributionInput message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encodeDelimited(message: proto.IDecryptSelfMmkDistributionInput, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Decodes a DecryptSelfMmkDistributionInput message from the specified reader or buffer.
+         * @param reader Reader or buffer to decode from
+         * @param [length] Message length if known beforehand
+         * @returns DecryptSelfMmkDistributionInput
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): proto.DecryptSelfMmkDistributionInput;
+
+        /**
+         * Decodes a DecryptSelfMmkDistributionInput message from the specified reader or buffer, length delimited.
+         * @param reader Reader or buffer to decode from
+         * @returns DecryptSelfMmkDistributionInput
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): proto.DecryptSelfMmkDistributionInput;
+
+        /**
+         * Verifies a DecryptSelfMmkDistributionInput message.
+         * @param message Plain object to verify
+         * @returns `null` if valid, otherwise the reason why it is not
+         */
+        public static verify(message: { [k: string]: any }): (string|null);
+
+        /**
+         * Creates a DecryptSelfMmkDistributionInput message from a plain object. Also converts values to their respective internal types.
+         * @param object Plain object
+         * @returns DecryptSelfMmkDistributionInput
+         */
+        public static fromObject(object: { [k: string]: any }): proto.DecryptSelfMmkDistributionInput;
+
+        /**
+         * Creates a plain object from a DecryptSelfMmkDistributionInput message. Also converts values to other types if specified.
+         * @param message DecryptSelfMmkDistributionInput
+         * @param [options] Conversion options
+         * @returns Plain object
+         */
+        public static toObject(message: proto.DecryptSelfMmkDistributionInput, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+        /**
+         * Converts this DecryptSelfMmkDistributionInput to JSON.
+         * @returns JSON object
+         */
+        public toJSON(): { [k: string]: any };
+
+        /**
+         * Gets the default type url for DecryptSelfMmkDistributionInput
+         * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+         * @returns The default type url
+         */
+        public static getTypeUrl(typeUrlPrefix?: string): string;
+    }
+
+    /** Properties of a DecryptSelfMmkDistributionResult. */
+    interface IDecryptSelfMmkDistributionResult {
+
+        /** DecryptSelfMmkDistributionResult success */
+        success?: (proto.IDecryptSelfMmkDistributionSuccess|null);
+
+        /** DecryptSelfMmkDistributionResult errorMessage */
+        errorMessage?: (string|null);
+    }
+
+    /** Represents a DecryptSelfMmkDistributionResult. */
+    class DecryptSelfMmkDistributionResult implements IDecryptSelfMmkDistributionResult {
+
+        /**
+         * Constructs a new DecryptSelfMmkDistributionResult.
+         * @param [properties] Properties to set
+         */
+        constructor(properties?: proto.IDecryptSelfMmkDistributionResult);
+
+        /** DecryptSelfMmkDistributionResult success. */
+        public success?: (proto.IDecryptSelfMmkDistributionSuccess|null);
+
+        /** DecryptSelfMmkDistributionResult errorMessage. */
+        public errorMessage?: (string|null);
+
+        /** DecryptSelfMmkDistributionResult result. */
+        public result?: ("success"|"errorMessage");
+
+        /**
+         * Creates a new DecryptSelfMmkDistributionResult instance using the specified properties.
+         * @param [properties] Properties to set
+         * @returns DecryptSelfMmkDistributionResult instance
+         */
+        public static create(properties?: proto.IDecryptSelfMmkDistributionResult): proto.DecryptSelfMmkDistributionResult;
+
+        /**
+         * Encodes the specified DecryptSelfMmkDistributionResult message. Does not implicitly {@link proto.DecryptSelfMmkDistributionResult.verify|verify} messages.
+         * @param message DecryptSelfMmkDistributionResult message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encode(message: proto.IDecryptSelfMmkDistributionResult, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Encodes the specified DecryptSelfMmkDistributionResult message, length delimited. Does not implicitly {@link proto.DecryptSelfMmkDistributionResult.verify|verify} messages.
+         * @param message DecryptSelfMmkDistributionResult message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encodeDelimited(message: proto.IDecryptSelfMmkDistributionResult, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Decodes a DecryptSelfMmkDistributionResult message from the specified reader or buffer.
+         * @param reader Reader or buffer to decode from
+         * @param [length] Message length if known beforehand
+         * @returns DecryptSelfMmkDistributionResult
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): proto.DecryptSelfMmkDistributionResult;
+
+        /**
+         * Decodes a DecryptSelfMmkDistributionResult message from the specified reader or buffer, length delimited.
+         * @param reader Reader or buffer to decode from
+         * @returns DecryptSelfMmkDistributionResult
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): proto.DecryptSelfMmkDistributionResult;
+
+        /**
+         * Verifies a DecryptSelfMmkDistributionResult message.
+         * @param message Plain object to verify
+         * @returns `null` if valid, otherwise the reason why it is not
+         */
+        public static verify(message: { [k: string]: any }): (string|null);
+
+        /**
+         * Creates a DecryptSelfMmkDistributionResult message from a plain object. Also converts values to their respective internal types.
+         * @param object Plain object
+         * @returns DecryptSelfMmkDistributionResult
+         */
+        public static fromObject(object: { [k: string]: any }): proto.DecryptSelfMmkDistributionResult;
+
+        /**
+         * Creates a plain object from a DecryptSelfMmkDistributionResult message. Also converts values to other types if specified.
+         * @param message DecryptSelfMmkDistributionResult
+         * @param [options] Conversion options
+         * @returns Plain object
+         */
+        public static toObject(message: proto.DecryptSelfMmkDistributionResult, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+        /**
+         * Converts this DecryptSelfMmkDistributionResult to JSON.
+         * @returns JSON object
+         */
+        public toJSON(): { [k: string]: any };
+
+        /**
+         * Gets the default type url for DecryptSelfMmkDistributionResult
+         * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+         * @returns The default type url
+         */
+        public static getTypeUrl(typeUrlPrefix?: string): string;
+    }
+
+    /** Properties of a DecryptSelfMmkDistributionSuccess. */
+    interface IDecryptSelfMmkDistributionSuccess {
+
+        /** DecryptSelfMmkDistributionSuccess mmkSeed */
+        mmkSeed?: (Uint8Array|null);
+    }
+
+    /** Represents a DecryptSelfMmkDistributionSuccess. */
+    class DecryptSelfMmkDistributionSuccess implements IDecryptSelfMmkDistributionSuccess {
+
+        /**
+         * Constructs a new DecryptSelfMmkDistributionSuccess.
+         * @param [properties] Properties to set
+         */
+        constructor(properties?: proto.IDecryptSelfMmkDistributionSuccess);
+
+        /** DecryptSelfMmkDistributionSuccess mmkSeed. */
+        public mmkSeed?: (Uint8Array|null);
+
+        /**
+         * Creates a new DecryptSelfMmkDistributionSuccess instance using the specified properties.
+         * @param [properties] Properties to set
+         * @returns DecryptSelfMmkDistributionSuccess instance
+         */
+        public static create(properties?: proto.IDecryptSelfMmkDistributionSuccess): proto.DecryptSelfMmkDistributionSuccess;
+
+        /**
+         * Encodes the specified DecryptSelfMmkDistributionSuccess message. Does not implicitly {@link proto.DecryptSelfMmkDistributionSuccess.verify|verify} messages.
+         * @param message DecryptSelfMmkDistributionSuccess message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encode(message: proto.IDecryptSelfMmkDistributionSuccess, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Encodes the specified DecryptSelfMmkDistributionSuccess message, length delimited. Does not implicitly {@link proto.DecryptSelfMmkDistributionSuccess.verify|verify} messages.
+         * @param message DecryptSelfMmkDistributionSuccess message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encodeDelimited(message: proto.IDecryptSelfMmkDistributionSuccess, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Decodes a DecryptSelfMmkDistributionSuccess message from the specified reader or buffer.
+         * @param reader Reader or buffer to decode from
+         * @param [length] Message length if known beforehand
+         * @returns DecryptSelfMmkDistributionSuccess
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): proto.DecryptSelfMmkDistributionSuccess;
+
+        /**
+         * Decodes a DecryptSelfMmkDistributionSuccess message from the specified reader or buffer, length delimited.
+         * @param reader Reader or buffer to decode from
+         * @returns DecryptSelfMmkDistributionSuccess
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): proto.DecryptSelfMmkDistributionSuccess;
+
+        /**
+         * Verifies a DecryptSelfMmkDistributionSuccess message.
+         * @param message Plain object to verify
+         * @returns `null` if valid, otherwise the reason why it is not
+         */
+        public static verify(message: { [k: string]: any }): (string|null);
+
+        /**
+         * Creates a DecryptSelfMmkDistributionSuccess message from a plain object. Also converts values to their respective internal types.
+         * @param object Plain object
+         * @returns DecryptSelfMmkDistributionSuccess
+         */
+        public static fromObject(object: { [k: string]: any }): proto.DecryptSelfMmkDistributionSuccess;
+
+        /**
+         * Creates a plain object from a DecryptSelfMmkDistributionSuccess message. Also converts values to other types if specified.
+         * @param message DecryptSelfMmkDistributionSuccess
+         * @param [options] Conversion options
+         * @returns Plain object
+         */
+        public static toObject(message: proto.DecryptSelfMmkDistributionSuccess, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+        /**
+         * Converts this DecryptSelfMmkDistributionSuccess to JSON.
+         * @returns JSON object
+         */
+        public toJSON(): { [k: string]: any };
+
+        /**
+         * Gets the default type url for DecryptSelfMmkDistributionSuccess
+         * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+         * @returns The default type url
+         */
+        public static getTypeUrl(typeUrlPrefix?: string): string;
+    }
+
+    /** Properties of a DeriveAttachmentAccessTokenSecretInput. */
+    interface IDeriveAttachmentAccessTokenSecretInput {
+
+        /** DeriveAttachmentAccessTokenSecretInput mediaKey */
+        mediaKey?: (Uint8Array|null);
+    }
+
+    /** Represents a DeriveAttachmentAccessTokenSecretInput. */
+    class DeriveAttachmentAccessTokenSecretInput implements IDeriveAttachmentAccessTokenSecretInput {
+
+        /**
+         * Constructs a new DeriveAttachmentAccessTokenSecretInput.
+         * @param [properties] Properties to set
+         */
+        constructor(properties?: proto.IDeriveAttachmentAccessTokenSecretInput);
+
+        /** DeriveAttachmentAccessTokenSecretInput mediaKey. */
+        public mediaKey?: (Uint8Array|null);
+
+        /**
+         * Creates a new DeriveAttachmentAccessTokenSecretInput instance using the specified properties.
+         * @param [properties] Properties to set
+         * @returns DeriveAttachmentAccessTokenSecretInput instance
+         */
+        public static create(properties?: proto.IDeriveAttachmentAccessTokenSecretInput): proto.DeriveAttachmentAccessTokenSecretInput;
+
+        /**
+         * Encodes the specified DeriveAttachmentAccessTokenSecretInput message. Does not implicitly {@link proto.DeriveAttachmentAccessTokenSecretInput.verify|verify} messages.
+         * @param message DeriveAttachmentAccessTokenSecretInput message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encode(message: proto.IDeriveAttachmentAccessTokenSecretInput, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Encodes the specified DeriveAttachmentAccessTokenSecretInput message, length delimited. Does not implicitly {@link proto.DeriveAttachmentAccessTokenSecretInput.verify|verify} messages.
+         * @param message DeriveAttachmentAccessTokenSecretInput message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encodeDelimited(message: proto.IDeriveAttachmentAccessTokenSecretInput, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Decodes a DeriveAttachmentAccessTokenSecretInput message from the specified reader or buffer.
+         * @param reader Reader or buffer to decode from
+         * @param [length] Message length if known beforehand
+         * @returns DeriveAttachmentAccessTokenSecretInput
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): proto.DeriveAttachmentAccessTokenSecretInput;
+
+        /**
+         * Decodes a DeriveAttachmentAccessTokenSecretInput message from the specified reader or buffer, length delimited.
+         * @param reader Reader or buffer to decode from
+         * @returns DeriveAttachmentAccessTokenSecretInput
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): proto.DeriveAttachmentAccessTokenSecretInput;
+
+        /**
+         * Verifies a DeriveAttachmentAccessTokenSecretInput message.
+         * @param message Plain object to verify
+         * @returns `null` if valid, otherwise the reason why it is not
+         */
+        public static verify(message: { [k: string]: any }): (string|null);
+
+        /**
+         * Creates a DeriveAttachmentAccessTokenSecretInput message from a plain object. Also converts values to their respective internal types.
+         * @param object Plain object
+         * @returns DeriveAttachmentAccessTokenSecretInput
+         */
+        public static fromObject(object: { [k: string]: any }): proto.DeriveAttachmentAccessTokenSecretInput;
+
+        /**
+         * Creates a plain object from a DeriveAttachmentAccessTokenSecretInput message. Also converts values to other types if specified.
+         * @param message DeriveAttachmentAccessTokenSecretInput
+         * @param [options] Conversion options
+         * @returns Plain object
+         */
+        public static toObject(message: proto.DeriveAttachmentAccessTokenSecretInput, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+        /**
+         * Converts this DeriveAttachmentAccessTokenSecretInput to JSON.
+         * @returns JSON object
+         */
+        public toJSON(): { [k: string]: any };
+
+        /**
+         * Gets the default type url for DeriveAttachmentAccessTokenSecretInput
+         * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+         * @returns The default type url
+         */
+        public static getTypeUrl(typeUrlPrefix?: string): string;
+    }
+
+    /** Properties of a DeriveAttachmentAccessTokenSecretResult. */
+    interface IDeriveAttachmentAccessTokenSecretResult {
+
+        /** DeriveAttachmentAccessTokenSecretResult attachmentAccessTokenSecret */
+        attachmentAccessTokenSecret?: (Uint8Array|null);
+    }
+
+    /** Represents a DeriveAttachmentAccessTokenSecretResult. */
+    class DeriveAttachmentAccessTokenSecretResult implements IDeriveAttachmentAccessTokenSecretResult {
+
+        /**
+         * Constructs a new DeriveAttachmentAccessTokenSecretResult.
+         * @param [properties] Properties to set
+         */
+        constructor(properties?: proto.IDeriveAttachmentAccessTokenSecretResult);
+
+        /** DeriveAttachmentAccessTokenSecretResult attachmentAccessTokenSecret. */
+        public attachmentAccessTokenSecret?: (Uint8Array|null);
+
+        /**
+         * Creates a new DeriveAttachmentAccessTokenSecretResult instance using the specified properties.
+         * @param [properties] Properties to set
+         * @returns DeriveAttachmentAccessTokenSecretResult instance
+         */
+        public static create(properties?: proto.IDeriveAttachmentAccessTokenSecretResult): proto.DeriveAttachmentAccessTokenSecretResult;
+
+        /**
+         * Encodes the specified DeriveAttachmentAccessTokenSecretResult message. Does not implicitly {@link proto.DeriveAttachmentAccessTokenSecretResult.verify|verify} messages.
+         * @param message DeriveAttachmentAccessTokenSecretResult message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encode(message: proto.IDeriveAttachmentAccessTokenSecretResult, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Encodes the specified DeriveAttachmentAccessTokenSecretResult message, length delimited. Does not implicitly {@link proto.DeriveAttachmentAccessTokenSecretResult.verify|verify} messages.
+         * @param message DeriveAttachmentAccessTokenSecretResult message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encodeDelimited(message: proto.IDeriveAttachmentAccessTokenSecretResult, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Decodes a DeriveAttachmentAccessTokenSecretResult message from the specified reader or buffer.
+         * @param reader Reader or buffer to decode from
+         * @param [length] Message length if known beforehand
+         * @returns DeriveAttachmentAccessTokenSecretResult
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): proto.DeriveAttachmentAccessTokenSecretResult;
+
+        /**
+         * Decodes a DeriveAttachmentAccessTokenSecretResult message from the specified reader or buffer, length delimited.
+         * @param reader Reader or buffer to decode from
+         * @returns DeriveAttachmentAccessTokenSecretResult
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): proto.DeriveAttachmentAccessTokenSecretResult;
+
+        /**
+         * Verifies a DeriveAttachmentAccessTokenSecretResult message.
+         * @param message Plain object to verify
+         * @returns `null` if valid, otherwise the reason why it is not
+         */
+        public static verify(message: { [k: string]: any }): (string|null);
+
+        /**
+         * Creates a DeriveAttachmentAccessTokenSecretResult message from a plain object. Also converts values to their respective internal types.
+         * @param object Plain object
+         * @returns DeriveAttachmentAccessTokenSecretResult
+         */
+        public static fromObject(object: { [k: string]: any }): proto.DeriveAttachmentAccessTokenSecretResult;
+
+        /**
+         * Creates a plain object from a DeriveAttachmentAccessTokenSecretResult message. Also converts values to other types if specified.
+         * @param message DeriveAttachmentAccessTokenSecretResult
+         * @param [options] Conversion options
+         * @returns Plain object
+         */
+        public static toObject(message: proto.DeriveAttachmentAccessTokenSecretResult, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+        /**
+         * Converts this DeriveAttachmentAccessTokenSecretResult to JSON.
+         * @returns JSON object
+         */
+        public toJSON(): { [k: string]: any };
+
+        /**
+         * Gets the default type url for DeriveAttachmentAccessTokenSecretResult
+         * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+         * @returns The default type url
+         */
+        public static getTypeUrl(typeUrlPrefix?: string): string;
+    }
+
+    /** Properties of a DeriveAttachmentPrimaryKeySecretInput. */
+    interface IDeriveAttachmentPrimaryKeySecretInput {
+
+        /** DeriveAttachmentPrimaryKeySecretInput mediaKey */
+        mediaKey?: (Uint8Array|null);
+    }
+
+    /** Represents a DeriveAttachmentPrimaryKeySecretInput. */
+    class DeriveAttachmentPrimaryKeySecretInput implements IDeriveAttachmentPrimaryKeySecretInput {
+
+        /**
+         * Constructs a new DeriveAttachmentPrimaryKeySecretInput.
+         * @param [properties] Properties to set
+         */
+        constructor(properties?: proto.IDeriveAttachmentPrimaryKeySecretInput);
+
+        /** DeriveAttachmentPrimaryKeySecretInput mediaKey. */
+        public mediaKey?: (Uint8Array|null);
+
+        /**
+         * Creates a new DeriveAttachmentPrimaryKeySecretInput instance using the specified properties.
+         * @param [properties] Properties to set
+         * @returns DeriveAttachmentPrimaryKeySecretInput instance
+         */
+        public static create(properties?: proto.IDeriveAttachmentPrimaryKeySecretInput): proto.DeriveAttachmentPrimaryKeySecretInput;
+
+        /**
+         * Encodes the specified DeriveAttachmentPrimaryKeySecretInput message. Does not implicitly {@link proto.DeriveAttachmentPrimaryKeySecretInput.verify|verify} messages.
+         * @param message DeriveAttachmentPrimaryKeySecretInput message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encode(message: proto.IDeriveAttachmentPrimaryKeySecretInput, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Encodes the specified DeriveAttachmentPrimaryKeySecretInput message, length delimited. Does not implicitly {@link proto.DeriveAttachmentPrimaryKeySecretInput.verify|verify} messages.
+         * @param message DeriveAttachmentPrimaryKeySecretInput message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encodeDelimited(message: proto.IDeriveAttachmentPrimaryKeySecretInput, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Decodes a DeriveAttachmentPrimaryKeySecretInput message from the specified reader or buffer.
+         * @param reader Reader or buffer to decode from
+         * @param [length] Message length if known beforehand
+         * @returns DeriveAttachmentPrimaryKeySecretInput
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): proto.DeriveAttachmentPrimaryKeySecretInput;
+
+        /**
+         * Decodes a DeriveAttachmentPrimaryKeySecretInput message from the specified reader or buffer, length delimited.
+         * @param reader Reader or buffer to decode from
+         * @returns DeriveAttachmentPrimaryKeySecretInput
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): proto.DeriveAttachmentPrimaryKeySecretInput;
+
+        /**
+         * Verifies a DeriveAttachmentPrimaryKeySecretInput message.
+         * @param message Plain object to verify
+         * @returns `null` if valid, otherwise the reason why it is not
+         */
+        public static verify(message: { [k: string]: any }): (string|null);
+
+        /**
+         * Creates a DeriveAttachmentPrimaryKeySecretInput message from a plain object. Also converts values to their respective internal types.
+         * @param object Plain object
+         * @returns DeriveAttachmentPrimaryKeySecretInput
+         */
+        public static fromObject(object: { [k: string]: any }): proto.DeriveAttachmentPrimaryKeySecretInput;
+
+        /**
+         * Creates a plain object from a DeriveAttachmentPrimaryKeySecretInput message. Also converts values to other types if specified.
+         * @param message DeriveAttachmentPrimaryKeySecretInput
+         * @param [options] Conversion options
+         * @returns Plain object
+         */
+        public static toObject(message: proto.DeriveAttachmentPrimaryKeySecretInput, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+        /**
+         * Converts this DeriveAttachmentPrimaryKeySecretInput to JSON.
+         * @returns JSON object
+         */
+        public toJSON(): { [k: string]: any };
+
+        /**
+         * Gets the default type url for DeriveAttachmentPrimaryKeySecretInput
+         * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+         * @returns The default type url
+         */
+        public static getTypeUrl(typeUrlPrefix?: string): string;
+    }
+
+    /** Properties of a DeriveAttachmentPrimaryKeySecretResult. */
+    interface IDeriveAttachmentPrimaryKeySecretResult {
+
+        /** DeriveAttachmentPrimaryKeySecretResult attachmentPrimaryKeySecret */
+        attachmentPrimaryKeySecret?: (Uint8Array|null);
+    }
+
+    /** Represents a DeriveAttachmentPrimaryKeySecretResult. */
+    class DeriveAttachmentPrimaryKeySecretResult implements IDeriveAttachmentPrimaryKeySecretResult {
+
+        /**
+         * Constructs a new DeriveAttachmentPrimaryKeySecretResult.
+         * @param [properties] Properties to set
+         */
+        constructor(properties?: proto.IDeriveAttachmentPrimaryKeySecretResult);
+
+        /** DeriveAttachmentPrimaryKeySecretResult attachmentPrimaryKeySecret. */
+        public attachmentPrimaryKeySecret?: (Uint8Array|null);
+
+        /**
+         * Creates a new DeriveAttachmentPrimaryKeySecretResult instance using the specified properties.
+         * @param [properties] Properties to set
+         * @returns DeriveAttachmentPrimaryKeySecretResult instance
+         */
+        public static create(properties?: proto.IDeriveAttachmentPrimaryKeySecretResult): proto.DeriveAttachmentPrimaryKeySecretResult;
+
+        /**
+         * Encodes the specified DeriveAttachmentPrimaryKeySecretResult message. Does not implicitly {@link proto.DeriveAttachmentPrimaryKeySecretResult.verify|verify} messages.
+         * @param message DeriveAttachmentPrimaryKeySecretResult message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encode(message: proto.IDeriveAttachmentPrimaryKeySecretResult, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Encodes the specified DeriveAttachmentPrimaryKeySecretResult message, length delimited. Does not implicitly {@link proto.DeriveAttachmentPrimaryKeySecretResult.verify|verify} messages.
+         * @param message DeriveAttachmentPrimaryKeySecretResult message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encodeDelimited(message: proto.IDeriveAttachmentPrimaryKeySecretResult, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Decodes a DeriveAttachmentPrimaryKeySecretResult message from the specified reader or buffer.
+         * @param reader Reader or buffer to decode from
+         * @param [length] Message length if known beforehand
+         * @returns DeriveAttachmentPrimaryKeySecretResult
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): proto.DeriveAttachmentPrimaryKeySecretResult;
+
+        /**
+         * Decodes a DeriveAttachmentPrimaryKeySecretResult message from the specified reader or buffer, length delimited.
+         * @param reader Reader or buffer to decode from
+         * @returns DeriveAttachmentPrimaryKeySecretResult
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): proto.DeriveAttachmentPrimaryKeySecretResult;
+
+        /**
+         * Verifies a DeriveAttachmentPrimaryKeySecretResult message.
+         * @param message Plain object to verify
+         * @returns `null` if valid, otherwise the reason why it is not
+         */
+        public static verify(message: { [k: string]: any }): (string|null);
+
+        /**
+         * Creates a DeriveAttachmentPrimaryKeySecretResult message from a plain object. Also converts values to their respective internal types.
+         * @param object Plain object
+         * @returns DeriveAttachmentPrimaryKeySecretResult
+         */
+        public static fromObject(object: { [k: string]: any }): proto.DeriveAttachmentPrimaryKeySecretResult;
+
+        /**
+         * Creates a plain object from a DeriveAttachmentPrimaryKeySecretResult message. Also converts values to other types if specified.
+         * @param message DeriveAttachmentPrimaryKeySecretResult
+         * @param [options] Conversion options
+         * @returns Plain object
+         */
+        public static toObject(message: proto.DeriveAttachmentPrimaryKeySecretResult, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+        /**
+         * Converts this DeriveAttachmentPrimaryKeySecretResult to JSON.
+         * @returns JSON object
+         */
+        public toJSON(): { [k: string]: any };
+
+        /**
+         * Gets the default type url for DeriveAttachmentPrimaryKeySecretResult
+         * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+         * @returns The default type url
+         */
+        public static getTypeUrl(typeUrlPrefix?: string): string;
+    }
+
+    /** Properties of a DeriveMailboxAuthKeypairInput. */
+    interface IDeriveMailboxAuthKeypairInput {
+
+        /** DeriveMailboxAuthKeypairInput exportRootKey */
+        exportRootKey?: (Uint8Array|null);
+
+        /** DeriveMailboxAuthKeypairInput epochNumber */
+        epochNumber?: (number|Long|null);
+    }
+
+    /** Represents a DeriveMailboxAuthKeypairInput. */
+    class DeriveMailboxAuthKeypairInput implements IDeriveMailboxAuthKeypairInput {
+
+        /**
+         * Constructs a new DeriveMailboxAuthKeypairInput.
+         * @param [properties] Properties to set
+         */
+        constructor(properties?: proto.IDeriveMailboxAuthKeypairInput);
+
+        /** DeriveMailboxAuthKeypairInput exportRootKey. */
+        public exportRootKey?: (Uint8Array|null);
+
+        /** DeriveMailboxAuthKeypairInput epochNumber. */
+        public epochNumber?: (number|Long|null);
+
+        /**
+         * Creates a new DeriveMailboxAuthKeypairInput instance using the specified properties.
+         * @param [properties] Properties to set
+         * @returns DeriveMailboxAuthKeypairInput instance
+         */
+        public static create(properties?: proto.IDeriveMailboxAuthKeypairInput): proto.DeriveMailboxAuthKeypairInput;
+
+        /**
+         * Encodes the specified DeriveMailboxAuthKeypairInput message. Does not implicitly {@link proto.DeriveMailboxAuthKeypairInput.verify|verify} messages.
+         * @param message DeriveMailboxAuthKeypairInput message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encode(message: proto.IDeriveMailboxAuthKeypairInput, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Encodes the specified DeriveMailboxAuthKeypairInput message, length delimited. Does not implicitly {@link proto.DeriveMailboxAuthKeypairInput.verify|verify} messages.
+         * @param message DeriveMailboxAuthKeypairInput message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encodeDelimited(message: proto.IDeriveMailboxAuthKeypairInput, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Decodes a DeriveMailboxAuthKeypairInput message from the specified reader or buffer.
+         * @param reader Reader or buffer to decode from
+         * @param [length] Message length if known beforehand
+         * @returns DeriveMailboxAuthKeypairInput
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): proto.DeriveMailboxAuthKeypairInput;
+
+        /**
+         * Decodes a DeriveMailboxAuthKeypairInput message from the specified reader or buffer, length delimited.
+         * @param reader Reader or buffer to decode from
+         * @returns DeriveMailboxAuthKeypairInput
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): proto.DeriveMailboxAuthKeypairInput;
+
+        /**
+         * Verifies a DeriveMailboxAuthKeypairInput message.
+         * @param message Plain object to verify
+         * @returns `null` if valid, otherwise the reason why it is not
+         */
+        public static verify(message: { [k: string]: any }): (string|null);
+
+        /**
+         * Creates a DeriveMailboxAuthKeypairInput message from a plain object. Also converts values to their respective internal types.
+         * @param object Plain object
+         * @returns DeriveMailboxAuthKeypairInput
+         */
+        public static fromObject(object: { [k: string]: any }): proto.DeriveMailboxAuthKeypairInput;
+
+        /**
+         * Creates a plain object from a DeriveMailboxAuthKeypairInput message. Also converts values to other types if specified.
+         * @param message DeriveMailboxAuthKeypairInput
+         * @param [options] Conversion options
+         * @returns Plain object
+         */
+        public static toObject(message: proto.DeriveMailboxAuthKeypairInput, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+        /**
+         * Converts this DeriveMailboxAuthKeypairInput to JSON.
+         * @returns JSON object
+         */
+        public toJSON(): { [k: string]: any };
+
+        /**
+         * Gets the default type url for DeriveMailboxAuthKeypairInput
+         * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+         * @returns The default type url
+         */
+        public static getTypeUrl(typeUrlPrefix?: string): string;
+    }
+
+    /** Properties of a DeriveMailboxAuthKeypairResult. */
+    interface IDeriveMailboxAuthKeypairResult {
+
+        /** DeriveMailboxAuthKeypairResult mailboxAuthPublicKey */
+        mailboxAuthPublicKey?: (Uint8Array|null);
+
+        /** DeriveMailboxAuthKeypairResult mailboxAuthPrivateKey */
+        mailboxAuthPrivateKey?: (Uint8Array|null);
+    }
+
+    /** Represents a DeriveMailboxAuthKeypairResult. */
+    class DeriveMailboxAuthKeypairResult implements IDeriveMailboxAuthKeypairResult {
+
+        /**
+         * Constructs a new DeriveMailboxAuthKeypairResult.
+         * @param [properties] Properties to set
+         */
+        constructor(properties?: proto.IDeriveMailboxAuthKeypairResult);
+
+        /** DeriveMailboxAuthKeypairResult mailboxAuthPublicKey. */
+        public mailboxAuthPublicKey?: (Uint8Array|null);
+
+        /** DeriveMailboxAuthKeypairResult mailboxAuthPrivateKey. */
+        public mailboxAuthPrivateKey?: (Uint8Array|null);
+
+        /**
+         * Creates a new DeriveMailboxAuthKeypairResult instance using the specified properties.
+         * @param [properties] Properties to set
+         * @returns DeriveMailboxAuthKeypairResult instance
+         */
+        public static create(properties?: proto.IDeriveMailboxAuthKeypairResult): proto.DeriveMailboxAuthKeypairResult;
+
+        /**
+         * Encodes the specified DeriveMailboxAuthKeypairResult message. Does not implicitly {@link proto.DeriveMailboxAuthKeypairResult.verify|verify} messages.
+         * @param message DeriveMailboxAuthKeypairResult message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encode(message: proto.IDeriveMailboxAuthKeypairResult, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Encodes the specified DeriveMailboxAuthKeypairResult message, length delimited. Does not implicitly {@link proto.DeriveMailboxAuthKeypairResult.verify|verify} messages.
+         * @param message DeriveMailboxAuthKeypairResult message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encodeDelimited(message: proto.IDeriveMailboxAuthKeypairResult, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Decodes a DeriveMailboxAuthKeypairResult message from the specified reader or buffer.
+         * @param reader Reader or buffer to decode from
+         * @param [length] Message length if known beforehand
+         * @returns DeriveMailboxAuthKeypairResult
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): proto.DeriveMailboxAuthKeypairResult;
+
+        /**
+         * Decodes a DeriveMailboxAuthKeypairResult message from the specified reader or buffer, length delimited.
+         * @param reader Reader or buffer to decode from
+         * @returns DeriveMailboxAuthKeypairResult
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): proto.DeriveMailboxAuthKeypairResult;
+
+        /**
+         * Verifies a DeriveMailboxAuthKeypairResult message.
+         * @param message Plain object to verify
+         * @returns `null` if valid, otherwise the reason why it is not
+         */
+        public static verify(message: { [k: string]: any }): (string|null);
+
+        /**
+         * Creates a DeriveMailboxAuthKeypairResult message from a plain object. Also converts values to their respective internal types.
+         * @param object Plain object
+         * @returns DeriveMailboxAuthKeypairResult
+         */
+        public static fromObject(object: { [k: string]: any }): proto.DeriveMailboxAuthKeypairResult;
+
+        /**
+         * Creates a plain object from a DeriveMailboxAuthKeypairResult message. Also converts values to other types if specified.
+         * @param message DeriveMailboxAuthKeypairResult
+         * @param [options] Conversion options
+         * @returns Plain object
+         */
+        public static toObject(message: proto.DeriveMailboxAuthKeypairResult, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+        /**
+         * Converts this DeriveMailboxAuthKeypairResult to JSON.
+         * @returns JSON object
+         */
+        public toJSON(): { [k: string]: any };
+
+        /**
+         * Gets the default type url for DeriveMailboxAuthKeypairResult
+         * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+         * @returns The default type url
+         */
+        public static getTypeUrl(typeUrlPrefix?: string): string;
+    }
+
+    /** Properties of a DeriveMailboxEncryptionKeypairInput. */
+    interface IDeriveMailboxEncryptionKeypairInput {
+
+        /** DeriveMailboxEncryptionKeypairInput exportRootKey */
+        exportRootKey?: (Uint8Array|null);
+
+        /** DeriveMailboxEncryptionKeypairInput epochNumber */
+        epochNumber?: (number|Long|null);
+    }
+
+    /** Represents a DeriveMailboxEncryptionKeypairInput. */
+    class DeriveMailboxEncryptionKeypairInput implements IDeriveMailboxEncryptionKeypairInput {
+
+        /**
+         * Constructs a new DeriveMailboxEncryptionKeypairInput.
+         * @param [properties] Properties to set
+         */
+        constructor(properties?: proto.IDeriveMailboxEncryptionKeypairInput);
+
+        /** DeriveMailboxEncryptionKeypairInput exportRootKey. */
+        public exportRootKey?: (Uint8Array|null);
+
+        /** DeriveMailboxEncryptionKeypairInput epochNumber. */
+        public epochNumber?: (number|Long|null);
+
+        /**
+         * Creates a new DeriveMailboxEncryptionKeypairInput instance using the specified properties.
+         * @param [properties] Properties to set
+         * @returns DeriveMailboxEncryptionKeypairInput instance
+         */
+        public static create(properties?: proto.IDeriveMailboxEncryptionKeypairInput): proto.DeriveMailboxEncryptionKeypairInput;
+
+        /**
+         * Encodes the specified DeriveMailboxEncryptionKeypairInput message. Does not implicitly {@link proto.DeriveMailboxEncryptionKeypairInput.verify|verify} messages.
+         * @param message DeriveMailboxEncryptionKeypairInput message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encode(message: proto.IDeriveMailboxEncryptionKeypairInput, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Encodes the specified DeriveMailboxEncryptionKeypairInput message, length delimited. Does not implicitly {@link proto.DeriveMailboxEncryptionKeypairInput.verify|verify} messages.
+         * @param message DeriveMailboxEncryptionKeypairInput message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encodeDelimited(message: proto.IDeriveMailboxEncryptionKeypairInput, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Decodes a DeriveMailboxEncryptionKeypairInput message from the specified reader or buffer.
+         * @param reader Reader or buffer to decode from
+         * @param [length] Message length if known beforehand
+         * @returns DeriveMailboxEncryptionKeypairInput
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): proto.DeriveMailboxEncryptionKeypairInput;
+
+        /**
+         * Decodes a DeriveMailboxEncryptionKeypairInput message from the specified reader or buffer, length delimited.
+         * @param reader Reader or buffer to decode from
+         * @returns DeriveMailboxEncryptionKeypairInput
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): proto.DeriveMailboxEncryptionKeypairInput;
+
+        /**
+         * Verifies a DeriveMailboxEncryptionKeypairInput message.
+         * @param message Plain object to verify
+         * @returns `null` if valid, otherwise the reason why it is not
+         */
+        public static verify(message: { [k: string]: any }): (string|null);
+
+        /**
+         * Creates a DeriveMailboxEncryptionKeypairInput message from a plain object. Also converts values to their respective internal types.
+         * @param object Plain object
+         * @returns DeriveMailboxEncryptionKeypairInput
+         */
+        public static fromObject(object: { [k: string]: any }): proto.DeriveMailboxEncryptionKeypairInput;
+
+        /**
+         * Creates a plain object from a DeriveMailboxEncryptionKeypairInput message. Also converts values to other types if specified.
+         * @param message DeriveMailboxEncryptionKeypairInput
+         * @param [options] Conversion options
+         * @returns Plain object
+         */
+        public static toObject(message: proto.DeriveMailboxEncryptionKeypairInput, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+        /**
+         * Converts this DeriveMailboxEncryptionKeypairInput to JSON.
+         * @returns JSON object
+         */
+        public toJSON(): { [k: string]: any };
+
+        /**
+         * Gets the default type url for DeriveMailboxEncryptionKeypairInput
+         * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+         * @returns The default type url
+         */
+        public static getTypeUrl(typeUrlPrefix?: string): string;
+    }
+
+    /** Properties of a DeriveMailboxEncryptionKeypairResult. */
+    interface IDeriveMailboxEncryptionKeypairResult {
+
+        /** DeriveMailboxEncryptionKeypairResult mailboxEncryptionPublicKey */
+        mailboxEncryptionPublicKey?: (Uint8Array|null);
+
+        /** DeriveMailboxEncryptionKeypairResult mailboxEncryptionPrivateKey */
+        mailboxEncryptionPrivateKey?: (Uint8Array|null);
+    }
+
+    /** Represents a DeriveMailboxEncryptionKeypairResult. */
+    class DeriveMailboxEncryptionKeypairResult implements IDeriveMailboxEncryptionKeypairResult {
+
+        /**
+         * Constructs a new DeriveMailboxEncryptionKeypairResult.
+         * @param [properties] Properties to set
+         */
+        constructor(properties?: proto.IDeriveMailboxEncryptionKeypairResult);
+
+        /** DeriveMailboxEncryptionKeypairResult mailboxEncryptionPublicKey. */
+        public mailboxEncryptionPublicKey?: (Uint8Array|null);
+
+        /** DeriveMailboxEncryptionKeypairResult mailboxEncryptionPrivateKey. */
+        public mailboxEncryptionPrivateKey?: (Uint8Array|null);
+
+        /**
+         * Creates a new DeriveMailboxEncryptionKeypairResult instance using the specified properties.
+         * @param [properties] Properties to set
+         * @returns DeriveMailboxEncryptionKeypairResult instance
+         */
+        public static create(properties?: proto.IDeriveMailboxEncryptionKeypairResult): proto.DeriveMailboxEncryptionKeypairResult;
+
+        /**
+         * Encodes the specified DeriveMailboxEncryptionKeypairResult message. Does not implicitly {@link proto.DeriveMailboxEncryptionKeypairResult.verify|verify} messages.
+         * @param message DeriveMailboxEncryptionKeypairResult message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encode(message: proto.IDeriveMailboxEncryptionKeypairResult, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Encodes the specified DeriveMailboxEncryptionKeypairResult message, length delimited. Does not implicitly {@link proto.DeriveMailboxEncryptionKeypairResult.verify|verify} messages.
+         * @param message DeriveMailboxEncryptionKeypairResult message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encodeDelimited(message: proto.IDeriveMailboxEncryptionKeypairResult, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Decodes a DeriveMailboxEncryptionKeypairResult message from the specified reader or buffer.
+         * @param reader Reader or buffer to decode from
+         * @param [length] Message length if known beforehand
+         * @returns DeriveMailboxEncryptionKeypairResult
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): proto.DeriveMailboxEncryptionKeypairResult;
+
+        /**
+         * Decodes a DeriveMailboxEncryptionKeypairResult message from the specified reader or buffer, length delimited.
+         * @param reader Reader or buffer to decode from
+         * @returns DeriveMailboxEncryptionKeypairResult
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): proto.DeriveMailboxEncryptionKeypairResult;
+
+        /**
+         * Verifies a DeriveMailboxEncryptionKeypairResult message.
+         * @param message Plain object to verify
+         * @returns `null` if valid, otherwise the reason why it is not
+         */
+        public static verify(message: { [k: string]: any }): (string|null);
+
+        /**
+         * Creates a DeriveMailboxEncryptionKeypairResult message from a plain object. Also converts values to their respective internal types.
+         * @param object Plain object
+         * @returns DeriveMailboxEncryptionKeypairResult
+         */
+        public static fromObject(object: { [k: string]: any }): proto.DeriveMailboxEncryptionKeypairResult;
+
+        /**
+         * Creates a plain object from a DeriveMailboxEncryptionKeypairResult message. Also converts values to other types if specified.
+         * @param message DeriveMailboxEncryptionKeypairResult
+         * @param [options] Conversion options
+         * @returns Plain object
+         */
+        public static toObject(message: proto.DeriveMailboxEncryptionKeypairResult, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+        /**
+         * Converts this DeriveMailboxEncryptionKeypairResult to JSON.
+         * @returns JSON object
+         */
+        public toJSON(): { [k: string]: any };
+
+        /**
+         * Gets the default type url for DeriveMailboxEncryptionKeypairResult
+         * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+         * @returns The default type url
+         */
+        public static getTypeUrl(typeUrlPrefix?: string): string;
+    }
+
+    /** Properties of a DeriveMailboxSigningKeypairInput. */
+    interface IDeriveMailboxSigningKeypairInput {
+
+        /** DeriveMailboxSigningKeypairInput exportRootKey */
+        exportRootKey?: (Uint8Array|null);
+
+        /** DeriveMailboxSigningKeypairInput epochNumber */
+        epochNumber?: (number|Long|null);
+    }
+
+    /** Represents a DeriveMailboxSigningKeypairInput. */
+    class DeriveMailboxSigningKeypairInput implements IDeriveMailboxSigningKeypairInput {
+
+        /**
+         * Constructs a new DeriveMailboxSigningKeypairInput.
+         * @param [properties] Properties to set
+         */
+        constructor(properties?: proto.IDeriveMailboxSigningKeypairInput);
+
+        /** DeriveMailboxSigningKeypairInput exportRootKey. */
+        public exportRootKey?: (Uint8Array|null);
+
+        /** DeriveMailboxSigningKeypairInput epochNumber. */
+        public epochNumber?: (number|Long|null);
+
+        /**
+         * Creates a new DeriveMailboxSigningKeypairInput instance using the specified properties.
+         * @param [properties] Properties to set
+         * @returns DeriveMailboxSigningKeypairInput instance
+         */
+        public static create(properties?: proto.IDeriveMailboxSigningKeypairInput): proto.DeriveMailboxSigningKeypairInput;
+
+        /**
+         * Encodes the specified DeriveMailboxSigningKeypairInput message. Does not implicitly {@link proto.DeriveMailboxSigningKeypairInput.verify|verify} messages.
+         * @param message DeriveMailboxSigningKeypairInput message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encode(message: proto.IDeriveMailboxSigningKeypairInput, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Encodes the specified DeriveMailboxSigningKeypairInput message, length delimited. Does not implicitly {@link proto.DeriveMailboxSigningKeypairInput.verify|verify} messages.
+         * @param message DeriveMailboxSigningKeypairInput message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encodeDelimited(message: proto.IDeriveMailboxSigningKeypairInput, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Decodes a DeriveMailboxSigningKeypairInput message from the specified reader or buffer.
+         * @param reader Reader or buffer to decode from
+         * @param [length] Message length if known beforehand
+         * @returns DeriveMailboxSigningKeypairInput
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): proto.DeriveMailboxSigningKeypairInput;
+
+        /**
+         * Decodes a DeriveMailboxSigningKeypairInput message from the specified reader or buffer, length delimited.
+         * @param reader Reader or buffer to decode from
+         * @returns DeriveMailboxSigningKeypairInput
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): proto.DeriveMailboxSigningKeypairInput;
+
+        /**
+         * Verifies a DeriveMailboxSigningKeypairInput message.
+         * @param message Plain object to verify
+         * @returns `null` if valid, otherwise the reason why it is not
+         */
+        public static verify(message: { [k: string]: any }): (string|null);
+
+        /**
+         * Creates a DeriveMailboxSigningKeypairInput message from a plain object. Also converts values to their respective internal types.
+         * @param object Plain object
+         * @returns DeriveMailboxSigningKeypairInput
+         */
+        public static fromObject(object: { [k: string]: any }): proto.DeriveMailboxSigningKeypairInput;
+
+        /**
+         * Creates a plain object from a DeriveMailboxSigningKeypairInput message. Also converts values to other types if specified.
+         * @param message DeriveMailboxSigningKeypairInput
+         * @param [options] Conversion options
+         * @returns Plain object
+         */
+        public static toObject(message: proto.DeriveMailboxSigningKeypairInput, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+        /**
+         * Converts this DeriveMailboxSigningKeypairInput to JSON.
+         * @returns JSON object
+         */
+        public toJSON(): { [k: string]: any };
+
+        /**
+         * Gets the default type url for DeriveMailboxSigningKeypairInput
+         * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+         * @returns The default type url
+         */
+        public static getTypeUrl(typeUrlPrefix?: string): string;
+    }
+
+    /** Properties of a DeriveMailboxSigningKeypairResult. */
+    interface IDeriveMailboxSigningKeypairResult {
+
+        /** DeriveMailboxSigningKeypairResult success */
+        success?: (proto.IDeriveMailboxSigningKeypairSuccess|null);
+
+        /** DeriveMailboxSigningKeypairResult errorMessage */
+        errorMessage?: (string|null);
+    }
+
+    /** Represents a DeriveMailboxSigningKeypairResult. */
+    class DeriveMailboxSigningKeypairResult implements IDeriveMailboxSigningKeypairResult {
+
+        /**
+         * Constructs a new DeriveMailboxSigningKeypairResult.
+         * @param [properties] Properties to set
+         */
+        constructor(properties?: proto.IDeriveMailboxSigningKeypairResult);
+
+        /** DeriveMailboxSigningKeypairResult success. */
+        public success?: (proto.IDeriveMailboxSigningKeypairSuccess|null);
+
+        /** DeriveMailboxSigningKeypairResult errorMessage. */
+        public errorMessage?: (string|null);
+
+        /** DeriveMailboxSigningKeypairResult result. */
+        public result?: ("success"|"errorMessage");
+
+        /**
+         * Creates a new DeriveMailboxSigningKeypairResult instance using the specified properties.
+         * @param [properties] Properties to set
+         * @returns DeriveMailboxSigningKeypairResult instance
+         */
+        public static create(properties?: proto.IDeriveMailboxSigningKeypairResult): proto.DeriveMailboxSigningKeypairResult;
+
+        /**
+         * Encodes the specified DeriveMailboxSigningKeypairResult message. Does not implicitly {@link proto.DeriveMailboxSigningKeypairResult.verify|verify} messages.
+         * @param message DeriveMailboxSigningKeypairResult message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encode(message: proto.IDeriveMailboxSigningKeypairResult, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Encodes the specified DeriveMailboxSigningKeypairResult message, length delimited. Does not implicitly {@link proto.DeriveMailboxSigningKeypairResult.verify|verify} messages.
+         * @param message DeriveMailboxSigningKeypairResult message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encodeDelimited(message: proto.IDeriveMailboxSigningKeypairResult, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Decodes a DeriveMailboxSigningKeypairResult message from the specified reader or buffer.
+         * @param reader Reader or buffer to decode from
+         * @param [length] Message length if known beforehand
+         * @returns DeriveMailboxSigningKeypairResult
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): proto.DeriveMailboxSigningKeypairResult;
+
+        /**
+         * Decodes a DeriveMailboxSigningKeypairResult message from the specified reader or buffer, length delimited.
+         * @param reader Reader or buffer to decode from
+         * @returns DeriveMailboxSigningKeypairResult
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): proto.DeriveMailboxSigningKeypairResult;
+
+        /**
+         * Verifies a DeriveMailboxSigningKeypairResult message.
+         * @param message Plain object to verify
+         * @returns `null` if valid, otherwise the reason why it is not
+         */
+        public static verify(message: { [k: string]: any }): (string|null);
+
+        /**
+         * Creates a DeriveMailboxSigningKeypairResult message from a plain object. Also converts values to their respective internal types.
+         * @param object Plain object
+         * @returns DeriveMailboxSigningKeypairResult
+         */
+        public static fromObject(object: { [k: string]: any }): proto.DeriveMailboxSigningKeypairResult;
+
+        /**
+         * Creates a plain object from a DeriveMailboxSigningKeypairResult message. Also converts values to other types if specified.
+         * @param message DeriveMailboxSigningKeypairResult
+         * @param [options] Conversion options
+         * @returns Plain object
+         */
+        public static toObject(message: proto.DeriveMailboxSigningKeypairResult, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+        /**
+         * Converts this DeriveMailboxSigningKeypairResult to JSON.
+         * @returns JSON object
+         */
+        public toJSON(): { [k: string]: any };
+
+        /**
+         * Gets the default type url for DeriveMailboxSigningKeypairResult
+         * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+         * @returns The default type url
+         */
+        public static getTypeUrl(typeUrlPrefix?: string): string;
+    }
+
+    /** Properties of a DeriveMailboxSigningKeypairSuccess. */
+    interface IDeriveMailboxSigningKeypairSuccess {
+
+        /** DeriveMailboxSigningKeypairSuccess mailboxSigningPublicKey */
+        mailboxSigningPublicKey?: (Uint8Array|null);
+
+        /** DeriveMailboxSigningKeypairSuccess mailboxSigningPrivateKey */
+        mailboxSigningPrivateKey?: (Uint8Array|null);
+    }
+
+    /** Represents a DeriveMailboxSigningKeypairSuccess. */
+    class DeriveMailboxSigningKeypairSuccess implements IDeriveMailboxSigningKeypairSuccess {
+
+        /**
+         * Constructs a new DeriveMailboxSigningKeypairSuccess.
+         * @param [properties] Properties to set
+         */
+        constructor(properties?: proto.IDeriveMailboxSigningKeypairSuccess);
+
+        /** DeriveMailboxSigningKeypairSuccess mailboxSigningPublicKey. */
+        public mailboxSigningPublicKey?: (Uint8Array|null);
+
+        /** DeriveMailboxSigningKeypairSuccess mailboxSigningPrivateKey. */
+        public mailboxSigningPrivateKey?: (Uint8Array|null);
+
+        /**
+         * Creates a new DeriveMailboxSigningKeypairSuccess instance using the specified properties.
+         * @param [properties] Properties to set
+         * @returns DeriveMailboxSigningKeypairSuccess instance
+         */
+        public static create(properties?: proto.IDeriveMailboxSigningKeypairSuccess): proto.DeriveMailboxSigningKeypairSuccess;
+
+        /**
+         * Encodes the specified DeriveMailboxSigningKeypairSuccess message. Does not implicitly {@link proto.DeriveMailboxSigningKeypairSuccess.verify|verify} messages.
+         * @param message DeriveMailboxSigningKeypairSuccess message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encode(message: proto.IDeriveMailboxSigningKeypairSuccess, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Encodes the specified DeriveMailboxSigningKeypairSuccess message, length delimited. Does not implicitly {@link proto.DeriveMailboxSigningKeypairSuccess.verify|verify} messages.
+         * @param message DeriveMailboxSigningKeypairSuccess message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encodeDelimited(message: proto.IDeriveMailboxSigningKeypairSuccess, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Decodes a DeriveMailboxSigningKeypairSuccess message from the specified reader or buffer.
+         * @param reader Reader or buffer to decode from
+         * @param [length] Message length if known beforehand
+         * @returns DeriveMailboxSigningKeypairSuccess
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): proto.DeriveMailboxSigningKeypairSuccess;
+
+        /**
+         * Decodes a DeriveMailboxSigningKeypairSuccess message from the specified reader or buffer, length delimited.
+         * @param reader Reader or buffer to decode from
+         * @returns DeriveMailboxSigningKeypairSuccess
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): proto.DeriveMailboxSigningKeypairSuccess;
+
+        /**
+         * Verifies a DeriveMailboxSigningKeypairSuccess message.
+         * @param message Plain object to verify
+         * @returns `null` if valid, otherwise the reason why it is not
+         */
+        public static verify(message: { [k: string]: any }): (string|null);
+
+        /**
+         * Creates a DeriveMailboxSigningKeypairSuccess message from a plain object. Also converts values to their respective internal types.
+         * @param object Plain object
+         * @returns DeriveMailboxSigningKeypairSuccess
+         */
+        public static fromObject(object: { [k: string]: any }): proto.DeriveMailboxSigningKeypairSuccess;
+
+        /**
+         * Creates a plain object from a DeriveMailboxSigningKeypairSuccess message. Also converts values to other types if specified.
+         * @param message DeriveMailboxSigningKeypairSuccess
+         * @param [options] Conversion options
+         * @returns Plain object
+         */
+        public static toObject(message: proto.DeriveMailboxSigningKeypairSuccess, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+        /**
+         * Converts this DeriveMailboxSigningKeypairSuccess to JSON.
+         * @returns JSON object
+         */
+        public toJSON(): { [k: string]: any };
+
+        /**
+         * Gets the default type url for DeriveMailboxSigningKeypairSuccess
+         * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+         * @returns The default type url
+         */
+        public static getTypeUrl(typeUrlPrefix?: string): string;
+    }
+
     /** Properties of a DeriveMessageKeyInput. */
     interface IDeriveMessageKeyInput {
 
@@ -24118,6 +26406,451 @@ export namespace proto {
         public static getTypeUrl(typeUrlPrefix?: string): string;
     }
 
+    /** Properties of a DeriveMessagingMailboxKeypairsInput. */
+    interface IDeriveMessagingMailboxKeypairsInput {
+
+        /** DeriveMessagingMailboxKeypairsInput mmkSeed */
+        mmkSeed?: (Uint8Array|null);
+    }
+
+    /** Represents a DeriveMessagingMailboxKeypairsInput. */
+    class DeriveMessagingMailboxKeypairsInput implements IDeriveMessagingMailboxKeypairsInput {
+
+        /**
+         * Constructs a new DeriveMessagingMailboxKeypairsInput.
+         * @param [properties] Properties to set
+         */
+        constructor(properties?: proto.IDeriveMessagingMailboxKeypairsInput);
+
+        /** DeriveMessagingMailboxKeypairsInput mmkSeed. */
+        public mmkSeed?: (Uint8Array|null);
+
+        /**
+         * Creates a new DeriveMessagingMailboxKeypairsInput instance using the specified properties.
+         * @param [properties] Properties to set
+         * @returns DeriveMessagingMailboxKeypairsInput instance
+         */
+        public static create(properties?: proto.IDeriveMessagingMailboxKeypairsInput): proto.DeriveMessagingMailboxKeypairsInput;
+
+        /**
+         * Encodes the specified DeriveMessagingMailboxKeypairsInput message. Does not implicitly {@link proto.DeriveMessagingMailboxKeypairsInput.verify|verify} messages.
+         * @param message DeriveMessagingMailboxKeypairsInput message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encode(message: proto.IDeriveMessagingMailboxKeypairsInput, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Encodes the specified DeriveMessagingMailboxKeypairsInput message, length delimited. Does not implicitly {@link proto.DeriveMessagingMailboxKeypairsInput.verify|verify} messages.
+         * @param message DeriveMessagingMailboxKeypairsInput message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encodeDelimited(message: proto.IDeriveMessagingMailboxKeypairsInput, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Decodes a DeriveMessagingMailboxKeypairsInput message from the specified reader or buffer.
+         * @param reader Reader or buffer to decode from
+         * @param [length] Message length if known beforehand
+         * @returns DeriveMessagingMailboxKeypairsInput
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): proto.DeriveMessagingMailboxKeypairsInput;
+
+        /**
+         * Decodes a DeriveMessagingMailboxKeypairsInput message from the specified reader or buffer, length delimited.
+         * @param reader Reader or buffer to decode from
+         * @returns DeriveMessagingMailboxKeypairsInput
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): proto.DeriveMessagingMailboxKeypairsInput;
+
+        /**
+         * Verifies a DeriveMessagingMailboxKeypairsInput message.
+         * @param message Plain object to verify
+         * @returns `null` if valid, otherwise the reason why it is not
+         */
+        public static verify(message: { [k: string]: any }): (string|null);
+
+        /**
+         * Creates a DeriveMessagingMailboxKeypairsInput message from a plain object. Also converts values to their respective internal types.
+         * @param object Plain object
+         * @returns DeriveMessagingMailboxKeypairsInput
+         */
+        public static fromObject(object: { [k: string]: any }): proto.DeriveMessagingMailboxKeypairsInput;
+
+        /**
+         * Creates a plain object from a DeriveMessagingMailboxKeypairsInput message. Also converts values to other types if specified.
+         * @param message DeriveMessagingMailboxKeypairsInput
+         * @param [options] Conversion options
+         * @returns Plain object
+         */
+        public static toObject(message: proto.DeriveMessagingMailboxKeypairsInput, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+        /**
+         * Converts this DeriveMessagingMailboxKeypairsInput to JSON.
+         * @returns JSON object
+         */
+        public toJSON(): { [k: string]: any };
+
+        /**
+         * Gets the default type url for DeriveMessagingMailboxKeypairsInput
+         * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+         * @returns The default type url
+         */
+        public static getTypeUrl(typeUrlPrefix?: string): string;
+    }
+
+    /** Properties of a DeriveMessagingMailboxKeypairsResult. */
+    interface IDeriveMessagingMailboxKeypairsResult {
+
+        /** DeriveMessagingMailboxKeypairsResult success */
+        success?: (proto.IDeriveMessagingMailboxKeypairsSuccess|null);
+
+        /** DeriveMessagingMailboxKeypairsResult errorMessage */
+        errorMessage?: (string|null);
+    }
+
+    /** Represents a DeriveMessagingMailboxKeypairsResult. */
+    class DeriveMessagingMailboxKeypairsResult implements IDeriveMessagingMailboxKeypairsResult {
+
+        /**
+         * Constructs a new DeriveMessagingMailboxKeypairsResult.
+         * @param [properties] Properties to set
+         */
+        constructor(properties?: proto.IDeriveMessagingMailboxKeypairsResult);
+
+        /** DeriveMessagingMailboxKeypairsResult success. */
+        public success?: (proto.IDeriveMessagingMailboxKeypairsSuccess|null);
+
+        /** DeriveMessagingMailboxKeypairsResult errorMessage. */
+        public errorMessage?: (string|null);
+
+        /** DeriveMessagingMailboxKeypairsResult result. */
+        public result?: ("success"|"errorMessage");
+
+        /**
+         * Creates a new DeriveMessagingMailboxKeypairsResult instance using the specified properties.
+         * @param [properties] Properties to set
+         * @returns DeriveMessagingMailboxKeypairsResult instance
+         */
+        public static create(properties?: proto.IDeriveMessagingMailboxKeypairsResult): proto.DeriveMessagingMailboxKeypairsResult;
+
+        /**
+         * Encodes the specified DeriveMessagingMailboxKeypairsResult message. Does not implicitly {@link proto.DeriveMessagingMailboxKeypairsResult.verify|verify} messages.
+         * @param message DeriveMessagingMailboxKeypairsResult message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encode(message: proto.IDeriveMessagingMailboxKeypairsResult, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Encodes the specified DeriveMessagingMailboxKeypairsResult message, length delimited. Does not implicitly {@link proto.DeriveMessagingMailboxKeypairsResult.verify|verify} messages.
+         * @param message DeriveMessagingMailboxKeypairsResult message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encodeDelimited(message: proto.IDeriveMessagingMailboxKeypairsResult, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Decodes a DeriveMessagingMailboxKeypairsResult message from the specified reader or buffer.
+         * @param reader Reader or buffer to decode from
+         * @param [length] Message length if known beforehand
+         * @returns DeriveMessagingMailboxKeypairsResult
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): proto.DeriveMessagingMailboxKeypairsResult;
+
+        /**
+         * Decodes a DeriveMessagingMailboxKeypairsResult message from the specified reader or buffer, length delimited.
+         * @param reader Reader or buffer to decode from
+         * @returns DeriveMessagingMailboxKeypairsResult
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): proto.DeriveMessagingMailboxKeypairsResult;
+
+        /**
+         * Verifies a DeriveMessagingMailboxKeypairsResult message.
+         * @param message Plain object to verify
+         * @returns `null` if valid, otherwise the reason why it is not
+         */
+        public static verify(message: { [k: string]: any }): (string|null);
+
+        /**
+         * Creates a DeriveMessagingMailboxKeypairsResult message from a plain object. Also converts values to their respective internal types.
+         * @param object Plain object
+         * @returns DeriveMessagingMailboxKeypairsResult
+         */
+        public static fromObject(object: { [k: string]: any }): proto.DeriveMessagingMailboxKeypairsResult;
+
+        /**
+         * Creates a plain object from a DeriveMessagingMailboxKeypairsResult message. Also converts values to other types if specified.
+         * @param message DeriveMessagingMailboxKeypairsResult
+         * @param [options] Conversion options
+         * @returns Plain object
+         */
+        public static toObject(message: proto.DeriveMessagingMailboxKeypairsResult, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+        /**
+         * Converts this DeriveMessagingMailboxKeypairsResult to JSON.
+         * @returns JSON object
+         */
+        public toJSON(): { [k: string]: any };
+
+        /**
+         * Gets the default type url for DeriveMessagingMailboxKeypairsResult
+         * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+         * @returns The default type url
+         */
+        public static getTypeUrl(typeUrlPrefix?: string): string;
+    }
+
+    /** Properties of a DeriveMessagingMailboxKeypairsSuccess. */
+    interface IDeriveMessagingMailboxKeypairsSuccess {
+
+        /** DeriveMessagingMailboxKeypairsSuccess encSk */
+        encSk?: (Uint8Array|null);
+
+        /** DeriveMessagingMailboxKeypairsSuccess encPk */
+        encPk?: (Uint8Array|null);
+
+        /** DeriveMessagingMailboxKeypairsSuccess authSk */
+        authSk?: (Uint8Array|null);
+
+        /** DeriveMessagingMailboxKeypairsSuccess authPk */
+        authPk?: (Uint8Array|null);
+    }
+
+    /** Represents a DeriveMessagingMailboxKeypairsSuccess. */
+    class DeriveMessagingMailboxKeypairsSuccess implements IDeriveMessagingMailboxKeypairsSuccess {
+
+        /**
+         * Constructs a new DeriveMessagingMailboxKeypairsSuccess.
+         * @param [properties] Properties to set
+         */
+        constructor(properties?: proto.IDeriveMessagingMailboxKeypairsSuccess);
+
+        /** DeriveMessagingMailboxKeypairsSuccess encSk. */
+        public encSk?: (Uint8Array|null);
+
+        /** DeriveMessagingMailboxKeypairsSuccess encPk. */
+        public encPk?: (Uint8Array|null);
+
+        /** DeriveMessagingMailboxKeypairsSuccess authSk. */
+        public authSk?: (Uint8Array|null);
+
+        /** DeriveMessagingMailboxKeypairsSuccess authPk. */
+        public authPk?: (Uint8Array|null);
+
+        /**
+         * Creates a new DeriveMessagingMailboxKeypairsSuccess instance using the specified properties.
+         * @param [properties] Properties to set
+         * @returns DeriveMessagingMailboxKeypairsSuccess instance
+         */
+        public static create(properties?: proto.IDeriveMessagingMailboxKeypairsSuccess): proto.DeriveMessagingMailboxKeypairsSuccess;
+
+        /**
+         * Encodes the specified DeriveMessagingMailboxKeypairsSuccess message. Does not implicitly {@link proto.DeriveMessagingMailboxKeypairsSuccess.verify|verify} messages.
+         * @param message DeriveMessagingMailboxKeypairsSuccess message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encode(message: proto.IDeriveMessagingMailboxKeypairsSuccess, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Encodes the specified DeriveMessagingMailboxKeypairsSuccess message, length delimited. Does not implicitly {@link proto.DeriveMessagingMailboxKeypairsSuccess.verify|verify} messages.
+         * @param message DeriveMessagingMailboxKeypairsSuccess message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encodeDelimited(message: proto.IDeriveMessagingMailboxKeypairsSuccess, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Decodes a DeriveMessagingMailboxKeypairsSuccess message from the specified reader or buffer.
+         * @param reader Reader or buffer to decode from
+         * @param [length] Message length if known beforehand
+         * @returns DeriveMessagingMailboxKeypairsSuccess
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): proto.DeriveMessagingMailboxKeypairsSuccess;
+
+        /**
+         * Decodes a DeriveMessagingMailboxKeypairsSuccess message from the specified reader or buffer, length delimited.
+         * @param reader Reader or buffer to decode from
+         * @returns DeriveMessagingMailboxKeypairsSuccess
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): proto.DeriveMessagingMailboxKeypairsSuccess;
+
+        /**
+         * Verifies a DeriveMessagingMailboxKeypairsSuccess message.
+         * @param message Plain object to verify
+         * @returns `null` if valid, otherwise the reason why it is not
+         */
+        public static verify(message: { [k: string]: any }): (string|null);
+
+        /**
+         * Creates a DeriveMessagingMailboxKeypairsSuccess message from a plain object. Also converts values to their respective internal types.
+         * @param object Plain object
+         * @returns DeriveMessagingMailboxKeypairsSuccess
+         */
+        public static fromObject(object: { [k: string]: any }): proto.DeriveMessagingMailboxKeypairsSuccess;
+
+        /**
+         * Creates a plain object from a DeriveMessagingMailboxKeypairsSuccess message. Also converts values to other types if specified.
+         * @param message DeriveMessagingMailboxKeypairsSuccess
+         * @param [options] Conversion options
+         * @returns Plain object
+         */
+        public static toObject(message: proto.DeriveMessagingMailboxKeypairsSuccess, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+        /**
+         * Converts this DeriveMessagingMailboxKeypairsSuccess to JSON.
+         * @returns JSON object
+         */
+        public toJSON(): { [k: string]: any };
+
+        /**
+         * Gets the default type url for DeriveMessagingMailboxKeypairsSuccess
+         * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+         * @returns The default type url
+         */
+        public static getTypeUrl(typeUrlPrefix?: string): string;
+    }
+
+    /** Properties of a DetachedDevicePublicData. */
+    interface IDetachedDevicePublicData {
+
+        /** DetachedDevicePublicData deviceId */
+        deviceId?: (number|Long|null);
+
+        /** DetachedDevicePublicData name */
+        name?: (Uint8Array|null);
+
+        /** DetachedDevicePublicData sigPk */
+        sigPk?: (Uint8Array|null);
+
+        /** DetachedDevicePublicData authPk */
+        authPk?: (Uint8Array|null);
+
+        /** DetachedDevicePublicData encPk */
+        encPk?: (Uint8Array|null);
+
+        /** DetachedDevicePublicData signature */
+        signature?: (Uint8Array|null);
+    }
+
+    /** Represents a DetachedDevicePublicData. */
+    class DetachedDevicePublicData implements IDetachedDevicePublicData {
+
+        /**
+         * Constructs a new DetachedDevicePublicData.
+         * @param [properties] Properties to set
+         */
+        constructor(properties?: proto.IDetachedDevicePublicData);
+
+        /** DetachedDevicePublicData deviceId. */
+        public deviceId?: (number|Long|null);
+
+        /** DetachedDevicePublicData name. */
+        public name?: (Uint8Array|null);
+
+        /** DetachedDevicePublicData sigPk. */
+        public sigPk?: (Uint8Array|null);
+
+        /** DetachedDevicePublicData authPk. */
+        public authPk?: (Uint8Array|null);
+
+        /** DetachedDevicePublicData encPk. */
+        public encPk?: (Uint8Array|null);
+
+        /** DetachedDevicePublicData signature. */
+        public signature?: (Uint8Array|null);
+
+        /**
+         * Creates a new DetachedDevicePublicData instance using the specified properties.
+         * @param [properties] Properties to set
+         * @returns DetachedDevicePublicData instance
+         */
+        public static create(properties?: proto.IDetachedDevicePublicData): proto.DetachedDevicePublicData;
+
+        /**
+         * Encodes the specified DetachedDevicePublicData message. Does not implicitly {@link proto.DetachedDevicePublicData.verify|verify} messages.
+         * @param message DetachedDevicePublicData message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encode(message: proto.IDetachedDevicePublicData, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Encodes the specified DetachedDevicePublicData message, length delimited. Does not implicitly {@link proto.DetachedDevicePublicData.verify|verify} messages.
+         * @param message DetachedDevicePublicData message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encodeDelimited(message: proto.IDetachedDevicePublicData, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Decodes a DetachedDevicePublicData message from the specified reader or buffer.
+         * @param reader Reader or buffer to decode from
+         * @param [length] Message length if known beforehand
+         * @returns DetachedDevicePublicData
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): proto.DetachedDevicePublicData;
+
+        /**
+         * Decodes a DetachedDevicePublicData message from the specified reader or buffer, length delimited.
+         * @param reader Reader or buffer to decode from
+         * @returns DetachedDevicePublicData
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): proto.DetachedDevicePublicData;
+
+        /**
+         * Verifies a DetachedDevicePublicData message.
+         * @param message Plain object to verify
+         * @returns `null` if valid, otherwise the reason why it is not
+         */
+        public static verify(message: { [k: string]: any }): (string|null);
+
+        /**
+         * Creates a DetachedDevicePublicData message from a plain object. Also converts values to their respective internal types.
+         * @param object Plain object
+         * @returns DetachedDevicePublicData
+         */
+        public static fromObject(object: { [k: string]: any }): proto.DetachedDevicePublicData;
+
+        /**
+         * Creates a plain object from a DetachedDevicePublicData message. Also converts values to other types if specified.
+         * @param message DetachedDevicePublicData
+         * @param [options] Conversion options
+         * @returns Plain object
+         */
+        public static toObject(message: proto.DetachedDevicePublicData, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+        /**
+         * Converts this DetachedDevicePublicData to JSON.
+         * @returns JSON object
+         */
+        public toJSON(): { [k: string]: any };
+
+        /**
+         * Gets the default type url for DetachedDevicePublicData
+         * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+         * @returns The default type url
+         */
+        public static getTypeUrl(typeUrlPrefix?: string): string;
+    }
+
     /** Properties of a DeviceCapabilities. */
     interface IDeviceCapabilities {
 
@@ -24147,6 +26880,12 @@ export namespace proto {
 
         /** DeviceCapabilities contactRefresh */
         contactRefresh?: (proto.DeviceCapabilities.IContactRefresh|null);
+
+        /** DeviceCapabilities reverseHistorySync */
+        reverseHistorySync?: (proto.DeviceCapabilities.IReverseHistorySync|null);
+
+        /** DeviceCapabilities newsletterChatsMigration */
+        newsletterChatsMigration?: (proto.DeviceCapabilities.INewsletterChatsMigration|null);
     }
 
     /** Represents a DeviceCapabilities. */
@@ -24184,6 +26923,12 @@ export namespace proto {
 
         /** DeviceCapabilities contactRefresh. */
         public contactRefresh?: (proto.DeviceCapabilities.IContactRefresh|null);
+
+        /** DeviceCapabilities reverseHistorySync. */
+        public reverseHistorySync?: (proto.DeviceCapabilities.IReverseHistorySync|null);
+
+        /** DeviceCapabilities newsletterChatsMigration. */
+        public newsletterChatsMigration?: (proto.DeviceCapabilities.INewsletterChatsMigration|null);
 
         /**
          * Creates a new DeviceCapabilities instance using the specified properties.
@@ -24905,6 +27650,221 @@ export namespace proto {
             DISABLED = 0,
             RECEIVER_ENABLED = 1,
             SENDER_ENABLED = 2
+        }
+
+        /** Properties of a NewsletterChatsMigration. */
+        interface INewsletterChatsMigration {
+
+            /** NewsletterChatsMigration effectiveMigrated */
+            effectiveMigrated?: (boolean|null);
+
+            /** NewsletterChatsMigration countdownEndsAt */
+            countdownEndsAt?: (number|Long|null);
+
+            /** NewsletterChatsMigration rolledBack */
+            rolledBack?: (boolean|null);
+        }
+
+        /** Represents a NewsletterChatsMigration. */
+        class NewsletterChatsMigration implements INewsletterChatsMigration {
+
+            /**
+             * Constructs a new NewsletterChatsMigration.
+             * @param [properties] Properties to set
+             */
+            constructor(properties?: proto.DeviceCapabilities.INewsletterChatsMigration);
+
+            /** NewsletterChatsMigration effectiveMigrated. */
+            public effectiveMigrated?: (boolean|null);
+
+            /** NewsletterChatsMigration countdownEndsAt. */
+            public countdownEndsAt?: (number|Long|null);
+
+            /** NewsletterChatsMigration rolledBack. */
+            public rolledBack?: (boolean|null);
+
+            /**
+             * Creates a new NewsletterChatsMigration instance using the specified properties.
+             * @param [properties] Properties to set
+             * @returns NewsletterChatsMigration instance
+             */
+            public static create(properties?: proto.DeviceCapabilities.INewsletterChatsMigration): proto.DeviceCapabilities.NewsletterChatsMigration;
+
+            /**
+             * Encodes the specified NewsletterChatsMigration message. Does not implicitly {@link proto.DeviceCapabilities.NewsletterChatsMigration.verify|verify} messages.
+             * @param message NewsletterChatsMigration message or plain object to encode
+             * @param [writer] Writer to encode to
+             * @returns Writer
+             */
+            public static encode(message: proto.DeviceCapabilities.INewsletterChatsMigration, writer?: $protobuf.Writer): $protobuf.Writer;
+
+            /**
+             * Encodes the specified NewsletterChatsMigration message, length delimited. Does not implicitly {@link proto.DeviceCapabilities.NewsletterChatsMigration.verify|verify} messages.
+             * @param message NewsletterChatsMigration message or plain object to encode
+             * @param [writer] Writer to encode to
+             * @returns Writer
+             */
+            public static encodeDelimited(message: proto.DeviceCapabilities.INewsletterChatsMigration, writer?: $protobuf.Writer): $protobuf.Writer;
+
+            /**
+             * Decodes a NewsletterChatsMigration message from the specified reader or buffer.
+             * @param reader Reader or buffer to decode from
+             * @param [length] Message length if known beforehand
+             * @returns NewsletterChatsMigration
+             * @throws {Error} If the payload is not a reader or valid buffer
+             * @throws {$protobuf.util.ProtocolError} If required fields are missing
+             */
+            public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): proto.DeviceCapabilities.NewsletterChatsMigration;
+
+            /**
+             * Decodes a NewsletterChatsMigration message from the specified reader or buffer, length delimited.
+             * @param reader Reader or buffer to decode from
+             * @returns NewsletterChatsMigration
+             * @throws {Error} If the payload is not a reader or valid buffer
+             * @throws {$protobuf.util.ProtocolError} If required fields are missing
+             */
+            public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): proto.DeviceCapabilities.NewsletterChatsMigration;
+
+            /**
+             * Verifies a NewsletterChatsMigration message.
+             * @param message Plain object to verify
+             * @returns `null` if valid, otherwise the reason why it is not
+             */
+            public static verify(message: { [k: string]: any }): (string|null);
+
+            /**
+             * Creates a NewsletterChatsMigration message from a plain object. Also converts values to their respective internal types.
+             * @param object Plain object
+             * @returns NewsletterChatsMigration
+             */
+            public static fromObject(object: { [k: string]: any }): proto.DeviceCapabilities.NewsletterChatsMigration;
+
+            /**
+             * Creates a plain object from a NewsletterChatsMigration message. Also converts values to other types if specified.
+             * @param message NewsletterChatsMigration
+             * @param [options] Conversion options
+             * @returns Plain object
+             */
+            public static toObject(message: proto.DeviceCapabilities.NewsletterChatsMigration, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+            /**
+             * Converts this NewsletterChatsMigration to JSON.
+             * @returns JSON object
+             */
+            public toJSON(): { [k: string]: any };
+
+            /**
+             * Gets the default type url for NewsletterChatsMigration
+             * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+             * @returns The default type url
+             */
+            public static getTypeUrl(typeUrlPrefix?: string): string;
+        }
+
+        /** Properties of a ReverseHistorySync. */
+        interface IReverseHistorySync {
+
+            /** ReverseHistorySync enabledProducts */
+            enabledProducts?: (proto.DeviceCapabilities.ReverseHistorySync.Product[]|null);
+        }
+
+        /** Represents a ReverseHistorySync. */
+        class ReverseHistorySync implements IReverseHistorySync {
+
+            /**
+             * Constructs a new ReverseHistorySync.
+             * @param [properties] Properties to set
+             */
+            constructor(properties?: proto.DeviceCapabilities.IReverseHistorySync);
+
+            /** ReverseHistorySync enabledProducts. */
+            public enabledProducts: proto.DeviceCapabilities.ReverseHistorySync.Product[];
+
+            /**
+             * Creates a new ReverseHistorySync instance using the specified properties.
+             * @param [properties] Properties to set
+             * @returns ReverseHistorySync instance
+             */
+            public static create(properties?: proto.DeviceCapabilities.IReverseHistorySync): proto.DeviceCapabilities.ReverseHistorySync;
+
+            /**
+             * Encodes the specified ReverseHistorySync message. Does not implicitly {@link proto.DeviceCapabilities.ReverseHistorySync.verify|verify} messages.
+             * @param message ReverseHistorySync message or plain object to encode
+             * @param [writer] Writer to encode to
+             * @returns Writer
+             */
+            public static encode(message: proto.DeviceCapabilities.IReverseHistorySync, writer?: $protobuf.Writer): $protobuf.Writer;
+
+            /**
+             * Encodes the specified ReverseHistorySync message, length delimited. Does not implicitly {@link proto.DeviceCapabilities.ReverseHistorySync.verify|verify} messages.
+             * @param message ReverseHistorySync message or plain object to encode
+             * @param [writer] Writer to encode to
+             * @returns Writer
+             */
+            public static encodeDelimited(message: proto.DeviceCapabilities.IReverseHistorySync, writer?: $protobuf.Writer): $protobuf.Writer;
+
+            /**
+             * Decodes a ReverseHistorySync message from the specified reader or buffer.
+             * @param reader Reader or buffer to decode from
+             * @param [length] Message length if known beforehand
+             * @returns ReverseHistorySync
+             * @throws {Error} If the payload is not a reader or valid buffer
+             * @throws {$protobuf.util.ProtocolError} If required fields are missing
+             */
+            public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): proto.DeviceCapabilities.ReverseHistorySync;
+
+            /**
+             * Decodes a ReverseHistorySync message from the specified reader or buffer, length delimited.
+             * @param reader Reader or buffer to decode from
+             * @returns ReverseHistorySync
+             * @throws {Error} If the payload is not a reader or valid buffer
+             * @throws {$protobuf.util.ProtocolError} If required fields are missing
+             */
+            public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): proto.DeviceCapabilities.ReverseHistorySync;
+
+            /**
+             * Verifies a ReverseHistorySync message.
+             * @param message Plain object to verify
+             * @returns `null` if valid, otherwise the reason why it is not
+             */
+            public static verify(message: { [k: string]: any }): (string|null);
+
+            /**
+             * Creates a ReverseHistorySync message from a plain object. Also converts values to their respective internal types.
+             * @param object Plain object
+             * @returns ReverseHistorySync
+             */
+            public static fromObject(object: { [k: string]: any }): proto.DeviceCapabilities.ReverseHistorySync;
+
+            /**
+             * Creates a plain object from a ReverseHistorySync message. Also converts values to other types if specified.
+             * @param message ReverseHistorySync
+             * @param [options] Conversion options
+             * @returns Plain object
+             */
+            public static toObject(message: proto.DeviceCapabilities.ReverseHistorySync, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+            /**
+             * Converts this ReverseHistorySync to JSON.
+             * @returns JSON object
+             */
+            public toJSON(): { [k: string]: any };
+
+            /**
+             * Gets the default type url for ReverseHistorySync
+             * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+             * @returns The default type url
+             */
+            public static getTypeUrl(typeUrlPrefix?: string): string;
+        }
+
+        namespace ReverseHistorySync {
+
+            /** Product enum. */
+            enum Product {
+                PRODUCT_UNSPECIFIED = 0,
+                HATCH = 1
+            }
         }
 
         /** Properties of a UserHasAvatar. */
@@ -25719,6 +28679,12 @@ export namespace proto {
 
             /** HistorySyncConfig supportNewsletter */
             supportNewsletter?: (boolean|null);
+
+            /** HistorySyncConfig supportUniversalReachChat */
+            supportUniversalReachChat?: (boolean|null);
+
+            /** HistorySyncConfig supportOmittedConversationIndex */
+            supportOmittedConversationIndex?: (boolean|null);
         }
 
         /** Represents a HistorySyncConfig. */
@@ -25804,6 +28770,12 @@ export namespace proto {
 
             /** HistorySyncConfig supportNewsletter. */
             public supportNewsletter?: (boolean|null);
+
+            /** HistorySyncConfig supportUniversalReachChat. */
+            public supportUniversalReachChat?: (boolean|null);
+
+            /** HistorySyncConfig supportOmittedConversationIndex. */
+            public supportOmittedConversationIndex?: (boolean|null);
 
             /**
              * Creates a new HistorySyncConfig instance using the specified properties.
@@ -25912,7 +28884,9 @@ export namespace proto {
             SMARTGLASSES = 24,
             WAIL = 25,
             WASS = 26,
-            BUSINESS_BACK_OFFICE = 27
+            BUSINESS_BACK_OFFICE = 27,
+            WAIL_WAI = 28,
+            WAIL_ALEXA = 29
         }
     }
 
@@ -26050,6 +29024,129 @@ export namespace proto {
             BIZ_SUPPORTS_FB_HOSTING = 4,
             UNKNOWN_GROUPS = 5
         }
+    }
+
+    /** EXTENDED_CONTENT_MESSAGE_CTA_BUTTON_TYPE enum. */
+    enum EXTENDED_CONTENT_MESSAGE_CTA_BUTTON_TYPE {
+        OPEN_NATIVE = 11
+    }
+
+    /** EXTENDED_CONTENT_MESSAGE_EXTENDED_CONTENT_TYPE enum. */
+    enum EXTENDED_CONTENT_MESSAGE_EXTENDED_CONTENT_TYPE {
+        UNSUPPORTED = -1,
+        IG_STORY_PHOTO_MENTION = 4,
+        IG_SINGLE_IMAGE_POST_SHARE = 9,
+        IG_MULTIPOST_SHARE = 10,
+        IG_SINGLE_VIDEO_POST_SHARE = 11,
+        IG_STORY_PHOTO_SHARE = 12,
+        IG_STORY_VIDEO_SHARE = 13,
+        IG_CLIPS_SHARE = 14,
+        IG_IGTV_SHARE = 15,
+        IG_SHOP_SHARE = 16,
+        IG_PROFILE_SHARE = 19,
+        IG_STORY_PHOTO_HIGHLIGHT_SHARE = 20,
+        IG_STORY_VIDEO_HIGHLIGHT_SHARE = 21,
+        IG_STORY_REPLY = 22,
+        IG_STORY_REACTION = 23,
+        IG_STORY_VIDEO_MENTION = 24,
+        IG_STORY_HIGHLIGHT_REPLY = 25,
+        IG_STORY_HIGHLIGHT_REACTION = 26,
+        IG_EXTERNAL_LINK = 27,
+        IG_RECEIVER_FETCH = 28,
+        FB_FEED_SHARE = 1000,
+        FB_STORY_REPLY = 1001,
+        FB_STORY_SHARE = 1002,
+        FB_STORY_MENTION = 1003,
+        FB_FEED_VIDEO_SHARE = 1004,
+        FB_GAMING_CUSTOM_UPDATE = 1005,
+        FB_PRODUCER_STORY_REPLY = 1006,
+        FB_EVENT = 1007,
+        FB_FEED_POST_PRIVATE_REPLY = 1008,
+        FB_SHORT = 1009,
+        FB_COMMENT_MENTION_SHARE = 1010,
+        FB_POST_MENTION = 1011,
+        FB_PROFILE_DIRECTORY_ITEM = 1013,
+        FB_FEED_POST_REACTION_REPLY = 1014,
+        FB_QUICKSNAP_REPLY = 1015,
+        MSG_EXTERNAL_LINK_SHARE = 2000,
+        MSG_P2P_PAYMENT = 2001,
+        MSG_LOCATION_SHARING = 2002,
+        MSG_LOCATION_SHARING_V2 = 2003,
+        MSG_HIGHLIGHTS_TAB_FRIEND_UPDATES_REPLY = 2004,
+        MSG_HIGHLIGHTS_TAB_LOCAL_EVENT_REPLY = 2005,
+        MSG_RECEIVER_FETCH = 2006,
+        MSG_IG_MEDIA_SHARE = 2007,
+        MSG_GEN_AI_SEARCH_PLUGIN_RESPONSE = 2008,
+        MSG_REELS_LIST = 2009,
+        MSG_CONTACT = 2010,
+        MSG_THREADS_POST_SHARE = 2011,
+        MSG_FILE = 2012,
+        MSG_AVATAR_DETAILS = 2013,
+        MSG_AI_CONTACT = 2014,
+        MSG_MEMORIES_SHARE = 2015,
+        MSG_SHARED_ALBUM_REPLY = 2016,
+        MSG_SHARED_ALBUM = 2017,
+        MSG_OCCAMADILLO_XMA = 2018,
+        MSG_GEN_AI_SUBSCRIPTION = 2021,
+        MSG_GEN_AI_REMINDER = 2022,
+        MSG_GEN_AI_MEMU_ONBOARDING_RESPONSE = 2023,
+        MSG_NOTE_REPLY = 2024,
+        MSG_NOTE_MENTION = 2025,
+        GEN_AI_ENTITY = 2026,
+        MSG_OPG_P2P_PAYMENT = 2027,
+        GEN_AI_RICH_RESPONSE = 2028,
+        MSG_MUSIC_STICKER = 2029,
+        MSG_PHONE_NUMBER = 2030,
+        AI_ACTIVITY_SHARE = 2031,
+        MSG_PRIVATE_XMA = 2032,
+        MSG_SOCIAL_CUE_MEMORIES = 2033,
+        MSG_MANUS_GROWTH_REFERRAL = 2060,
+        MSG_MOMENT_LINK = 2061,
+        MSG_HORIZON_WEEL = 2062,
+        MSG_MOMENT_ADDED = 2063,
+        RTC_AUDIO_CALL = 3000,
+        RTC_VIDEO_CALL = 3001,
+        RTC_MISSED_AUDIO_CALL = 3002,
+        RTC_MISSED_VIDEO_CALL = 3003,
+        RTC_GROUP_AUDIO_CALL = 3004,
+        RTC_GROUP_VIDEO_CALL = 3005,
+        RTC_MISSED_GROUP_AUDIO_CALL = 3006,
+        RTC_MISSED_GROUP_VIDEO_CALL = 3007,
+        RTC_ONGOING_AUDIO_CALL = 3008,
+        RTC_ONGOING_VIDEO_CALL = 3009,
+        MSG_RECEIVER_FETCH_FALLBACK = 3025,
+        DATACLASS_SENDER_COPY = 4000
+    }
+
+    /** EXTENDED_CONTENT_MESSAGE_OVERLAY_ICON_GLYPH enum. */
+    enum EXTENDED_CONTENT_MESSAGE_OVERLAY_ICON_GLYPH {
+        INFO = 0,
+        EYE_OFF = 1,
+        NEWS_OFF = 2,
+        WARNING = 3,
+        PRIVATE = 4,
+        NONE = 5,
+        MEDIA_LABEL = 6,
+        POST_COVER = 7,
+        POST_LABEL = 8,
+        WARNING_SCREENS = 9
+    }
+
+    /** EXTENDED_CONTENT_MESSAGE_XMA_DATACLASS_TYPE enum. */
+    enum EXTENDED_CONTENT_MESSAGE_XMA_DATACLASS_TYPE {
+        SENDER_COPY = 0,
+        SERVER = 1,
+        SIGNED_CLIENT = 2
+    }
+
+    /** EXTENDED_CONTENT_MESSAGE_XMA_LAYOUT_TYPE enum. */
+    enum EXTENDED_CONTENT_MESSAGE_XMA_LAYOUT_TYPE {
+        SINGLE = 0,
+        HSCROLL = 1,
+        PORTRAIT = 3,
+        STANDARD_DXMA = 12,
+        LIST_DXMA = 15,
+        GRID = 16
     }
 
     /** Properties of an EmbeddedContent. */
@@ -26430,6 +29527,690 @@ export namespace proto {
 
         /**
          * Gets the default type url for EmbeddedMusic
+         * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+         * @returns The default type url
+         */
+        public static getTypeUrl(typeUrlPrefix?: string): string;
+    }
+
+    /** Properties of an EncryptMekForDistributionInput. */
+    interface IEncryptMekForDistributionInput {
+
+        /** EncryptMekForDistributionInput senderEpochHead */
+        senderEpochHead?: (Uint8Array|null);
+
+        /** EncryptMekForDistributionInput toMailboxPk */
+        toMailboxPk?: (Uint8Array|null);
+
+        /** EncryptMekForDistributionInput fromKeypair */
+        fromKeypair?: (proto.EncryptMekForDistributionInput.IMailboxAuthKP|null);
+
+        /** EncryptMekForDistributionInput mek */
+        mek?: (proto.IMekBundle|null);
+
+        /** EncryptMekForDistributionInput toEpochHead */
+        toEpochHead?: (Uint8Array|null);
+
+        /** EncryptMekForDistributionInput conf */
+        conf?: (proto.IMinosClientConfig|null);
+    }
+
+    /** Represents an EncryptMekForDistributionInput. */
+    class EncryptMekForDistributionInput implements IEncryptMekForDistributionInput {
+
+        /**
+         * Constructs a new EncryptMekForDistributionInput.
+         * @param [properties] Properties to set
+         */
+        constructor(properties?: proto.IEncryptMekForDistributionInput);
+
+        /** EncryptMekForDistributionInput senderEpochHead. */
+        public senderEpochHead?: (Uint8Array|null);
+
+        /** EncryptMekForDistributionInput toMailboxPk. */
+        public toMailboxPk?: (Uint8Array|null);
+
+        /** EncryptMekForDistributionInput fromKeypair. */
+        public fromKeypair?: (proto.EncryptMekForDistributionInput.IMailboxAuthKP|null);
+
+        /** EncryptMekForDistributionInput mek. */
+        public mek?: (proto.IMekBundle|null);
+
+        /** EncryptMekForDistributionInput toEpochHead. */
+        public toEpochHead?: (Uint8Array|null);
+
+        /** EncryptMekForDistributionInput conf. */
+        public conf?: (proto.IMinosClientConfig|null);
+
+        /**
+         * Creates a new EncryptMekForDistributionInput instance using the specified properties.
+         * @param [properties] Properties to set
+         * @returns EncryptMekForDistributionInput instance
+         */
+        public static create(properties?: proto.IEncryptMekForDistributionInput): proto.EncryptMekForDistributionInput;
+
+        /**
+         * Encodes the specified EncryptMekForDistributionInput message. Does not implicitly {@link proto.EncryptMekForDistributionInput.verify|verify} messages.
+         * @param message EncryptMekForDistributionInput message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encode(message: proto.IEncryptMekForDistributionInput, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Encodes the specified EncryptMekForDistributionInput message, length delimited. Does not implicitly {@link proto.EncryptMekForDistributionInput.verify|verify} messages.
+         * @param message EncryptMekForDistributionInput message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encodeDelimited(message: proto.IEncryptMekForDistributionInput, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Decodes an EncryptMekForDistributionInput message from the specified reader or buffer.
+         * @param reader Reader or buffer to decode from
+         * @param [length] Message length if known beforehand
+         * @returns EncryptMekForDistributionInput
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): proto.EncryptMekForDistributionInput;
+
+        /**
+         * Decodes an EncryptMekForDistributionInput message from the specified reader or buffer, length delimited.
+         * @param reader Reader or buffer to decode from
+         * @returns EncryptMekForDistributionInput
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): proto.EncryptMekForDistributionInput;
+
+        /**
+         * Verifies an EncryptMekForDistributionInput message.
+         * @param message Plain object to verify
+         * @returns `null` if valid, otherwise the reason why it is not
+         */
+        public static verify(message: { [k: string]: any }): (string|null);
+
+        /**
+         * Creates an EncryptMekForDistributionInput message from a plain object. Also converts values to their respective internal types.
+         * @param object Plain object
+         * @returns EncryptMekForDistributionInput
+         */
+        public static fromObject(object: { [k: string]: any }): proto.EncryptMekForDistributionInput;
+
+        /**
+         * Creates a plain object from an EncryptMekForDistributionInput message. Also converts values to other types if specified.
+         * @param message EncryptMekForDistributionInput
+         * @param [options] Conversion options
+         * @returns Plain object
+         */
+        public static toObject(message: proto.EncryptMekForDistributionInput, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+        /**
+         * Converts this EncryptMekForDistributionInput to JSON.
+         * @returns JSON object
+         */
+        public toJSON(): { [k: string]: any };
+
+        /**
+         * Gets the default type url for EncryptMekForDistributionInput
+         * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+         * @returns The default type url
+         */
+        public static getTypeUrl(typeUrlPrefix?: string): string;
+    }
+
+    namespace EncryptMekForDistributionInput {
+
+        /** Properties of a MailboxAuthKP. */
+        interface IMailboxAuthKP {
+
+            /** MailboxAuthKP sk */
+            sk?: (Uint8Array|null);
+
+            /** MailboxAuthKP pk */
+            pk?: (Uint8Array|null);
+        }
+
+        /** Represents a MailboxAuthKP. */
+        class MailboxAuthKP implements IMailboxAuthKP {
+
+            /**
+             * Constructs a new MailboxAuthKP.
+             * @param [properties] Properties to set
+             */
+            constructor(properties?: proto.EncryptMekForDistributionInput.IMailboxAuthKP);
+
+            /** MailboxAuthKP sk. */
+            public sk?: (Uint8Array|null);
+
+            /** MailboxAuthKP pk. */
+            public pk?: (Uint8Array|null);
+
+            /**
+             * Creates a new MailboxAuthKP instance using the specified properties.
+             * @param [properties] Properties to set
+             * @returns MailboxAuthKP instance
+             */
+            public static create(properties?: proto.EncryptMekForDistributionInput.IMailboxAuthKP): proto.EncryptMekForDistributionInput.MailboxAuthKP;
+
+            /**
+             * Encodes the specified MailboxAuthKP message. Does not implicitly {@link proto.EncryptMekForDistributionInput.MailboxAuthKP.verify|verify} messages.
+             * @param message MailboxAuthKP message or plain object to encode
+             * @param [writer] Writer to encode to
+             * @returns Writer
+             */
+            public static encode(message: proto.EncryptMekForDistributionInput.IMailboxAuthKP, writer?: $protobuf.Writer): $protobuf.Writer;
+
+            /**
+             * Encodes the specified MailboxAuthKP message, length delimited. Does not implicitly {@link proto.EncryptMekForDistributionInput.MailboxAuthKP.verify|verify} messages.
+             * @param message MailboxAuthKP message or plain object to encode
+             * @param [writer] Writer to encode to
+             * @returns Writer
+             */
+            public static encodeDelimited(message: proto.EncryptMekForDistributionInput.IMailboxAuthKP, writer?: $protobuf.Writer): $protobuf.Writer;
+
+            /**
+             * Decodes a MailboxAuthKP message from the specified reader or buffer.
+             * @param reader Reader or buffer to decode from
+             * @param [length] Message length if known beforehand
+             * @returns MailboxAuthKP
+             * @throws {Error} If the payload is not a reader or valid buffer
+             * @throws {$protobuf.util.ProtocolError} If required fields are missing
+             */
+            public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): proto.EncryptMekForDistributionInput.MailboxAuthKP;
+
+            /**
+             * Decodes a MailboxAuthKP message from the specified reader or buffer, length delimited.
+             * @param reader Reader or buffer to decode from
+             * @returns MailboxAuthKP
+             * @throws {Error} If the payload is not a reader or valid buffer
+             * @throws {$protobuf.util.ProtocolError} If required fields are missing
+             */
+            public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): proto.EncryptMekForDistributionInput.MailboxAuthKP;
+
+            /**
+             * Verifies a MailboxAuthKP message.
+             * @param message Plain object to verify
+             * @returns `null` if valid, otherwise the reason why it is not
+             */
+            public static verify(message: { [k: string]: any }): (string|null);
+
+            /**
+             * Creates a MailboxAuthKP message from a plain object. Also converts values to their respective internal types.
+             * @param object Plain object
+             * @returns MailboxAuthKP
+             */
+            public static fromObject(object: { [k: string]: any }): proto.EncryptMekForDistributionInput.MailboxAuthKP;
+
+            /**
+             * Creates a plain object from a MailboxAuthKP message. Also converts values to other types if specified.
+             * @param message MailboxAuthKP
+             * @param [options] Conversion options
+             * @returns Plain object
+             */
+            public static toObject(message: proto.EncryptMekForDistributionInput.MailboxAuthKP, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+            /**
+             * Converts this MailboxAuthKP to JSON.
+             * @returns JSON object
+             */
+            public toJSON(): { [k: string]: any };
+
+            /**
+             * Gets the default type url for MailboxAuthKP
+             * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+             * @returns The default type url
+             */
+            public static getTypeUrl(typeUrlPrefix?: string): string;
+        }
+    }
+
+    /** Properties of an EncryptMekForDistributionResult. */
+    interface IEncryptMekForDistributionResult {
+
+        /** EncryptMekForDistributionResult ciphertext */
+        ciphertext?: (Uint8Array|null);
+
+        /** EncryptMekForDistributionResult version */
+        version?: (number|Long|null);
+    }
+
+    /** Represents an EncryptMekForDistributionResult. */
+    class EncryptMekForDistributionResult implements IEncryptMekForDistributionResult {
+
+        /**
+         * Constructs a new EncryptMekForDistributionResult.
+         * @param [properties] Properties to set
+         */
+        constructor(properties?: proto.IEncryptMekForDistributionResult);
+
+        /** EncryptMekForDistributionResult ciphertext. */
+        public ciphertext?: (Uint8Array|null);
+
+        /** EncryptMekForDistributionResult version. */
+        public version?: (number|Long|null);
+
+        /**
+         * Creates a new EncryptMekForDistributionResult instance using the specified properties.
+         * @param [properties] Properties to set
+         * @returns EncryptMekForDistributionResult instance
+         */
+        public static create(properties?: proto.IEncryptMekForDistributionResult): proto.EncryptMekForDistributionResult;
+
+        /**
+         * Encodes the specified EncryptMekForDistributionResult message. Does not implicitly {@link proto.EncryptMekForDistributionResult.verify|verify} messages.
+         * @param message EncryptMekForDistributionResult message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encode(message: proto.IEncryptMekForDistributionResult, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Encodes the specified EncryptMekForDistributionResult message, length delimited. Does not implicitly {@link proto.EncryptMekForDistributionResult.verify|verify} messages.
+         * @param message EncryptMekForDistributionResult message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encodeDelimited(message: proto.IEncryptMekForDistributionResult, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Decodes an EncryptMekForDistributionResult message from the specified reader or buffer.
+         * @param reader Reader or buffer to decode from
+         * @param [length] Message length if known beforehand
+         * @returns EncryptMekForDistributionResult
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): proto.EncryptMekForDistributionResult;
+
+        /**
+         * Decodes an EncryptMekForDistributionResult message from the specified reader or buffer, length delimited.
+         * @param reader Reader or buffer to decode from
+         * @returns EncryptMekForDistributionResult
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): proto.EncryptMekForDistributionResult;
+
+        /**
+         * Verifies an EncryptMekForDistributionResult message.
+         * @param message Plain object to verify
+         * @returns `null` if valid, otherwise the reason why it is not
+         */
+        public static verify(message: { [k: string]: any }): (string|null);
+
+        /**
+         * Creates an EncryptMekForDistributionResult message from a plain object. Also converts values to their respective internal types.
+         * @param object Plain object
+         * @returns EncryptMekForDistributionResult
+         */
+        public static fromObject(object: { [k: string]: any }): proto.EncryptMekForDistributionResult;
+
+        /**
+         * Creates a plain object from an EncryptMekForDistributionResult message. Also converts values to other types if specified.
+         * @param message EncryptMekForDistributionResult
+         * @param [options] Conversion options
+         * @returns Plain object
+         */
+        public static toObject(message: proto.EncryptMekForDistributionResult, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+        /**
+         * Converts this EncryptMekForDistributionResult to JSON.
+         * @returns JSON object
+         */
+        public toJSON(): { [k: string]: any };
+
+        /**
+         * Gets the default type url for EncryptMekForDistributionResult
+         * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+         * @returns The default type url
+         */
+        public static getTypeUrl(typeUrlPrefix?: string): string;
+    }
+
+    /** Properties of an EncryptMeksForDistributionFromTransportSenderInput. */
+    interface IEncryptMeksForDistributionFromTransportSenderInput {
+
+        /** EncryptMeksForDistributionFromTransportSenderInput mek */
+        mek?: (proto.IMekBundle|null);
+
+        /** EncryptMeksForDistributionFromTransportSenderInput transportSigningKp */
+        transportSigningKp?: (proto.EncryptMeksForDistributionFromTransportSenderInput.ITransportSigningKP|null);
+
+        /** EncryptMeksForDistributionFromTransportSenderInput recipientMailboxEncryptionPks */
+        recipientMailboxEncryptionPks?: (Uint8Array[]|null);
+
+        /** EncryptMeksForDistributionFromTransportSenderInput recipientEpochHeads */
+        recipientEpochHeads?: (Uint8Array[]|null);
+
+        /** EncryptMeksForDistributionFromTransportSenderInput conf */
+        conf?: (proto.IMinosClientConfig|null);
+    }
+
+    /** Represents an EncryptMeksForDistributionFromTransportSenderInput. */
+    class EncryptMeksForDistributionFromTransportSenderInput implements IEncryptMeksForDistributionFromTransportSenderInput {
+
+        /**
+         * Constructs a new EncryptMeksForDistributionFromTransportSenderInput.
+         * @param [properties] Properties to set
+         */
+        constructor(properties?: proto.IEncryptMeksForDistributionFromTransportSenderInput);
+
+        /** EncryptMeksForDistributionFromTransportSenderInput mek. */
+        public mek?: (proto.IMekBundle|null);
+
+        /** EncryptMeksForDistributionFromTransportSenderInput transportSigningKp. */
+        public transportSigningKp?: (proto.EncryptMeksForDistributionFromTransportSenderInput.ITransportSigningKP|null);
+
+        /** EncryptMeksForDistributionFromTransportSenderInput recipientMailboxEncryptionPks. */
+        public recipientMailboxEncryptionPks: Uint8Array[];
+
+        /** EncryptMeksForDistributionFromTransportSenderInput recipientEpochHeads. */
+        public recipientEpochHeads: Uint8Array[];
+
+        /** EncryptMeksForDistributionFromTransportSenderInput conf. */
+        public conf?: (proto.IMinosClientConfig|null);
+
+        /**
+         * Creates a new EncryptMeksForDistributionFromTransportSenderInput instance using the specified properties.
+         * @param [properties] Properties to set
+         * @returns EncryptMeksForDistributionFromTransportSenderInput instance
+         */
+        public static create(properties?: proto.IEncryptMeksForDistributionFromTransportSenderInput): proto.EncryptMeksForDistributionFromTransportSenderInput;
+
+        /**
+         * Encodes the specified EncryptMeksForDistributionFromTransportSenderInput message. Does not implicitly {@link proto.EncryptMeksForDistributionFromTransportSenderInput.verify|verify} messages.
+         * @param message EncryptMeksForDistributionFromTransportSenderInput message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encode(message: proto.IEncryptMeksForDistributionFromTransportSenderInput, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Encodes the specified EncryptMeksForDistributionFromTransportSenderInput message, length delimited. Does not implicitly {@link proto.EncryptMeksForDistributionFromTransportSenderInput.verify|verify} messages.
+         * @param message EncryptMeksForDistributionFromTransportSenderInput message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encodeDelimited(message: proto.IEncryptMeksForDistributionFromTransportSenderInput, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Decodes an EncryptMeksForDistributionFromTransportSenderInput message from the specified reader or buffer.
+         * @param reader Reader or buffer to decode from
+         * @param [length] Message length if known beforehand
+         * @returns EncryptMeksForDistributionFromTransportSenderInput
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): proto.EncryptMeksForDistributionFromTransportSenderInput;
+
+        /**
+         * Decodes an EncryptMeksForDistributionFromTransportSenderInput message from the specified reader or buffer, length delimited.
+         * @param reader Reader or buffer to decode from
+         * @returns EncryptMeksForDistributionFromTransportSenderInput
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): proto.EncryptMeksForDistributionFromTransportSenderInput;
+
+        /**
+         * Verifies an EncryptMeksForDistributionFromTransportSenderInput message.
+         * @param message Plain object to verify
+         * @returns `null` if valid, otherwise the reason why it is not
+         */
+        public static verify(message: { [k: string]: any }): (string|null);
+
+        /**
+         * Creates an EncryptMeksForDistributionFromTransportSenderInput message from a plain object. Also converts values to their respective internal types.
+         * @param object Plain object
+         * @returns EncryptMeksForDistributionFromTransportSenderInput
+         */
+        public static fromObject(object: { [k: string]: any }): proto.EncryptMeksForDistributionFromTransportSenderInput;
+
+        /**
+         * Creates a plain object from an EncryptMeksForDistributionFromTransportSenderInput message. Also converts values to other types if specified.
+         * @param message EncryptMeksForDistributionFromTransportSenderInput
+         * @param [options] Conversion options
+         * @returns Plain object
+         */
+        public static toObject(message: proto.EncryptMeksForDistributionFromTransportSenderInput, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+        /**
+         * Converts this EncryptMeksForDistributionFromTransportSenderInput to JSON.
+         * @returns JSON object
+         */
+        public toJSON(): { [k: string]: any };
+
+        /**
+         * Gets the default type url for EncryptMeksForDistributionFromTransportSenderInput
+         * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+         * @returns The default type url
+         */
+        public static getTypeUrl(typeUrlPrefix?: string): string;
+    }
+
+    namespace EncryptMeksForDistributionFromTransportSenderInput {
+
+        /** Properties of a TransportSigningKP. */
+        interface ITransportSigningKP {
+
+            /** TransportSigningKP sk */
+            sk?: (Uint8Array|null);
+
+            /** TransportSigningKP pk */
+            pk?: (Uint8Array|null);
+        }
+
+        /** Represents a TransportSigningKP. */
+        class TransportSigningKP implements ITransportSigningKP {
+
+            /**
+             * Constructs a new TransportSigningKP.
+             * @param [properties] Properties to set
+             */
+            constructor(properties?: proto.EncryptMeksForDistributionFromTransportSenderInput.ITransportSigningKP);
+
+            /** TransportSigningKP sk. */
+            public sk?: (Uint8Array|null);
+
+            /** TransportSigningKP pk. */
+            public pk?: (Uint8Array|null);
+
+            /**
+             * Creates a new TransportSigningKP instance using the specified properties.
+             * @param [properties] Properties to set
+             * @returns TransportSigningKP instance
+             */
+            public static create(properties?: proto.EncryptMeksForDistributionFromTransportSenderInput.ITransportSigningKP): proto.EncryptMeksForDistributionFromTransportSenderInput.TransportSigningKP;
+
+            /**
+             * Encodes the specified TransportSigningKP message. Does not implicitly {@link proto.EncryptMeksForDistributionFromTransportSenderInput.TransportSigningKP.verify|verify} messages.
+             * @param message TransportSigningKP message or plain object to encode
+             * @param [writer] Writer to encode to
+             * @returns Writer
+             */
+            public static encode(message: proto.EncryptMeksForDistributionFromTransportSenderInput.ITransportSigningKP, writer?: $protobuf.Writer): $protobuf.Writer;
+
+            /**
+             * Encodes the specified TransportSigningKP message, length delimited. Does not implicitly {@link proto.EncryptMeksForDistributionFromTransportSenderInput.TransportSigningKP.verify|verify} messages.
+             * @param message TransportSigningKP message or plain object to encode
+             * @param [writer] Writer to encode to
+             * @returns Writer
+             */
+            public static encodeDelimited(message: proto.EncryptMeksForDistributionFromTransportSenderInput.ITransportSigningKP, writer?: $protobuf.Writer): $protobuf.Writer;
+
+            /**
+             * Decodes a TransportSigningKP message from the specified reader or buffer.
+             * @param reader Reader or buffer to decode from
+             * @param [length] Message length if known beforehand
+             * @returns TransportSigningKP
+             * @throws {Error} If the payload is not a reader or valid buffer
+             * @throws {$protobuf.util.ProtocolError} If required fields are missing
+             */
+            public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): proto.EncryptMeksForDistributionFromTransportSenderInput.TransportSigningKP;
+
+            /**
+             * Decodes a TransportSigningKP message from the specified reader or buffer, length delimited.
+             * @param reader Reader or buffer to decode from
+             * @returns TransportSigningKP
+             * @throws {Error} If the payload is not a reader or valid buffer
+             * @throws {$protobuf.util.ProtocolError} If required fields are missing
+             */
+            public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): proto.EncryptMeksForDistributionFromTransportSenderInput.TransportSigningKP;
+
+            /**
+             * Verifies a TransportSigningKP message.
+             * @param message Plain object to verify
+             * @returns `null` if valid, otherwise the reason why it is not
+             */
+            public static verify(message: { [k: string]: any }): (string|null);
+
+            /**
+             * Creates a TransportSigningKP message from a plain object. Also converts values to their respective internal types.
+             * @param object Plain object
+             * @returns TransportSigningKP
+             */
+            public static fromObject(object: { [k: string]: any }): proto.EncryptMeksForDistributionFromTransportSenderInput.TransportSigningKP;
+
+            /**
+             * Creates a plain object from a TransportSigningKP message. Also converts values to other types if specified.
+             * @param message TransportSigningKP
+             * @param [options] Conversion options
+             * @returns Plain object
+             */
+            public static toObject(message: proto.EncryptMeksForDistributionFromTransportSenderInput.TransportSigningKP, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+            /**
+             * Converts this TransportSigningKP to JSON.
+             * @returns JSON object
+             */
+            public toJSON(): { [k: string]: any };
+
+            /**
+             * Gets the default type url for TransportSigningKP
+             * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+             * @returns The default type url
+             */
+            public static getTypeUrl(typeUrlPrefix?: string): string;
+        }
+    }
+
+    /** Properties of an EncryptMeksForDistributionFromTransportSenderResult. */
+    interface IEncryptMeksForDistributionFromTransportSenderResult {
+
+        /** EncryptMeksForDistributionFromTransportSenderResult encryptedMeks */
+        encryptedMeks?: (Uint8Array[]|null);
+
+        /** EncryptMeksForDistributionFromTransportSenderResult ephemeralEncryptionPk */
+        ephemeralEncryptionPk?: (Uint8Array|null);
+
+        /** EncryptMeksForDistributionFromTransportSenderResult signingPk */
+        signingPk?: (Uint8Array|null);
+
+        /** EncryptMeksForDistributionFromTransportSenderResult signature */
+        signature?: (Uint8Array|null);
+
+        /** EncryptMeksForDistributionFromTransportSenderResult version */
+        version?: (number|Long|null);
+    }
+
+    /** Represents an EncryptMeksForDistributionFromTransportSenderResult. */
+    class EncryptMeksForDistributionFromTransportSenderResult implements IEncryptMeksForDistributionFromTransportSenderResult {
+
+        /**
+         * Constructs a new EncryptMeksForDistributionFromTransportSenderResult.
+         * @param [properties] Properties to set
+         */
+        constructor(properties?: proto.IEncryptMeksForDistributionFromTransportSenderResult);
+
+        /** EncryptMeksForDistributionFromTransportSenderResult encryptedMeks. */
+        public encryptedMeks: Uint8Array[];
+
+        /** EncryptMeksForDistributionFromTransportSenderResult ephemeralEncryptionPk. */
+        public ephemeralEncryptionPk?: (Uint8Array|null);
+
+        /** EncryptMeksForDistributionFromTransportSenderResult signingPk. */
+        public signingPk?: (Uint8Array|null);
+
+        /** EncryptMeksForDistributionFromTransportSenderResult signature. */
+        public signature?: (Uint8Array|null);
+
+        /** EncryptMeksForDistributionFromTransportSenderResult version. */
+        public version?: (number|Long|null);
+
+        /**
+         * Creates a new EncryptMeksForDistributionFromTransportSenderResult instance using the specified properties.
+         * @param [properties] Properties to set
+         * @returns EncryptMeksForDistributionFromTransportSenderResult instance
+         */
+        public static create(properties?: proto.IEncryptMeksForDistributionFromTransportSenderResult): proto.EncryptMeksForDistributionFromTransportSenderResult;
+
+        /**
+         * Encodes the specified EncryptMeksForDistributionFromTransportSenderResult message. Does not implicitly {@link proto.EncryptMeksForDistributionFromTransportSenderResult.verify|verify} messages.
+         * @param message EncryptMeksForDistributionFromTransportSenderResult message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encode(message: proto.IEncryptMeksForDistributionFromTransportSenderResult, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Encodes the specified EncryptMeksForDistributionFromTransportSenderResult message, length delimited. Does not implicitly {@link proto.EncryptMeksForDistributionFromTransportSenderResult.verify|verify} messages.
+         * @param message EncryptMeksForDistributionFromTransportSenderResult message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encodeDelimited(message: proto.IEncryptMeksForDistributionFromTransportSenderResult, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Decodes an EncryptMeksForDistributionFromTransportSenderResult message from the specified reader or buffer.
+         * @param reader Reader or buffer to decode from
+         * @param [length] Message length if known beforehand
+         * @returns EncryptMeksForDistributionFromTransportSenderResult
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): proto.EncryptMeksForDistributionFromTransportSenderResult;
+
+        /**
+         * Decodes an EncryptMeksForDistributionFromTransportSenderResult message from the specified reader or buffer, length delimited.
+         * @param reader Reader or buffer to decode from
+         * @returns EncryptMeksForDistributionFromTransportSenderResult
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): proto.EncryptMeksForDistributionFromTransportSenderResult;
+
+        /**
+         * Verifies an EncryptMeksForDistributionFromTransportSenderResult message.
+         * @param message Plain object to verify
+         * @returns `null` if valid, otherwise the reason why it is not
+         */
+        public static verify(message: { [k: string]: any }): (string|null);
+
+        /**
+         * Creates an EncryptMeksForDistributionFromTransportSenderResult message from a plain object. Also converts values to their respective internal types.
+         * @param object Plain object
+         * @returns EncryptMeksForDistributionFromTransportSenderResult
+         */
+        public static fromObject(object: { [k: string]: any }): proto.EncryptMeksForDistributionFromTransportSenderResult;
+
+        /**
+         * Creates a plain object from an EncryptMeksForDistributionFromTransportSenderResult message. Also converts values to other types if specified.
+         * @param message EncryptMeksForDistributionFromTransportSenderResult
+         * @param [options] Conversion options
+         * @returns Plain object
+         */
+        public static toObject(message: proto.EncryptMeksForDistributionFromTransportSenderResult, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+        /**
+         * Converts this EncryptMeksForDistributionFromTransportSenderResult to JSON.
+         * @returns JSON object
+         */
+        public toJSON(): { [k: string]: any };
+
+        /**
+         * Gets the default type url for EncryptMeksForDistributionFromTransportSenderResult
          * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
          * @returns The default type url
          */
@@ -27198,6 +30979,236 @@ export namespace proto {
         public static getTypeUrl(typeUrlPrefix?: string): string;
     }
 
+    /** Properties of an EpochPublicData. */
+    interface IEpochPublicData {
+
+        /** EpochPublicData epochNumber */
+        epochNumber?: (number|Long|null);
+
+        /** EpochPublicData userFbid */
+        userFbid?: (string|null);
+
+        /** EpochPublicData mailboxSigningPk */
+        mailboxSigningPk?: (Uint8Array|null);
+
+        /** EpochPublicData mailboxEncryptionPk */
+        mailboxEncryptionPk?: (Uint8Array|null);
+
+        /** EpochPublicData mailboxAuthPk */
+        mailboxAuthPk?: (Uint8Array|null);
+
+        /** EpochPublicData previousEpochHead */
+        previousEpochHead?: (Uint8Array|null);
+    }
+
+    /** Represents an EpochPublicData. */
+    class EpochPublicData implements IEpochPublicData {
+
+        /**
+         * Constructs a new EpochPublicData.
+         * @param [properties] Properties to set
+         */
+        constructor(properties?: proto.IEpochPublicData);
+
+        /** EpochPublicData epochNumber. */
+        public epochNumber?: (number|Long|null);
+
+        /** EpochPublicData userFbid. */
+        public userFbid?: (string|null);
+
+        /** EpochPublicData mailboxSigningPk. */
+        public mailboxSigningPk?: (Uint8Array|null);
+
+        /** EpochPublicData mailboxEncryptionPk. */
+        public mailboxEncryptionPk?: (Uint8Array|null);
+
+        /** EpochPublicData mailboxAuthPk. */
+        public mailboxAuthPk?: (Uint8Array|null);
+
+        /** EpochPublicData previousEpochHead. */
+        public previousEpochHead?: (Uint8Array|null);
+
+        /**
+         * Creates a new EpochPublicData instance using the specified properties.
+         * @param [properties] Properties to set
+         * @returns EpochPublicData instance
+         */
+        public static create(properties?: proto.IEpochPublicData): proto.EpochPublicData;
+
+        /**
+         * Encodes the specified EpochPublicData message. Does not implicitly {@link proto.EpochPublicData.verify|verify} messages.
+         * @param message EpochPublicData message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encode(message: proto.IEpochPublicData, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Encodes the specified EpochPublicData message, length delimited. Does not implicitly {@link proto.EpochPublicData.verify|verify} messages.
+         * @param message EpochPublicData message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encodeDelimited(message: proto.IEpochPublicData, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Decodes an EpochPublicData message from the specified reader or buffer.
+         * @param reader Reader or buffer to decode from
+         * @param [length] Message length if known beforehand
+         * @returns EpochPublicData
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): proto.EpochPublicData;
+
+        /**
+         * Decodes an EpochPublicData message from the specified reader or buffer, length delimited.
+         * @param reader Reader or buffer to decode from
+         * @returns EpochPublicData
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): proto.EpochPublicData;
+
+        /**
+         * Verifies an EpochPublicData message.
+         * @param message Plain object to verify
+         * @returns `null` if valid, otherwise the reason why it is not
+         */
+        public static verify(message: { [k: string]: any }): (string|null);
+
+        /**
+         * Creates an EpochPublicData message from a plain object. Also converts values to their respective internal types.
+         * @param object Plain object
+         * @returns EpochPublicData
+         */
+        public static fromObject(object: { [k: string]: any }): proto.EpochPublicData;
+
+        /**
+         * Creates a plain object from an EpochPublicData message. Also converts values to other types if specified.
+         * @param message EpochPublicData
+         * @param [options] Conversion options
+         * @returns Plain object
+         */
+        public static toObject(message: proto.EpochPublicData, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+        /**
+         * Converts this EpochPublicData to JSON.
+         * @returns JSON object
+         */
+        public toJSON(): { [k: string]: any };
+
+        /**
+         * Gets the default type url for EpochPublicData
+         * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+         * @returns The default type url
+         */
+        public static getTypeUrl(typeUrlPrefix?: string): string;
+    }
+
+    /** Properties of an EpochSignatures. */
+    interface IEpochSignatures {
+
+        /** EpochSignatures selfSignature */
+        selfSignature?: (Uint8Array|null);
+
+        /** EpochSignatures prevSignature */
+        prevSignature?: (Uint8Array|null);
+    }
+
+    /** Represents an EpochSignatures. */
+    class EpochSignatures implements IEpochSignatures {
+
+        /**
+         * Constructs a new EpochSignatures.
+         * @param [properties] Properties to set
+         */
+        constructor(properties?: proto.IEpochSignatures);
+
+        /** EpochSignatures selfSignature. */
+        public selfSignature?: (Uint8Array|null);
+
+        /** EpochSignatures prevSignature. */
+        public prevSignature?: (Uint8Array|null);
+
+        /**
+         * Creates a new EpochSignatures instance using the specified properties.
+         * @param [properties] Properties to set
+         * @returns EpochSignatures instance
+         */
+        public static create(properties?: proto.IEpochSignatures): proto.EpochSignatures;
+
+        /**
+         * Encodes the specified EpochSignatures message. Does not implicitly {@link proto.EpochSignatures.verify|verify} messages.
+         * @param message EpochSignatures message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encode(message: proto.IEpochSignatures, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Encodes the specified EpochSignatures message, length delimited. Does not implicitly {@link proto.EpochSignatures.verify|verify} messages.
+         * @param message EpochSignatures message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encodeDelimited(message: proto.IEpochSignatures, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Decodes an EpochSignatures message from the specified reader or buffer.
+         * @param reader Reader or buffer to decode from
+         * @param [length] Message length if known beforehand
+         * @returns EpochSignatures
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): proto.EpochSignatures;
+
+        /**
+         * Decodes an EpochSignatures message from the specified reader or buffer, length delimited.
+         * @param reader Reader or buffer to decode from
+         * @returns EpochSignatures
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): proto.EpochSignatures;
+
+        /**
+         * Verifies an EpochSignatures message.
+         * @param message Plain object to verify
+         * @returns `null` if valid, otherwise the reason why it is not
+         */
+        public static verify(message: { [k: string]: any }): (string|null);
+
+        /**
+         * Creates an EpochSignatures message from a plain object. Also converts values to their respective internal types.
+         * @param object Plain object
+         * @returns EpochSignatures
+         */
+        public static fromObject(object: { [k: string]: any }): proto.EpochSignatures;
+
+        /**
+         * Creates a plain object from an EpochSignatures message. Also converts values to other types if specified.
+         * @param message EpochSignatures
+         * @param [options] Conversion options
+         * @returns Plain object
+         */
+        public static toObject(message: proto.EpochSignatures, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+        /**
+         * Converts this EpochSignatures to JSON.
+         * @returns JSON object
+         */
+        public toJSON(): { [k: string]: any };
+
+        /**
+         * Gets the default type url for EpochSignatures
+         * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+         * @returns The default type url
+         */
+        public static getTypeUrl(typeUrlPrefix?: string): string;
+    }
+
     /** Properties of an EventAdditionalMetadata. */
     interface IEventAdditionalMetadata {
 
@@ -27289,6 +31300,103 @@ export namespace proto {
 
         /**
          * Gets the default type url for EventAdditionalMetadata
+         * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+         * @returns The default type url
+         */
+        public static getTypeUrl(typeUrlPrefix?: string): string;
+    }
+
+    /** Properties of an EventInviteAdditionalMetadata. */
+    interface IEventInviteAdditionalMetadata {
+
+        /** EventInviteAdditionalMetadata isUpdated */
+        isUpdated?: (boolean|null);
+    }
+
+    /** Represents an EventInviteAdditionalMetadata. */
+    class EventInviteAdditionalMetadata implements IEventInviteAdditionalMetadata {
+
+        /**
+         * Constructs a new EventInviteAdditionalMetadata.
+         * @param [properties] Properties to set
+         */
+        constructor(properties?: proto.IEventInviteAdditionalMetadata);
+
+        /** EventInviteAdditionalMetadata isUpdated. */
+        public isUpdated?: (boolean|null);
+
+        /**
+         * Creates a new EventInviteAdditionalMetadata instance using the specified properties.
+         * @param [properties] Properties to set
+         * @returns EventInviteAdditionalMetadata instance
+         */
+        public static create(properties?: proto.IEventInviteAdditionalMetadata): proto.EventInviteAdditionalMetadata;
+
+        /**
+         * Encodes the specified EventInviteAdditionalMetadata message. Does not implicitly {@link proto.EventInviteAdditionalMetadata.verify|verify} messages.
+         * @param message EventInviteAdditionalMetadata message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encode(message: proto.IEventInviteAdditionalMetadata, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Encodes the specified EventInviteAdditionalMetadata message, length delimited. Does not implicitly {@link proto.EventInviteAdditionalMetadata.verify|verify} messages.
+         * @param message EventInviteAdditionalMetadata message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encodeDelimited(message: proto.IEventInviteAdditionalMetadata, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Decodes an EventInviteAdditionalMetadata message from the specified reader or buffer.
+         * @param reader Reader or buffer to decode from
+         * @param [length] Message length if known beforehand
+         * @returns EventInviteAdditionalMetadata
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): proto.EventInviteAdditionalMetadata;
+
+        /**
+         * Decodes an EventInviteAdditionalMetadata message from the specified reader or buffer, length delimited.
+         * @param reader Reader or buffer to decode from
+         * @returns EventInviteAdditionalMetadata
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): proto.EventInviteAdditionalMetadata;
+
+        /**
+         * Verifies an EventInviteAdditionalMetadata message.
+         * @param message Plain object to verify
+         * @returns `null` if valid, otherwise the reason why it is not
+         */
+        public static verify(message: { [k: string]: any }): (string|null);
+
+        /**
+         * Creates an EventInviteAdditionalMetadata message from a plain object. Also converts values to their respective internal types.
+         * @param object Plain object
+         * @returns EventInviteAdditionalMetadata
+         */
+        public static fromObject(object: { [k: string]: any }): proto.EventInviteAdditionalMetadata;
+
+        /**
+         * Creates a plain object from an EventInviteAdditionalMetadata message. Also converts values to other types if specified.
+         * @param message EventInviteAdditionalMetadata
+         * @param [options] Conversion options
+         * @returns Plain object
+         */
+        public static toObject(message: proto.EventInviteAdditionalMetadata, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+        /**
+         * Converts this EventInviteAdditionalMetadata to JSON.
+         * @returns JSON object
+         */
+        public toJSON(): { [k: string]: any };
+
+        /**
+         * Gets the default type url for EventInviteAdditionalMetadata
          * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
          * @returns The default type url
          */
@@ -27511,6 +31619,401 @@ export namespace proto {
          * @returns The default type url
          */
         public static getTypeUrl(typeUrlPrefix?: string): string;
+    }
+
+    /** Properties of an ExtendedContentMessage. */
+    interface IExtendedContentMessage {
+
+        /** ExtendedContentMessage associatedMessage */
+        associatedMessage?: (proto.ISubProtocol|null);
+
+        /** ExtendedContentMessage targetType */
+        targetType?: (proto.EXTENDED_CONTENT_MESSAGE_EXTENDED_CONTENT_TYPE|null);
+
+        /** ExtendedContentMessage targetUsername */
+        targetUsername?: (string|null);
+
+        /** ExtendedContentMessage targetId */
+        targetId?: (string|null);
+
+        /** ExtendedContentMessage targetExpiringAtSec */
+        targetExpiringAtSec?: (number|Long|null);
+
+        /** ExtendedContentMessage xmaLayoutType */
+        xmaLayoutType?: (proto.EXTENDED_CONTENT_MESSAGE_XMA_LAYOUT_TYPE|null);
+
+        /** ExtendedContentMessage ctas */
+        ctas?: (proto.ExtendedContentMessage.ICTA[]|null);
+
+        /** ExtendedContentMessage previews */
+        previews?: (proto.ISubProtocol[]|null);
+
+        /** ExtendedContentMessage titleText */
+        titleText?: (string|null);
+
+        /** ExtendedContentMessage subtitleText */
+        subtitleText?: (string|null);
+
+        /** ExtendedContentMessage maxTitleNumOfLines */
+        maxTitleNumOfLines?: (number|null);
+
+        /** ExtendedContentMessage maxSubtitleNumOfLines */
+        maxSubtitleNumOfLines?: (number|null);
+
+        /** ExtendedContentMessage favicon */
+        favicon?: (proto.ISubProtocol|null);
+
+        /** ExtendedContentMessage headerImage */
+        headerImage?: (proto.ISubProtocol|null);
+
+        /** ExtendedContentMessage headerTitle */
+        headerTitle?: (string|null);
+
+        /** ExtendedContentMessage overlayIconGlyph */
+        overlayIconGlyph?: (proto.EXTENDED_CONTENT_MESSAGE_OVERLAY_ICON_GLYPH|null);
+
+        /** ExtendedContentMessage overlayTitle */
+        overlayTitle?: (string|null);
+
+        /** ExtendedContentMessage overlayDescription */
+        overlayDescription?: (string|null);
+
+        /** ExtendedContentMessage sentWithMessageId */
+        sentWithMessageId?: (string|null);
+
+        /** ExtendedContentMessage messageText */
+        messageText?: (string|null);
+
+        /** ExtendedContentMessage headerSubtitle */
+        headerSubtitle?: (string|null);
+
+        /** ExtendedContentMessage xmaDataclass */
+        xmaDataclass?: (string|null);
+
+        /** ExtendedContentMessage contentRef */
+        contentRef?: (string|null);
+
+        /** ExtendedContentMessage mentionedJid */
+        mentionedJid?: (string[]|null);
+
+        /** ExtendedContentMessage commands */
+        commands?: (proto.ICommand[]|null);
+
+        /** ExtendedContentMessage mentions */
+        mentions?: (proto.IMention[]|null);
+
+        /** ExtendedContentMessage xmaDataclassType */
+        xmaDataclassType?: (proto.EXTENDED_CONTENT_MESSAGE_XMA_DATACLASS_TYPE|null);
+
+        /** ExtendedContentMessage signedXmaDataclassValidation */
+        signedXmaDataclassValidation?: (string|null);
+
+        /** ExtendedContentMessage featureSharedSessionId */
+        featureSharedSessionId?: (string|null);
+    }
+
+    /** Represents an ExtendedContentMessage. */
+    class ExtendedContentMessage implements IExtendedContentMessage {
+
+        /**
+         * Constructs a new ExtendedContentMessage.
+         * @param [properties] Properties to set
+         */
+        constructor(properties?: proto.IExtendedContentMessage);
+
+        /** ExtendedContentMessage associatedMessage. */
+        public associatedMessage?: (proto.ISubProtocol|null);
+
+        /** ExtendedContentMessage targetType. */
+        public targetType?: (proto.EXTENDED_CONTENT_MESSAGE_EXTENDED_CONTENT_TYPE|null);
+
+        /** ExtendedContentMessage targetUsername. */
+        public targetUsername?: (string|null);
+
+        /** ExtendedContentMessage targetId. */
+        public targetId?: (string|null);
+
+        /** ExtendedContentMessage targetExpiringAtSec. */
+        public targetExpiringAtSec?: (number|Long|null);
+
+        /** ExtendedContentMessage xmaLayoutType. */
+        public xmaLayoutType?: (proto.EXTENDED_CONTENT_MESSAGE_XMA_LAYOUT_TYPE|null);
+
+        /** ExtendedContentMessage ctas. */
+        public ctas: proto.ExtendedContentMessage.ICTA[];
+
+        /** ExtendedContentMessage previews. */
+        public previews: proto.ISubProtocol[];
+
+        /** ExtendedContentMessage titleText. */
+        public titleText?: (string|null);
+
+        /** ExtendedContentMessage subtitleText. */
+        public subtitleText?: (string|null);
+
+        /** ExtendedContentMessage maxTitleNumOfLines. */
+        public maxTitleNumOfLines?: (number|null);
+
+        /** ExtendedContentMessage maxSubtitleNumOfLines. */
+        public maxSubtitleNumOfLines?: (number|null);
+
+        /** ExtendedContentMessage favicon. */
+        public favicon?: (proto.ISubProtocol|null);
+
+        /** ExtendedContentMessage headerImage. */
+        public headerImage?: (proto.ISubProtocol|null);
+
+        /** ExtendedContentMessage headerTitle. */
+        public headerTitle?: (string|null);
+
+        /** ExtendedContentMessage overlayIconGlyph. */
+        public overlayIconGlyph?: (proto.EXTENDED_CONTENT_MESSAGE_OVERLAY_ICON_GLYPH|null);
+
+        /** ExtendedContentMessage overlayTitle. */
+        public overlayTitle?: (string|null);
+
+        /** ExtendedContentMessage overlayDescription. */
+        public overlayDescription?: (string|null);
+
+        /** ExtendedContentMessage sentWithMessageId. */
+        public sentWithMessageId?: (string|null);
+
+        /** ExtendedContentMessage messageText. */
+        public messageText?: (string|null);
+
+        /** ExtendedContentMessage headerSubtitle. */
+        public headerSubtitle?: (string|null);
+
+        /** ExtendedContentMessage xmaDataclass. */
+        public xmaDataclass?: (string|null);
+
+        /** ExtendedContentMessage contentRef. */
+        public contentRef?: (string|null);
+
+        /** ExtendedContentMessage mentionedJid. */
+        public mentionedJid: string[];
+
+        /** ExtendedContentMessage commands. */
+        public commands: proto.ICommand[];
+
+        /** ExtendedContentMessage mentions. */
+        public mentions: proto.IMention[];
+
+        /** ExtendedContentMessage xmaDataclassType. */
+        public xmaDataclassType?: (proto.EXTENDED_CONTENT_MESSAGE_XMA_DATACLASS_TYPE|null);
+
+        /** ExtendedContentMessage signedXmaDataclassValidation. */
+        public signedXmaDataclassValidation?: (string|null);
+
+        /** ExtendedContentMessage featureSharedSessionId. */
+        public featureSharedSessionId?: (string|null);
+
+        /**
+         * Creates a new ExtendedContentMessage instance using the specified properties.
+         * @param [properties] Properties to set
+         * @returns ExtendedContentMessage instance
+         */
+        public static create(properties?: proto.IExtendedContentMessage): proto.ExtendedContentMessage;
+
+        /**
+         * Encodes the specified ExtendedContentMessage message. Does not implicitly {@link proto.ExtendedContentMessage.verify|verify} messages.
+         * @param message ExtendedContentMessage message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encode(message: proto.IExtendedContentMessage, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Encodes the specified ExtendedContentMessage message, length delimited. Does not implicitly {@link proto.ExtendedContentMessage.verify|verify} messages.
+         * @param message ExtendedContentMessage message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encodeDelimited(message: proto.IExtendedContentMessage, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Decodes an ExtendedContentMessage message from the specified reader or buffer.
+         * @param reader Reader or buffer to decode from
+         * @param [length] Message length if known beforehand
+         * @returns ExtendedContentMessage
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): proto.ExtendedContentMessage;
+
+        /**
+         * Decodes an ExtendedContentMessage message from the specified reader or buffer, length delimited.
+         * @param reader Reader or buffer to decode from
+         * @returns ExtendedContentMessage
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): proto.ExtendedContentMessage;
+
+        /**
+         * Verifies an ExtendedContentMessage message.
+         * @param message Plain object to verify
+         * @returns `null` if valid, otherwise the reason why it is not
+         */
+        public static verify(message: { [k: string]: any }): (string|null);
+
+        /**
+         * Creates an ExtendedContentMessage message from a plain object. Also converts values to their respective internal types.
+         * @param object Plain object
+         * @returns ExtendedContentMessage
+         */
+        public static fromObject(object: { [k: string]: any }): proto.ExtendedContentMessage;
+
+        /**
+         * Creates a plain object from an ExtendedContentMessage message. Also converts values to other types if specified.
+         * @param message ExtendedContentMessage
+         * @param [options] Conversion options
+         * @returns Plain object
+         */
+        public static toObject(message: proto.ExtendedContentMessage, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+        /**
+         * Converts this ExtendedContentMessage to JSON.
+         * @returns JSON object
+         */
+        public toJSON(): { [k: string]: any };
+
+        /**
+         * Gets the default type url for ExtendedContentMessage
+         * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+         * @returns The default type url
+         */
+        public static getTypeUrl(typeUrlPrefix?: string): string;
+    }
+
+    namespace ExtendedContentMessage {
+
+        /** Properties of a CTA. */
+        interface ICTA {
+
+            /** CTA buttonType */
+            buttonType?: (proto.EXTENDED_CONTENT_MESSAGE_CTA_BUTTON_TYPE|null);
+
+            /** CTA title */
+            title?: (string|null);
+
+            /** CTA actionUrl */
+            actionUrl?: (string|null);
+
+            /** CTA nativeUrl */
+            nativeUrl?: (string|null);
+
+            /** CTA ctaType */
+            ctaType?: (string|null);
+
+            /** CTA actionContentBlob */
+            actionContentBlob?: (string|null);
+        }
+
+        /** Represents a CTA. */
+        class CTA implements ICTA {
+
+            /**
+             * Constructs a new CTA.
+             * @param [properties] Properties to set
+             */
+            constructor(properties?: proto.ExtendedContentMessage.ICTA);
+
+            /** CTA buttonType. */
+            public buttonType?: (proto.EXTENDED_CONTENT_MESSAGE_CTA_BUTTON_TYPE|null);
+
+            /** CTA title. */
+            public title?: (string|null);
+
+            /** CTA actionUrl. */
+            public actionUrl?: (string|null);
+
+            /** CTA nativeUrl. */
+            public nativeUrl?: (string|null);
+
+            /** CTA ctaType. */
+            public ctaType?: (string|null);
+
+            /** CTA actionContentBlob. */
+            public actionContentBlob?: (string|null);
+
+            /**
+             * Creates a new CTA instance using the specified properties.
+             * @param [properties] Properties to set
+             * @returns CTA instance
+             */
+            public static create(properties?: proto.ExtendedContentMessage.ICTA): proto.ExtendedContentMessage.CTA;
+
+            /**
+             * Encodes the specified CTA message. Does not implicitly {@link proto.ExtendedContentMessage.CTA.verify|verify} messages.
+             * @param message CTA message or plain object to encode
+             * @param [writer] Writer to encode to
+             * @returns Writer
+             */
+            public static encode(message: proto.ExtendedContentMessage.ICTA, writer?: $protobuf.Writer): $protobuf.Writer;
+
+            /**
+             * Encodes the specified CTA message, length delimited. Does not implicitly {@link proto.ExtendedContentMessage.CTA.verify|verify} messages.
+             * @param message CTA message or plain object to encode
+             * @param [writer] Writer to encode to
+             * @returns Writer
+             */
+            public static encodeDelimited(message: proto.ExtendedContentMessage.ICTA, writer?: $protobuf.Writer): $protobuf.Writer;
+
+            /**
+             * Decodes a CTA message from the specified reader or buffer.
+             * @param reader Reader or buffer to decode from
+             * @param [length] Message length if known beforehand
+             * @returns CTA
+             * @throws {Error} If the payload is not a reader or valid buffer
+             * @throws {$protobuf.util.ProtocolError} If required fields are missing
+             */
+            public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): proto.ExtendedContentMessage.CTA;
+
+            /**
+             * Decodes a CTA message from the specified reader or buffer, length delimited.
+             * @param reader Reader or buffer to decode from
+             * @returns CTA
+             * @throws {Error} If the payload is not a reader or valid buffer
+             * @throws {$protobuf.util.ProtocolError} If required fields are missing
+             */
+            public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): proto.ExtendedContentMessage.CTA;
+
+            /**
+             * Verifies a CTA message.
+             * @param message Plain object to verify
+             * @returns `null` if valid, otherwise the reason why it is not
+             */
+            public static verify(message: { [k: string]: any }): (string|null);
+
+            /**
+             * Creates a CTA message from a plain object. Also converts values to their respective internal types.
+             * @param object Plain object
+             * @returns CTA
+             */
+            public static fromObject(object: { [k: string]: any }): proto.ExtendedContentMessage.CTA;
+
+            /**
+             * Creates a plain object from a CTA message. Also converts values to other types if specified.
+             * @param message CTA
+             * @param [options] Conversion options
+             * @returns Plain object
+             */
+            public static toObject(message: proto.ExtendedContentMessage.CTA, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+            /**
+             * Converts this CTA to JSON.
+             * @returns JSON object
+             */
+            public toJSON(): { [k: string]: any };
+
+            /**
+             * Gets the default type url for CTA
+             * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+             * @returns The default type url
+             */
+            public static getTypeUrl(typeUrlPrefix?: string): string;
+        }
     }
 
     /** Properties of an ExternalBlobReference. */
@@ -27998,6 +32501,394 @@ export namespace proto {
 
         /**
          * Gets the default type url for ForwardedAIBotMessageInfo
+         * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+         * @returns The default type url
+         */
+        public static getTypeUrl(typeUrlPrefix?: string): string;
+    }
+
+    /** Properties of a GenerateMekInput. */
+    interface IGenerateMekInput {
+
+        /** GenerateMekInput epochHeads */
+        epochHeads?: (Uint8Array[]|null);
+    }
+
+    /** Represents a GenerateMekInput. */
+    class GenerateMekInput implements IGenerateMekInput {
+
+        /**
+         * Constructs a new GenerateMekInput.
+         * @param [properties] Properties to set
+         */
+        constructor(properties?: proto.IGenerateMekInput);
+
+        /** GenerateMekInput epochHeads. */
+        public epochHeads: Uint8Array[];
+
+        /**
+         * Creates a new GenerateMekInput instance using the specified properties.
+         * @param [properties] Properties to set
+         * @returns GenerateMekInput instance
+         */
+        public static create(properties?: proto.IGenerateMekInput): proto.GenerateMekInput;
+
+        /**
+         * Encodes the specified GenerateMekInput message. Does not implicitly {@link proto.GenerateMekInput.verify|verify} messages.
+         * @param message GenerateMekInput message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encode(message: proto.IGenerateMekInput, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Encodes the specified GenerateMekInput message, length delimited. Does not implicitly {@link proto.GenerateMekInput.verify|verify} messages.
+         * @param message GenerateMekInput message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encodeDelimited(message: proto.IGenerateMekInput, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Decodes a GenerateMekInput message from the specified reader or buffer.
+         * @param reader Reader or buffer to decode from
+         * @param [length] Message length if known beforehand
+         * @returns GenerateMekInput
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): proto.GenerateMekInput;
+
+        /**
+         * Decodes a GenerateMekInput message from the specified reader or buffer, length delimited.
+         * @param reader Reader or buffer to decode from
+         * @returns GenerateMekInput
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): proto.GenerateMekInput;
+
+        /**
+         * Verifies a GenerateMekInput message.
+         * @param message Plain object to verify
+         * @returns `null` if valid, otherwise the reason why it is not
+         */
+        public static verify(message: { [k: string]: any }): (string|null);
+
+        /**
+         * Creates a GenerateMekInput message from a plain object. Also converts values to their respective internal types.
+         * @param object Plain object
+         * @returns GenerateMekInput
+         */
+        public static fromObject(object: { [k: string]: any }): proto.GenerateMekInput;
+
+        /**
+         * Creates a plain object from a GenerateMekInput message. Also converts values to other types if specified.
+         * @param message GenerateMekInput
+         * @param [options] Conversion options
+         * @returns Plain object
+         */
+        public static toObject(message: proto.GenerateMekInput, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+        /**
+         * Converts this GenerateMekInput to JSON.
+         * @returns JSON object
+         */
+        public toJSON(): { [k: string]: any };
+
+        /**
+         * Gets the default type url for GenerateMekInput
+         * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+         * @returns The default type url
+         */
+        public static getTypeUrl(typeUrlPrefix?: string): string;
+    }
+
+    /** Properties of a GenerateMekResult. */
+    interface IGenerateMekResult {
+
+        /** GenerateMekResult mek */
+        mek?: (proto.IMekBundle|null);
+    }
+
+    /** Represents a GenerateMekResult. */
+    class GenerateMekResult implements IGenerateMekResult {
+
+        /**
+         * Constructs a new GenerateMekResult.
+         * @param [properties] Properties to set
+         */
+        constructor(properties?: proto.IGenerateMekResult);
+
+        /** GenerateMekResult mek. */
+        public mek?: (proto.IMekBundle|null);
+
+        /**
+         * Creates a new GenerateMekResult instance using the specified properties.
+         * @param [properties] Properties to set
+         * @returns GenerateMekResult instance
+         */
+        public static create(properties?: proto.IGenerateMekResult): proto.GenerateMekResult;
+
+        /**
+         * Encodes the specified GenerateMekResult message. Does not implicitly {@link proto.GenerateMekResult.verify|verify} messages.
+         * @param message GenerateMekResult message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encode(message: proto.IGenerateMekResult, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Encodes the specified GenerateMekResult message, length delimited. Does not implicitly {@link proto.GenerateMekResult.verify|verify} messages.
+         * @param message GenerateMekResult message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encodeDelimited(message: proto.IGenerateMekResult, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Decodes a GenerateMekResult message from the specified reader or buffer.
+         * @param reader Reader or buffer to decode from
+         * @param [length] Message length if known beforehand
+         * @returns GenerateMekResult
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): proto.GenerateMekResult;
+
+        /**
+         * Decodes a GenerateMekResult message from the specified reader or buffer, length delimited.
+         * @param reader Reader or buffer to decode from
+         * @returns GenerateMekResult
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): proto.GenerateMekResult;
+
+        /**
+         * Verifies a GenerateMekResult message.
+         * @param message Plain object to verify
+         * @returns `null` if valid, otherwise the reason why it is not
+         */
+        public static verify(message: { [k: string]: any }): (string|null);
+
+        /**
+         * Creates a GenerateMekResult message from a plain object. Also converts values to their respective internal types.
+         * @param object Plain object
+         * @returns GenerateMekResult
+         */
+        public static fromObject(object: { [k: string]: any }): proto.GenerateMekResult;
+
+        /**
+         * Creates a plain object from a GenerateMekResult message. Also converts values to other types if specified.
+         * @param message GenerateMekResult
+         * @param [options] Conversion options
+         * @returns Plain object
+         */
+        public static toObject(message: proto.GenerateMekResult, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+        /**
+         * Converts this GenerateMekResult to JSON.
+         * @returns JSON object
+         */
+        public toJSON(): { [k: string]: any };
+
+        /**
+         * Gets the default type url for GenerateMekResult
+         * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+         * @returns The default type url
+         */
+        public static getTypeUrl(typeUrlPrefix?: string): string;
+    }
+
+    /** Properties of a GenerateMekRosterHashInput. */
+    interface IGenerateMekRosterHashInput {
+
+        /** GenerateMekRosterHashInput epochHeads */
+        epochHeads?: (Uint8Array[]|null);
+    }
+
+    /** Represents a GenerateMekRosterHashInput. */
+    class GenerateMekRosterHashInput implements IGenerateMekRosterHashInput {
+
+        /**
+         * Constructs a new GenerateMekRosterHashInput.
+         * @param [properties] Properties to set
+         */
+        constructor(properties?: proto.IGenerateMekRosterHashInput);
+
+        /** GenerateMekRosterHashInput epochHeads. */
+        public epochHeads: Uint8Array[];
+
+        /**
+         * Creates a new GenerateMekRosterHashInput instance using the specified properties.
+         * @param [properties] Properties to set
+         * @returns GenerateMekRosterHashInput instance
+         */
+        public static create(properties?: proto.IGenerateMekRosterHashInput): proto.GenerateMekRosterHashInput;
+
+        /**
+         * Encodes the specified GenerateMekRosterHashInput message. Does not implicitly {@link proto.GenerateMekRosterHashInput.verify|verify} messages.
+         * @param message GenerateMekRosterHashInput message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encode(message: proto.IGenerateMekRosterHashInput, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Encodes the specified GenerateMekRosterHashInput message, length delimited. Does not implicitly {@link proto.GenerateMekRosterHashInput.verify|verify} messages.
+         * @param message GenerateMekRosterHashInput message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encodeDelimited(message: proto.IGenerateMekRosterHashInput, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Decodes a GenerateMekRosterHashInput message from the specified reader or buffer.
+         * @param reader Reader or buffer to decode from
+         * @param [length] Message length if known beforehand
+         * @returns GenerateMekRosterHashInput
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): proto.GenerateMekRosterHashInput;
+
+        /**
+         * Decodes a GenerateMekRosterHashInput message from the specified reader or buffer, length delimited.
+         * @param reader Reader or buffer to decode from
+         * @returns GenerateMekRosterHashInput
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): proto.GenerateMekRosterHashInput;
+
+        /**
+         * Verifies a GenerateMekRosterHashInput message.
+         * @param message Plain object to verify
+         * @returns `null` if valid, otherwise the reason why it is not
+         */
+        public static verify(message: { [k: string]: any }): (string|null);
+
+        /**
+         * Creates a GenerateMekRosterHashInput message from a plain object. Also converts values to their respective internal types.
+         * @param object Plain object
+         * @returns GenerateMekRosterHashInput
+         */
+        public static fromObject(object: { [k: string]: any }): proto.GenerateMekRosterHashInput;
+
+        /**
+         * Creates a plain object from a GenerateMekRosterHashInput message. Also converts values to other types if specified.
+         * @param message GenerateMekRosterHashInput
+         * @param [options] Conversion options
+         * @returns Plain object
+         */
+        public static toObject(message: proto.GenerateMekRosterHashInput, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+        /**
+         * Converts this GenerateMekRosterHashInput to JSON.
+         * @returns JSON object
+         */
+        public toJSON(): { [k: string]: any };
+
+        /**
+         * Gets the default type url for GenerateMekRosterHashInput
+         * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+         * @returns The default type url
+         */
+        public static getTypeUrl(typeUrlPrefix?: string): string;
+    }
+
+    /** Properties of a GenerateMekRosterHashResult. */
+    interface IGenerateMekRosterHashResult {
+
+        /** GenerateMekRosterHashResult rosterHash */
+        rosterHash?: (Uint8Array|null);
+    }
+
+    /** Represents a GenerateMekRosterHashResult. */
+    class GenerateMekRosterHashResult implements IGenerateMekRosterHashResult {
+
+        /**
+         * Constructs a new GenerateMekRosterHashResult.
+         * @param [properties] Properties to set
+         */
+        constructor(properties?: proto.IGenerateMekRosterHashResult);
+
+        /** GenerateMekRosterHashResult rosterHash. */
+        public rosterHash?: (Uint8Array|null);
+
+        /**
+         * Creates a new GenerateMekRosterHashResult instance using the specified properties.
+         * @param [properties] Properties to set
+         * @returns GenerateMekRosterHashResult instance
+         */
+        public static create(properties?: proto.IGenerateMekRosterHashResult): proto.GenerateMekRosterHashResult;
+
+        /**
+         * Encodes the specified GenerateMekRosterHashResult message. Does not implicitly {@link proto.GenerateMekRosterHashResult.verify|verify} messages.
+         * @param message GenerateMekRosterHashResult message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encode(message: proto.IGenerateMekRosterHashResult, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Encodes the specified GenerateMekRosterHashResult message, length delimited. Does not implicitly {@link proto.GenerateMekRosterHashResult.verify|verify} messages.
+         * @param message GenerateMekRosterHashResult message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encodeDelimited(message: proto.IGenerateMekRosterHashResult, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Decodes a GenerateMekRosterHashResult message from the specified reader or buffer.
+         * @param reader Reader or buffer to decode from
+         * @param [length] Message length if known beforehand
+         * @returns GenerateMekRosterHashResult
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): proto.GenerateMekRosterHashResult;
+
+        /**
+         * Decodes a GenerateMekRosterHashResult message from the specified reader or buffer, length delimited.
+         * @param reader Reader or buffer to decode from
+         * @returns GenerateMekRosterHashResult
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): proto.GenerateMekRosterHashResult;
+
+        /**
+         * Verifies a GenerateMekRosterHashResult message.
+         * @param message Plain object to verify
+         * @returns `null` if valid, otherwise the reason why it is not
+         */
+        public static verify(message: { [k: string]: any }): (string|null);
+
+        /**
+         * Creates a GenerateMekRosterHashResult message from a plain object. Also converts values to their respective internal types.
+         * @param object Plain object
+         * @returns GenerateMekRosterHashResult
+         */
+        public static fromObject(object: { [k: string]: any }): proto.GenerateMekRosterHashResult;
+
+        /**
+         * Creates a plain object from a GenerateMekRosterHashResult message. Also converts values to other types if specified.
+         * @param message GenerateMekRosterHashResult
+         * @param [options] Conversion options
+         * @returns Plain object
+         */
+        public static toObject(message: proto.GenerateMekRosterHashResult, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+        /**
+         * Converts this GenerateMekRosterHashResult to JSON.
+         * @returns JSON object
+         */
+        public toJSON(): { [k: string]: any };
+
+        /**
+         * Gets the default type url for GenerateMekRosterHashResult
          * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
          * @returns The default type url
          */
@@ -29806,6 +34697,15 @@ export namespace proto {
 
         /** HistorySync inlineContactsProvided */
         inlineContactsProvided?: (boolean|null);
+
+        /** HistorySync favoriteStickers */
+        favoriteStickers?: (proto.IStickerMetadata[]|null);
+
+        /** HistorySync omittedConversations */
+        omittedConversations?: (proto.IRecoverableHistoryConversation[]|null);
+
+        /** HistorySync omittedConversationsProvided */
+        omittedConversationsProvided?: (boolean|null);
     }
 
     /** Represents a HistorySync. */
@@ -29876,6 +34776,15 @@ export namespace proto {
 
         /** HistorySync inlineContactsProvided. */
         public inlineContactsProvided?: (boolean|null);
+
+        /** HistorySync favoriteStickers. */
+        public favoriteStickers: proto.IStickerMetadata[];
+
+        /** HistorySync omittedConversations. */
+        public omittedConversations: proto.IRecoverableHistoryConversation[];
+
+        /** HistorySync omittedConversationsProvided. */
+        public omittedConversationsProvided?: (boolean|null);
 
         /**
          * Creates a new HistorySync instance using the specified properties.
@@ -31987,118 +36896,6 @@ export namespace proto {
         public static getTypeUrl(typeUrlPrefix?: string): string;
     }
 
-    /** Properties of a KeyTransparencyCommand. */
-    interface IKeyTransparencyCommand {
-
-        /** KeyTransparencyCommand verifyKtForUserSignal */
-        verifyKtForUserSignal?: (proto.IVerifyKeyTransparencyForUserSignalCommand|null);
-
-        /** KeyTransparencyCommand verifyKtForUserMinos */
-        verifyKtForUserMinos?: (proto.IVerifyKeyTransparencyForUserMinosCommand|null);
-
-        /** KeyTransparencyCommand verifyKtForUserMandrake */
-        verifyKtForUserMandrake?: (proto.IVerifyKeyTransparencyForUserMandrakeCommand|null);
-    }
-
-    /** Represents a KeyTransparencyCommand. */
-    class KeyTransparencyCommand implements IKeyTransparencyCommand {
-
-        /**
-         * Constructs a new KeyTransparencyCommand.
-         * @param [properties] Properties to set
-         */
-        constructor(properties?: proto.IKeyTransparencyCommand);
-
-        /** KeyTransparencyCommand verifyKtForUserSignal. */
-        public verifyKtForUserSignal?: (proto.IVerifyKeyTransparencyForUserSignalCommand|null);
-
-        /** KeyTransparencyCommand verifyKtForUserMinos. */
-        public verifyKtForUserMinos?: (proto.IVerifyKeyTransparencyForUserMinosCommand|null);
-
-        /** KeyTransparencyCommand verifyKtForUserMandrake. */
-        public verifyKtForUserMandrake?: (proto.IVerifyKeyTransparencyForUserMandrakeCommand|null);
-
-        /** KeyTransparencyCommand commandInput. */
-        public commandInput?: ("verifyKtForUserSignal"|"verifyKtForUserMinos"|"verifyKtForUserMandrake");
-
-        /**
-         * Creates a new KeyTransparencyCommand instance using the specified properties.
-         * @param [properties] Properties to set
-         * @returns KeyTransparencyCommand instance
-         */
-        public static create(properties?: proto.IKeyTransparencyCommand): proto.KeyTransparencyCommand;
-
-        /**
-         * Encodes the specified KeyTransparencyCommand message. Does not implicitly {@link proto.KeyTransparencyCommand.verify|verify} messages.
-         * @param message KeyTransparencyCommand message or plain object to encode
-         * @param [writer] Writer to encode to
-         * @returns Writer
-         */
-        public static encode(message: proto.IKeyTransparencyCommand, writer?: $protobuf.Writer): $protobuf.Writer;
-
-        /**
-         * Encodes the specified KeyTransparencyCommand message, length delimited. Does not implicitly {@link proto.KeyTransparencyCommand.verify|verify} messages.
-         * @param message KeyTransparencyCommand message or plain object to encode
-         * @param [writer] Writer to encode to
-         * @returns Writer
-         */
-        public static encodeDelimited(message: proto.IKeyTransparencyCommand, writer?: $protobuf.Writer): $protobuf.Writer;
-
-        /**
-         * Decodes a KeyTransparencyCommand message from the specified reader or buffer.
-         * @param reader Reader or buffer to decode from
-         * @param [length] Message length if known beforehand
-         * @returns KeyTransparencyCommand
-         * @throws {Error} If the payload is not a reader or valid buffer
-         * @throws {$protobuf.util.ProtocolError} If required fields are missing
-         */
-        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): proto.KeyTransparencyCommand;
-
-        /**
-         * Decodes a KeyTransparencyCommand message from the specified reader or buffer, length delimited.
-         * @param reader Reader or buffer to decode from
-         * @returns KeyTransparencyCommand
-         * @throws {Error} If the payload is not a reader or valid buffer
-         * @throws {$protobuf.util.ProtocolError} If required fields are missing
-         */
-        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): proto.KeyTransparencyCommand;
-
-        /**
-         * Verifies a KeyTransparencyCommand message.
-         * @param message Plain object to verify
-         * @returns `null` if valid, otherwise the reason why it is not
-         */
-        public static verify(message: { [k: string]: any }): (string|null);
-
-        /**
-         * Creates a KeyTransparencyCommand message from a plain object. Also converts values to their respective internal types.
-         * @param object Plain object
-         * @returns KeyTransparencyCommand
-         */
-        public static fromObject(object: { [k: string]: any }): proto.KeyTransparencyCommand;
-
-        /**
-         * Creates a plain object from a KeyTransparencyCommand message. Also converts values to other types if specified.
-         * @param message KeyTransparencyCommand
-         * @param [options] Conversion options
-         * @returns Plain object
-         */
-        public static toObject(message: proto.KeyTransparencyCommand, options?: $protobuf.IConversionOptions): { [k: string]: any };
-
-        /**
-         * Converts this KeyTransparencyCommand to JSON.
-         * @returns JSON object
-         */
-        public toJSON(): { [k: string]: any };
-
-        /**
-         * Gets the default type url for KeyTransparencyCommand
-         * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
-         * @returns The default type url
-         */
-        public static getTypeUrl(typeUrlPrefix?: string): string;
-    }
-
     /** Properties of a LIDMigrationMappingSyncMessage. */
     interface ILIDMigrationMappingSyncMessage {
 
@@ -32776,6 +37573,2818 @@ export namespace proto {
     /** MENTION_MENTION_TYPE enum. */
     enum MENTION_MENTION_TYPE {
         PROFILE = 0
+    }
+
+    /** Properties of a MandrakeDecryptMekInput. */
+    interface IMandrakeDecryptMekInput {
+
+        /** MandrakeDecryptMekInput encryptedMek */
+        encryptedMek?: (Uint8Array|null);
+
+        /** MandrakeDecryptMekInput recipientsHash */
+        recipientsHash?: (Uint8Array|null);
+
+        /** MandrakeDecryptMekInput recipientEncSk */
+        recipientEncSk?: (Uint8Array|null);
+
+        /** MandrakeDecryptMekInput mekEncryptionVersion */
+        mekEncryptionVersion?: (number|Long|null);
+
+        /** MandrakeDecryptMekInput conf */
+        conf?: (proto.IMinosClientConfig|null);
+
+        /** MandrakeDecryptMekInput recipientMmk */
+        recipientMmk?: (proto.IMessagingMailboxPublicData|null);
+
+        /** MandrakeDecryptMekInput mekId */
+        mekId?: (Uint8Array|null);
+
+        /** MandrakeDecryptMekInput recipientMembershipProof */
+        recipientMembershipProof?: (proto.IMerkleMembershipProof|null);
+
+        /** MandrakeDecryptMekInput mmkSender */
+        mmkSender?: (proto.MandrakeDecryptMekInput.IMmkSenderPublicData|null);
+
+        /** MandrakeDecryptMekInput epochSender */
+        epochSender?: (proto.MandrakeDecryptMekInput.IEpochSenderPublicData|null);
+
+        /** MandrakeDecryptMekInput precomputedEpochSender */
+        precomputedEpochSender?: (proto.MandrakeDecryptMekInput.IPrecomputedEpochSenderPublicData|null);
+    }
+
+    /** Represents a MandrakeDecryptMekInput. */
+    class MandrakeDecryptMekInput implements IMandrakeDecryptMekInput {
+
+        /**
+         * Constructs a new MandrakeDecryptMekInput.
+         * @param [properties] Properties to set
+         */
+        constructor(properties?: proto.IMandrakeDecryptMekInput);
+
+        /** MandrakeDecryptMekInput encryptedMek. */
+        public encryptedMek?: (Uint8Array|null);
+
+        /** MandrakeDecryptMekInput recipientsHash. */
+        public recipientsHash?: (Uint8Array|null);
+
+        /** MandrakeDecryptMekInput recipientEncSk. */
+        public recipientEncSk?: (Uint8Array|null);
+
+        /** MandrakeDecryptMekInput mekEncryptionVersion. */
+        public mekEncryptionVersion?: (number|Long|null);
+
+        /** MandrakeDecryptMekInput conf. */
+        public conf?: (proto.IMinosClientConfig|null);
+
+        /** MandrakeDecryptMekInput recipientMmk. */
+        public recipientMmk?: (proto.IMessagingMailboxPublicData|null);
+
+        /** MandrakeDecryptMekInput mekId. */
+        public mekId?: (Uint8Array|null);
+
+        /** MandrakeDecryptMekInput recipientMembershipProof. */
+        public recipientMembershipProof?: (proto.IMerkleMembershipProof|null);
+
+        /** MandrakeDecryptMekInput mmkSender. */
+        public mmkSender?: (proto.MandrakeDecryptMekInput.IMmkSenderPublicData|null);
+
+        /** MandrakeDecryptMekInput epochSender. */
+        public epochSender?: (proto.MandrakeDecryptMekInput.IEpochSenderPublicData|null);
+
+        /** MandrakeDecryptMekInput precomputedEpochSender. */
+        public precomputedEpochSender?: (proto.MandrakeDecryptMekInput.IPrecomputedEpochSenderPublicData|null);
+
+        /** MandrakeDecryptMekInput senderPublicData. */
+        public senderPublicData?: ("mmkSender"|"epochSender"|"precomputedEpochSender");
+
+        /**
+         * Creates a new MandrakeDecryptMekInput instance using the specified properties.
+         * @param [properties] Properties to set
+         * @returns MandrakeDecryptMekInput instance
+         */
+        public static create(properties?: proto.IMandrakeDecryptMekInput): proto.MandrakeDecryptMekInput;
+
+        /**
+         * Encodes the specified MandrakeDecryptMekInput message. Does not implicitly {@link proto.MandrakeDecryptMekInput.verify|verify} messages.
+         * @param message MandrakeDecryptMekInput message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encode(message: proto.IMandrakeDecryptMekInput, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Encodes the specified MandrakeDecryptMekInput message, length delimited. Does not implicitly {@link proto.MandrakeDecryptMekInput.verify|verify} messages.
+         * @param message MandrakeDecryptMekInput message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encodeDelimited(message: proto.IMandrakeDecryptMekInput, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Decodes a MandrakeDecryptMekInput message from the specified reader or buffer.
+         * @param reader Reader or buffer to decode from
+         * @param [length] Message length if known beforehand
+         * @returns MandrakeDecryptMekInput
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): proto.MandrakeDecryptMekInput;
+
+        /**
+         * Decodes a MandrakeDecryptMekInput message from the specified reader or buffer, length delimited.
+         * @param reader Reader or buffer to decode from
+         * @returns MandrakeDecryptMekInput
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): proto.MandrakeDecryptMekInput;
+
+        /**
+         * Verifies a MandrakeDecryptMekInput message.
+         * @param message Plain object to verify
+         * @returns `null` if valid, otherwise the reason why it is not
+         */
+        public static verify(message: { [k: string]: any }): (string|null);
+
+        /**
+         * Creates a MandrakeDecryptMekInput message from a plain object. Also converts values to their respective internal types.
+         * @param object Plain object
+         * @returns MandrakeDecryptMekInput
+         */
+        public static fromObject(object: { [k: string]: any }): proto.MandrakeDecryptMekInput;
+
+        /**
+         * Creates a plain object from a MandrakeDecryptMekInput message. Also converts values to other types if specified.
+         * @param message MandrakeDecryptMekInput
+         * @param [options] Conversion options
+         * @returns Plain object
+         */
+        public static toObject(message: proto.MandrakeDecryptMekInput, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+        /**
+         * Converts this MandrakeDecryptMekInput to JSON.
+         * @returns JSON object
+         */
+        public toJSON(): { [k: string]: any };
+
+        /**
+         * Gets the default type url for MandrakeDecryptMekInput
+         * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+         * @returns The default type url
+         */
+        public static getTypeUrl(typeUrlPrefix?: string): string;
+    }
+
+    namespace MandrakeDecryptMekInput {
+
+        /** Properties of an EpochSenderPublicData. */
+        interface IEpochSenderPublicData {
+
+            /** EpochSenderPublicData epochPublicData */
+            epochPublicData?: (proto.IEpochPublicData|null);
+        }
+
+        /** Represents an EpochSenderPublicData. */
+        class EpochSenderPublicData implements IEpochSenderPublicData {
+
+            /**
+             * Constructs a new EpochSenderPublicData.
+             * @param [properties] Properties to set
+             */
+            constructor(properties?: proto.MandrakeDecryptMekInput.IEpochSenderPublicData);
+
+            /** EpochSenderPublicData epochPublicData. */
+            public epochPublicData?: (proto.IEpochPublicData|null);
+
+            /**
+             * Creates a new EpochSenderPublicData instance using the specified properties.
+             * @param [properties] Properties to set
+             * @returns EpochSenderPublicData instance
+             */
+            public static create(properties?: proto.MandrakeDecryptMekInput.IEpochSenderPublicData): proto.MandrakeDecryptMekInput.EpochSenderPublicData;
+
+            /**
+             * Encodes the specified EpochSenderPublicData message. Does not implicitly {@link proto.MandrakeDecryptMekInput.EpochSenderPublicData.verify|verify} messages.
+             * @param message EpochSenderPublicData message or plain object to encode
+             * @param [writer] Writer to encode to
+             * @returns Writer
+             */
+            public static encode(message: proto.MandrakeDecryptMekInput.IEpochSenderPublicData, writer?: $protobuf.Writer): $protobuf.Writer;
+
+            /**
+             * Encodes the specified EpochSenderPublicData message, length delimited. Does not implicitly {@link proto.MandrakeDecryptMekInput.EpochSenderPublicData.verify|verify} messages.
+             * @param message EpochSenderPublicData message or plain object to encode
+             * @param [writer] Writer to encode to
+             * @returns Writer
+             */
+            public static encodeDelimited(message: proto.MandrakeDecryptMekInput.IEpochSenderPublicData, writer?: $protobuf.Writer): $protobuf.Writer;
+
+            /**
+             * Decodes an EpochSenderPublicData message from the specified reader or buffer.
+             * @param reader Reader or buffer to decode from
+             * @param [length] Message length if known beforehand
+             * @returns EpochSenderPublicData
+             * @throws {Error} If the payload is not a reader or valid buffer
+             * @throws {$protobuf.util.ProtocolError} If required fields are missing
+             */
+            public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): proto.MandrakeDecryptMekInput.EpochSenderPublicData;
+
+            /**
+             * Decodes an EpochSenderPublicData message from the specified reader or buffer, length delimited.
+             * @param reader Reader or buffer to decode from
+             * @returns EpochSenderPublicData
+             * @throws {Error} If the payload is not a reader or valid buffer
+             * @throws {$protobuf.util.ProtocolError} If required fields are missing
+             */
+            public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): proto.MandrakeDecryptMekInput.EpochSenderPublicData;
+
+            /**
+             * Verifies an EpochSenderPublicData message.
+             * @param message Plain object to verify
+             * @returns `null` if valid, otherwise the reason why it is not
+             */
+            public static verify(message: { [k: string]: any }): (string|null);
+
+            /**
+             * Creates an EpochSenderPublicData message from a plain object. Also converts values to their respective internal types.
+             * @param object Plain object
+             * @returns EpochSenderPublicData
+             */
+            public static fromObject(object: { [k: string]: any }): proto.MandrakeDecryptMekInput.EpochSenderPublicData;
+
+            /**
+             * Creates a plain object from an EpochSenderPublicData message. Also converts values to other types if specified.
+             * @param message EpochSenderPublicData
+             * @param [options] Conversion options
+             * @returns Plain object
+             */
+            public static toObject(message: proto.MandrakeDecryptMekInput.EpochSenderPublicData, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+            /**
+             * Converts this EpochSenderPublicData to JSON.
+             * @returns JSON object
+             */
+            public toJSON(): { [k: string]: any };
+
+            /**
+             * Gets the default type url for EpochSenderPublicData
+             * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+             * @returns The default type url
+             */
+            public static getTypeUrl(typeUrlPrefix?: string): string;
+        }
+
+        /** Properties of a MmkSenderPublicData. */
+        interface IMmkSenderPublicData {
+
+            /** MmkSenderPublicData mmkPublicData */
+            mmkPublicData?: (proto.IMessagingMailboxPublicData|null);
+        }
+
+        /** Represents a MmkSenderPublicData. */
+        class MmkSenderPublicData implements IMmkSenderPublicData {
+
+            /**
+             * Constructs a new MmkSenderPublicData.
+             * @param [properties] Properties to set
+             */
+            constructor(properties?: proto.MandrakeDecryptMekInput.IMmkSenderPublicData);
+
+            /** MmkSenderPublicData mmkPublicData. */
+            public mmkPublicData?: (proto.IMessagingMailboxPublicData|null);
+
+            /**
+             * Creates a new MmkSenderPublicData instance using the specified properties.
+             * @param [properties] Properties to set
+             * @returns MmkSenderPublicData instance
+             */
+            public static create(properties?: proto.MandrakeDecryptMekInput.IMmkSenderPublicData): proto.MandrakeDecryptMekInput.MmkSenderPublicData;
+
+            /**
+             * Encodes the specified MmkSenderPublicData message. Does not implicitly {@link proto.MandrakeDecryptMekInput.MmkSenderPublicData.verify|verify} messages.
+             * @param message MmkSenderPublicData message or plain object to encode
+             * @param [writer] Writer to encode to
+             * @returns Writer
+             */
+            public static encode(message: proto.MandrakeDecryptMekInput.IMmkSenderPublicData, writer?: $protobuf.Writer): $protobuf.Writer;
+
+            /**
+             * Encodes the specified MmkSenderPublicData message, length delimited. Does not implicitly {@link proto.MandrakeDecryptMekInput.MmkSenderPublicData.verify|verify} messages.
+             * @param message MmkSenderPublicData message or plain object to encode
+             * @param [writer] Writer to encode to
+             * @returns Writer
+             */
+            public static encodeDelimited(message: proto.MandrakeDecryptMekInput.IMmkSenderPublicData, writer?: $protobuf.Writer): $protobuf.Writer;
+
+            /**
+             * Decodes a MmkSenderPublicData message from the specified reader or buffer.
+             * @param reader Reader or buffer to decode from
+             * @param [length] Message length if known beforehand
+             * @returns MmkSenderPublicData
+             * @throws {Error} If the payload is not a reader or valid buffer
+             * @throws {$protobuf.util.ProtocolError} If required fields are missing
+             */
+            public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): proto.MandrakeDecryptMekInput.MmkSenderPublicData;
+
+            /**
+             * Decodes a MmkSenderPublicData message from the specified reader or buffer, length delimited.
+             * @param reader Reader or buffer to decode from
+             * @returns MmkSenderPublicData
+             * @throws {Error} If the payload is not a reader or valid buffer
+             * @throws {$protobuf.util.ProtocolError} If required fields are missing
+             */
+            public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): proto.MandrakeDecryptMekInput.MmkSenderPublicData;
+
+            /**
+             * Verifies a MmkSenderPublicData message.
+             * @param message Plain object to verify
+             * @returns `null` if valid, otherwise the reason why it is not
+             */
+            public static verify(message: { [k: string]: any }): (string|null);
+
+            /**
+             * Creates a MmkSenderPublicData message from a plain object. Also converts values to their respective internal types.
+             * @param object Plain object
+             * @returns MmkSenderPublicData
+             */
+            public static fromObject(object: { [k: string]: any }): proto.MandrakeDecryptMekInput.MmkSenderPublicData;
+
+            /**
+             * Creates a plain object from a MmkSenderPublicData message. Also converts values to other types if specified.
+             * @param message MmkSenderPublicData
+             * @param [options] Conversion options
+             * @returns Plain object
+             */
+            public static toObject(message: proto.MandrakeDecryptMekInput.MmkSenderPublicData, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+            /**
+             * Converts this MmkSenderPublicData to JSON.
+             * @returns JSON object
+             */
+            public toJSON(): { [k: string]: any };
+
+            /**
+             * Gets the default type url for MmkSenderPublicData
+             * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+             * @returns The default type url
+             */
+            public static getTypeUrl(typeUrlPrefix?: string): string;
+        }
+
+        /** Properties of a PrecomputedEpochSenderPublicData. */
+        interface IPrecomputedEpochSenderPublicData {
+
+            /** PrecomputedEpochSenderPublicData authPk */
+            authPk?: (Uint8Array|null);
+
+            /** PrecomputedEpochSenderPublicData epochHead */
+            epochHead?: (Uint8Array|null);
+        }
+
+        /** Represents a PrecomputedEpochSenderPublicData. */
+        class PrecomputedEpochSenderPublicData implements IPrecomputedEpochSenderPublicData {
+
+            /**
+             * Constructs a new PrecomputedEpochSenderPublicData.
+             * @param [properties] Properties to set
+             */
+            constructor(properties?: proto.MandrakeDecryptMekInput.IPrecomputedEpochSenderPublicData);
+
+            /** PrecomputedEpochSenderPublicData authPk. */
+            public authPk?: (Uint8Array|null);
+
+            /** PrecomputedEpochSenderPublicData epochHead. */
+            public epochHead?: (Uint8Array|null);
+
+            /**
+             * Creates a new PrecomputedEpochSenderPublicData instance using the specified properties.
+             * @param [properties] Properties to set
+             * @returns PrecomputedEpochSenderPublicData instance
+             */
+            public static create(properties?: proto.MandrakeDecryptMekInput.IPrecomputedEpochSenderPublicData): proto.MandrakeDecryptMekInput.PrecomputedEpochSenderPublicData;
+
+            /**
+             * Encodes the specified PrecomputedEpochSenderPublicData message. Does not implicitly {@link proto.MandrakeDecryptMekInput.PrecomputedEpochSenderPublicData.verify|verify} messages.
+             * @param message PrecomputedEpochSenderPublicData message or plain object to encode
+             * @param [writer] Writer to encode to
+             * @returns Writer
+             */
+            public static encode(message: proto.MandrakeDecryptMekInput.IPrecomputedEpochSenderPublicData, writer?: $protobuf.Writer): $protobuf.Writer;
+
+            /**
+             * Encodes the specified PrecomputedEpochSenderPublicData message, length delimited. Does not implicitly {@link proto.MandrakeDecryptMekInput.PrecomputedEpochSenderPublicData.verify|verify} messages.
+             * @param message PrecomputedEpochSenderPublicData message or plain object to encode
+             * @param [writer] Writer to encode to
+             * @returns Writer
+             */
+            public static encodeDelimited(message: proto.MandrakeDecryptMekInput.IPrecomputedEpochSenderPublicData, writer?: $protobuf.Writer): $protobuf.Writer;
+
+            /**
+             * Decodes a PrecomputedEpochSenderPublicData message from the specified reader or buffer.
+             * @param reader Reader or buffer to decode from
+             * @param [length] Message length if known beforehand
+             * @returns PrecomputedEpochSenderPublicData
+             * @throws {Error} If the payload is not a reader or valid buffer
+             * @throws {$protobuf.util.ProtocolError} If required fields are missing
+             */
+            public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): proto.MandrakeDecryptMekInput.PrecomputedEpochSenderPublicData;
+
+            /**
+             * Decodes a PrecomputedEpochSenderPublicData message from the specified reader or buffer, length delimited.
+             * @param reader Reader or buffer to decode from
+             * @returns PrecomputedEpochSenderPublicData
+             * @throws {Error} If the payload is not a reader or valid buffer
+             * @throws {$protobuf.util.ProtocolError} If required fields are missing
+             */
+            public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): proto.MandrakeDecryptMekInput.PrecomputedEpochSenderPublicData;
+
+            /**
+             * Verifies a PrecomputedEpochSenderPublicData message.
+             * @param message Plain object to verify
+             * @returns `null` if valid, otherwise the reason why it is not
+             */
+            public static verify(message: { [k: string]: any }): (string|null);
+
+            /**
+             * Creates a PrecomputedEpochSenderPublicData message from a plain object. Also converts values to their respective internal types.
+             * @param object Plain object
+             * @returns PrecomputedEpochSenderPublicData
+             */
+            public static fromObject(object: { [k: string]: any }): proto.MandrakeDecryptMekInput.PrecomputedEpochSenderPublicData;
+
+            /**
+             * Creates a plain object from a PrecomputedEpochSenderPublicData message. Also converts values to other types if specified.
+             * @param message PrecomputedEpochSenderPublicData
+             * @param [options] Conversion options
+             * @returns Plain object
+             */
+            public static toObject(message: proto.MandrakeDecryptMekInput.PrecomputedEpochSenderPublicData, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+            /**
+             * Converts this PrecomputedEpochSenderPublicData to JSON.
+             * @returns JSON object
+             */
+            public toJSON(): { [k: string]: any };
+
+            /**
+             * Gets the default type url for PrecomputedEpochSenderPublicData
+             * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+             * @returns The default type url
+             */
+            public static getTypeUrl(typeUrlPrefix?: string): string;
+        }
+    }
+
+    /** Properties of a MandrakeDecryptMekResult. */
+    interface IMandrakeDecryptMekResult {
+
+        /** MandrakeDecryptMekResult success */
+        success?: (proto.IMandrakeDecryptMekSuccess|null);
+
+        /** MandrakeDecryptMekResult errorMessage */
+        errorMessage?: (string|null);
+    }
+
+    /** Represents a MandrakeDecryptMekResult. */
+    class MandrakeDecryptMekResult implements IMandrakeDecryptMekResult {
+
+        /**
+         * Constructs a new MandrakeDecryptMekResult.
+         * @param [properties] Properties to set
+         */
+        constructor(properties?: proto.IMandrakeDecryptMekResult);
+
+        /** MandrakeDecryptMekResult success. */
+        public success?: (proto.IMandrakeDecryptMekSuccess|null);
+
+        /** MandrakeDecryptMekResult errorMessage. */
+        public errorMessage?: (string|null);
+
+        /** MandrakeDecryptMekResult result. */
+        public result?: ("success"|"errorMessage");
+
+        /**
+         * Creates a new MandrakeDecryptMekResult instance using the specified properties.
+         * @param [properties] Properties to set
+         * @returns MandrakeDecryptMekResult instance
+         */
+        public static create(properties?: proto.IMandrakeDecryptMekResult): proto.MandrakeDecryptMekResult;
+
+        /**
+         * Encodes the specified MandrakeDecryptMekResult message. Does not implicitly {@link proto.MandrakeDecryptMekResult.verify|verify} messages.
+         * @param message MandrakeDecryptMekResult message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encode(message: proto.IMandrakeDecryptMekResult, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Encodes the specified MandrakeDecryptMekResult message, length delimited. Does not implicitly {@link proto.MandrakeDecryptMekResult.verify|verify} messages.
+         * @param message MandrakeDecryptMekResult message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encodeDelimited(message: proto.IMandrakeDecryptMekResult, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Decodes a MandrakeDecryptMekResult message from the specified reader or buffer.
+         * @param reader Reader or buffer to decode from
+         * @param [length] Message length if known beforehand
+         * @returns MandrakeDecryptMekResult
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): proto.MandrakeDecryptMekResult;
+
+        /**
+         * Decodes a MandrakeDecryptMekResult message from the specified reader or buffer, length delimited.
+         * @param reader Reader or buffer to decode from
+         * @returns MandrakeDecryptMekResult
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): proto.MandrakeDecryptMekResult;
+
+        /**
+         * Verifies a MandrakeDecryptMekResult message.
+         * @param message Plain object to verify
+         * @returns `null` if valid, otherwise the reason why it is not
+         */
+        public static verify(message: { [k: string]: any }): (string|null);
+
+        /**
+         * Creates a MandrakeDecryptMekResult message from a plain object. Also converts values to their respective internal types.
+         * @param object Plain object
+         * @returns MandrakeDecryptMekResult
+         */
+        public static fromObject(object: { [k: string]: any }): proto.MandrakeDecryptMekResult;
+
+        /**
+         * Creates a plain object from a MandrakeDecryptMekResult message. Also converts values to other types if specified.
+         * @param message MandrakeDecryptMekResult
+         * @param [options] Conversion options
+         * @returns Plain object
+         */
+        public static toObject(message: proto.MandrakeDecryptMekResult, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+        /**
+         * Converts this MandrakeDecryptMekResult to JSON.
+         * @returns JSON object
+         */
+        public toJSON(): { [k: string]: any };
+
+        /**
+         * Gets the default type url for MandrakeDecryptMekResult
+         * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+         * @returns The default type url
+         */
+        public static getTypeUrl(typeUrlPrefix?: string): string;
+    }
+
+    /** Properties of a MandrakeDecryptMekSuccess. */
+    interface IMandrakeDecryptMekSuccess {
+
+        /** MandrakeDecryptMekSuccess mek */
+        mek?: (Uint8Array|null);
+    }
+
+    /** Represents a MandrakeDecryptMekSuccess. */
+    class MandrakeDecryptMekSuccess implements IMandrakeDecryptMekSuccess {
+
+        /**
+         * Constructs a new MandrakeDecryptMekSuccess.
+         * @param [properties] Properties to set
+         */
+        constructor(properties?: proto.IMandrakeDecryptMekSuccess);
+
+        /** MandrakeDecryptMekSuccess mek. */
+        public mek?: (Uint8Array|null);
+
+        /**
+         * Creates a new MandrakeDecryptMekSuccess instance using the specified properties.
+         * @param [properties] Properties to set
+         * @returns MandrakeDecryptMekSuccess instance
+         */
+        public static create(properties?: proto.IMandrakeDecryptMekSuccess): proto.MandrakeDecryptMekSuccess;
+
+        /**
+         * Encodes the specified MandrakeDecryptMekSuccess message. Does not implicitly {@link proto.MandrakeDecryptMekSuccess.verify|verify} messages.
+         * @param message MandrakeDecryptMekSuccess message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encode(message: proto.IMandrakeDecryptMekSuccess, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Encodes the specified MandrakeDecryptMekSuccess message, length delimited. Does not implicitly {@link proto.MandrakeDecryptMekSuccess.verify|verify} messages.
+         * @param message MandrakeDecryptMekSuccess message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encodeDelimited(message: proto.IMandrakeDecryptMekSuccess, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Decodes a MandrakeDecryptMekSuccess message from the specified reader or buffer.
+         * @param reader Reader or buffer to decode from
+         * @param [length] Message length if known beforehand
+         * @returns MandrakeDecryptMekSuccess
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): proto.MandrakeDecryptMekSuccess;
+
+        /**
+         * Decodes a MandrakeDecryptMekSuccess message from the specified reader or buffer, length delimited.
+         * @param reader Reader or buffer to decode from
+         * @returns MandrakeDecryptMekSuccess
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): proto.MandrakeDecryptMekSuccess;
+
+        /**
+         * Verifies a MandrakeDecryptMekSuccess message.
+         * @param message Plain object to verify
+         * @returns `null` if valid, otherwise the reason why it is not
+         */
+        public static verify(message: { [k: string]: any }): (string|null);
+
+        /**
+         * Creates a MandrakeDecryptMekSuccess message from a plain object. Also converts values to their respective internal types.
+         * @param object Plain object
+         * @returns MandrakeDecryptMekSuccess
+         */
+        public static fromObject(object: { [k: string]: any }): proto.MandrakeDecryptMekSuccess;
+
+        /**
+         * Creates a plain object from a MandrakeDecryptMekSuccess message. Also converts values to other types if specified.
+         * @param message MandrakeDecryptMekSuccess
+         * @param [options] Conversion options
+         * @returns Plain object
+         */
+        public static toObject(message: proto.MandrakeDecryptMekSuccess, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+        /**
+         * Converts this MandrakeDecryptMekSuccess to JSON.
+         * @returns JSON object
+         */
+        public toJSON(): { [k: string]: any };
+
+        /**
+         * Gets the default type url for MandrakeDecryptMekSuccess
+         * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+         * @returns The default type url
+         */
+        public static getTypeUrl(typeUrlPrefix?: string): string;
+    }
+
+    /** Properties of a MandrakeEncryptMekInput. */
+    interface IMandrakeEncryptMekInput {
+
+        /** MandrakeEncryptMekInput mek */
+        mek?: (proto.IMandrakeMekBundle|null);
+
+        /** MandrakeEncryptMekInput recipients */
+        recipients?: (proto.IMessagingMailboxPublicData[]|null);
+
+        /** MandrakeEncryptMekInput conf */
+        conf?: (proto.IMinosClientConfig|null);
+
+        /** MandrakeEncryptMekInput mmkSender */
+        mmkSender?: (proto.MandrakeEncryptMekInput.IMmkSender|null);
+
+        /** MandrakeEncryptMekInput epochSender */
+        epochSender?: (proto.MandrakeEncryptMekInput.IEpochSender|null);
+
+        /** MandrakeEncryptMekInput detachedDeviceSender */
+        detachedDeviceSender?: (proto.MandrakeEncryptMekInput.IDetachedDeviceSender|null);
+    }
+
+    /** Represents a MandrakeEncryptMekInput. */
+    class MandrakeEncryptMekInput implements IMandrakeEncryptMekInput {
+
+        /**
+         * Constructs a new MandrakeEncryptMekInput.
+         * @param [properties] Properties to set
+         */
+        constructor(properties?: proto.IMandrakeEncryptMekInput);
+
+        /** MandrakeEncryptMekInput mek. */
+        public mek?: (proto.IMandrakeMekBundle|null);
+
+        /** MandrakeEncryptMekInput recipients. */
+        public recipients: proto.IMessagingMailboxPublicData[];
+
+        /** MandrakeEncryptMekInput conf. */
+        public conf?: (proto.IMinosClientConfig|null);
+
+        /** MandrakeEncryptMekInput mmkSender. */
+        public mmkSender?: (proto.MandrakeEncryptMekInput.IMmkSender|null);
+
+        /** MandrakeEncryptMekInput epochSender. */
+        public epochSender?: (proto.MandrakeEncryptMekInput.IEpochSender|null);
+
+        /** MandrakeEncryptMekInput detachedDeviceSender. */
+        public detachedDeviceSender?: (proto.MandrakeEncryptMekInput.IDetachedDeviceSender|null);
+
+        /** MandrakeEncryptMekInput sender. */
+        public sender?: ("mmkSender"|"epochSender"|"detachedDeviceSender");
+
+        /**
+         * Creates a new MandrakeEncryptMekInput instance using the specified properties.
+         * @param [properties] Properties to set
+         * @returns MandrakeEncryptMekInput instance
+         */
+        public static create(properties?: proto.IMandrakeEncryptMekInput): proto.MandrakeEncryptMekInput;
+
+        /**
+         * Encodes the specified MandrakeEncryptMekInput message. Does not implicitly {@link proto.MandrakeEncryptMekInput.verify|verify} messages.
+         * @param message MandrakeEncryptMekInput message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encode(message: proto.IMandrakeEncryptMekInput, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Encodes the specified MandrakeEncryptMekInput message, length delimited. Does not implicitly {@link proto.MandrakeEncryptMekInput.verify|verify} messages.
+         * @param message MandrakeEncryptMekInput message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encodeDelimited(message: proto.IMandrakeEncryptMekInput, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Decodes a MandrakeEncryptMekInput message from the specified reader or buffer.
+         * @param reader Reader or buffer to decode from
+         * @param [length] Message length if known beforehand
+         * @returns MandrakeEncryptMekInput
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): proto.MandrakeEncryptMekInput;
+
+        /**
+         * Decodes a MandrakeEncryptMekInput message from the specified reader or buffer, length delimited.
+         * @param reader Reader or buffer to decode from
+         * @returns MandrakeEncryptMekInput
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): proto.MandrakeEncryptMekInput;
+
+        /**
+         * Verifies a MandrakeEncryptMekInput message.
+         * @param message Plain object to verify
+         * @returns `null` if valid, otherwise the reason why it is not
+         */
+        public static verify(message: { [k: string]: any }): (string|null);
+
+        /**
+         * Creates a MandrakeEncryptMekInput message from a plain object. Also converts values to their respective internal types.
+         * @param object Plain object
+         * @returns MandrakeEncryptMekInput
+         */
+        public static fromObject(object: { [k: string]: any }): proto.MandrakeEncryptMekInput;
+
+        /**
+         * Creates a plain object from a MandrakeEncryptMekInput message. Also converts values to other types if specified.
+         * @param message MandrakeEncryptMekInput
+         * @param [options] Conversion options
+         * @returns Plain object
+         */
+        public static toObject(message: proto.MandrakeEncryptMekInput, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+        /**
+         * Converts this MandrakeEncryptMekInput to JSON.
+         * @returns JSON object
+         */
+        public toJSON(): { [k: string]: any };
+
+        /**
+         * Gets the default type url for MandrakeEncryptMekInput
+         * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+         * @returns The default type url
+         */
+        public static getTypeUrl(typeUrlPrefix?: string): string;
+    }
+
+    namespace MandrakeEncryptMekInput {
+
+        /** Properties of a DetachedDeviceSender. */
+        interface IDetachedDeviceSender {
+
+            /** DetachedDeviceSender detachedDevicePublicData */
+            detachedDevicePublicData?: (proto.IDetachedDevicePublicData|null);
+
+            /** DetachedDeviceSender authSk */
+            authSk?: (Uint8Array|null);
+
+            /** DetachedDeviceSender authPk */
+            authPk?: (Uint8Array|null);
+        }
+
+        /** Represents a DetachedDeviceSender. */
+        class DetachedDeviceSender implements IDetachedDeviceSender {
+
+            /**
+             * Constructs a new DetachedDeviceSender.
+             * @param [properties] Properties to set
+             */
+            constructor(properties?: proto.MandrakeEncryptMekInput.IDetachedDeviceSender);
+
+            /** DetachedDeviceSender detachedDevicePublicData. */
+            public detachedDevicePublicData?: (proto.IDetachedDevicePublicData|null);
+
+            /** DetachedDeviceSender authSk. */
+            public authSk?: (Uint8Array|null);
+
+            /** DetachedDeviceSender authPk. */
+            public authPk?: (Uint8Array|null);
+
+            /**
+             * Creates a new DetachedDeviceSender instance using the specified properties.
+             * @param [properties] Properties to set
+             * @returns DetachedDeviceSender instance
+             */
+            public static create(properties?: proto.MandrakeEncryptMekInput.IDetachedDeviceSender): proto.MandrakeEncryptMekInput.DetachedDeviceSender;
+
+            /**
+             * Encodes the specified DetachedDeviceSender message. Does not implicitly {@link proto.MandrakeEncryptMekInput.DetachedDeviceSender.verify|verify} messages.
+             * @param message DetachedDeviceSender message or plain object to encode
+             * @param [writer] Writer to encode to
+             * @returns Writer
+             */
+            public static encode(message: proto.MandrakeEncryptMekInput.IDetachedDeviceSender, writer?: $protobuf.Writer): $protobuf.Writer;
+
+            /**
+             * Encodes the specified DetachedDeviceSender message, length delimited. Does not implicitly {@link proto.MandrakeEncryptMekInput.DetachedDeviceSender.verify|verify} messages.
+             * @param message DetachedDeviceSender message or plain object to encode
+             * @param [writer] Writer to encode to
+             * @returns Writer
+             */
+            public static encodeDelimited(message: proto.MandrakeEncryptMekInput.IDetachedDeviceSender, writer?: $protobuf.Writer): $protobuf.Writer;
+
+            /**
+             * Decodes a DetachedDeviceSender message from the specified reader or buffer.
+             * @param reader Reader or buffer to decode from
+             * @param [length] Message length if known beforehand
+             * @returns DetachedDeviceSender
+             * @throws {Error} If the payload is not a reader or valid buffer
+             * @throws {$protobuf.util.ProtocolError} If required fields are missing
+             */
+            public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): proto.MandrakeEncryptMekInput.DetachedDeviceSender;
+
+            /**
+             * Decodes a DetachedDeviceSender message from the specified reader or buffer, length delimited.
+             * @param reader Reader or buffer to decode from
+             * @returns DetachedDeviceSender
+             * @throws {Error} If the payload is not a reader or valid buffer
+             * @throws {$protobuf.util.ProtocolError} If required fields are missing
+             */
+            public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): proto.MandrakeEncryptMekInput.DetachedDeviceSender;
+
+            /**
+             * Verifies a DetachedDeviceSender message.
+             * @param message Plain object to verify
+             * @returns `null` if valid, otherwise the reason why it is not
+             */
+            public static verify(message: { [k: string]: any }): (string|null);
+
+            /**
+             * Creates a DetachedDeviceSender message from a plain object. Also converts values to their respective internal types.
+             * @param object Plain object
+             * @returns DetachedDeviceSender
+             */
+            public static fromObject(object: { [k: string]: any }): proto.MandrakeEncryptMekInput.DetachedDeviceSender;
+
+            /**
+             * Creates a plain object from a DetachedDeviceSender message. Also converts values to other types if specified.
+             * @param message DetachedDeviceSender
+             * @param [options] Conversion options
+             * @returns Plain object
+             */
+            public static toObject(message: proto.MandrakeEncryptMekInput.DetachedDeviceSender, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+            /**
+             * Converts this DetachedDeviceSender to JSON.
+             * @returns JSON object
+             */
+            public toJSON(): { [k: string]: any };
+
+            /**
+             * Gets the default type url for DetachedDeviceSender
+             * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+             * @returns The default type url
+             */
+            public static getTypeUrl(typeUrlPrefix?: string): string;
+        }
+
+        /** Properties of an EpochSender. */
+        interface IEpochSender {
+
+            /** EpochSender epochPublicData */
+            epochPublicData?: (proto.IEpochPublicData|null);
+
+            /** EpochSender authSk */
+            authSk?: (Uint8Array|null);
+
+            /** EpochSender authPk */
+            authPk?: (Uint8Array|null);
+        }
+
+        /** Represents an EpochSender. */
+        class EpochSender implements IEpochSender {
+
+            /**
+             * Constructs a new EpochSender.
+             * @param [properties] Properties to set
+             */
+            constructor(properties?: proto.MandrakeEncryptMekInput.IEpochSender);
+
+            /** EpochSender epochPublicData. */
+            public epochPublicData?: (proto.IEpochPublicData|null);
+
+            /** EpochSender authSk. */
+            public authSk?: (Uint8Array|null);
+
+            /** EpochSender authPk. */
+            public authPk?: (Uint8Array|null);
+
+            /**
+             * Creates a new EpochSender instance using the specified properties.
+             * @param [properties] Properties to set
+             * @returns EpochSender instance
+             */
+            public static create(properties?: proto.MandrakeEncryptMekInput.IEpochSender): proto.MandrakeEncryptMekInput.EpochSender;
+
+            /**
+             * Encodes the specified EpochSender message. Does not implicitly {@link proto.MandrakeEncryptMekInput.EpochSender.verify|verify} messages.
+             * @param message EpochSender message or plain object to encode
+             * @param [writer] Writer to encode to
+             * @returns Writer
+             */
+            public static encode(message: proto.MandrakeEncryptMekInput.IEpochSender, writer?: $protobuf.Writer): $protobuf.Writer;
+
+            /**
+             * Encodes the specified EpochSender message, length delimited. Does not implicitly {@link proto.MandrakeEncryptMekInput.EpochSender.verify|verify} messages.
+             * @param message EpochSender message or plain object to encode
+             * @param [writer] Writer to encode to
+             * @returns Writer
+             */
+            public static encodeDelimited(message: proto.MandrakeEncryptMekInput.IEpochSender, writer?: $protobuf.Writer): $protobuf.Writer;
+
+            /**
+             * Decodes an EpochSender message from the specified reader or buffer.
+             * @param reader Reader or buffer to decode from
+             * @param [length] Message length if known beforehand
+             * @returns EpochSender
+             * @throws {Error} If the payload is not a reader or valid buffer
+             * @throws {$protobuf.util.ProtocolError} If required fields are missing
+             */
+            public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): proto.MandrakeEncryptMekInput.EpochSender;
+
+            /**
+             * Decodes an EpochSender message from the specified reader or buffer, length delimited.
+             * @param reader Reader or buffer to decode from
+             * @returns EpochSender
+             * @throws {Error} If the payload is not a reader or valid buffer
+             * @throws {$protobuf.util.ProtocolError} If required fields are missing
+             */
+            public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): proto.MandrakeEncryptMekInput.EpochSender;
+
+            /**
+             * Verifies an EpochSender message.
+             * @param message Plain object to verify
+             * @returns `null` if valid, otherwise the reason why it is not
+             */
+            public static verify(message: { [k: string]: any }): (string|null);
+
+            /**
+             * Creates an EpochSender message from a plain object. Also converts values to their respective internal types.
+             * @param object Plain object
+             * @returns EpochSender
+             */
+            public static fromObject(object: { [k: string]: any }): proto.MandrakeEncryptMekInput.EpochSender;
+
+            /**
+             * Creates a plain object from an EpochSender message. Also converts values to other types if specified.
+             * @param message EpochSender
+             * @param [options] Conversion options
+             * @returns Plain object
+             */
+            public static toObject(message: proto.MandrakeEncryptMekInput.EpochSender, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+            /**
+             * Converts this EpochSender to JSON.
+             * @returns JSON object
+             */
+            public toJSON(): { [k: string]: any };
+
+            /**
+             * Gets the default type url for EpochSender
+             * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+             * @returns The default type url
+             */
+            public static getTypeUrl(typeUrlPrefix?: string): string;
+        }
+
+        /** Properties of a MmkSender. */
+        interface IMmkSender {
+
+            /** MmkSender mmkPublicData */
+            mmkPublicData?: (proto.IMessagingMailboxPublicData|null);
+
+            /** MmkSender authSk */
+            authSk?: (Uint8Array|null);
+
+            /** MmkSender authPk */
+            authPk?: (Uint8Array|null);
+        }
+
+        /** Represents a MmkSender. */
+        class MmkSender implements IMmkSender {
+
+            /**
+             * Constructs a new MmkSender.
+             * @param [properties] Properties to set
+             */
+            constructor(properties?: proto.MandrakeEncryptMekInput.IMmkSender);
+
+            /** MmkSender mmkPublicData. */
+            public mmkPublicData?: (proto.IMessagingMailboxPublicData|null);
+
+            /** MmkSender authSk. */
+            public authSk?: (Uint8Array|null);
+
+            /** MmkSender authPk. */
+            public authPk?: (Uint8Array|null);
+
+            /**
+             * Creates a new MmkSender instance using the specified properties.
+             * @param [properties] Properties to set
+             * @returns MmkSender instance
+             */
+            public static create(properties?: proto.MandrakeEncryptMekInput.IMmkSender): proto.MandrakeEncryptMekInput.MmkSender;
+
+            /**
+             * Encodes the specified MmkSender message. Does not implicitly {@link proto.MandrakeEncryptMekInput.MmkSender.verify|verify} messages.
+             * @param message MmkSender message or plain object to encode
+             * @param [writer] Writer to encode to
+             * @returns Writer
+             */
+            public static encode(message: proto.MandrakeEncryptMekInput.IMmkSender, writer?: $protobuf.Writer): $protobuf.Writer;
+
+            /**
+             * Encodes the specified MmkSender message, length delimited. Does not implicitly {@link proto.MandrakeEncryptMekInput.MmkSender.verify|verify} messages.
+             * @param message MmkSender message or plain object to encode
+             * @param [writer] Writer to encode to
+             * @returns Writer
+             */
+            public static encodeDelimited(message: proto.MandrakeEncryptMekInput.IMmkSender, writer?: $protobuf.Writer): $protobuf.Writer;
+
+            /**
+             * Decodes a MmkSender message from the specified reader or buffer.
+             * @param reader Reader or buffer to decode from
+             * @param [length] Message length if known beforehand
+             * @returns MmkSender
+             * @throws {Error} If the payload is not a reader or valid buffer
+             * @throws {$protobuf.util.ProtocolError} If required fields are missing
+             */
+            public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): proto.MandrakeEncryptMekInput.MmkSender;
+
+            /**
+             * Decodes a MmkSender message from the specified reader or buffer, length delimited.
+             * @param reader Reader or buffer to decode from
+             * @returns MmkSender
+             * @throws {Error} If the payload is not a reader or valid buffer
+             * @throws {$protobuf.util.ProtocolError} If required fields are missing
+             */
+            public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): proto.MandrakeEncryptMekInput.MmkSender;
+
+            /**
+             * Verifies a MmkSender message.
+             * @param message Plain object to verify
+             * @returns `null` if valid, otherwise the reason why it is not
+             */
+            public static verify(message: { [k: string]: any }): (string|null);
+
+            /**
+             * Creates a MmkSender message from a plain object. Also converts values to their respective internal types.
+             * @param object Plain object
+             * @returns MmkSender
+             */
+            public static fromObject(object: { [k: string]: any }): proto.MandrakeEncryptMekInput.MmkSender;
+
+            /**
+             * Creates a plain object from a MmkSender message. Also converts values to other types if specified.
+             * @param message MmkSender
+             * @param [options] Conversion options
+             * @returns Plain object
+             */
+            public static toObject(message: proto.MandrakeEncryptMekInput.MmkSender, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+            /**
+             * Converts this MmkSender to JSON.
+             * @returns JSON object
+             */
+            public toJSON(): { [k: string]: any };
+
+            /**
+             * Gets the default type url for MmkSender
+             * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+             * @returns The default type url
+             */
+            public static getTypeUrl(typeUrlPrefix?: string): string;
+        }
+    }
+
+    /** Properties of a MandrakeEncryptMekResult. */
+    interface IMandrakeEncryptMekResult {
+
+        /** MandrakeEncryptMekResult success */
+        success?: (proto.IMandrakeEncryptMekSuccess|null);
+
+        /** MandrakeEncryptMekResult errorMessage */
+        errorMessage?: (string|null);
+    }
+
+    /** Represents a MandrakeEncryptMekResult. */
+    class MandrakeEncryptMekResult implements IMandrakeEncryptMekResult {
+
+        /**
+         * Constructs a new MandrakeEncryptMekResult.
+         * @param [properties] Properties to set
+         */
+        constructor(properties?: proto.IMandrakeEncryptMekResult);
+
+        /** MandrakeEncryptMekResult success. */
+        public success?: (proto.IMandrakeEncryptMekSuccess|null);
+
+        /** MandrakeEncryptMekResult errorMessage. */
+        public errorMessage?: (string|null);
+
+        /** MandrakeEncryptMekResult result. */
+        public result?: ("success"|"errorMessage");
+
+        /**
+         * Creates a new MandrakeEncryptMekResult instance using the specified properties.
+         * @param [properties] Properties to set
+         * @returns MandrakeEncryptMekResult instance
+         */
+        public static create(properties?: proto.IMandrakeEncryptMekResult): proto.MandrakeEncryptMekResult;
+
+        /**
+         * Encodes the specified MandrakeEncryptMekResult message. Does not implicitly {@link proto.MandrakeEncryptMekResult.verify|verify} messages.
+         * @param message MandrakeEncryptMekResult message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encode(message: proto.IMandrakeEncryptMekResult, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Encodes the specified MandrakeEncryptMekResult message, length delimited. Does not implicitly {@link proto.MandrakeEncryptMekResult.verify|verify} messages.
+         * @param message MandrakeEncryptMekResult message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encodeDelimited(message: proto.IMandrakeEncryptMekResult, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Decodes a MandrakeEncryptMekResult message from the specified reader or buffer.
+         * @param reader Reader or buffer to decode from
+         * @param [length] Message length if known beforehand
+         * @returns MandrakeEncryptMekResult
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): proto.MandrakeEncryptMekResult;
+
+        /**
+         * Decodes a MandrakeEncryptMekResult message from the specified reader or buffer, length delimited.
+         * @param reader Reader or buffer to decode from
+         * @returns MandrakeEncryptMekResult
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): proto.MandrakeEncryptMekResult;
+
+        /**
+         * Verifies a MandrakeEncryptMekResult message.
+         * @param message Plain object to verify
+         * @returns `null` if valid, otherwise the reason why it is not
+         */
+        public static verify(message: { [k: string]: any }): (string|null);
+
+        /**
+         * Creates a MandrakeEncryptMekResult message from a plain object. Also converts values to their respective internal types.
+         * @param object Plain object
+         * @returns MandrakeEncryptMekResult
+         */
+        public static fromObject(object: { [k: string]: any }): proto.MandrakeEncryptMekResult;
+
+        /**
+         * Creates a plain object from a MandrakeEncryptMekResult message. Also converts values to other types if specified.
+         * @param message MandrakeEncryptMekResult
+         * @param [options] Conversion options
+         * @returns Plain object
+         */
+        public static toObject(message: proto.MandrakeEncryptMekResult, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+        /**
+         * Converts this MandrakeEncryptMekResult to JSON.
+         * @returns JSON object
+         */
+        public toJSON(): { [k: string]: any };
+
+        /**
+         * Gets the default type url for MandrakeEncryptMekResult
+         * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+         * @returns The default type url
+         */
+        public static getTypeUrl(typeUrlPrefix?: string): string;
+    }
+
+    /** Properties of a MandrakeEncryptMekSuccess. */
+    interface IMandrakeEncryptMekSuccess {
+
+        /** MandrakeEncryptMekSuccess distributions */
+        distributions?: (proto.MandrakeEncryptMekSuccess.IMekDistributionSingleRecipient[]|null);
+
+        /** MandrakeEncryptMekSuccess recipientsHash */
+        recipientsHash?: (Uint8Array|null);
+
+        /** MandrakeEncryptMekSuccess version */
+        version?: (number|Long|null);
+    }
+
+    /** Represents a MandrakeEncryptMekSuccess. */
+    class MandrakeEncryptMekSuccess implements IMandrakeEncryptMekSuccess {
+
+        /**
+         * Constructs a new MandrakeEncryptMekSuccess.
+         * @param [properties] Properties to set
+         */
+        constructor(properties?: proto.IMandrakeEncryptMekSuccess);
+
+        /** MandrakeEncryptMekSuccess distributions. */
+        public distributions: proto.MandrakeEncryptMekSuccess.IMekDistributionSingleRecipient[];
+
+        /** MandrakeEncryptMekSuccess recipientsHash. */
+        public recipientsHash?: (Uint8Array|null);
+
+        /** MandrakeEncryptMekSuccess version. */
+        public version?: (number|Long|null);
+
+        /**
+         * Creates a new MandrakeEncryptMekSuccess instance using the specified properties.
+         * @param [properties] Properties to set
+         * @returns MandrakeEncryptMekSuccess instance
+         */
+        public static create(properties?: proto.IMandrakeEncryptMekSuccess): proto.MandrakeEncryptMekSuccess;
+
+        /**
+         * Encodes the specified MandrakeEncryptMekSuccess message. Does not implicitly {@link proto.MandrakeEncryptMekSuccess.verify|verify} messages.
+         * @param message MandrakeEncryptMekSuccess message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encode(message: proto.IMandrakeEncryptMekSuccess, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Encodes the specified MandrakeEncryptMekSuccess message, length delimited. Does not implicitly {@link proto.MandrakeEncryptMekSuccess.verify|verify} messages.
+         * @param message MandrakeEncryptMekSuccess message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encodeDelimited(message: proto.IMandrakeEncryptMekSuccess, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Decodes a MandrakeEncryptMekSuccess message from the specified reader or buffer.
+         * @param reader Reader or buffer to decode from
+         * @param [length] Message length if known beforehand
+         * @returns MandrakeEncryptMekSuccess
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): proto.MandrakeEncryptMekSuccess;
+
+        /**
+         * Decodes a MandrakeEncryptMekSuccess message from the specified reader or buffer, length delimited.
+         * @param reader Reader or buffer to decode from
+         * @returns MandrakeEncryptMekSuccess
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): proto.MandrakeEncryptMekSuccess;
+
+        /**
+         * Verifies a MandrakeEncryptMekSuccess message.
+         * @param message Plain object to verify
+         * @returns `null` if valid, otherwise the reason why it is not
+         */
+        public static verify(message: { [k: string]: any }): (string|null);
+
+        /**
+         * Creates a MandrakeEncryptMekSuccess message from a plain object. Also converts values to their respective internal types.
+         * @param object Plain object
+         * @returns MandrakeEncryptMekSuccess
+         */
+        public static fromObject(object: { [k: string]: any }): proto.MandrakeEncryptMekSuccess;
+
+        /**
+         * Creates a plain object from a MandrakeEncryptMekSuccess message. Also converts values to other types if specified.
+         * @param message MandrakeEncryptMekSuccess
+         * @param [options] Conversion options
+         * @returns Plain object
+         */
+        public static toObject(message: proto.MandrakeEncryptMekSuccess, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+        /**
+         * Converts this MandrakeEncryptMekSuccess to JSON.
+         * @returns JSON object
+         */
+        public toJSON(): { [k: string]: any };
+
+        /**
+         * Gets the default type url for MandrakeEncryptMekSuccess
+         * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+         * @returns The default type url
+         */
+        public static getTypeUrl(typeUrlPrefix?: string): string;
+    }
+
+    namespace MandrakeEncryptMekSuccess {
+
+        /** Properties of a MekDistributionSingleRecipient. */
+        interface IMekDistributionSingleRecipient {
+
+            /** MekDistributionSingleRecipient encryptedMek */
+            encryptedMek?: (Uint8Array|null);
+
+            /** MekDistributionSingleRecipient toMmk */
+            toMmk?: (proto.IMessagingMailboxPublicData|null);
+
+            /** MekDistributionSingleRecipient recipientMembershipProof */
+            recipientMembershipProof?: (proto.IMerkleMembershipProof|null);
+        }
+
+        /** Represents a MekDistributionSingleRecipient. */
+        class MekDistributionSingleRecipient implements IMekDistributionSingleRecipient {
+
+            /**
+             * Constructs a new MekDistributionSingleRecipient.
+             * @param [properties] Properties to set
+             */
+            constructor(properties?: proto.MandrakeEncryptMekSuccess.IMekDistributionSingleRecipient);
+
+            /** MekDistributionSingleRecipient encryptedMek. */
+            public encryptedMek?: (Uint8Array|null);
+
+            /** MekDistributionSingleRecipient toMmk. */
+            public toMmk?: (proto.IMessagingMailboxPublicData|null);
+
+            /** MekDistributionSingleRecipient recipientMembershipProof. */
+            public recipientMembershipProof?: (proto.IMerkleMembershipProof|null);
+
+            /**
+             * Creates a new MekDistributionSingleRecipient instance using the specified properties.
+             * @param [properties] Properties to set
+             * @returns MekDistributionSingleRecipient instance
+             */
+            public static create(properties?: proto.MandrakeEncryptMekSuccess.IMekDistributionSingleRecipient): proto.MandrakeEncryptMekSuccess.MekDistributionSingleRecipient;
+
+            /**
+             * Encodes the specified MekDistributionSingleRecipient message. Does not implicitly {@link proto.MandrakeEncryptMekSuccess.MekDistributionSingleRecipient.verify|verify} messages.
+             * @param message MekDistributionSingleRecipient message or plain object to encode
+             * @param [writer] Writer to encode to
+             * @returns Writer
+             */
+            public static encode(message: proto.MandrakeEncryptMekSuccess.IMekDistributionSingleRecipient, writer?: $protobuf.Writer): $protobuf.Writer;
+
+            /**
+             * Encodes the specified MekDistributionSingleRecipient message, length delimited. Does not implicitly {@link proto.MandrakeEncryptMekSuccess.MekDistributionSingleRecipient.verify|verify} messages.
+             * @param message MekDistributionSingleRecipient message or plain object to encode
+             * @param [writer] Writer to encode to
+             * @returns Writer
+             */
+            public static encodeDelimited(message: proto.MandrakeEncryptMekSuccess.IMekDistributionSingleRecipient, writer?: $protobuf.Writer): $protobuf.Writer;
+
+            /**
+             * Decodes a MekDistributionSingleRecipient message from the specified reader or buffer.
+             * @param reader Reader or buffer to decode from
+             * @param [length] Message length if known beforehand
+             * @returns MekDistributionSingleRecipient
+             * @throws {Error} If the payload is not a reader or valid buffer
+             * @throws {$protobuf.util.ProtocolError} If required fields are missing
+             */
+            public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): proto.MandrakeEncryptMekSuccess.MekDistributionSingleRecipient;
+
+            /**
+             * Decodes a MekDistributionSingleRecipient message from the specified reader or buffer, length delimited.
+             * @param reader Reader or buffer to decode from
+             * @returns MekDistributionSingleRecipient
+             * @throws {Error} If the payload is not a reader or valid buffer
+             * @throws {$protobuf.util.ProtocolError} If required fields are missing
+             */
+            public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): proto.MandrakeEncryptMekSuccess.MekDistributionSingleRecipient;
+
+            /**
+             * Verifies a MekDistributionSingleRecipient message.
+             * @param message Plain object to verify
+             * @returns `null` if valid, otherwise the reason why it is not
+             */
+            public static verify(message: { [k: string]: any }): (string|null);
+
+            /**
+             * Creates a MekDistributionSingleRecipient message from a plain object. Also converts values to their respective internal types.
+             * @param object Plain object
+             * @returns MekDistributionSingleRecipient
+             */
+            public static fromObject(object: { [k: string]: any }): proto.MandrakeEncryptMekSuccess.MekDistributionSingleRecipient;
+
+            /**
+             * Creates a plain object from a MekDistributionSingleRecipient message. Also converts values to other types if specified.
+             * @param message MekDistributionSingleRecipient
+             * @param [options] Conversion options
+             * @returns Plain object
+             */
+            public static toObject(message: proto.MandrakeEncryptMekSuccess.MekDistributionSingleRecipient, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+            /**
+             * Converts this MekDistributionSingleRecipient to JSON.
+             * @returns JSON object
+             */
+            public toJSON(): { [k: string]: any };
+
+            /**
+             * Gets the default type url for MekDistributionSingleRecipient
+             * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+             * @returns The default type url
+             */
+            public static getTypeUrl(typeUrlPrefix?: string): string;
+        }
+    }
+
+    /** Properties of a MandrakeMekBundle. */
+    interface IMandrakeMekBundle {
+
+        /** MandrakeMekBundle key */
+        key?: (Uint8Array|null);
+
+        /** MandrakeMekBundle mekId */
+        mekId?: (Uint8Array|null);
+
+        /** MandrakeMekBundle mailboxHeadHash */
+        mailboxHeadHash?: (Uint8Array|null);
+    }
+
+    /** Represents a MandrakeMekBundle. */
+    class MandrakeMekBundle implements IMandrakeMekBundle {
+
+        /**
+         * Constructs a new MandrakeMekBundle.
+         * @param [properties] Properties to set
+         */
+        constructor(properties?: proto.IMandrakeMekBundle);
+
+        /** MandrakeMekBundle key. */
+        public key?: (Uint8Array|null);
+
+        /** MandrakeMekBundle mekId. */
+        public mekId?: (Uint8Array|null);
+
+        /** MandrakeMekBundle mailboxHeadHash. */
+        public mailboxHeadHash?: (Uint8Array|null);
+
+        /**
+         * Creates a new MandrakeMekBundle instance using the specified properties.
+         * @param [properties] Properties to set
+         * @returns MandrakeMekBundle instance
+         */
+        public static create(properties?: proto.IMandrakeMekBundle): proto.MandrakeMekBundle;
+
+        /**
+         * Encodes the specified MandrakeMekBundle message. Does not implicitly {@link proto.MandrakeMekBundle.verify|verify} messages.
+         * @param message MandrakeMekBundle message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encode(message: proto.IMandrakeMekBundle, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Encodes the specified MandrakeMekBundle message, length delimited. Does not implicitly {@link proto.MandrakeMekBundle.verify|verify} messages.
+         * @param message MandrakeMekBundle message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encodeDelimited(message: proto.IMandrakeMekBundle, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Decodes a MandrakeMekBundle message from the specified reader or buffer.
+         * @param reader Reader or buffer to decode from
+         * @param [length] Message length if known beforehand
+         * @returns MandrakeMekBundle
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): proto.MandrakeMekBundle;
+
+        /**
+         * Decodes a MandrakeMekBundle message from the specified reader or buffer, length delimited.
+         * @param reader Reader or buffer to decode from
+         * @returns MandrakeMekBundle
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): proto.MandrakeMekBundle;
+
+        /**
+         * Verifies a MandrakeMekBundle message.
+         * @param message Plain object to verify
+         * @returns `null` if valid, otherwise the reason why it is not
+         */
+        public static verify(message: { [k: string]: any }): (string|null);
+
+        /**
+         * Creates a MandrakeMekBundle message from a plain object. Also converts values to their respective internal types.
+         * @param object Plain object
+         * @returns MandrakeMekBundle
+         */
+        public static fromObject(object: { [k: string]: any }): proto.MandrakeMekBundle;
+
+        /**
+         * Creates a plain object from a MandrakeMekBundle message. Also converts values to other types if specified.
+         * @param message MandrakeMekBundle
+         * @param [options] Conversion options
+         * @returns Plain object
+         */
+        public static toObject(message: proto.MandrakeMekBundle, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+        /**
+         * Converts this MandrakeMekBundle to JSON.
+         * @returns JSON object
+         */
+        public toJSON(): { [k: string]: any };
+
+        /**
+         * Gets the default type url for MandrakeMekBundle
+         * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+         * @returns The default type url
+         */
+        public static getTypeUrl(typeUrlPrefix?: string): string;
+    }
+
+    /** Properties of a MandrakeOpenEpochInput. */
+    interface IMandrakeOpenEpochInput {
+
+        /** MandrakeOpenEpochInput userFbid */
+        userFbid?: (string|null);
+
+        /** MandrakeOpenEpochInput epochNumber */
+        epochNumber?: (number|Long|null);
+
+        /** MandrakeOpenEpochInput exportRootKey */
+        exportRootKey?: (Uint8Array|null);
+
+        /** MandrakeOpenEpochInput previousExportRootKey */
+        previousExportRootKey?: (Uint8Array|null);
+
+        /** MandrakeOpenEpochInput previousEpochNumber */
+        previousEpochNumber?: (number|Long|null);
+
+        /** MandrakeOpenEpochInput previousEpochHead */
+        previousEpochHead?: (Uint8Array|null);
+
+        /** MandrakeOpenEpochInput previousMmk */
+        previousMmk?: (proto.IMessagingMailboxPublicData|null);
+
+        /** MandrakeOpenEpochInput detachedDevices */
+        detachedDevices?: (proto.IDetachedDevicePublicData[]|null);
+    }
+
+    /** Represents a MandrakeOpenEpochInput. */
+    class MandrakeOpenEpochInput implements IMandrakeOpenEpochInput {
+
+        /**
+         * Constructs a new MandrakeOpenEpochInput.
+         * @param [properties] Properties to set
+         */
+        constructor(properties?: proto.IMandrakeOpenEpochInput);
+
+        /** MandrakeOpenEpochInput userFbid. */
+        public userFbid?: (string|null);
+
+        /** MandrakeOpenEpochInput epochNumber. */
+        public epochNumber?: (number|Long|null);
+
+        /** MandrakeOpenEpochInput exportRootKey. */
+        public exportRootKey?: (Uint8Array|null);
+
+        /** MandrakeOpenEpochInput previousExportRootKey. */
+        public previousExportRootKey?: (Uint8Array|null);
+
+        /** MandrakeOpenEpochInput previousEpochNumber. */
+        public previousEpochNumber?: (number|Long|null);
+
+        /** MandrakeOpenEpochInput previousEpochHead. */
+        public previousEpochHead?: (Uint8Array|null);
+
+        /** MandrakeOpenEpochInput previousMmk. */
+        public previousMmk?: (proto.IMessagingMailboxPublicData|null);
+
+        /** MandrakeOpenEpochInput detachedDevices. */
+        public detachedDevices: proto.IDetachedDevicePublicData[];
+
+        /**
+         * Creates a new MandrakeOpenEpochInput instance using the specified properties.
+         * @param [properties] Properties to set
+         * @returns MandrakeOpenEpochInput instance
+         */
+        public static create(properties?: proto.IMandrakeOpenEpochInput): proto.MandrakeOpenEpochInput;
+
+        /**
+         * Encodes the specified MandrakeOpenEpochInput message. Does not implicitly {@link proto.MandrakeOpenEpochInput.verify|verify} messages.
+         * @param message MandrakeOpenEpochInput message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encode(message: proto.IMandrakeOpenEpochInput, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Encodes the specified MandrakeOpenEpochInput message, length delimited. Does not implicitly {@link proto.MandrakeOpenEpochInput.verify|verify} messages.
+         * @param message MandrakeOpenEpochInput message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encodeDelimited(message: proto.IMandrakeOpenEpochInput, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Decodes a MandrakeOpenEpochInput message from the specified reader or buffer.
+         * @param reader Reader or buffer to decode from
+         * @param [length] Message length if known beforehand
+         * @returns MandrakeOpenEpochInput
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): proto.MandrakeOpenEpochInput;
+
+        /**
+         * Decodes a MandrakeOpenEpochInput message from the specified reader or buffer, length delimited.
+         * @param reader Reader or buffer to decode from
+         * @returns MandrakeOpenEpochInput
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): proto.MandrakeOpenEpochInput;
+
+        /**
+         * Verifies a MandrakeOpenEpochInput message.
+         * @param message Plain object to verify
+         * @returns `null` if valid, otherwise the reason why it is not
+         */
+        public static verify(message: { [k: string]: any }): (string|null);
+
+        /**
+         * Creates a MandrakeOpenEpochInput message from a plain object. Also converts values to their respective internal types.
+         * @param object Plain object
+         * @returns MandrakeOpenEpochInput
+         */
+        public static fromObject(object: { [k: string]: any }): proto.MandrakeOpenEpochInput;
+
+        /**
+         * Creates a plain object from a MandrakeOpenEpochInput message. Also converts values to other types if specified.
+         * @param message MandrakeOpenEpochInput
+         * @param [options] Conversion options
+         * @returns Plain object
+         */
+        public static toObject(message: proto.MandrakeOpenEpochInput, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+        /**
+         * Converts this MandrakeOpenEpochInput to JSON.
+         * @returns JSON object
+         */
+        public toJSON(): { [k: string]: any };
+
+        /**
+         * Gets the default type url for MandrakeOpenEpochInput
+         * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+         * @returns The default type url
+         */
+        public static getTypeUrl(typeUrlPrefix?: string): string;
+    }
+
+    /** Properties of a MandrakeOpenEpochResult. */
+    interface IMandrakeOpenEpochResult {
+
+        /** MandrakeOpenEpochResult success */
+        success?: (proto.IMandrakeOpenEpochSuccess|null);
+
+        /** MandrakeOpenEpochResult errorMessage */
+        errorMessage?: (string|null);
+    }
+
+    /** Represents a MandrakeOpenEpochResult. */
+    class MandrakeOpenEpochResult implements IMandrakeOpenEpochResult {
+
+        /**
+         * Constructs a new MandrakeOpenEpochResult.
+         * @param [properties] Properties to set
+         */
+        constructor(properties?: proto.IMandrakeOpenEpochResult);
+
+        /** MandrakeOpenEpochResult success. */
+        public success?: (proto.IMandrakeOpenEpochSuccess|null);
+
+        /** MandrakeOpenEpochResult errorMessage. */
+        public errorMessage?: (string|null);
+
+        /** MandrakeOpenEpochResult result. */
+        public result?: ("success"|"errorMessage");
+
+        /**
+         * Creates a new MandrakeOpenEpochResult instance using the specified properties.
+         * @param [properties] Properties to set
+         * @returns MandrakeOpenEpochResult instance
+         */
+        public static create(properties?: proto.IMandrakeOpenEpochResult): proto.MandrakeOpenEpochResult;
+
+        /**
+         * Encodes the specified MandrakeOpenEpochResult message. Does not implicitly {@link proto.MandrakeOpenEpochResult.verify|verify} messages.
+         * @param message MandrakeOpenEpochResult message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encode(message: proto.IMandrakeOpenEpochResult, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Encodes the specified MandrakeOpenEpochResult message, length delimited. Does not implicitly {@link proto.MandrakeOpenEpochResult.verify|verify} messages.
+         * @param message MandrakeOpenEpochResult message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encodeDelimited(message: proto.IMandrakeOpenEpochResult, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Decodes a MandrakeOpenEpochResult message from the specified reader or buffer.
+         * @param reader Reader or buffer to decode from
+         * @param [length] Message length if known beforehand
+         * @returns MandrakeOpenEpochResult
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): proto.MandrakeOpenEpochResult;
+
+        /**
+         * Decodes a MandrakeOpenEpochResult message from the specified reader or buffer, length delimited.
+         * @param reader Reader or buffer to decode from
+         * @returns MandrakeOpenEpochResult
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): proto.MandrakeOpenEpochResult;
+
+        /**
+         * Verifies a MandrakeOpenEpochResult message.
+         * @param message Plain object to verify
+         * @returns `null` if valid, otherwise the reason why it is not
+         */
+        public static verify(message: { [k: string]: any }): (string|null);
+
+        /**
+         * Creates a MandrakeOpenEpochResult message from a plain object. Also converts values to their respective internal types.
+         * @param object Plain object
+         * @returns MandrakeOpenEpochResult
+         */
+        public static fromObject(object: { [k: string]: any }): proto.MandrakeOpenEpochResult;
+
+        /**
+         * Creates a plain object from a MandrakeOpenEpochResult message. Also converts values to other types if specified.
+         * @param message MandrakeOpenEpochResult
+         * @param [options] Conversion options
+         * @returns Plain object
+         */
+        public static toObject(message: proto.MandrakeOpenEpochResult, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+        /**
+         * Converts this MandrakeOpenEpochResult to JSON.
+         * @returns JSON object
+         */
+        public toJSON(): { [k: string]: any };
+
+        /**
+         * Gets the default type url for MandrakeOpenEpochResult
+         * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+         * @returns The default type url
+         */
+        public static getTypeUrl(typeUrlPrefix?: string): string;
+    }
+
+    /** Properties of a MandrakeOpenEpochSuccess. */
+    interface IMandrakeOpenEpochSuccess {
+
+        /** MandrakeOpenEpochSuccess minosSignedEpoch */
+        minosSignedEpoch?: (proto.IMinosSignedEpoch|null);
+
+        /** MandrakeOpenEpochSuccess signedMmkDistribution */
+        signedMmkDistribution?: (proto.ISignedMmkDistributionFromMailbox|null);
+    }
+
+    /** Represents a MandrakeOpenEpochSuccess. */
+    class MandrakeOpenEpochSuccess implements IMandrakeOpenEpochSuccess {
+
+        /**
+         * Constructs a new MandrakeOpenEpochSuccess.
+         * @param [properties] Properties to set
+         */
+        constructor(properties?: proto.IMandrakeOpenEpochSuccess);
+
+        /** MandrakeOpenEpochSuccess minosSignedEpoch. */
+        public minosSignedEpoch?: (proto.IMinosSignedEpoch|null);
+
+        /** MandrakeOpenEpochSuccess signedMmkDistribution. */
+        public signedMmkDistribution?: (proto.ISignedMmkDistributionFromMailbox|null);
+
+        /**
+         * Creates a new MandrakeOpenEpochSuccess instance using the specified properties.
+         * @param [properties] Properties to set
+         * @returns MandrakeOpenEpochSuccess instance
+         */
+        public static create(properties?: proto.IMandrakeOpenEpochSuccess): proto.MandrakeOpenEpochSuccess;
+
+        /**
+         * Encodes the specified MandrakeOpenEpochSuccess message. Does not implicitly {@link proto.MandrakeOpenEpochSuccess.verify|verify} messages.
+         * @param message MandrakeOpenEpochSuccess message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encode(message: proto.IMandrakeOpenEpochSuccess, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Encodes the specified MandrakeOpenEpochSuccess message, length delimited. Does not implicitly {@link proto.MandrakeOpenEpochSuccess.verify|verify} messages.
+         * @param message MandrakeOpenEpochSuccess message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encodeDelimited(message: proto.IMandrakeOpenEpochSuccess, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Decodes a MandrakeOpenEpochSuccess message from the specified reader or buffer.
+         * @param reader Reader or buffer to decode from
+         * @param [length] Message length if known beforehand
+         * @returns MandrakeOpenEpochSuccess
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): proto.MandrakeOpenEpochSuccess;
+
+        /**
+         * Decodes a MandrakeOpenEpochSuccess message from the specified reader or buffer, length delimited.
+         * @param reader Reader or buffer to decode from
+         * @returns MandrakeOpenEpochSuccess
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): proto.MandrakeOpenEpochSuccess;
+
+        /**
+         * Verifies a MandrakeOpenEpochSuccess message.
+         * @param message Plain object to verify
+         * @returns `null` if valid, otherwise the reason why it is not
+         */
+        public static verify(message: { [k: string]: any }): (string|null);
+
+        /**
+         * Creates a MandrakeOpenEpochSuccess message from a plain object. Also converts values to their respective internal types.
+         * @param object Plain object
+         * @returns MandrakeOpenEpochSuccess
+         */
+        public static fromObject(object: { [k: string]: any }): proto.MandrakeOpenEpochSuccess;
+
+        /**
+         * Creates a plain object from a MandrakeOpenEpochSuccess message. Also converts values to other types if specified.
+         * @param message MandrakeOpenEpochSuccess
+         * @param [options] Conversion options
+         * @returns Plain object
+         */
+        public static toObject(message: proto.MandrakeOpenEpochSuccess, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+        /**
+         * Converts this MandrakeOpenEpochSuccess to JSON.
+         * @returns JSON object
+         */
+        public toJSON(): { [k: string]: any };
+
+        /**
+         * Gets the default type url for MandrakeOpenEpochSuccess
+         * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+         * @returns The default type url
+         */
+        public static getTypeUrl(typeUrlPrefix?: string): string;
+    }
+
+    /** Properties of a MandrakeOpenInitialEpochInput. */
+    interface IMandrakeOpenInitialEpochInput {
+
+        /** MandrakeOpenInitialEpochInput userFbid */
+        userFbid?: (string|null);
+
+        /** MandrakeOpenInitialEpochInput epochNumber */
+        epochNumber?: (number|Long|null);
+
+        /** MandrakeOpenInitialEpochInput exportRootKey */
+        exportRootKey?: (Uint8Array|null);
+
+        /** MandrakeOpenInitialEpochInput detachedDevices */
+        detachedDevices?: (proto.IDetachedDevicePublicData[]|null);
+    }
+
+    /** Represents a MandrakeOpenInitialEpochInput. */
+    class MandrakeOpenInitialEpochInput implements IMandrakeOpenInitialEpochInput {
+
+        /**
+         * Constructs a new MandrakeOpenInitialEpochInput.
+         * @param [properties] Properties to set
+         */
+        constructor(properties?: proto.IMandrakeOpenInitialEpochInput);
+
+        /** MandrakeOpenInitialEpochInput userFbid. */
+        public userFbid?: (string|null);
+
+        /** MandrakeOpenInitialEpochInput epochNumber. */
+        public epochNumber?: (number|Long|null);
+
+        /** MandrakeOpenInitialEpochInput exportRootKey. */
+        public exportRootKey?: (Uint8Array|null);
+
+        /** MandrakeOpenInitialEpochInput detachedDevices. */
+        public detachedDevices: proto.IDetachedDevicePublicData[];
+
+        /**
+         * Creates a new MandrakeOpenInitialEpochInput instance using the specified properties.
+         * @param [properties] Properties to set
+         * @returns MandrakeOpenInitialEpochInput instance
+         */
+        public static create(properties?: proto.IMandrakeOpenInitialEpochInput): proto.MandrakeOpenInitialEpochInput;
+
+        /**
+         * Encodes the specified MandrakeOpenInitialEpochInput message. Does not implicitly {@link proto.MandrakeOpenInitialEpochInput.verify|verify} messages.
+         * @param message MandrakeOpenInitialEpochInput message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encode(message: proto.IMandrakeOpenInitialEpochInput, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Encodes the specified MandrakeOpenInitialEpochInput message, length delimited. Does not implicitly {@link proto.MandrakeOpenInitialEpochInput.verify|verify} messages.
+         * @param message MandrakeOpenInitialEpochInput message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encodeDelimited(message: proto.IMandrakeOpenInitialEpochInput, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Decodes a MandrakeOpenInitialEpochInput message from the specified reader or buffer.
+         * @param reader Reader or buffer to decode from
+         * @param [length] Message length if known beforehand
+         * @returns MandrakeOpenInitialEpochInput
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): proto.MandrakeOpenInitialEpochInput;
+
+        /**
+         * Decodes a MandrakeOpenInitialEpochInput message from the specified reader or buffer, length delimited.
+         * @param reader Reader or buffer to decode from
+         * @returns MandrakeOpenInitialEpochInput
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): proto.MandrakeOpenInitialEpochInput;
+
+        /**
+         * Verifies a MandrakeOpenInitialEpochInput message.
+         * @param message Plain object to verify
+         * @returns `null` if valid, otherwise the reason why it is not
+         */
+        public static verify(message: { [k: string]: any }): (string|null);
+
+        /**
+         * Creates a MandrakeOpenInitialEpochInput message from a plain object. Also converts values to their respective internal types.
+         * @param object Plain object
+         * @returns MandrakeOpenInitialEpochInput
+         */
+        public static fromObject(object: { [k: string]: any }): proto.MandrakeOpenInitialEpochInput;
+
+        /**
+         * Creates a plain object from a MandrakeOpenInitialEpochInput message. Also converts values to other types if specified.
+         * @param message MandrakeOpenInitialEpochInput
+         * @param [options] Conversion options
+         * @returns Plain object
+         */
+        public static toObject(message: proto.MandrakeOpenInitialEpochInput, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+        /**
+         * Converts this MandrakeOpenInitialEpochInput to JSON.
+         * @returns JSON object
+         */
+        public toJSON(): { [k: string]: any };
+
+        /**
+         * Gets the default type url for MandrakeOpenInitialEpochInput
+         * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+         * @returns The default type url
+         */
+        public static getTypeUrl(typeUrlPrefix?: string): string;
+    }
+
+    /** Properties of a MandrakeOpenInitialEpochResult. */
+    interface IMandrakeOpenInitialEpochResult {
+
+        /** MandrakeOpenInitialEpochResult success */
+        success?: (proto.IMandrakeOpenEpochSuccess|null);
+
+        /** MandrakeOpenInitialEpochResult errorMessage */
+        errorMessage?: (string|null);
+    }
+
+    /** Represents a MandrakeOpenInitialEpochResult. */
+    class MandrakeOpenInitialEpochResult implements IMandrakeOpenInitialEpochResult {
+
+        /**
+         * Constructs a new MandrakeOpenInitialEpochResult.
+         * @param [properties] Properties to set
+         */
+        constructor(properties?: proto.IMandrakeOpenInitialEpochResult);
+
+        /** MandrakeOpenInitialEpochResult success. */
+        public success?: (proto.IMandrakeOpenEpochSuccess|null);
+
+        /** MandrakeOpenInitialEpochResult errorMessage. */
+        public errorMessage?: (string|null);
+
+        /** MandrakeOpenInitialEpochResult result. */
+        public result?: ("success"|"errorMessage");
+
+        /**
+         * Creates a new MandrakeOpenInitialEpochResult instance using the specified properties.
+         * @param [properties] Properties to set
+         * @returns MandrakeOpenInitialEpochResult instance
+         */
+        public static create(properties?: proto.IMandrakeOpenInitialEpochResult): proto.MandrakeOpenInitialEpochResult;
+
+        /**
+         * Encodes the specified MandrakeOpenInitialEpochResult message. Does not implicitly {@link proto.MandrakeOpenInitialEpochResult.verify|verify} messages.
+         * @param message MandrakeOpenInitialEpochResult message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encode(message: proto.IMandrakeOpenInitialEpochResult, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Encodes the specified MandrakeOpenInitialEpochResult message, length delimited. Does not implicitly {@link proto.MandrakeOpenInitialEpochResult.verify|verify} messages.
+         * @param message MandrakeOpenInitialEpochResult message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encodeDelimited(message: proto.IMandrakeOpenInitialEpochResult, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Decodes a MandrakeOpenInitialEpochResult message from the specified reader or buffer.
+         * @param reader Reader or buffer to decode from
+         * @param [length] Message length if known beforehand
+         * @returns MandrakeOpenInitialEpochResult
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): proto.MandrakeOpenInitialEpochResult;
+
+        /**
+         * Decodes a MandrakeOpenInitialEpochResult message from the specified reader or buffer, length delimited.
+         * @param reader Reader or buffer to decode from
+         * @returns MandrakeOpenInitialEpochResult
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): proto.MandrakeOpenInitialEpochResult;
+
+        /**
+         * Verifies a MandrakeOpenInitialEpochResult message.
+         * @param message Plain object to verify
+         * @returns `null` if valid, otherwise the reason why it is not
+         */
+        public static verify(message: { [k: string]: any }): (string|null);
+
+        /**
+         * Creates a MandrakeOpenInitialEpochResult message from a plain object. Also converts values to their respective internal types.
+         * @param object Plain object
+         * @returns MandrakeOpenInitialEpochResult
+         */
+        public static fromObject(object: { [k: string]: any }): proto.MandrakeOpenInitialEpochResult;
+
+        /**
+         * Creates a plain object from a MandrakeOpenInitialEpochResult message. Also converts values to other types if specified.
+         * @param message MandrakeOpenInitialEpochResult
+         * @param [options] Conversion options
+         * @returns Plain object
+         */
+        public static toObject(message: proto.MandrakeOpenInitialEpochResult, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+        /**
+         * Converts this MandrakeOpenInitialEpochResult to JSON.
+         * @returns JSON object
+         */
+        public toJSON(): { [k: string]: any };
+
+        /**
+         * Gets the default type url for MandrakeOpenInitialEpochResult
+         * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+         * @returns The default type url
+         */
+        public static getTypeUrl(typeUrlPrefix?: string): string;
+    }
+
+    /** Properties of a MandrakeValidateAndDecryptSelfMmkInput. */
+    interface IMandrakeValidateAndDecryptSelfMmkInput {
+
+        /** MandrakeValidateAndDecryptSelfMmkInput newMmk */
+        newMmk?: (proto.IMessagingMailboxPublicData|null);
+
+        /** MandrakeValidateAndDecryptSelfMmkInput signature */
+        signature?: (Uint8Array|null);
+
+        /** MandrakeValidateAndDecryptSelfMmkInput existingMmk */
+        existingMmk?: (proto.IMessagingMailboxPublicData|null);
+
+        /** MandrakeValidateAndDecryptSelfMmkInput exportRootKey */
+        exportRootKey?: (Uint8Array|null);
+
+        /** MandrakeValidateAndDecryptSelfMmkInput epochNumber */
+        epochNumber?: (number|Long|null);
+
+        /** MandrakeValidateAndDecryptSelfMmkInput expectedEpochHead */
+        expectedEpochHead?: (Uint8Array|null);
+
+        /** MandrakeValidateAndDecryptSelfMmkInput encryptedMmk */
+        encryptedMmk?: (Uint8Array|null);
+
+        /** MandrakeValidateAndDecryptSelfMmkInput version */
+        version?: (number|Long|null);
+
+        /** MandrakeValidateAndDecryptSelfMmkInput latestStoredMmk */
+        latestStoredMmk?: (proto.IMessagingMailboxPublicData|null);
+    }
+
+    /** Represents a MandrakeValidateAndDecryptSelfMmkInput. */
+    class MandrakeValidateAndDecryptSelfMmkInput implements IMandrakeValidateAndDecryptSelfMmkInput {
+
+        /**
+         * Constructs a new MandrakeValidateAndDecryptSelfMmkInput.
+         * @param [properties] Properties to set
+         */
+        constructor(properties?: proto.IMandrakeValidateAndDecryptSelfMmkInput);
+
+        /** MandrakeValidateAndDecryptSelfMmkInput newMmk. */
+        public newMmk?: (proto.IMessagingMailboxPublicData|null);
+
+        /** MandrakeValidateAndDecryptSelfMmkInput signature. */
+        public signature?: (Uint8Array|null);
+
+        /** MandrakeValidateAndDecryptSelfMmkInput existingMmk. */
+        public existingMmk?: (proto.IMessagingMailboxPublicData|null);
+
+        /** MandrakeValidateAndDecryptSelfMmkInput exportRootKey. */
+        public exportRootKey?: (Uint8Array|null);
+
+        /** MandrakeValidateAndDecryptSelfMmkInput epochNumber. */
+        public epochNumber?: (number|Long|null);
+
+        /** MandrakeValidateAndDecryptSelfMmkInput expectedEpochHead. */
+        public expectedEpochHead?: (Uint8Array|null);
+
+        /** MandrakeValidateAndDecryptSelfMmkInput encryptedMmk. */
+        public encryptedMmk?: (Uint8Array|null);
+
+        /** MandrakeValidateAndDecryptSelfMmkInput version. */
+        public version?: (number|Long|null);
+
+        /** MandrakeValidateAndDecryptSelfMmkInput latestStoredMmk. */
+        public latestStoredMmk?: (proto.IMessagingMailboxPublicData|null);
+
+        /**
+         * Creates a new MandrakeValidateAndDecryptSelfMmkInput instance using the specified properties.
+         * @param [properties] Properties to set
+         * @returns MandrakeValidateAndDecryptSelfMmkInput instance
+         */
+        public static create(properties?: proto.IMandrakeValidateAndDecryptSelfMmkInput): proto.MandrakeValidateAndDecryptSelfMmkInput;
+
+        /**
+         * Encodes the specified MandrakeValidateAndDecryptSelfMmkInput message. Does not implicitly {@link proto.MandrakeValidateAndDecryptSelfMmkInput.verify|verify} messages.
+         * @param message MandrakeValidateAndDecryptSelfMmkInput message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encode(message: proto.IMandrakeValidateAndDecryptSelfMmkInput, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Encodes the specified MandrakeValidateAndDecryptSelfMmkInput message, length delimited. Does not implicitly {@link proto.MandrakeValidateAndDecryptSelfMmkInput.verify|verify} messages.
+         * @param message MandrakeValidateAndDecryptSelfMmkInput message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encodeDelimited(message: proto.IMandrakeValidateAndDecryptSelfMmkInput, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Decodes a MandrakeValidateAndDecryptSelfMmkInput message from the specified reader or buffer.
+         * @param reader Reader or buffer to decode from
+         * @param [length] Message length if known beforehand
+         * @returns MandrakeValidateAndDecryptSelfMmkInput
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): proto.MandrakeValidateAndDecryptSelfMmkInput;
+
+        /**
+         * Decodes a MandrakeValidateAndDecryptSelfMmkInput message from the specified reader or buffer, length delimited.
+         * @param reader Reader or buffer to decode from
+         * @returns MandrakeValidateAndDecryptSelfMmkInput
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): proto.MandrakeValidateAndDecryptSelfMmkInput;
+
+        /**
+         * Verifies a MandrakeValidateAndDecryptSelfMmkInput message.
+         * @param message Plain object to verify
+         * @returns `null` if valid, otherwise the reason why it is not
+         */
+        public static verify(message: { [k: string]: any }): (string|null);
+
+        /**
+         * Creates a MandrakeValidateAndDecryptSelfMmkInput message from a plain object. Also converts values to their respective internal types.
+         * @param object Plain object
+         * @returns MandrakeValidateAndDecryptSelfMmkInput
+         */
+        public static fromObject(object: { [k: string]: any }): proto.MandrakeValidateAndDecryptSelfMmkInput;
+
+        /**
+         * Creates a plain object from a MandrakeValidateAndDecryptSelfMmkInput message. Also converts values to other types if specified.
+         * @param message MandrakeValidateAndDecryptSelfMmkInput
+         * @param [options] Conversion options
+         * @returns Plain object
+         */
+        public static toObject(message: proto.MandrakeValidateAndDecryptSelfMmkInput, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+        /**
+         * Converts this MandrakeValidateAndDecryptSelfMmkInput to JSON.
+         * @returns JSON object
+         */
+        public toJSON(): { [k: string]: any };
+
+        /**
+         * Gets the default type url for MandrakeValidateAndDecryptSelfMmkInput
+         * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+         * @returns The default type url
+         */
+        public static getTypeUrl(typeUrlPrefix?: string): string;
+    }
+
+    /** Properties of a MandrakeValidateAndDecryptSelfMmkResult. */
+    interface IMandrakeValidateAndDecryptSelfMmkResult {
+
+        /** MandrakeValidateAndDecryptSelfMmkResult success */
+        success?: (proto.IMandrakeValidateAndDecryptSelfMmkSuccess|null);
+
+        /** MandrakeValidateAndDecryptSelfMmkResult errorMessage */
+        errorMessage?: (string|null);
+    }
+
+    /** Represents a MandrakeValidateAndDecryptSelfMmkResult. */
+    class MandrakeValidateAndDecryptSelfMmkResult implements IMandrakeValidateAndDecryptSelfMmkResult {
+
+        /**
+         * Constructs a new MandrakeValidateAndDecryptSelfMmkResult.
+         * @param [properties] Properties to set
+         */
+        constructor(properties?: proto.IMandrakeValidateAndDecryptSelfMmkResult);
+
+        /** MandrakeValidateAndDecryptSelfMmkResult success. */
+        public success?: (proto.IMandrakeValidateAndDecryptSelfMmkSuccess|null);
+
+        /** MandrakeValidateAndDecryptSelfMmkResult errorMessage. */
+        public errorMessage?: (string|null);
+
+        /** MandrakeValidateAndDecryptSelfMmkResult result. */
+        public result?: ("success"|"errorMessage");
+
+        /**
+         * Creates a new MandrakeValidateAndDecryptSelfMmkResult instance using the specified properties.
+         * @param [properties] Properties to set
+         * @returns MandrakeValidateAndDecryptSelfMmkResult instance
+         */
+        public static create(properties?: proto.IMandrakeValidateAndDecryptSelfMmkResult): proto.MandrakeValidateAndDecryptSelfMmkResult;
+
+        /**
+         * Encodes the specified MandrakeValidateAndDecryptSelfMmkResult message. Does not implicitly {@link proto.MandrakeValidateAndDecryptSelfMmkResult.verify|verify} messages.
+         * @param message MandrakeValidateAndDecryptSelfMmkResult message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encode(message: proto.IMandrakeValidateAndDecryptSelfMmkResult, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Encodes the specified MandrakeValidateAndDecryptSelfMmkResult message, length delimited. Does not implicitly {@link proto.MandrakeValidateAndDecryptSelfMmkResult.verify|verify} messages.
+         * @param message MandrakeValidateAndDecryptSelfMmkResult message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encodeDelimited(message: proto.IMandrakeValidateAndDecryptSelfMmkResult, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Decodes a MandrakeValidateAndDecryptSelfMmkResult message from the specified reader or buffer.
+         * @param reader Reader or buffer to decode from
+         * @param [length] Message length if known beforehand
+         * @returns MandrakeValidateAndDecryptSelfMmkResult
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): proto.MandrakeValidateAndDecryptSelfMmkResult;
+
+        /**
+         * Decodes a MandrakeValidateAndDecryptSelfMmkResult message from the specified reader or buffer, length delimited.
+         * @param reader Reader or buffer to decode from
+         * @returns MandrakeValidateAndDecryptSelfMmkResult
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): proto.MandrakeValidateAndDecryptSelfMmkResult;
+
+        /**
+         * Verifies a MandrakeValidateAndDecryptSelfMmkResult message.
+         * @param message Plain object to verify
+         * @returns `null` if valid, otherwise the reason why it is not
+         */
+        public static verify(message: { [k: string]: any }): (string|null);
+
+        /**
+         * Creates a MandrakeValidateAndDecryptSelfMmkResult message from a plain object. Also converts values to their respective internal types.
+         * @param object Plain object
+         * @returns MandrakeValidateAndDecryptSelfMmkResult
+         */
+        public static fromObject(object: { [k: string]: any }): proto.MandrakeValidateAndDecryptSelfMmkResult;
+
+        /**
+         * Creates a plain object from a MandrakeValidateAndDecryptSelfMmkResult message. Also converts values to other types if specified.
+         * @param message MandrakeValidateAndDecryptSelfMmkResult
+         * @param [options] Conversion options
+         * @returns Plain object
+         */
+        public static toObject(message: proto.MandrakeValidateAndDecryptSelfMmkResult, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+        /**
+         * Converts this MandrakeValidateAndDecryptSelfMmkResult to JSON.
+         * @returns JSON object
+         */
+        public toJSON(): { [k: string]: any };
+
+        /**
+         * Gets the default type url for MandrakeValidateAndDecryptSelfMmkResult
+         * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+         * @returns The default type url
+         */
+        public static getTypeUrl(typeUrlPrefix?: string): string;
+    }
+
+    /** Properties of a MandrakeValidateAndDecryptSelfMmkSuccess. */
+    interface IMandrakeValidateAndDecryptSelfMmkSuccess {
+
+        /** MandrakeValidateAndDecryptSelfMmkSuccess mmkSeed */
+        mmkSeed?: (Uint8Array|null);
+
+        /** MandrakeValidateAndDecryptSelfMmkSuccess mailboxHeadHash */
+        mailboxHeadHash?: (Uint8Array|null);
+    }
+
+    /** Represents a MandrakeValidateAndDecryptSelfMmkSuccess. */
+    class MandrakeValidateAndDecryptSelfMmkSuccess implements IMandrakeValidateAndDecryptSelfMmkSuccess {
+
+        /**
+         * Constructs a new MandrakeValidateAndDecryptSelfMmkSuccess.
+         * @param [properties] Properties to set
+         */
+        constructor(properties?: proto.IMandrakeValidateAndDecryptSelfMmkSuccess);
+
+        /** MandrakeValidateAndDecryptSelfMmkSuccess mmkSeed. */
+        public mmkSeed?: (Uint8Array|null);
+
+        /** MandrakeValidateAndDecryptSelfMmkSuccess mailboxHeadHash. */
+        public mailboxHeadHash?: (Uint8Array|null);
+
+        /**
+         * Creates a new MandrakeValidateAndDecryptSelfMmkSuccess instance using the specified properties.
+         * @param [properties] Properties to set
+         * @returns MandrakeValidateAndDecryptSelfMmkSuccess instance
+         */
+        public static create(properties?: proto.IMandrakeValidateAndDecryptSelfMmkSuccess): proto.MandrakeValidateAndDecryptSelfMmkSuccess;
+
+        /**
+         * Encodes the specified MandrakeValidateAndDecryptSelfMmkSuccess message. Does not implicitly {@link proto.MandrakeValidateAndDecryptSelfMmkSuccess.verify|verify} messages.
+         * @param message MandrakeValidateAndDecryptSelfMmkSuccess message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encode(message: proto.IMandrakeValidateAndDecryptSelfMmkSuccess, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Encodes the specified MandrakeValidateAndDecryptSelfMmkSuccess message, length delimited. Does not implicitly {@link proto.MandrakeValidateAndDecryptSelfMmkSuccess.verify|verify} messages.
+         * @param message MandrakeValidateAndDecryptSelfMmkSuccess message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encodeDelimited(message: proto.IMandrakeValidateAndDecryptSelfMmkSuccess, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Decodes a MandrakeValidateAndDecryptSelfMmkSuccess message from the specified reader or buffer.
+         * @param reader Reader or buffer to decode from
+         * @param [length] Message length if known beforehand
+         * @returns MandrakeValidateAndDecryptSelfMmkSuccess
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): proto.MandrakeValidateAndDecryptSelfMmkSuccess;
+
+        /**
+         * Decodes a MandrakeValidateAndDecryptSelfMmkSuccess message from the specified reader or buffer, length delimited.
+         * @param reader Reader or buffer to decode from
+         * @returns MandrakeValidateAndDecryptSelfMmkSuccess
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): proto.MandrakeValidateAndDecryptSelfMmkSuccess;
+
+        /**
+         * Verifies a MandrakeValidateAndDecryptSelfMmkSuccess message.
+         * @param message Plain object to verify
+         * @returns `null` if valid, otherwise the reason why it is not
+         */
+        public static verify(message: { [k: string]: any }): (string|null);
+
+        /**
+         * Creates a MandrakeValidateAndDecryptSelfMmkSuccess message from a plain object. Also converts values to their respective internal types.
+         * @param object Plain object
+         * @returns MandrakeValidateAndDecryptSelfMmkSuccess
+         */
+        public static fromObject(object: { [k: string]: any }): proto.MandrakeValidateAndDecryptSelfMmkSuccess;
+
+        /**
+         * Creates a plain object from a MandrakeValidateAndDecryptSelfMmkSuccess message. Also converts values to other types if specified.
+         * @param message MandrakeValidateAndDecryptSelfMmkSuccess
+         * @param [options] Conversion options
+         * @returns Plain object
+         */
+        public static toObject(message: proto.MandrakeValidateAndDecryptSelfMmkSuccess, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+        /**
+         * Converts this MandrakeValidateAndDecryptSelfMmkSuccess to JSON.
+         * @returns JSON object
+         */
+        public toJSON(): { [k: string]: any };
+
+        /**
+         * Gets the default type url for MandrakeValidateAndDecryptSelfMmkSuccess
+         * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+         * @returns The default type url
+         */
+        public static getTypeUrl(typeUrlPrefix?: string): string;
+    }
+
+    /** Properties of a MandrakeValidateNewMmkFromDetachedDeviceInput. */
+    interface IMandrakeValidateNewMmkFromDetachedDeviceInput {
+
+        /** MandrakeValidateNewMmkFromDetachedDeviceInput mmkFromDevice */
+        mmkFromDevice?: (proto.IMmkFromDetachedDevice|null);
+
+        /** MandrakeValidateNewMmkFromDetachedDeviceInput signature */
+        signature?: (Uint8Array|null);
+
+        /** MandrakeValidateNewMmkFromDetachedDeviceInput prevMmk */
+        prevMmk?: (proto.IMessagingMailboxPublicData|null);
+    }
+
+    /** Represents a MandrakeValidateNewMmkFromDetachedDeviceInput. */
+    class MandrakeValidateNewMmkFromDetachedDeviceInput implements IMandrakeValidateNewMmkFromDetachedDeviceInput {
+
+        /**
+         * Constructs a new MandrakeValidateNewMmkFromDetachedDeviceInput.
+         * @param [properties] Properties to set
+         */
+        constructor(properties?: proto.IMandrakeValidateNewMmkFromDetachedDeviceInput);
+
+        /** MandrakeValidateNewMmkFromDetachedDeviceInput mmkFromDevice. */
+        public mmkFromDevice?: (proto.IMmkFromDetachedDevice|null);
+
+        /** MandrakeValidateNewMmkFromDetachedDeviceInput signature. */
+        public signature?: (Uint8Array|null);
+
+        /** MandrakeValidateNewMmkFromDetachedDeviceInput prevMmk. */
+        public prevMmk?: (proto.IMessagingMailboxPublicData|null);
+
+        /**
+         * Creates a new MandrakeValidateNewMmkFromDetachedDeviceInput instance using the specified properties.
+         * @param [properties] Properties to set
+         * @returns MandrakeValidateNewMmkFromDetachedDeviceInput instance
+         */
+        public static create(properties?: proto.IMandrakeValidateNewMmkFromDetachedDeviceInput): proto.MandrakeValidateNewMmkFromDetachedDeviceInput;
+
+        /**
+         * Encodes the specified MandrakeValidateNewMmkFromDetachedDeviceInput message. Does not implicitly {@link proto.MandrakeValidateNewMmkFromDetachedDeviceInput.verify|verify} messages.
+         * @param message MandrakeValidateNewMmkFromDetachedDeviceInput message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encode(message: proto.IMandrakeValidateNewMmkFromDetachedDeviceInput, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Encodes the specified MandrakeValidateNewMmkFromDetachedDeviceInput message, length delimited. Does not implicitly {@link proto.MandrakeValidateNewMmkFromDetachedDeviceInput.verify|verify} messages.
+         * @param message MandrakeValidateNewMmkFromDetachedDeviceInput message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encodeDelimited(message: proto.IMandrakeValidateNewMmkFromDetachedDeviceInput, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Decodes a MandrakeValidateNewMmkFromDetachedDeviceInput message from the specified reader or buffer.
+         * @param reader Reader or buffer to decode from
+         * @param [length] Message length if known beforehand
+         * @returns MandrakeValidateNewMmkFromDetachedDeviceInput
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): proto.MandrakeValidateNewMmkFromDetachedDeviceInput;
+
+        /**
+         * Decodes a MandrakeValidateNewMmkFromDetachedDeviceInput message from the specified reader or buffer, length delimited.
+         * @param reader Reader or buffer to decode from
+         * @returns MandrakeValidateNewMmkFromDetachedDeviceInput
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): proto.MandrakeValidateNewMmkFromDetachedDeviceInput;
+
+        /**
+         * Verifies a MandrakeValidateNewMmkFromDetachedDeviceInput message.
+         * @param message Plain object to verify
+         * @returns `null` if valid, otherwise the reason why it is not
+         */
+        public static verify(message: { [k: string]: any }): (string|null);
+
+        /**
+         * Creates a MandrakeValidateNewMmkFromDetachedDeviceInput message from a plain object. Also converts values to their respective internal types.
+         * @param object Plain object
+         * @returns MandrakeValidateNewMmkFromDetachedDeviceInput
+         */
+        public static fromObject(object: { [k: string]: any }): proto.MandrakeValidateNewMmkFromDetachedDeviceInput;
+
+        /**
+         * Creates a plain object from a MandrakeValidateNewMmkFromDetachedDeviceInput message. Also converts values to other types if specified.
+         * @param message MandrakeValidateNewMmkFromDetachedDeviceInput
+         * @param [options] Conversion options
+         * @returns Plain object
+         */
+        public static toObject(message: proto.MandrakeValidateNewMmkFromDetachedDeviceInput, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+        /**
+         * Converts this MandrakeValidateNewMmkFromDetachedDeviceInput to JSON.
+         * @returns JSON object
+         */
+        public toJSON(): { [k: string]: any };
+
+        /**
+         * Gets the default type url for MandrakeValidateNewMmkFromDetachedDeviceInput
+         * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+         * @returns The default type url
+         */
+        public static getTypeUrl(typeUrlPrefix?: string): string;
+    }
+
+    /** Properties of a MandrakeValidateNewMmkFromMailboxInput. */
+    interface IMandrakeValidateNewMmkFromMailboxInput {
+
+        /** MandrakeValidateNewMmkFromMailboxInput newMmk */
+        newMmk?: (proto.IMessagingMailboxPublicData|null);
+
+        /** MandrakeValidateNewMmkFromMailboxInput signature */
+        signature?: (Uint8Array|null);
+
+        /** MandrakeValidateNewMmkFromMailboxInput prevMmk */
+        prevMmk?: (proto.IMessagingMailboxPublicData|null);
+
+        /** MandrakeValidateNewMmkFromMailboxInput epochPublicData */
+        epochPublicData?: (proto.IEpochPublicData|null);
+    }
+
+    /** Represents a MandrakeValidateNewMmkFromMailboxInput. */
+    class MandrakeValidateNewMmkFromMailboxInput implements IMandrakeValidateNewMmkFromMailboxInput {
+
+        /**
+         * Constructs a new MandrakeValidateNewMmkFromMailboxInput.
+         * @param [properties] Properties to set
+         */
+        constructor(properties?: proto.IMandrakeValidateNewMmkFromMailboxInput);
+
+        /** MandrakeValidateNewMmkFromMailboxInput newMmk. */
+        public newMmk?: (proto.IMessagingMailboxPublicData|null);
+
+        /** MandrakeValidateNewMmkFromMailboxInput signature. */
+        public signature?: (Uint8Array|null);
+
+        /** MandrakeValidateNewMmkFromMailboxInput prevMmk. */
+        public prevMmk?: (proto.IMessagingMailboxPublicData|null);
+
+        /** MandrakeValidateNewMmkFromMailboxInput epochPublicData. */
+        public epochPublicData?: (proto.IEpochPublicData|null);
+
+        /**
+         * Creates a new MandrakeValidateNewMmkFromMailboxInput instance using the specified properties.
+         * @param [properties] Properties to set
+         * @returns MandrakeValidateNewMmkFromMailboxInput instance
+         */
+        public static create(properties?: proto.IMandrakeValidateNewMmkFromMailboxInput): proto.MandrakeValidateNewMmkFromMailboxInput;
+
+        /**
+         * Encodes the specified MandrakeValidateNewMmkFromMailboxInput message. Does not implicitly {@link proto.MandrakeValidateNewMmkFromMailboxInput.verify|verify} messages.
+         * @param message MandrakeValidateNewMmkFromMailboxInput message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encode(message: proto.IMandrakeValidateNewMmkFromMailboxInput, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Encodes the specified MandrakeValidateNewMmkFromMailboxInput message, length delimited. Does not implicitly {@link proto.MandrakeValidateNewMmkFromMailboxInput.verify|verify} messages.
+         * @param message MandrakeValidateNewMmkFromMailboxInput message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encodeDelimited(message: proto.IMandrakeValidateNewMmkFromMailboxInput, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Decodes a MandrakeValidateNewMmkFromMailboxInput message from the specified reader or buffer.
+         * @param reader Reader or buffer to decode from
+         * @param [length] Message length if known beforehand
+         * @returns MandrakeValidateNewMmkFromMailboxInput
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): proto.MandrakeValidateNewMmkFromMailboxInput;
+
+        /**
+         * Decodes a MandrakeValidateNewMmkFromMailboxInput message from the specified reader or buffer, length delimited.
+         * @param reader Reader or buffer to decode from
+         * @returns MandrakeValidateNewMmkFromMailboxInput
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): proto.MandrakeValidateNewMmkFromMailboxInput;
+
+        /**
+         * Verifies a MandrakeValidateNewMmkFromMailboxInput message.
+         * @param message Plain object to verify
+         * @returns `null` if valid, otherwise the reason why it is not
+         */
+        public static verify(message: { [k: string]: any }): (string|null);
+
+        /**
+         * Creates a MandrakeValidateNewMmkFromMailboxInput message from a plain object. Also converts values to their respective internal types.
+         * @param object Plain object
+         * @returns MandrakeValidateNewMmkFromMailboxInput
+         */
+        public static fromObject(object: { [k: string]: any }): proto.MandrakeValidateNewMmkFromMailboxInput;
+
+        /**
+         * Creates a plain object from a MandrakeValidateNewMmkFromMailboxInput message. Also converts values to other types if specified.
+         * @param message MandrakeValidateNewMmkFromMailboxInput
+         * @param [options] Conversion options
+         * @returns Plain object
+         */
+        public static toObject(message: proto.MandrakeValidateNewMmkFromMailboxInput, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+        /**
+         * Converts this MandrakeValidateNewMmkFromMailboxInput to JSON.
+         * @returns JSON object
+         */
+        public toJSON(): { [k: string]: any };
+
+        /**
+         * Gets the default type url for MandrakeValidateNewMmkFromMailboxInput
+         * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+         * @returns The default type url
+         */
+        public static getTypeUrl(typeUrlPrefix?: string): string;
+    }
+
+    /** Properties of a MandrakeValidateNewMmkResult. */
+    interface IMandrakeValidateNewMmkResult {
+
+        /** MandrakeValidateNewMmkResult valid */
+        valid?: (boolean|null);
+
+        /** MandrakeValidateNewMmkResult errorMessage */
+        errorMessage?: (string|null);
+    }
+
+    /** Represents a MandrakeValidateNewMmkResult. */
+    class MandrakeValidateNewMmkResult implements IMandrakeValidateNewMmkResult {
+
+        /**
+         * Constructs a new MandrakeValidateNewMmkResult.
+         * @param [properties] Properties to set
+         */
+        constructor(properties?: proto.IMandrakeValidateNewMmkResult);
+
+        /** MandrakeValidateNewMmkResult valid. */
+        public valid?: (boolean|null);
+
+        /** MandrakeValidateNewMmkResult errorMessage. */
+        public errorMessage?: (string|null);
+
+        /** MandrakeValidateNewMmkResult result. */
+        public result?: ("valid"|"errorMessage");
+
+        /**
+         * Creates a new MandrakeValidateNewMmkResult instance using the specified properties.
+         * @param [properties] Properties to set
+         * @returns MandrakeValidateNewMmkResult instance
+         */
+        public static create(properties?: proto.IMandrakeValidateNewMmkResult): proto.MandrakeValidateNewMmkResult;
+
+        /**
+         * Encodes the specified MandrakeValidateNewMmkResult message. Does not implicitly {@link proto.MandrakeValidateNewMmkResult.verify|verify} messages.
+         * @param message MandrakeValidateNewMmkResult message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encode(message: proto.IMandrakeValidateNewMmkResult, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Encodes the specified MandrakeValidateNewMmkResult message, length delimited. Does not implicitly {@link proto.MandrakeValidateNewMmkResult.verify|verify} messages.
+         * @param message MandrakeValidateNewMmkResult message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encodeDelimited(message: proto.IMandrakeValidateNewMmkResult, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Decodes a MandrakeValidateNewMmkResult message from the specified reader or buffer.
+         * @param reader Reader or buffer to decode from
+         * @param [length] Message length if known beforehand
+         * @returns MandrakeValidateNewMmkResult
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): proto.MandrakeValidateNewMmkResult;
+
+        /**
+         * Decodes a MandrakeValidateNewMmkResult message from the specified reader or buffer, length delimited.
+         * @param reader Reader or buffer to decode from
+         * @returns MandrakeValidateNewMmkResult
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): proto.MandrakeValidateNewMmkResult;
+
+        /**
+         * Verifies a MandrakeValidateNewMmkResult message.
+         * @param message Plain object to verify
+         * @returns `null` if valid, otherwise the reason why it is not
+         */
+        public static verify(message: { [k: string]: any }): (string|null);
+
+        /**
+         * Creates a MandrakeValidateNewMmkResult message from a plain object. Also converts values to their respective internal types.
+         * @param object Plain object
+         * @returns MandrakeValidateNewMmkResult
+         */
+        public static fromObject(object: { [k: string]: any }): proto.MandrakeValidateNewMmkResult;
+
+        /**
+         * Creates a plain object from a MandrakeValidateNewMmkResult message. Also converts values to other types if specified.
+         * @param message MandrakeValidateNewMmkResult
+         * @param [options] Conversion options
+         * @returns Plain object
+         */
+        public static toObject(message: proto.MandrakeValidateNewMmkResult, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+        /**
+         * Converts this MandrakeValidateNewMmkResult to JSON.
+         * @returns JSON object
+         */
+        public toJSON(): { [k: string]: any };
+
+        /**
+         * Gets the default type url for MandrakeValidateNewMmkResult
+         * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+         * @returns The default type url
+         */
+        public static getTypeUrl(typeUrlPrefix?: string): string;
     }
 
     /** Properties of a MediaData. */
@@ -33653,6 +41262,115 @@ export namespace proto {
         ON = 2
     }
 
+    /** Properties of a MekBundle. */
+    interface IMekBundle {
+
+        /** MekBundle key */
+        key?: (Uint8Array|null);
+
+        /** MekBundle mekId */
+        mekId?: (Uint8Array|null);
+
+        /** MekBundle rosterHash */
+        rosterHash?: (Uint8Array|null);
+    }
+
+    /** Represents a MekBundle. */
+    class MekBundle implements IMekBundle {
+
+        /**
+         * Constructs a new MekBundle.
+         * @param [properties] Properties to set
+         */
+        constructor(properties?: proto.IMekBundle);
+
+        /** MekBundle key. */
+        public key?: (Uint8Array|null);
+
+        /** MekBundle mekId. */
+        public mekId?: (Uint8Array|null);
+
+        /** MekBundle rosterHash. */
+        public rosterHash?: (Uint8Array|null);
+
+        /**
+         * Creates a new MekBundle instance using the specified properties.
+         * @param [properties] Properties to set
+         * @returns MekBundle instance
+         */
+        public static create(properties?: proto.IMekBundle): proto.MekBundle;
+
+        /**
+         * Encodes the specified MekBundle message. Does not implicitly {@link proto.MekBundle.verify|verify} messages.
+         * @param message MekBundle message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encode(message: proto.IMekBundle, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Encodes the specified MekBundle message, length delimited. Does not implicitly {@link proto.MekBundle.verify|verify} messages.
+         * @param message MekBundle message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encodeDelimited(message: proto.IMekBundle, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Decodes a MekBundle message from the specified reader or buffer.
+         * @param reader Reader or buffer to decode from
+         * @param [length] Message length if known beforehand
+         * @returns MekBundle
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): proto.MekBundle;
+
+        /**
+         * Decodes a MekBundle message from the specified reader or buffer, length delimited.
+         * @param reader Reader or buffer to decode from
+         * @returns MekBundle
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): proto.MekBundle;
+
+        /**
+         * Verifies a MekBundle message.
+         * @param message Plain object to verify
+         * @returns `null` if valid, otherwise the reason why it is not
+         */
+        public static verify(message: { [k: string]: any }): (string|null);
+
+        /**
+         * Creates a MekBundle message from a plain object. Also converts values to their respective internal types.
+         * @param object Plain object
+         * @returns MekBundle
+         */
+        public static fromObject(object: { [k: string]: any }): proto.MekBundle;
+
+        /**
+         * Creates a plain object from a MekBundle message. Also converts values to other types if specified.
+         * @param message MekBundle
+         * @param [options] Conversion options
+         * @returns Plain object
+         */
+        public static toObject(message: proto.MekBundle, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+        /**
+         * Converts this MekBundle to JSON.
+         * @returns JSON object
+         */
+        public toJSON(): { [k: string]: any };
+
+        /**
+         * Gets the default type url for MekBundle
+         * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+         * @returns The default type url
+         */
+        public static getTypeUrl(typeUrlPrefix?: string): string;
+    }
+
     /** Properties of a MemberLabel. */
     interface IMemberLabel {
 
@@ -33865,6 +41583,121 @@ export namespace proto {
 
         /**
          * Gets the default type url for Mention
+         * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+         * @returns The default type url
+         */
+        public static getTypeUrl(typeUrlPrefix?: string): string;
+    }
+
+    /** Properties of a MerkleMembershipProof. */
+    interface IMerkleMembershipProof {
+
+        /** MerkleMembershipProof proof */
+        proof?: (Uint8Array|null);
+
+        /** MerkleMembershipProof root */
+        root?: (Uint8Array|null);
+
+        /** MerkleMembershipProof leafIndex */
+        leafIndex?: (number|Long|null);
+
+        /** MerkleMembershipProof totalLeaves */
+        totalLeaves?: (number|Long|null);
+    }
+
+    /** Represents a MerkleMembershipProof. */
+    class MerkleMembershipProof implements IMerkleMembershipProof {
+
+        /**
+         * Constructs a new MerkleMembershipProof.
+         * @param [properties] Properties to set
+         */
+        constructor(properties?: proto.IMerkleMembershipProof);
+
+        /** MerkleMembershipProof proof. */
+        public proof?: (Uint8Array|null);
+
+        /** MerkleMembershipProof root. */
+        public root?: (Uint8Array|null);
+
+        /** MerkleMembershipProof leafIndex. */
+        public leafIndex?: (number|Long|null);
+
+        /** MerkleMembershipProof totalLeaves. */
+        public totalLeaves?: (number|Long|null);
+
+        /**
+         * Creates a new MerkleMembershipProof instance using the specified properties.
+         * @param [properties] Properties to set
+         * @returns MerkleMembershipProof instance
+         */
+        public static create(properties?: proto.IMerkleMembershipProof): proto.MerkleMembershipProof;
+
+        /**
+         * Encodes the specified MerkleMembershipProof message. Does not implicitly {@link proto.MerkleMembershipProof.verify|verify} messages.
+         * @param message MerkleMembershipProof message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encode(message: proto.IMerkleMembershipProof, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Encodes the specified MerkleMembershipProof message, length delimited. Does not implicitly {@link proto.MerkleMembershipProof.verify|verify} messages.
+         * @param message MerkleMembershipProof message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encodeDelimited(message: proto.IMerkleMembershipProof, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Decodes a MerkleMembershipProof message from the specified reader or buffer.
+         * @param reader Reader or buffer to decode from
+         * @param [length] Message length if known beforehand
+         * @returns MerkleMembershipProof
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): proto.MerkleMembershipProof;
+
+        /**
+         * Decodes a MerkleMembershipProof message from the specified reader or buffer, length delimited.
+         * @param reader Reader or buffer to decode from
+         * @returns MerkleMembershipProof
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): proto.MerkleMembershipProof;
+
+        /**
+         * Verifies a MerkleMembershipProof message.
+         * @param message Plain object to verify
+         * @returns `null` if valid, otherwise the reason why it is not
+         */
+        public static verify(message: { [k: string]: any }): (string|null);
+
+        /**
+         * Creates a MerkleMembershipProof message from a plain object. Also converts values to their respective internal types.
+         * @param object Plain object
+         * @returns MerkleMembershipProof
+         */
+        public static fromObject(object: { [k: string]: any }): proto.MerkleMembershipProof;
+
+        /**
+         * Creates a plain object from a MerkleMembershipProof message. Also converts values to other types if specified.
+         * @param message MerkleMembershipProof
+         * @param [options] Conversion options
+         * @returns Plain object
+         */
+        public static toObject(message: proto.MerkleMembershipProof, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+        /**
+         * Converts this MerkleMembershipProof to JSON.
+         * @returns JSON object
+         */
+        public toJSON(): { [k: string]: any };
+
+        /**
+         * Gets the default type url for MerkleMembershipProof
          * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
          * @returns The default type url
          */
@@ -34213,8 +42046,17 @@ export namespace proto {
         /** Message audioStickerMessage */
         audioStickerMessage?: (proto.Message.IFutureProofMessage|null);
 
+        /** Message instantImageMessage */
+        instantImageMessage?: (proto.Message.IImageMessage|null);
+
+        /** Message requestLocationMessage */
+        requestLocationMessage?: (proto.Message.IRequestLocationMessage|null);
+
         /** Message botGroupParticipantMessage */
         botGroupParticipantMessage?: (proto.Message.IFutureProofMessage|null);
+
+        /** Message requestLocationUpdateMessage */
+        requestLocationUpdateMessage?: (proto.Message.IRequestLocationUpdateMessage|null);
     }
 
     /** Represents a Message. */
@@ -34565,8 +42407,17 @@ export namespace proto {
         /** Message audioStickerMessage. */
         public audioStickerMessage?: (proto.Message.IFutureProofMessage|null);
 
+        /** Message instantImageMessage. */
+        public instantImageMessage?: (proto.Message.IImageMessage|null);
+
+        /** Message requestLocationMessage. */
+        public requestLocationMessage?: (proto.Message.IRequestLocationMessage|null);
+
         /** Message botGroupParticipantMessage. */
         public botGroupParticipantMessage?: (proto.Message.IFutureProofMessage|null);
+
+        /** Message requestLocationUpdateMessage. */
+        public requestLocationUpdateMessage?: (proto.Message.IRequestLocationUpdateMessage|null);
 
         /**
          * Creates a new Message instance using the specified properties.
@@ -37446,14 +45297,20 @@ export namespace proto {
         /** Properties of a ChatSolidColorWallpaper. */
         interface IChatSolidColorWallpaper {
 
-            /** ChatSolidColorWallpaper colorLight */
-            colorLight?: (string|null);
+            /** ChatSolidColorWallpaper backgroundLightArgb */
+            backgroundLightArgb?: (number|null);
 
-            /** ChatSolidColorWallpaper colorDark */
-            colorDark?: (string|null);
+            /** ChatSolidColorWallpaper backgroundDarkArgb */
+            backgroundDarkArgb?: (number|null);
 
             /** ChatSolidColorWallpaper isDoodleEnabled */
             isDoodleEnabled?: (boolean|null);
+
+            /** ChatSolidColorWallpaper doodleLightArgb */
+            doodleLightArgb?: (number|null);
+
+            /** ChatSolidColorWallpaper doodleDarkArgb */
+            doodleDarkArgb?: (number|null);
         }
 
         /** Represents a ChatSolidColorWallpaper. */
@@ -37465,14 +45322,20 @@ export namespace proto {
              */
             constructor(properties?: proto.Message.IChatSolidColorWallpaper);
 
-            /** ChatSolidColorWallpaper colorLight. */
-            public colorLight?: (string|null);
+            /** ChatSolidColorWallpaper backgroundLightArgb. */
+            public backgroundLightArgb?: (number|null);
 
-            /** ChatSolidColorWallpaper colorDark. */
-            public colorDark?: (string|null);
+            /** ChatSolidColorWallpaper backgroundDarkArgb. */
+            public backgroundDarkArgb?: (number|null);
 
             /** ChatSolidColorWallpaper isDoodleEnabled. */
             public isDoodleEnabled?: (boolean|null);
+
+            /** ChatSolidColorWallpaper doodleLightArgb. */
+            public doodleLightArgb?: (number|null);
+
+            /** ChatSolidColorWallpaper doodleDarkArgb. */
+            public doodleDarkArgb?: (number|null);
 
             /**
              * Creates a new ChatSolidColorWallpaper instance using the specified properties.
@@ -38036,6 +45899,109 @@ export namespace proto {
                  */
                 public static getTypeUrl(typeUrlPrefix?: string): string;
             }
+        }
+
+        /** Properties of a CoexConnectionDescriptor. */
+        interface ICoexConnectionDescriptor {
+
+            /** CoexConnectionDescriptor providerId */
+            providerId?: (number|Long|null);
+
+            /** CoexConnectionDescriptor product */
+            product?: (string|null);
+        }
+
+        /** Represents a CoexConnectionDescriptor. */
+        class CoexConnectionDescriptor implements ICoexConnectionDescriptor {
+
+            /**
+             * Constructs a new CoexConnectionDescriptor.
+             * @param [properties] Properties to set
+             */
+            constructor(properties?: proto.Message.ICoexConnectionDescriptor);
+
+            /** CoexConnectionDescriptor providerId. */
+            public providerId?: (number|Long|null);
+
+            /** CoexConnectionDescriptor product. */
+            public product?: (string|null);
+
+            /**
+             * Creates a new CoexConnectionDescriptor instance using the specified properties.
+             * @param [properties] Properties to set
+             * @returns CoexConnectionDescriptor instance
+             */
+            public static create(properties?: proto.Message.ICoexConnectionDescriptor): proto.Message.CoexConnectionDescriptor;
+
+            /**
+             * Encodes the specified CoexConnectionDescriptor message. Does not implicitly {@link proto.Message.CoexConnectionDescriptor.verify|verify} messages.
+             * @param message CoexConnectionDescriptor message or plain object to encode
+             * @param [writer] Writer to encode to
+             * @returns Writer
+             */
+            public static encode(message: proto.Message.ICoexConnectionDescriptor, writer?: $protobuf.Writer): $protobuf.Writer;
+
+            /**
+             * Encodes the specified CoexConnectionDescriptor message, length delimited. Does not implicitly {@link proto.Message.CoexConnectionDescriptor.verify|verify} messages.
+             * @param message CoexConnectionDescriptor message or plain object to encode
+             * @param [writer] Writer to encode to
+             * @returns Writer
+             */
+            public static encodeDelimited(message: proto.Message.ICoexConnectionDescriptor, writer?: $protobuf.Writer): $protobuf.Writer;
+
+            /**
+             * Decodes a CoexConnectionDescriptor message from the specified reader or buffer.
+             * @param reader Reader or buffer to decode from
+             * @param [length] Message length if known beforehand
+             * @returns CoexConnectionDescriptor
+             * @throws {Error} If the payload is not a reader or valid buffer
+             * @throws {$protobuf.util.ProtocolError} If required fields are missing
+             */
+            public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): proto.Message.CoexConnectionDescriptor;
+
+            /**
+             * Decodes a CoexConnectionDescriptor message from the specified reader or buffer, length delimited.
+             * @param reader Reader or buffer to decode from
+             * @returns CoexConnectionDescriptor
+             * @throws {Error} If the payload is not a reader or valid buffer
+             * @throws {$protobuf.util.ProtocolError} If required fields are missing
+             */
+            public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): proto.Message.CoexConnectionDescriptor;
+
+            /**
+             * Verifies a CoexConnectionDescriptor message.
+             * @param message Plain object to verify
+             * @returns `null` if valid, otherwise the reason why it is not
+             */
+            public static verify(message: { [k: string]: any }): (string|null);
+
+            /**
+             * Creates a CoexConnectionDescriptor message from a plain object. Also converts values to their respective internal types.
+             * @param object Plain object
+             * @returns CoexConnectionDescriptor
+             */
+            public static fromObject(object: { [k: string]: any }): proto.Message.CoexConnectionDescriptor;
+
+            /**
+             * Creates a plain object from a CoexConnectionDescriptor message. Also converts values to other types if specified.
+             * @param message CoexConnectionDescriptor
+             * @param [options] Conversion options
+             * @returns Plain object
+             */
+            public static toObject(message: proto.Message.CoexConnectionDescriptor, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+            /**
+             * Converts this CoexConnectionDescriptor to JSON.
+             * @returns JSON object
+             */
+            public toJSON(): { [k: string]: any };
+
+            /**
+             * Gets the default type url for CoexConnectionDescriptor
+             * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+             * @returns The default type url
+             */
+            public static getTypeUrl(typeUrlPrefix?: string): string;
         }
 
         /** Properties of a CommentMessage. */
@@ -39268,6 +47234,18 @@ export namespace proto {
 
             /** EventInviteMessage callLink */
             callLink?: (string|null);
+
+            /** EventInviteMessage coverImageHandle */
+            coverImageHandle?: (string|null);
+
+            /** EventInviteMessage locationName */
+            locationName?: (string|null);
+
+            /** EventInviteMessage lastUpdatedTsUsec */
+            lastUpdatedTsUsec?: (number|Long|null);
+
+            /** EventInviteMessage status */
+            status?: (proto.Message.EventInviteMessage.EventStatus|null);
         }
 
         /** Represents an EventInviteMessage. */
@@ -39305,6 +47283,18 @@ export namespace proto {
 
             /** EventInviteMessage callLink. */
             public callLink?: (string|null);
+
+            /** EventInviteMessage coverImageHandle. */
+            public coverImageHandle?: (string|null);
+
+            /** EventInviteMessage locationName. */
+            public locationName?: (string|null);
+
+            /** EventInviteMessage lastUpdatedTsUsec. */
+            public lastUpdatedTsUsec?: (number|Long|null);
+
+            /** EventInviteMessage status. */
+            public status?: (proto.Message.EventInviteMessage.EventStatus|null);
 
             /**
              * Creates a new EventInviteMessage instance using the specified properties.
@@ -39382,6 +47372,20 @@ export namespace proto {
              * @returns The default type url
              */
             public static getTypeUrl(typeUrlPrefix?: string): string;
+        }
+
+        namespace EventInviteMessage {
+
+            /** EventStatus enum. */
+            enum EventStatus {
+                UNKNOWN = 0,
+                ACTIVE = 1,
+                CANCELED = 2,
+                SUSPENDED = 3,
+                DELETED = 4,
+                LEFT_EVENT = 5,
+                REMOVED_FROM_INVITE_LIST = 6
+            }
         }
 
         /** Properties of an EventMessage. */
@@ -40097,6 +48101,9 @@ export namespace proto {
 
             /** FullHistorySyncOnDemandRequestMetadata opaqueClientData */
             opaqueClientData?: (Uint8Array|null);
+
+            /** FullHistorySyncOnDemandRequestMetadata connection */
+            connection?: (proto.Message.ICoexConnectionDescriptor|null);
         }
 
         /** Represents a FullHistorySyncOnDemandRequestMetadata. */
@@ -40116,6 +48123,9 @@ export namespace proto {
 
             /** FullHistorySyncOnDemandRequestMetadata opaqueClientData. */
             public opaqueClientData?: (Uint8Array|null);
+
+            /** FullHistorySyncOnDemandRequestMetadata connection. */
+            public connection?: (proto.Message.ICoexConnectionDescriptor|null);
 
             /**
              * Creates a new FullHistorySyncOnDemandRequestMetadata instance using the specified properties.
@@ -52273,6 +60283,9 @@ export namespace proto {
 
             /** ProtocolMessage sharedDeviceContactHashKeyRequest */
             sharedDeviceContactHashKeyRequest?: (proto.Message.ISharedDeviceContactHashKeyRequest|null);
+
+            /** ProtocolMessage additionalPromptIds */
+            additionalPromptIds?: (string[]|null);
         }
 
         /** Represents a ProtocolMessage. */
@@ -52382,6 +60395,9 @@ export namespace proto {
 
             /** ProtocolMessage sharedDeviceContactHashKeyRequest. */
             public sharedDeviceContactHashKeyRequest?: (proto.Message.ISharedDeviceContactHashKeyRequest|null);
+
+            /** ProtocolMessage additionalPromptIds. */
+            public additionalPromptIds: string[];
 
             /**
              * Creates a new ProtocolMessage instance using the specified properties.
@@ -52719,6 +60735,221 @@ export namespace proto {
              * @returns The default type url
              */
             public static getTypeUrl(typeUrlPrefix?: string): string;
+        }
+
+        /** Properties of a RequestLocationMessage. */
+        interface IRequestLocationMessage {
+
+            /** RequestLocationMessage contextInfo */
+            contextInfo?: (proto.IContextInfo|null);
+        }
+
+        /** Represents a RequestLocationMessage. */
+        class RequestLocationMessage implements IRequestLocationMessage {
+
+            /**
+             * Constructs a new RequestLocationMessage.
+             * @param [properties] Properties to set
+             */
+            constructor(properties?: proto.Message.IRequestLocationMessage);
+
+            /** RequestLocationMessage contextInfo. */
+            public contextInfo?: (proto.IContextInfo|null);
+
+            /**
+             * Creates a new RequestLocationMessage instance using the specified properties.
+             * @param [properties] Properties to set
+             * @returns RequestLocationMessage instance
+             */
+            public static create(properties?: proto.Message.IRequestLocationMessage): proto.Message.RequestLocationMessage;
+
+            /**
+             * Encodes the specified RequestLocationMessage message. Does not implicitly {@link proto.Message.RequestLocationMessage.verify|verify} messages.
+             * @param message RequestLocationMessage message or plain object to encode
+             * @param [writer] Writer to encode to
+             * @returns Writer
+             */
+            public static encode(message: proto.Message.IRequestLocationMessage, writer?: $protobuf.Writer): $protobuf.Writer;
+
+            /**
+             * Encodes the specified RequestLocationMessage message, length delimited. Does not implicitly {@link proto.Message.RequestLocationMessage.verify|verify} messages.
+             * @param message RequestLocationMessage message or plain object to encode
+             * @param [writer] Writer to encode to
+             * @returns Writer
+             */
+            public static encodeDelimited(message: proto.Message.IRequestLocationMessage, writer?: $protobuf.Writer): $protobuf.Writer;
+
+            /**
+             * Decodes a RequestLocationMessage message from the specified reader or buffer.
+             * @param reader Reader or buffer to decode from
+             * @param [length] Message length if known beforehand
+             * @returns RequestLocationMessage
+             * @throws {Error} If the payload is not a reader or valid buffer
+             * @throws {$protobuf.util.ProtocolError} If required fields are missing
+             */
+            public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): proto.Message.RequestLocationMessage;
+
+            /**
+             * Decodes a RequestLocationMessage message from the specified reader or buffer, length delimited.
+             * @param reader Reader or buffer to decode from
+             * @returns RequestLocationMessage
+             * @throws {Error} If the payload is not a reader or valid buffer
+             * @throws {$protobuf.util.ProtocolError} If required fields are missing
+             */
+            public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): proto.Message.RequestLocationMessage;
+
+            /**
+             * Verifies a RequestLocationMessage message.
+             * @param message Plain object to verify
+             * @returns `null` if valid, otherwise the reason why it is not
+             */
+            public static verify(message: { [k: string]: any }): (string|null);
+
+            /**
+             * Creates a RequestLocationMessage message from a plain object. Also converts values to their respective internal types.
+             * @param object Plain object
+             * @returns RequestLocationMessage
+             */
+            public static fromObject(object: { [k: string]: any }): proto.Message.RequestLocationMessage;
+
+            /**
+             * Creates a plain object from a RequestLocationMessage message. Also converts values to other types if specified.
+             * @param message RequestLocationMessage
+             * @param [options] Conversion options
+             * @returns Plain object
+             */
+            public static toObject(message: proto.Message.RequestLocationMessage, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+            /**
+             * Converts this RequestLocationMessage to JSON.
+             * @returns JSON object
+             */
+            public toJSON(): { [k: string]: any };
+
+            /**
+             * Gets the default type url for RequestLocationMessage
+             * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+             * @returns The default type url
+             */
+            public static getTypeUrl(typeUrlPrefix?: string): string;
+        }
+
+        /** Properties of a RequestLocationUpdateMessage. */
+        interface IRequestLocationUpdateMessage {
+
+            /** RequestLocationUpdateMessage key */
+            key?: (proto.IMessageKey|null);
+
+            /** RequestLocationUpdateMessage updateType */
+            updateType?: (proto.Message.RequestLocationUpdateMessage.UpdateType|null);
+
+            /** RequestLocationUpdateMessage senderTimestampMs */
+            senderTimestampMs?: (number|Long|null);
+        }
+
+        /** Represents a RequestLocationUpdateMessage. */
+        class RequestLocationUpdateMessage implements IRequestLocationUpdateMessage {
+
+            /**
+             * Constructs a new RequestLocationUpdateMessage.
+             * @param [properties] Properties to set
+             */
+            constructor(properties?: proto.Message.IRequestLocationUpdateMessage);
+
+            /** RequestLocationUpdateMessage key. */
+            public key?: (proto.IMessageKey|null);
+
+            /** RequestLocationUpdateMessage updateType. */
+            public updateType?: (proto.Message.RequestLocationUpdateMessage.UpdateType|null);
+
+            /** RequestLocationUpdateMessage senderTimestampMs. */
+            public senderTimestampMs?: (number|Long|null);
+
+            /**
+             * Creates a new RequestLocationUpdateMessage instance using the specified properties.
+             * @param [properties] Properties to set
+             * @returns RequestLocationUpdateMessage instance
+             */
+            public static create(properties?: proto.Message.IRequestLocationUpdateMessage): proto.Message.RequestLocationUpdateMessage;
+
+            /**
+             * Encodes the specified RequestLocationUpdateMessage message. Does not implicitly {@link proto.Message.RequestLocationUpdateMessage.verify|verify} messages.
+             * @param message RequestLocationUpdateMessage message or plain object to encode
+             * @param [writer] Writer to encode to
+             * @returns Writer
+             */
+            public static encode(message: proto.Message.IRequestLocationUpdateMessage, writer?: $protobuf.Writer): $protobuf.Writer;
+
+            /**
+             * Encodes the specified RequestLocationUpdateMessage message, length delimited. Does not implicitly {@link proto.Message.RequestLocationUpdateMessage.verify|verify} messages.
+             * @param message RequestLocationUpdateMessage message or plain object to encode
+             * @param [writer] Writer to encode to
+             * @returns Writer
+             */
+            public static encodeDelimited(message: proto.Message.IRequestLocationUpdateMessage, writer?: $protobuf.Writer): $protobuf.Writer;
+
+            /**
+             * Decodes a RequestLocationUpdateMessage message from the specified reader or buffer.
+             * @param reader Reader or buffer to decode from
+             * @param [length] Message length if known beforehand
+             * @returns RequestLocationUpdateMessage
+             * @throws {Error} If the payload is not a reader or valid buffer
+             * @throws {$protobuf.util.ProtocolError} If required fields are missing
+             */
+            public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): proto.Message.RequestLocationUpdateMessage;
+
+            /**
+             * Decodes a RequestLocationUpdateMessage message from the specified reader or buffer, length delimited.
+             * @param reader Reader or buffer to decode from
+             * @returns RequestLocationUpdateMessage
+             * @throws {Error} If the payload is not a reader or valid buffer
+             * @throws {$protobuf.util.ProtocolError} If required fields are missing
+             */
+            public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): proto.Message.RequestLocationUpdateMessage;
+
+            /**
+             * Verifies a RequestLocationUpdateMessage message.
+             * @param message Plain object to verify
+             * @returns `null` if valid, otherwise the reason why it is not
+             */
+            public static verify(message: { [k: string]: any }): (string|null);
+
+            /**
+             * Creates a RequestLocationUpdateMessage message from a plain object. Also converts values to their respective internal types.
+             * @param object Plain object
+             * @returns RequestLocationUpdateMessage
+             */
+            public static fromObject(object: { [k: string]: any }): proto.Message.RequestLocationUpdateMessage;
+
+            /**
+             * Creates a plain object from a RequestLocationUpdateMessage message. Also converts values to other types if specified.
+             * @param message RequestLocationUpdateMessage
+             * @param [options] Conversion options
+             * @returns Plain object
+             */
+            public static toObject(message: proto.Message.RequestLocationUpdateMessage, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+            /**
+             * Converts this RequestLocationUpdateMessage to JSON.
+             * @returns JSON object
+             */
+            public toJSON(): { [k: string]: any };
+
+            /**
+             * Gets the default type url for RequestLocationUpdateMessage
+             * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+             * @returns The default type url
+             */
+            public static getTypeUrl(typeUrlPrefix?: string): string;
+        }
+
+        namespace RequestLocationUpdateMessage {
+
+            /** UpdateType enum. */
+            enum UpdateType {
+                UNKNOWN = 0,
+                CANCEL = 1
+            }
         }
 
         /** Properties of a RequestPaymentMessage. */
@@ -56912,7 +65143,8 @@ export namespace proto {
             REACTION = 1,
             EVENT_RESPONSE = 2,
             POLL_UPDATE = 3,
-            PIN_IN_CHAT = 4
+            PIN_IN_CHAT = 4,
+            REQUEST_LOCATION_UPDATE = 5
         }
     }
 
@@ -57152,7 +65384,9 @@ export namespace proto {
             STATUS_ADD_YOURS_DIWALI = 17,
             STATUS_REACTION = 18,
             HEVC_VIDEO_DUAL_UPLOAD = 19,
-            POLL_ADD_OPTION = 20
+            POLL_ADD_OPTION = 20,
+            AV1_VIDEO_DUAL_UPLOAD = 21,
+            STREAMED_HD_VIDEO_DUAL_UPLOAD = 22
         }
     }
 
@@ -57715,6 +65949,2969 @@ export namespace proto {
 
         /**
          * Gets the default type url for MessageText
+         * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+         * @returns The default type url
+         */
+        public static getTypeUrl(typeUrlPrefix?: string): string;
+    }
+
+    /** Properties of a MessagingMailboxPublicData. */
+    interface IMessagingMailboxPublicData {
+
+        /** MessagingMailboxPublicData epochHead */
+        epochHead?: (Uint8Array|null);
+
+        /** MessagingMailboxPublicData deviceRosterHash */
+        deviceRosterHash?: (Uint8Array|null);
+
+        /** MessagingMailboxPublicData sequenceNumber */
+        sequenceNumber?: (number|Long|null);
+
+        /** MessagingMailboxPublicData sigPk */
+        sigPk?: (Uint8Array|null);
+
+        /** MessagingMailboxPublicData encPk */
+        encPk?: (Uint8Array|null);
+
+        /** MessagingMailboxPublicData authPk */
+        authPk?: (Uint8Array|null);
+    }
+
+    /** Represents a MessagingMailboxPublicData. */
+    class MessagingMailboxPublicData implements IMessagingMailboxPublicData {
+
+        /**
+         * Constructs a new MessagingMailboxPublicData.
+         * @param [properties] Properties to set
+         */
+        constructor(properties?: proto.IMessagingMailboxPublicData);
+
+        /** MessagingMailboxPublicData epochHead. */
+        public epochHead?: (Uint8Array|null);
+
+        /** MessagingMailboxPublicData deviceRosterHash. */
+        public deviceRosterHash?: (Uint8Array|null);
+
+        /** MessagingMailboxPublicData sequenceNumber. */
+        public sequenceNumber?: (number|Long|null);
+
+        /** MessagingMailboxPublicData sigPk. */
+        public sigPk?: (Uint8Array|null);
+
+        /** MessagingMailboxPublicData encPk. */
+        public encPk?: (Uint8Array|null);
+
+        /** MessagingMailboxPublicData authPk. */
+        public authPk?: (Uint8Array|null);
+
+        /**
+         * Creates a new MessagingMailboxPublicData instance using the specified properties.
+         * @param [properties] Properties to set
+         * @returns MessagingMailboxPublicData instance
+         */
+        public static create(properties?: proto.IMessagingMailboxPublicData): proto.MessagingMailboxPublicData;
+
+        /**
+         * Encodes the specified MessagingMailboxPublicData message. Does not implicitly {@link proto.MessagingMailboxPublicData.verify|verify} messages.
+         * @param message MessagingMailboxPublicData message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encode(message: proto.IMessagingMailboxPublicData, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Encodes the specified MessagingMailboxPublicData message, length delimited. Does not implicitly {@link proto.MessagingMailboxPublicData.verify|verify} messages.
+         * @param message MessagingMailboxPublicData message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encodeDelimited(message: proto.IMessagingMailboxPublicData, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Decodes a MessagingMailboxPublicData message from the specified reader or buffer.
+         * @param reader Reader or buffer to decode from
+         * @param [length] Message length if known beforehand
+         * @returns MessagingMailboxPublicData
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): proto.MessagingMailboxPublicData;
+
+        /**
+         * Decodes a MessagingMailboxPublicData message from the specified reader or buffer, length delimited.
+         * @param reader Reader or buffer to decode from
+         * @returns MessagingMailboxPublicData
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): proto.MessagingMailboxPublicData;
+
+        /**
+         * Verifies a MessagingMailboxPublicData message.
+         * @param message Plain object to verify
+         * @returns `null` if valid, otherwise the reason why it is not
+         */
+        public static verify(message: { [k: string]: any }): (string|null);
+
+        /**
+         * Creates a MessagingMailboxPublicData message from a plain object. Also converts values to their respective internal types.
+         * @param object Plain object
+         * @returns MessagingMailboxPublicData
+         */
+        public static fromObject(object: { [k: string]: any }): proto.MessagingMailboxPublicData;
+
+        /**
+         * Creates a plain object from a MessagingMailboxPublicData message. Also converts values to other types if specified.
+         * @param message MessagingMailboxPublicData
+         * @param [options] Conversion options
+         * @returns Plain object
+         */
+        public static toObject(message: proto.MessagingMailboxPublicData, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+        /**
+         * Converts this MessagingMailboxPublicData to JSON.
+         * @returns JSON object
+         */
+        public toJSON(): { [k: string]: any };
+
+        /**
+         * Gets the default type url for MessagingMailboxPublicData
+         * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+         * @returns The default type url
+         */
+        public static getTypeUrl(typeUrlPrefix?: string): string;
+    }
+
+    /** Properties of a MinosClientConfig. */
+    interface IMinosClientConfig {
+
+        /** MinosClientConfig preferredMessageEncryptionVersion */
+        preferredMessageEncryptionVersion?: (number|null);
+
+        /** MinosClientConfig preferredMekEncryptionVersion */
+        preferredMekEncryptionVersion?: (number|null);
+    }
+
+    /** Represents a MinosClientConfig. */
+    class MinosClientConfig implements IMinosClientConfig {
+
+        /**
+         * Constructs a new MinosClientConfig.
+         * @param [properties] Properties to set
+         */
+        constructor(properties?: proto.IMinosClientConfig);
+
+        /** MinosClientConfig preferredMessageEncryptionVersion. */
+        public preferredMessageEncryptionVersion?: (number|null);
+
+        /** MinosClientConfig preferredMekEncryptionVersion. */
+        public preferredMekEncryptionVersion?: (number|null);
+
+        /**
+         * Creates a new MinosClientConfig instance using the specified properties.
+         * @param [properties] Properties to set
+         * @returns MinosClientConfig instance
+         */
+        public static create(properties?: proto.IMinosClientConfig): proto.MinosClientConfig;
+
+        /**
+         * Encodes the specified MinosClientConfig message. Does not implicitly {@link proto.MinosClientConfig.verify|verify} messages.
+         * @param message MinosClientConfig message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encode(message: proto.IMinosClientConfig, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Encodes the specified MinosClientConfig message, length delimited. Does not implicitly {@link proto.MinosClientConfig.verify|verify} messages.
+         * @param message MinosClientConfig message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encodeDelimited(message: proto.IMinosClientConfig, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Decodes a MinosClientConfig message from the specified reader or buffer.
+         * @param reader Reader or buffer to decode from
+         * @param [length] Message length if known beforehand
+         * @returns MinosClientConfig
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): proto.MinosClientConfig;
+
+        /**
+         * Decodes a MinosClientConfig message from the specified reader or buffer, length delimited.
+         * @param reader Reader or buffer to decode from
+         * @returns MinosClientConfig
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): proto.MinosClientConfig;
+
+        /**
+         * Verifies a MinosClientConfig message.
+         * @param message Plain object to verify
+         * @returns `null` if valid, otherwise the reason why it is not
+         */
+        public static verify(message: { [k: string]: any }): (string|null);
+
+        /**
+         * Creates a MinosClientConfig message from a plain object. Also converts values to their respective internal types.
+         * @param object Plain object
+         * @returns MinosClientConfig
+         */
+        public static fromObject(object: { [k: string]: any }): proto.MinosClientConfig;
+
+        /**
+         * Creates a plain object from a MinosClientConfig message. Also converts values to other types if specified.
+         * @param message MinosClientConfig
+         * @param [options] Conversion options
+         * @returns Plain object
+         */
+        public static toObject(message: proto.MinosClientConfig, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+        /**
+         * Converts this MinosClientConfig to JSON.
+         * @returns JSON object
+         */
+        public toJSON(): { [k: string]: any };
+
+        /**
+         * Gets the default type url for MinosClientConfig
+         * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+         * @returns The default type url
+         */
+        public static getTypeUrl(typeUrlPrefix?: string): string;
+    }
+
+    /** Properties of a MinosCommand. */
+    interface IMinosCommand {
+
+        /** MinosCommand encryptAndSignMessage */
+        encryptAndSignMessage?: (proto.IMinosEncryptAndSignMessageInput|null);
+
+        /** MinosCommand decryptAndVerifyMessage */
+        decryptAndVerifyMessage?: (proto.IMinosDecryptAndVerifyMessageInput|null);
+
+        /** MinosCommand generateMek */
+        generateMek?: (proto.IGenerateMekInput|null);
+
+        /** MinosCommand generateMekRosterHash */
+        generateMekRosterHash?: (proto.IGenerateMekRosterHashInput|null);
+
+        /** MinosCommand encryptMekForDistribution */
+        encryptMekForDistribution?: (proto.IEncryptMekForDistributionInput|null);
+
+        /** MinosCommand decryptMekForDistribution */
+        decryptMekForDistribution?: (proto.IDecryptMekForDistributionInput|null);
+
+        /** MinosCommand encryptMeksForDistributionFromTransportSender */
+        encryptMeksForDistributionFromTransportSender?: (proto.IEncryptMeksForDistributionFromTransportSenderInput|null);
+
+        /** MinosCommand decryptMekForDistributionFromTransportSender */
+        decryptMekForDistributionFromTransportSender?: (proto.IDecryptMekForDistributionFromTransportSenderInput|null);
+
+        /** MinosCommand wrapTransportSigningPublicKey */
+        wrapTransportSigningPublicKey?: (proto.IWrapTransportSigningPublicKeyInput|null);
+
+        /** MinosCommand wrapTransportSigningSecretKey */
+        wrapTransportSigningSecretKey?: (proto.IWrapTransportSigningSecretKeyInput|null);
+
+        /** MinosCommand deriveMailboxSigningKeypair */
+        deriveMailboxSigningKeypair?: (proto.IDeriveMailboxSigningKeypairInput|null);
+
+        /** MinosCommand deriveMailboxEncryptionKeypair */
+        deriveMailboxEncryptionKeypair?: (proto.IDeriveMailboxEncryptionKeypairInput|null);
+
+        /** MinosCommand deriveMailboxAuthKeypair */
+        deriveMailboxAuthKeypair?: (proto.IDeriveMailboxAuthKeypairInput|null);
+
+        /** MinosCommand deriveAttachmentAccessTokenSecret */
+        deriveAttachmentAccessTokenSecret?: (proto.IDeriveAttachmentAccessTokenSecretInput|null);
+
+        /** MinosCommand deriveAttachmentPrimaryKeySecret */
+        deriveAttachmentPrimaryKeySecret?: (proto.IDeriveAttachmentPrimaryKeySecretInput|null);
+
+        /** MinosCommand minosOpenInitialEpoch */
+        minosOpenInitialEpoch?: (proto.IMinosOpenInitialEpochInput|null);
+
+        /** MinosCommand minosOpenEpoch */
+        minosOpenEpoch?: (proto.IMinosOpenEpochInput|null);
+
+        /** MinosCommand minosValidateEpoch */
+        minosValidateEpoch?: (proto.IMinosValidateEpochInput|null);
+
+        /** MinosCommand minosVerifySingleEpoch */
+        minosVerifySingleEpoch?: (proto.IMinosVerifySingleEpochInput|null);
+
+        /** MinosCommand minosThreadIdFromOneToOneThread */
+        minosThreadIdFromOneToOneThread?: (proto.IMinosThreadIdFromOneToOneThreadInput|null);
+
+        /** MinosCommand minosThreadIdFromActThreadId */
+        minosThreadIdFromActThreadId?: (proto.IMinosThreadIdFromActThreadIdInput|null);
+
+        /** MinosCommand mandrakeOpenEpoch */
+        mandrakeOpenEpoch?: (proto.IMandrakeOpenEpochInput|null);
+
+        /** MinosCommand mandrakeEncryptMek */
+        mandrakeEncryptMek?: (proto.IMandrakeEncryptMekInput|null);
+
+        /** MinosCommand mandrakeDecryptMek */
+        mandrakeDecryptMek?: (proto.IMandrakeDecryptMekInput|null);
+
+        /** MinosCommand mandrakeOpenInitialEpoch */
+        mandrakeOpenInitialEpoch?: (proto.IMandrakeOpenInitialEpochInput|null);
+
+        /** MinosCommand mandrakeValidateNewMmkFromMailbox */
+        mandrakeValidateNewMmkFromMailbox?: (proto.IMandrakeValidateNewMmkFromMailboxInput|null);
+
+        /** MinosCommand mandrakeValidateNewMmkFromDetachedDevice */
+        mandrakeValidateNewMmkFromDetachedDevice?: (proto.IMandrakeValidateNewMmkFromDetachedDeviceInput|null);
+
+        /** MinosCommand deriveMessagingMailboxKeypairs */
+        deriveMessagingMailboxKeypairs?: (proto.IDeriveMessagingMailboxKeypairsInput|null);
+
+        /** MinosCommand decryptSelfMmkDistribution */
+        decryptSelfMmkDistribution?: (proto.IDecryptSelfMmkDistributionInput|null);
+
+        /** MinosCommand mandrakeValidateAndDecryptSelfMmk */
+        mandrakeValidateAndDecryptSelfMmk?: (proto.IMandrakeValidateAndDecryptSelfMmkInput|null);
+    }
+
+    /** Represents a MinosCommand. */
+    class MinosCommand implements IMinosCommand {
+
+        /**
+         * Constructs a new MinosCommand.
+         * @param [properties] Properties to set
+         */
+        constructor(properties?: proto.IMinosCommand);
+
+        /** MinosCommand encryptAndSignMessage. */
+        public encryptAndSignMessage?: (proto.IMinosEncryptAndSignMessageInput|null);
+
+        /** MinosCommand decryptAndVerifyMessage. */
+        public decryptAndVerifyMessage?: (proto.IMinosDecryptAndVerifyMessageInput|null);
+
+        /** MinosCommand generateMek. */
+        public generateMek?: (proto.IGenerateMekInput|null);
+
+        /** MinosCommand generateMekRosterHash. */
+        public generateMekRosterHash?: (proto.IGenerateMekRosterHashInput|null);
+
+        /** MinosCommand encryptMekForDistribution. */
+        public encryptMekForDistribution?: (proto.IEncryptMekForDistributionInput|null);
+
+        /** MinosCommand decryptMekForDistribution. */
+        public decryptMekForDistribution?: (proto.IDecryptMekForDistributionInput|null);
+
+        /** MinosCommand encryptMeksForDistributionFromTransportSender. */
+        public encryptMeksForDistributionFromTransportSender?: (proto.IEncryptMeksForDistributionFromTransportSenderInput|null);
+
+        /** MinosCommand decryptMekForDistributionFromTransportSender. */
+        public decryptMekForDistributionFromTransportSender?: (proto.IDecryptMekForDistributionFromTransportSenderInput|null);
+
+        /** MinosCommand wrapTransportSigningPublicKey. */
+        public wrapTransportSigningPublicKey?: (proto.IWrapTransportSigningPublicKeyInput|null);
+
+        /** MinosCommand wrapTransportSigningSecretKey. */
+        public wrapTransportSigningSecretKey?: (proto.IWrapTransportSigningSecretKeyInput|null);
+
+        /** MinosCommand deriveMailboxSigningKeypair. */
+        public deriveMailboxSigningKeypair?: (proto.IDeriveMailboxSigningKeypairInput|null);
+
+        /** MinosCommand deriveMailboxEncryptionKeypair. */
+        public deriveMailboxEncryptionKeypair?: (proto.IDeriveMailboxEncryptionKeypairInput|null);
+
+        /** MinosCommand deriveMailboxAuthKeypair. */
+        public deriveMailboxAuthKeypair?: (proto.IDeriveMailboxAuthKeypairInput|null);
+
+        /** MinosCommand deriveAttachmentAccessTokenSecret. */
+        public deriveAttachmentAccessTokenSecret?: (proto.IDeriveAttachmentAccessTokenSecretInput|null);
+
+        /** MinosCommand deriveAttachmentPrimaryKeySecret. */
+        public deriveAttachmentPrimaryKeySecret?: (proto.IDeriveAttachmentPrimaryKeySecretInput|null);
+
+        /** MinosCommand minosOpenInitialEpoch. */
+        public minosOpenInitialEpoch?: (proto.IMinosOpenInitialEpochInput|null);
+
+        /** MinosCommand minosOpenEpoch. */
+        public minosOpenEpoch?: (proto.IMinosOpenEpochInput|null);
+
+        /** MinosCommand minosValidateEpoch. */
+        public minosValidateEpoch?: (proto.IMinosValidateEpochInput|null);
+
+        /** MinosCommand minosVerifySingleEpoch. */
+        public minosVerifySingleEpoch?: (proto.IMinosVerifySingleEpochInput|null);
+
+        /** MinosCommand minosThreadIdFromOneToOneThread. */
+        public minosThreadIdFromOneToOneThread?: (proto.IMinosThreadIdFromOneToOneThreadInput|null);
+
+        /** MinosCommand minosThreadIdFromActThreadId. */
+        public minosThreadIdFromActThreadId?: (proto.IMinosThreadIdFromActThreadIdInput|null);
+
+        /** MinosCommand mandrakeOpenEpoch. */
+        public mandrakeOpenEpoch?: (proto.IMandrakeOpenEpochInput|null);
+
+        /** MinosCommand mandrakeEncryptMek. */
+        public mandrakeEncryptMek?: (proto.IMandrakeEncryptMekInput|null);
+
+        /** MinosCommand mandrakeDecryptMek. */
+        public mandrakeDecryptMek?: (proto.IMandrakeDecryptMekInput|null);
+
+        /** MinosCommand mandrakeOpenInitialEpoch. */
+        public mandrakeOpenInitialEpoch?: (proto.IMandrakeOpenInitialEpochInput|null);
+
+        /** MinosCommand mandrakeValidateNewMmkFromMailbox. */
+        public mandrakeValidateNewMmkFromMailbox?: (proto.IMandrakeValidateNewMmkFromMailboxInput|null);
+
+        /** MinosCommand mandrakeValidateNewMmkFromDetachedDevice. */
+        public mandrakeValidateNewMmkFromDetachedDevice?: (proto.IMandrakeValidateNewMmkFromDetachedDeviceInput|null);
+
+        /** MinosCommand deriveMessagingMailboxKeypairs. */
+        public deriveMessagingMailboxKeypairs?: (proto.IDeriveMessagingMailboxKeypairsInput|null);
+
+        /** MinosCommand decryptSelfMmkDistribution. */
+        public decryptSelfMmkDistribution?: (proto.IDecryptSelfMmkDistributionInput|null);
+
+        /** MinosCommand mandrakeValidateAndDecryptSelfMmk. */
+        public mandrakeValidateAndDecryptSelfMmk?: (proto.IMandrakeValidateAndDecryptSelfMmkInput|null);
+
+        /** MinosCommand commandInput. */
+        public commandInput?: ("encryptAndSignMessage"|"decryptAndVerifyMessage"|"generateMek"|"generateMekRosterHash"|"encryptMekForDistribution"|"decryptMekForDistribution"|"encryptMeksForDistributionFromTransportSender"|"decryptMekForDistributionFromTransportSender"|"wrapTransportSigningPublicKey"|"wrapTransportSigningSecretKey"|"deriveMailboxSigningKeypair"|"deriveMailboxEncryptionKeypair"|"deriveMailboxAuthKeypair"|"deriveAttachmentAccessTokenSecret"|"deriveAttachmentPrimaryKeySecret"|"minosOpenInitialEpoch"|"minosOpenEpoch"|"minosValidateEpoch"|"minosVerifySingleEpoch"|"minosThreadIdFromOneToOneThread"|"minosThreadIdFromActThreadId"|"mandrakeOpenEpoch"|"mandrakeEncryptMek"|"mandrakeDecryptMek"|"mandrakeOpenInitialEpoch"|"mandrakeValidateNewMmkFromMailbox"|"mandrakeValidateNewMmkFromDetachedDevice"|"deriveMessagingMailboxKeypairs"|"decryptSelfMmkDistribution"|"mandrakeValidateAndDecryptSelfMmk");
+
+        /**
+         * Creates a new MinosCommand instance using the specified properties.
+         * @param [properties] Properties to set
+         * @returns MinosCommand instance
+         */
+        public static create(properties?: proto.IMinosCommand): proto.MinosCommand;
+
+        /**
+         * Encodes the specified MinosCommand message. Does not implicitly {@link proto.MinosCommand.verify|verify} messages.
+         * @param message MinosCommand message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encode(message: proto.IMinosCommand, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Encodes the specified MinosCommand message, length delimited. Does not implicitly {@link proto.MinosCommand.verify|verify} messages.
+         * @param message MinosCommand message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encodeDelimited(message: proto.IMinosCommand, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Decodes a MinosCommand message from the specified reader or buffer.
+         * @param reader Reader or buffer to decode from
+         * @param [length] Message length if known beforehand
+         * @returns MinosCommand
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): proto.MinosCommand;
+
+        /**
+         * Decodes a MinosCommand message from the specified reader or buffer, length delimited.
+         * @param reader Reader or buffer to decode from
+         * @returns MinosCommand
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): proto.MinosCommand;
+
+        /**
+         * Verifies a MinosCommand message.
+         * @param message Plain object to verify
+         * @returns `null` if valid, otherwise the reason why it is not
+         */
+        public static verify(message: { [k: string]: any }): (string|null);
+
+        /**
+         * Creates a MinosCommand message from a plain object. Also converts values to their respective internal types.
+         * @param object Plain object
+         * @returns MinosCommand
+         */
+        public static fromObject(object: { [k: string]: any }): proto.MinosCommand;
+
+        /**
+         * Creates a plain object from a MinosCommand message. Also converts values to other types if specified.
+         * @param message MinosCommand
+         * @param [options] Conversion options
+         * @returns Plain object
+         */
+        public static toObject(message: proto.MinosCommand, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+        /**
+         * Converts this MinosCommand to JSON.
+         * @returns JSON object
+         */
+        public toJSON(): { [k: string]: any };
+
+        /**
+         * Gets the default type url for MinosCommand
+         * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+         * @returns The default type url
+         */
+        public static getTypeUrl(typeUrlPrefix?: string): string;
+    }
+
+    /** Properties of a MinosDecryptAndVerifyMessageInput. */
+    interface IMinosDecryptAndVerifyMessageInput {
+
+        /** MinosDecryptAndVerifyMessageInput transportSigningPk */
+        transportSigningPk?: (Uint8Array|null);
+
+        /** MinosDecryptAndVerifyMessageInput mek */
+        mek?: (Uint8Array|null);
+
+        /** MinosDecryptAndVerifyMessageInput encryptedMessageCiphertext */
+        encryptedMessageCiphertext?: (Uint8Array|null);
+
+        /** MinosDecryptAndVerifyMessageInput encryptedMessageSignature */
+        encryptedMessageSignature?: (Uint8Array|null);
+
+        /** MinosDecryptAndVerifyMessageInput metadata */
+        metadata?: (proto.IMinosMessageMetadata|null);
+
+        /** MinosDecryptAndVerifyMessageInput messageEncryptionVersion */
+        messageEncryptionVersion?: (number|null);
+
+        /** MinosDecryptAndVerifyMessageInput conf */
+        conf?: (proto.IMinosClientConfig|null);
+    }
+
+    /** Represents a MinosDecryptAndVerifyMessageInput. */
+    class MinosDecryptAndVerifyMessageInput implements IMinosDecryptAndVerifyMessageInput {
+
+        /**
+         * Constructs a new MinosDecryptAndVerifyMessageInput.
+         * @param [properties] Properties to set
+         */
+        constructor(properties?: proto.IMinosDecryptAndVerifyMessageInput);
+
+        /** MinosDecryptAndVerifyMessageInput transportSigningPk. */
+        public transportSigningPk?: (Uint8Array|null);
+
+        /** MinosDecryptAndVerifyMessageInput mek. */
+        public mek?: (Uint8Array|null);
+
+        /** MinosDecryptAndVerifyMessageInput encryptedMessageCiphertext. */
+        public encryptedMessageCiphertext?: (Uint8Array|null);
+
+        /** MinosDecryptAndVerifyMessageInput encryptedMessageSignature. */
+        public encryptedMessageSignature?: (Uint8Array|null);
+
+        /** MinosDecryptAndVerifyMessageInput metadata. */
+        public metadata?: (proto.IMinosMessageMetadata|null);
+
+        /** MinosDecryptAndVerifyMessageInput messageEncryptionVersion. */
+        public messageEncryptionVersion?: (number|null);
+
+        /** MinosDecryptAndVerifyMessageInput conf. */
+        public conf?: (proto.IMinosClientConfig|null);
+
+        /**
+         * Creates a new MinosDecryptAndVerifyMessageInput instance using the specified properties.
+         * @param [properties] Properties to set
+         * @returns MinosDecryptAndVerifyMessageInput instance
+         */
+        public static create(properties?: proto.IMinosDecryptAndVerifyMessageInput): proto.MinosDecryptAndVerifyMessageInput;
+
+        /**
+         * Encodes the specified MinosDecryptAndVerifyMessageInput message. Does not implicitly {@link proto.MinosDecryptAndVerifyMessageInput.verify|verify} messages.
+         * @param message MinosDecryptAndVerifyMessageInput message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encode(message: proto.IMinosDecryptAndVerifyMessageInput, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Encodes the specified MinosDecryptAndVerifyMessageInput message, length delimited. Does not implicitly {@link proto.MinosDecryptAndVerifyMessageInput.verify|verify} messages.
+         * @param message MinosDecryptAndVerifyMessageInput message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encodeDelimited(message: proto.IMinosDecryptAndVerifyMessageInput, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Decodes a MinosDecryptAndVerifyMessageInput message from the specified reader or buffer.
+         * @param reader Reader or buffer to decode from
+         * @param [length] Message length if known beforehand
+         * @returns MinosDecryptAndVerifyMessageInput
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): proto.MinosDecryptAndVerifyMessageInput;
+
+        /**
+         * Decodes a MinosDecryptAndVerifyMessageInput message from the specified reader or buffer, length delimited.
+         * @param reader Reader or buffer to decode from
+         * @returns MinosDecryptAndVerifyMessageInput
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): proto.MinosDecryptAndVerifyMessageInput;
+
+        /**
+         * Verifies a MinosDecryptAndVerifyMessageInput message.
+         * @param message Plain object to verify
+         * @returns `null` if valid, otherwise the reason why it is not
+         */
+        public static verify(message: { [k: string]: any }): (string|null);
+
+        /**
+         * Creates a MinosDecryptAndVerifyMessageInput message from a plain object. Also converts values to their respective internal types.
+         * @param object Plain object
+         * @returns MinosDecryptAndVerifyMessageInput
+         */
+        public static fromObject(object: { [k: string]: any }): proto.MinosDecryptAndVerifyMessageInput;
+
+        /**
+         * Creates a plain object from a MinosDecryptAndVerifyMessageInput message. Also converts values to other types if specified.
+         * @param message MinosDecryptAndVerifyMessageInput
+         * @param [options] Conversion options
+         * @returns Plain object
+         */
+        public static toObject(message: proto.MinosDecryptAndVerifyMessageInput, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+        /**
+         * Converts this MinosDecryptAndVerifyMessageInput to JSON.
+         * @returns JSON object
+         */
+        public toJSON(): { [k: string]: any };
+
+        /**
+         * Gets the default type url for MinosDecryptAndVerifyMessageInput
+         * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+         * @returns The default type url
+         */
+        public static getTypeUrl(typeUrlPrefix?: string): string;
+    }
+
+    /** Properties of a MinosDecryptAndVerifyMessageResult. */
+    interface IMinosDecryptAndVerifyMessageResult {
+
+        /** MinosDecryptAndVerifyMessageResult success */
+        success?: (proto.IMinosDecryptAndVerifyMessageSuccess|null);
+
+        /** MinosDecryptAndVerifyMessageResult errorMessage */
+        errorMessage?: (string|null);
+    }
+
+    /** Represents a MinosDecryptAndVerifyMessageResult. */
+    class MinosDecryptAndVerifyMessageResult implements IMinosDecryptAndVerifyMessageResult {
+
+        /**
+         * Constructs a new MinosDecryptAndVerifyMessageResult.
+         * @param [properties] Properties to set
+         */
+        constructor(properties?: proto.IMinosDecryptAndVerifyMessageResult);
+
+        /** MinosDecryptAndVerifyMessageResult success. */
+        public success?: (proto.IMinosDecryptAndVerifyMessageSuccess|null);
+
+        /** MinosDecryptAndVerifyMessageResult errorMessage. */
+        public errorMessage?: (string|null);
+
+        /** MinosDecryptAndVerifyMessageResult result. */
+        public result?: ("success"|"errorMessage");
+
+        /**
+         * Creates a new MinosDecryptAndVerifyMessageResult instance using the specified properties.
+         * @param [properties] Properties to set
+         * @returns MinosDecryptAndVerifyMessageResult instance
+         */
+        public static create(properties?: proto.IMinosDecryptAndVerifyMessageResult): proto.MinosDecryptAndVerifyMessageResult;
+
+        /**
+         * Encodes the specified MinosDecryptAndVerifyMessageResult message. Does not implicitly {@link proto.MinosDecryptAndVerifyMessageResult.verify|verify} messages.
+         * @param message MinosDecryptAndVerifyMessageResult message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encode(message: proto.IMinosDecryptAndVerifyMessageResult, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Encodes the specified MinosDecryptAndVerifyMessageResult message, length delimited. Does not implicitly {@link proto.MinosDecryptAndVerifyMessageResult.verify|verify} messages.
+         * @param message MinosDecryptAndVerifyMessageResult message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encodeDelimited(message: proto.IMinosDecryptAndVerifyMessageResult, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Decodes a MinosDecryptAndVerifyMessageResult message from the specified reader or buffer.
+         * @param reader Reader or buffer to decode from
+         * @param [length] Message length if known beforehand
+         * @returns MinosDecryptAndVerifyMessageResult
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): proto.MinosDecryptAndVerifyMessageResult;
+
+        /**
+         * Decodes a MinosDecryptAndVerifyMessageResult message from the specified reader or buffer, length delimited.
+         * @param reader Reader or buffer to decode from
+         * @returns MinosDecryptAndVerifyMessageResult
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): proto.MinosDecryptAndVerifyMessageResult;
+
+        /**
+         * Verifies a MinosDecryptAndVerifyMessageResult message.
+         * @param message Plain object to verify
+         * @returns `null` if valid, otherwise the reason why it is not
+         */
+        public static verify(message: { [k: string]: any }): (string|null);
+
+        /**
+         * Creates a MinosDecryptAndVerifyMessageResult message from a plain object. Also converts values to their respective internal types.
+         * @param object Plain object
+         * @returns MinosDecryptAndVerifyMessageResult
+         */
+        public static fromObject(object: { [k: string]: any }): proto.MinosDecryptAndVerifyMessageResult;
+
+        /**
+         * Creates a plain object from a MinosDecryptAndVerifyMessageResult message. Also converts values to other types if specified.
+         * @param message MinosDecryptAndVerifyMessageResult
+         * @param [options] Conversion options
+         * @returns Plain object
+         */
+        public static toObject(message: proto.MinosDecryptAndVerifyMessageResult, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+        /**
+         * Converts this MinosDecryptAndVerifyMessageResult to JSON.
+         * @returns JSON object
+         */
+        public toJSON(): { [k: string]: any };
+
+        /**
+         * Gets the default type url for MinosDecryptAndVerifyMessageResult
+         * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+         * @returns The default type url
+         */
+        public static getTypeUrl(typeUrlPrefix?: string): string;
+    }
+
+    /** Properties of a MinosDecryptAndVerifyMessageSuccess. */
+    interface IMinosDecryptAndVerifyMessageSuccess {
+
+        /** MinosDecryptAndVerifyMessageSuccess plaintext */
+        plaintext?: (Uint8Array|null);
+    }
+
+    /** Represents a MinosDecryptAndVerifyMessageSuccess. */
+    class MinosDecryptAndVerifyMessageSuccess implements IMinosDecryptAndVerifyMessageSuccess {
+
+        /**
+         * Constructs a new MinosDecryptAndVerifyMessageSuccess.
+         * @param [properties] Properties to set
+         */
+        constructor(properties?: proto.IMinosDecryptAndVerifyMessageSuccess);
+
+        /** MinosDecryptAndVerifyMessageSuccess plaintext. */
+        public plaintext?: (Uint8Array|null);
+
+        /**
+         * Creates a new MinosDecryptAndVerifyMessageSuccess instance using the specified properties.
+         * @param [properties] Properties to set
+         * @returns MinosDecryptAndVerifyMessageSuccess instance
+         */
+        public static create(properties?: proto.IMinosDecryptAndVerifyMessageSuccess): proto.MinosDecryptAndVerifyMessageSuccess;
+
+        /**
+         * Encodes the specified MinosDecryptAndVerifyMessageSuccess message. Does not implicitly {@link proto.MinosDecryptAndVerifyMessageSuccess.verify|verify} messages.
+         * @param message MinosDecryptAndVerifyMessageSuccess message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encode(message: proto.IMinosDecryptAndVerifyMessageSuccess, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Encodes the specified MinosDecryptAndVerifyMessageSuccess message, length delimited. Does not implicitly {@link proto.MinosDecryptAndVerifyMessageSuccess.verify|verify} messages.
+         * @param message MinosDecryptAndVerifyMessageSuccess message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encodeDelimited(message: proto.IMinosDecryptAndVerifyMessageSuccess, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Decodes a MinosDecryptAndVerifyMessageSuccess message from the specified reader or buffer.
+         * @param reader Reader or buffer to decode from
+         * @param [length] Message length if known beforehand
+         * @returns MinosDecryptAndVerifyMessageSuccess
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): proto.MinosDecryptAndVerifyMessageSuccess;
+
+        /**
+         * Decodes a MinosDecryptAndVerifyMessageSuccess message from the specified reader or buffer, length delimited.
+         * @param reader Reader or buffer to decode from
+         * @returns MinosDecryptAndVerifyMessageSuccess
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): proto.MinosDecryptAndVerifyMessageSuccess;
+
+        /**
+         * Verifies a MinosDecryptAndVerifyMessageSuccess message.
+         * @param message Plain object to verify
+         * @returns `null` if valid, otherwise the reason why it is not
+         */
+        public static verify(message: { [k: string]: any }): (string|null);
+
+        /**
+         * Creates a MinosDecryptAndVerifyMessageSuccess message from a plain object. Also converts values to their respective internal types.
+         * @param object Plain object
+         * @returns MinosDecryptAndVerifyMessageSuccess
+         */
+        public static fromObject(object: { [k: string]: any }): proto.MinosDecryptAndVerifyMessageSuccess;
+
+        /**
+         * Creates a plain object from a MinosDecryptAndVerifyMessageSuccess message. Also converts values to other types if specified.
+         * @param message MinosDecryptAndVerifyMessageSuccess
+         * @param [options] Conversion options
+         * @returns Plain object
+         */
+        public static toObject(message: proto.MinosDecryptAndVerifyMessageSuccess, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+        /**
+         * Converts this MinosDecryptAndVerifyMessageSuccess to JSON.
+         * @returns JSON object
+         */
+        public toJSON(): { [k: string]: any };
+
+        /**
+         * Gets the default type url for MinosDecryptAndVerifyMessageSuccess
+         * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+         * @returns The default type url
+         */
+        public static getTypeUrl(typeUrlPrefix?: string): string;
+    }
+
+    /** Properties of a MinosEncryptAndSignMessageInput. */
+    interface IMinosEncryptAndSignMessageInput {
+
+        /** MinosEncryptAndSignMessageInput transportSigningSk */
+        transportSigningSk?: (Uint8Array|null);
+
+        /** MinosEncryptAndSignMessageInput mek */
+        mek?: (Uint8Array|null);
+
+        /** MinosEncryptAndSignMessageInput plaintext */
+        plaintext?: (Uint8Array|null);
+
+        /** MinosEncryptAndSignMessageInput metadata */
+        metadata?: (proto.IMinosMessageMetadata|null);
+
+        /** MinosEncryptAndSignMessageInput transportSigningPk */
+        transportSigningPk?: (Uint8Array|null);
+
+        /** MinosEncryptAndSignMessageInput conf */
+        conf?: (proto.IMinosClientConfig|null);
+    }
+
+    /** Represents a MinosEncryptAndSignMessageInput. */
+    class MinosEncryptAndSignMessageInput implements IMinosEncryptAndSignMessageInput {
+
+        /**
+         * Constructs a new MinosEncryptAndSignMessageInput.
+         * @param [properties] Properties to set
+         */
+        constructor(properties?: proto.IMinosEncryptAndSignMessageInput);
+
+        /** MinosEncryptAndSignMessageInput transportSigningSk. */
+        public transportSigningSk?: (Uint8Array|null);
+
+        /** MinosEncryptAndSignMessageInput mek. */
+        public mek?: (Uint8Array|null);
+
+        /** MinosEncryptAndSignMessageInput plaintext. */
+        public plaintext?: (Uint8Array|null);
+
+        /** MinosEncryptAndSignMessageInput metadata. */
+        public metadata?: (proto.IMinosMessageMetadata|null);
+
+        /** MinosEncryptAndSignMessageInput transportSigningPk. */
+        public transportSigningPk?: (Uint8Array|null);
+
+        /** MinosEncryptAndSignMessageInput conf. */
+        public conf?: (proto.IMinosClientConfig|null);
+
+        /**
+         * Creates a new MinosEncryptAndSignMessageInput instance using the specified properties.
+         * @param [properties] Properties to set
+         * @returns MinosEncryptAndSignMessageInput instance
+         */
+        public static create(properties?: proto.IMinosEncryptAndSignMessageInput): proto.MinosEncryptAndSignMessageInput;
+
+        /**
+         * Encodes the specified MinosEncryptAndSignMessageInput message. Does not implicitly {@link proto.MinosEncryptAndSignMessageInput.verify|verify} messages.
+         * @param message MinosEncryptAndSignMessageInput message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encode(message: proto.IMinosEncryptAndSignMessageInput, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Encodes the specified MinosEncryptAndSignMessageInput message, length delimited. Does not implicitly {@link proto.MinosEncryptAndSignMessageInput.verify|verify} messages.
+         * @param message MinosEncryptAndSignMessageInput message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encodeDelimited(message: proto.IMinosEncryptAndSignMessageInput, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Decodes a MinosEncryptAndSignMessageInput message from the specified reader or buffer.
+         * @param reader Reader or buffer to decode from
+         * @param [length] Message length if known beforehand
+         * @returns MinosEncryptAndSignMessageInput
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): proto.MinosEncryptAndSignMessageInput;
+
+        /**
+         * Decodes a MinosEncryptAndSignMessageInput message from the specified reader or buffer, length delimited.
+         * @param reader Reader or buffer to decode from
+         * @returns MinosEncryptAndSignMessageInput
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): proto.MinosEncryptAndSignMessageInput;
+
+        /**
+         * Verifies a MinosEncryptAndSignMessageInput message.
+         * @param message Plain object to verify
+         * @returns `null` if valid, otherwise the reason why it is not
+         */
+        public static verify(message: { [k: string]: any }): (string|null);
+
+        /**
+         * Creates a MinosEncryptAndSignMessageInput message from a plain object. Also converts values to their respective internal types.
+         * @param object Plain object
+         * @returns MinosEncryptAndSignMessageInput
+         */
+        public static fromObject(object: { [k: string]: any }): proto.MinosEncryptAndSignMessageInput;
+
+        /**
+         * Creates a plain object from a MinosEncryptAndSignMessageInput message. Also converts values to other types if specified.
+         * @param message MinosEncryptAndSignMessageInput
+         * @param [options] Conversion options
+         * @returns Plain object
+         */
+        public static toObject(message: proto.MinosEncryptAndSignMessageInput, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+        /**
+         * Converts this MinosEncryptAndSignMessageInput to JSON.
+         * @returns JSON object
+         */
+        public toJSON(): { [k: string]: any };
+
+        /**
+         * Gets the default type url for MinosEncryptAndSignMessageInput
+         * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+         * @returns The default type url
+         */
+        public static getTypeUrl(typeUrlPrefix?: string): string;
+    }
+
+    /** Properties of a MinosEncryptAndSignMessageResult. */
+    interface IMinosEncryptAndSignMessageResult {
+
+        /** MinosEncryptAndSignMessageResult ciphertext */
+        ciphertext?: (Uint8Array|null);
+
+        /** MinosEncryptAndSignMessageResult signature */
+        signature?: (Uint8Array|null);
+
+        /** MinosEncryptAndSignMessageResult version */
+        version?: (number|null);
+    }
+
+    /** Represents a MinosEncryptAndSignMessageResult. */
+    class MinosEncryptAndSignMessageResult implements IMinosEncryptAndSignMessageResult {
+
+        /**
+         * Constructs a new MinosEncryptAndSignMessageResult.
+         * @param [properties] Properties to set
+         */
+        constructor(properties?: proto.IMinosEncryptAndSignMessageResult);
+
+        /** MinosEncryptAndSignMessageResult ciphertext. */
+        public ciphertext?: (Uint8Array|null);
+
+        /** MinosEncryptAndSignMessageResult signature. */
+        public signature?: (Uint8Array|null);
+
+        /** MinosEncryptAndSignMessageResult version. */
+        public version?: (number|null);
+
+        /**
+         * Creates a new MinosEncryptAndSignMessageResult instance using the specified properties.
+         * @param [properties] Properties to set
+         * @returns MinosEncryptAndSignMessageResult instance
+         */
+        public static create(properties?: proto.IMinosEncryptAndSignMessageResult): proto.MinosEncryptAndSignMessageResult;
+
+        /**
+         * Encodes the specified MinosEncryptAndSignMessageResult message. Does not implicitly {@link proto.MinosEncryptAndSignMessageResult.verify|verify} messages.
+         * @param message MinosEncryptAndSignMessageResult message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encode(message: proto.IMinosEncryptAndSignMessageResult, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Encodes the specified MinosEncryptAndSignMessageResult message, length delimited. Does not implicitly {@link proto.MinosEncryptAndSignMessageResult.verify|verify} messages.
+         * @param message MinosEncryptAndSignMessageResult message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encodeDelimited(message: proto.IMinosEncryptAndSignMessageResult, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Decodes a MinosEncryptAndSignMessageResult message from the specified reader or buffer.
+         * @param reader Reader or buffer to decode from
+         * @param [length] Message length if known beforehand
+         * @returns MinosEncryptAndSignMessageResult
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): proto.MinosEncryptAndSignMessageResult;
+
+        /**
+         * Decodes a MinosEncryptAndSignMessageResult message from the specified reader or buffer, length delimited.
+         * @param reader Reader or buffer to decode from
+         * @returns MinosEncryptAndSignMessageResult
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): proto.MinosEncryptAndSignMessageResult;
+
+        /**
+         * Verifies a MinosEncryptAndSignMessageResult message.
+         * @param message Plain object to verify
+         * @returns `null` if valid, otherwise the reason why it is not
+         */
+        public static verify(message: { [k: string]: any }): (string|null);
+
+        /**
+         * Creates a MinosEncryptAndSignMessageResult message from a plain object. Also converts values to their respective internal types.
+         * @param object Plain object
+         * @returns MinosEncryptAndSignMessageResult
+         */
+        public static fromObject(object: { [k: string]: any }): proto.MinosEncryptAndSignMessageResult;
+
+        /**
+         * Creates a plain object from a MinosEncryptAndSignMessageResult message. Also converts values to other types if specified.
+         * @param message MinosEncryptAndSignMessageResult
+         * @param [options] Conversion options
+         * @returns Plain object
+         */
+        public static toObject(message: proto.MinosEncryptAndSignMessageResult, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+        /**
+         * Converts this MinosEncryptAndSignMessageResult to JSON.
+         * @returns JSON object
+         */
+        public toJSON(): { [k: string]: any };
+
+        /**
+         * Gets the default type url for MinosEncryptAndSignMessageResult
+         * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+         * @returns The default type url
+         */
+        public static getTypeUrl(typeUrlPrefix?: string): string;
+    }
+
+    /** Properties of a MinosMessageMetadata. */
+    interface IMinosMessageMetadata {
+
+        /** MinosMessageMetadata mekId */
+        mekId?: (Uint8Array|null);
+
+        /** MinosMessageMetadata timestamp */
+        timestamp?: (number|Long|null);
+
+        /** MinosMessageMetadata messageId */
+        messageId?: (string|null);
+
+        /** MinosMessageMetadata threadId */
+        threadId?: (Uint8Array|null);
+    }
+
+    /** Represents a MinosMessageMetadata. */
+    class MinosMessageMetadata implements IMinosMessageMetadata {
+
+        /**
+         * Constructs a new MinosMessageMetadata.
+         * @param [properties] Properties to set
+         */
+        constructor(properties?: proto.IMinosMessageMetadata);
+
+        /** MinosMessageMetadata mekId. */
+        public mekId?: (Uint8Array|null);
+
+        /** MinosMessageMetadata timestamp. */
+        public timestamp?: (number|Long|null);
+
+        /** MinosMessageMetadata messageId. */
+        public messageId?: (string|null);
+
+        /** MinosMessageMetadata threadId. */
+        public threadId?: (Uint8Array|null);
+
+        /**
+         * Creates a new MinosMessageMetadata instance using the specified properties.
+         * @param [properties] Properties to set
+         * @returns MinosMessageMetadata instance
+         */
+        public static create(properties?: proto.IMinosMessageMetadata): proto.MinosMessageMetadata;
+
+        /**
+         * Encodes the specified MinosMessageMetadata message. Does not implicitly {@link proto.MinosMessageMetadata.verify|verify} messages.
+         * @param message MinosMessageMetadata message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encode(message: proto.IMinosMessageMetadata, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Encodes the specified MinosMessageMetadata message, length delimited. Does not implicitly {@link proto.MinosMessageMetadata.verify|verify} messages.
+         * @param message MinosMessageMetadata message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encodeDelimited(message: proto.IMinosMessageMetadata, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Decodes a MinosMessageMetadata message from the specified reader or buffer.
+         * @param reader Reader or buffer to decode from
+         * @param [length] Message length if known beforehand
+         * @returns MinosMessageMetadata
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): proto.MinosMessageMetadata;
+
+        /**
+         * Decodes a MinosMessageMetadata message from the specified reader or buffer, length delimited.
+         * @param reader Reader or buffer to decode from
+         * @returns MinosMessageMetadata
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): proto.MinosMessageMetadata;
+
+        /**
+         * Verifies a MinosMessageMetadata message.
+         * @param message Plain object to verify
+         * @returns `null` if valid, otherwise the reason why it is not
+         */
+        public static verify(message: { [k: string]: any }): (string|null);
+
+        /**
+         * Creates a MinosMessageMetadata message from a plain object. Also converts values to their respective internal types.
+         * @param object Plain object
+         * @returns MinosMessageMetadata
+         */
+        public static fromObject(object: { [k: string]: any }): proto.MinosMessageMetadata;
+
+        /**
+         * Creates a plain object from a MinosMessageMetadata message. Also converts values to other types if specified.
+         * @param message MinosMessageMetadata
+         * @param [options] Conversion options
+         * @returns Plain object
+         */
+        public static toObject(message: proto.MinosMessageMetadata, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+        /**
+         * Converts this MinosMessageMetadata to JSON.
+         * @returns JSON object
+         */
+        public toJSON(): { [k: string]: any };
+
+        /**
+         * Gets the default type url for MinosMessageMetadata
+         * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+         * @returns The default type url
+         */
+        public static getTypeUrl(typeUrlPrefix?: string): string;
+    }
+
+    /** Properties of a MinosOpenEpochInput. */
+    interface IMinosOpenEpochInput {
+
+        /** MinosOpenEpochInput userFbid */
+        userFbid?: (string|null);
+
+        /** MinosOpenEpochInput epochNumber */
+        epochNumber?: (number|Long|null);
+
+        /** MinosOpenEpochInput exportRootKey */
+        exportRootKey?: (Uint8Array|null);
+
+        /** MinosOpenEpochInput previousExportRootKey */
+        previousExportRootKey?: (Uint8Array|null);
+
+        /** MinosOpenEpochInput previousEpochNumber */
+        previousEpochNumber?: (number|Long|null);
+
+        /** MinosOpenEpochInput previousEpochHead */
+        previousEpochHead?: (Uint8Array|null);
+    }
+
+    /** Represents a MinosOpenEpochInput. */
+    class MinosOpenEpochInput implements IMinosOpenEpochInput {
+
+        /**
+         * Constructs a new MinosOpenEpochInput.
+         * @param [properties] Properties to set
+         */
+        constructor(properties?: proto.IMinosOpenEpochInput);
+
+        /** MinosOpenEpochInput userFbid. */
+        public userFbid?: (string|null);
+
+        /** MinosOpenEpochInput epochNumber. */
+        public epochNumber?: (number|Long|null);
+
+        /** MinosOpenEpochInput exportRootKey. */
+        public exportRootKey?: (Uint8Array|null);
+
+        /** MinosOpenEpochInput previousExportRootKey. */
+        public previousExportRootKey?: (Uint8Array|null);
+
+        /** MinosOpenEpochInput previousEpochNumber. */
+        public previousEpochNumber?: (number|Long|null);
+
+        /** MinosOpenEpochInput previousEpochHead. */
+        public previousEpochHead?: (Uint8Array|null);
+
+        /**
+         * Creates a new MinosOpenEpochInput instance using the specified properties.
+         * @param [properties] Properties to set
+         * @returns MinosOpenEpochInput instance
+         */
+        public static create(properties?: proto.IMinosOpenEpochInput): proto.MinosOpenEpochInput;
+
+        /**
+         * Encodes the specified MinosOpenEpochInput message. Does not implicitly {@link proto.MinosOpenEpochInput.verify|verify} messages.
+         * @param message MinosOpenEpochInput message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encode(message: proto.IMinosOpenEpochInput, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Encodes the specified MinosOpenEpochInput message, length delimited. Does not implicitly {@link proto.MinosOpenEpochInput.verify|verify} messages.
+         * @param message MinosOpenEpochInput message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encodeDelimited(message: proto.IMinosOpenEpochInput, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Decodes a MinosOpenEpochInput message from the specified reader or buffer.
+         * @param reader Reader or buffer to decode from
+         * @param [length] Message length if known beforehand
+         * @returns MinosOpenEpochInput
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): proto.MinosOpenEpochInput;
+
+        /**
+         * Decodes a MinosOpenEpochInput message from the specified reader or buffer, length delimited.
+         * @param reader Reader or buffer to decode from
+         * @returns MinosOpenEpochInput
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): proto.MinosOpenEpochInput;
+
+        /**
+         * Verifies a MinosOpenEpochInput message.
+         * @param message Plain object to verify
+         * @returns `null` if valid, otherwise the reason why it is not
+         */
+        public static verify(message: { [k: string]: any }): (string|null);
+
+        /**
+         * Creates a MinosOpenEpochInput message from a plain object. Also converts values to their respective internal types.
+         * @param object Plain object
+         * @returns MinosOpenEpochInput
+         */
+        public static fromObject(object: { [k: string]: any }): proto.MinosOpenEpochInput;
+
+        /**
+         * Creates a plain object from a MinosOpenEpochInput message. Also converts values to other types if specified.
+         * @param message MinosOpenEpochInput
+         * @param [options] Conversion options
+         * @returns Plain object
+         */
+        public static toObject(message: proto.MinosOpenEpochInput, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+        /**
+         * Converts this MinosOpenEpochInput to JSON.
+         * @returns JSON object
+         */
+        public toJSON(): { [k: string]: any };
+
+        /**
+         * Gets the default type url for MinosOpenEpochInput
+         * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+         * @returns The default type url
+         */
+        public static getTypeUrl(typeUrlPrefix?: string): string;
+    }
+
+    /** Properties of a MinosOpenEpochResult. */
+    interface IMinosOpenEpochResult {
+
+        /** MinosOpenEpochResult minosSignedEpoch */
+        minosSignedEpoch?: (proto.IMinosSignedEpoch|null);
+    }
+
+    /** Represents a MinosOpenEpochResult. */
+    class MinosOpenEpochResult implements IMinosOpenEpochResult {
+
+        /**
+         * Constructs a new MinosOpenEpochResult.
+         * @param [properties] Properties to set
+         */
+        constructor(properties?: proto.IMinosOpenEpochResult);
+
+        /** MinosOpenEpochResult minosSignedEpoch. */
+        public minosSignedEpoch?: (proto.IMinosSignedEpoch|null);
+
+        /**
+         * Creates a new MinosOpenEpochResult instance using the specified properties.
+         * @param [properties] Properties to set
+         * @returns MinosOpenEpochResult instance
+         */
+        public static create(properties?: proto.IMinosOpenEpochResult): proto.MinosOpenEpochResult;
+
+        /**
+         * Encodes the specified MinosOpenEpochResult message. Does not implicitly {@link proto.MinosOpenEpochResult.verify|verify} messages.
+         * @param message MinosOpenEpochResult message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encode(message: proto.IMinosOpenEpochResult, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Encodes the specified MinosOpenEpochResult message, length delimited. Does not implicitly {@link proto.MinosOpenEpochResult.verify|verify} messages.
+         * @param message MinosOpenEpochResult message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encodeDelimited(message: proto.IMinosOpenEpochResult, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Decodes a MinosOpenEpochResult message from the specified reader or buffer.
+         * @param reader Reader or buffer to decode from
+         * @param [length] Message length if known beforehand
+         * @returns MinosOpenEpochResult
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): proto.MinosOpenEpochResult;
+
+        /**
+         * Decodes a MinosOpenEpochResult message from the specified reader or buffer, length delimited.
+         * @param reader Reader or buffer to decode from
+         * @returns MinosOpenEpochResult
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): proto.MinosOpenEpochResult;
+
+        /**
+         * Verifies a MinosOpenEpochResult message.
+         * @param message Plain object to verify
+         * @returns `null` if valid, otherwise the reason why it is not
+         */
+        public static verify(message: { [k: string]: any }): (string|null);
+
+        /**
+         * Creates a MinosOpenEpochResult message from a plain object. Also converts values to their respective internal types.
+         * @param object Plain object
+         * @returns MinosOpenEpochResult
+         */
+        public static fromObject(object: { [k: string]: any }): proto.MinosOpenEpochResult;
+
+        /**
+         * Creates a plain object from a MinosOpenEpochResult message. Also converts values to other types if specified.
+         * @param message MinosOpenEpochResult
+         * @param [options] Conversion options
+         * @returns Plain object
+         */
+        public static toObject(message: proto.MinosOpenEpochResult, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+        /**
+         * Converts this MinosOpenEpochResult to JSON.
+         * @returns JSON object
+         */
+        public toJSON(): { [k: string]: any };
+
+        /**
+         * Gets the default type url for MinosOpenEpochResult
+         * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+         * @returns The default type url
+         */
+        public static getTypeUrl(typeUrlPrefix?: string): string;
+    }
+
+    /** Properties of a MinosOpenInitialEpochInput. */
+    interface IMinosOpenInitialEpochInput {
+
+        /** MinosOpenInitialEpochInput userFbid */
+        userFbid?: (string|null);
+
+        /** MinosOpenInitialEpochInput epochNumber */
+        epochNumber?: (number|Long|null);
+
+        /** MinosOpenInitialEpochInput exportRootKey */
+        exportRootKey?: (Uint8Array|null);
+    }
+
+    /** Represents a MinosOpenInitialEpochInput. */
+    class MinosOpenInitialEpochInput implements IMinosOpenInitialEpochInput {
+
+        /**
+         * Constructs a new MinosOpenInitialEpochInput.
+         * @param [properties] Properties to set
+         */
+        constructor(properties?: proto.IMinosOpenInitialEpochInput);
+
+        /** MinosOpenInitialEpochInput userFbid. */
+        public userFbid?: (string|null);
+
+        /** MinosOpenInitialEpochInput epochNumber. */
+        public epochNumber?: (number|Long|null);
+
+        /** MinosOpenInitialEpochInput exportRootKey. */
+        public exportRootKey?: (Uint8Array|null);
+
+        /**
+         * Creates a new MinosOpenInitialEpochInput instance using the specified properties.
+         * @param [properties] Properties to set
+         * @returns MinosOpenInitialEpochInput instance
+         */
+        public static create(properties?: proto.IMinosOpenInitialEpochInput): proto.MinosOpenInitialEpochInput;
+
+        /**
+         * Encodes the specified MinosOpenInitialEpochInput message. Does not implicitly {@link proto.MinosOpenInitialEpochInput.verify|verify} messages.
+         * @param message MinosOpenInitialEpochInput message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encode(message: proto.IMinosOpenInitialEpochInput, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Encodes the specified MinosOpenInitialEpochInput message, length delimited. Does not implicitly {@link proto.MinosOpenInitialEpochInput.verify|verify} messages.
+         * @param message MinosOpenInitialEpochInput message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encodeDelimited(message: proto.IMinosOpenInitialEpochInput, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Decodes a MinosOpenInitialEpochInput message from the specified reader or buffer.
+         * @param reader Reader or buffer to decode from
+         * @param [length] Message length if known beforehand
+         * @returns MinosOpenInitialEpochInput
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): proto.MinosOpenInitialEpochInput;
+
+        /**
+         * Decodes a MinosOpenInitialEpochInput message from the specified reader or buffer, length delimited.
+         * @param reader Reader or buffer to decode from
+         * @returns MinosOpenInitialEpochInput
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): proto.MinosOpenInitialEpochInput;
+
+        /**
+         * Verifies a MinosOpenInitialEpochInput message.
+         * @param message Plain object to verify
+         * @returns `null` if valid, otherwise the reason why it is not
+         */
+        public static verify(message: { [k: string]: any }): (string|null);
+
+        /**
+         * Creates a MinosOpenInitialEpochInput message from a plain object. Also converts values to their respective internal types.
+         * @param object Plain object
+         * @returns MinosOpenInitialEpochInput
+         */
+        public static fromObject(object: { [k: string]: any }): proto.MinosOpenInitialEpochInput;
+
+        /**
+         * Creates a plain object from a MinosOpenInitialEpochInput message. Also converts values to other types if specified.
+         * @param message MinosOpenInitialEpochInput
+         * @param [options] Conversion options
+         * @returns Plain object
+         */
+        public static toObject(message: proto.MinosOpenInitialEpochInput, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+        /**
+         * Converts this MinosOpenInitialEpochInput to JSON.
+         * @returns JSON object
+         */
+        public toJSON(): { [k: string]: any };
+
+        /**
+         * Gets the default type url for MinosOpenInitialEpochInput
+         * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+         * @returns The default type url
+         */
+        public static getTypeUrl(typeUrlPrefix?: string): string;
+    }
+
+    /** Properties of a MinosOpenInitialEpochResult. */
+    interface IMinosOpenInitialEpochResult {
+
+        /** MinosOpenInitialEpochResult minosSignedEpoch */
+        minosSignedEpoch?: (proto.IMinosSignedEpoch|null);
+    }
+
+    /** Represents a MinosOpenInitialEpochResult. */
+    class MinosOpenInitialEpochResult implements IMinosOpenInitialEpochResult {
+
+        /**
+         * Constructs a new MinosOpenInitialEpochResult.
+         * @param [properties] Properties to set
+         */
+        constructor(properties?: proto.IMinosOpenInitialEpochResult);
+
+        /** MinosOpenInitialEpochResult minosSignedEpoch. */
+        public minosSignedEpoch?: (proto.IMinosSignedEpoch|null);
+
+        /**
+         * Creates a new MinosOpenInitialEpochResult instance using the specified properties.
+         * @param [properties] Properties to set
+         * @returns MinosOpenInitialEpochResult instance
+         */
+        public static create(properties?: proto.IMinosOpenInitialEpochResult): proto.MinosOpenInitialEpochResult;
+
+        /**
+         * Encodes the specified MinosOpenInitialEpochResult message. Does not implicitly {@link proto.MinosOpenInitialEpochResult.verify|verify} messages.
+         * @param message MinosOpenInitialEpochResult message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encode(message: proto.IMinosOpenInitialEpochResult, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Encodes the specified MinosOpenInitialEpochResult message, length delimited. Does not implicitly {@link proto.MinosOpenInitialEpochResult.verify|verify} messages.
+         * @param message MinosOpenInitialEpochResult message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encodeDelimited(message: proto.IMinosOpenInitialEpochResult, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Decodes a MinosOpenInitialEpochResult message from the specified reader or buffer.
+         * @param reader Reader or buffer to decode from
+         * @param [length] Message length if known beforehand
+         * @returns MinosOpenInitialEpochResult
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): proto.MinosOpenInitialEpochResult;
+
+        /**
+         * Decodes a MinosOpenInitialEpochResult message from the specified reader or buffer, length delimited.
+         * @param reader Reader or buffer to decode from
+         * @returns MinosOpenInitialEpochResult
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): proto.MinosOpenInitialEpochResult;
+
+        /**
+         * Verifies a MinosOpenInitialEpochResult message.
+         * @param message Plain object to verify
+         * @returns `null` if valid, otherwise the reason why it is not
+         */
+        public static verify(message: { [k: string]: any }): (string|null);
+
+        /**
+         * Creates a MinosOpenInitialEpochResult message from a plain object. Also converts values to their respective internal types.
+         * @param object Plain object
+         * @returns MinosOpenInitialEpochResult
+         */
+        public static fromObject(object: { [k: string]: any }): proto.MinosOpenInitialEpochResult;
+
+        /**
+         * Creates a plain object from a MinosOpenInitialEpochResult message. Also converts values to other types if specified.
+         * @param message MinosOpenInitialEpochResult
+         * @param [options] Conversion options
+         * @returns Plain object
+         */
+        public static toObject(message: proto.MinosOpenInitialEpochResult, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+        /**
+         * Converts this MinosOpenInitialEpochResult to JSON.
+         * @returns JSON object
+         */
+        public toJSON(): { [k: string]: any };
+
+        /**
+         * Gets the default type url for MinosOpenInitialEpochResult
+         * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+         * @returns The default type url
+         */
+        public static getTypeUrl(typeUrlPrefix?: string): string;
+    }
+
+    /** Properties of a MinosSignedEpoch. */
+    interface IMinosSignedEpoch {
+
+        /** MinosSignedEpoch epochPublicData */
+        epochPublicData?: (proto.IEpochPublicData|null);
+
+        /** MinosSignedEpoch signatures */
+        signatures?: (proto.IEpochSignatures|null);
+
+        /** MinosSignedEpoch epochHead */
+        epochHead?: (Uint8Array|null);
+    }
+
+    /** Represents a MinosSignedEpoch. */
+    class MinosSignedEpoch implements IMinosSignedEpoch {
+
+        /**
+         * Constructs a new MinosSignedEpoch.
+         * @param [properties] Properties to set
+         */
+        constructor(properties?: proto.IMinosSignedEpoch);
+
+        /** MinosSignedEpoch epochPublicData. */
+        public epochPublicData?: (proto.IEpochPublicData|null);
+
+        /** MinosSignedEpoch signatures. */
+        public signatures?: (proto.IEpochSignatures|null);
+
+        /** MinosSignedEpoch epochHead. */
+        public epochHead?: (Uint8Array|null);
+
+        /**
+         * Creates a new MinosSignedEpoch instance using the specified properties.
+         * @param [properties] Properties to set
+         * @returns MinosSignedEpoch instance
+         */
+        public static create(properties?: proto.IMinosSignedEpoch): proto.MinosSignedEpoch;
+
+        /**
+         * Encodes the specified MinosSignedEpoch message. Does not implicitly {@link proto.MinosSignedEpoch.verify|verify} messages.
+         * @param message MinosSignedEpoch message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encode(message: proto.IMinosSignedEpoch, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Encodes the specified MinosSignedEpoch message, length delimited. Does not implicitly {@link proto.MinosSignedEpoch.verify|verify} messages.
+         * @param message MinosSignedEpoch message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encodeDelimited(message: proto.IMinosSignedEpoch, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Decodes a MinosSignedEpoch message from the specified reader or buffer.
+         * @param reader Reader or buffer to decode from
+         * @param [length] Message length if known beforehand
+         * @returns MinosSignedEpoch
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): proto.MinosSignedEpoch;
+
+        /**
+         * Decodes a MinosSignedEpoch message from the specified reader or buffer, length delimited.
+         * @param reader Reader or buffer to decode from
+         * @returns MinosSignedEpoch
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): proto.MinosSignedEpoch;
+
+        /**
+         * Verifies a MinosSignedEpoch message.
+         * @param message Plain object to verify
+         * @returns `null` if valid, otherwise the reason why it is not
+         */
+        public static verify(message: { [k: string]: any }): (string|null);
+
+        /**
+         * Creates a MinosSignedEpoch message from a plain object. Also converts values to their respective internal types.
+         * @param object Plain object
+         * @returns MinosSignedEpoch
+         */
+        public static fromObject(object: { [k: string]: any }): proto.MinosSignedEpoch;
+
+        /**
+         * Creates a plain object from a MinosSignedEpoch message. Also converts values to other types if specified.
+         * @param message MinosSignedEpoch
+         * @param [options] Conversion options
+         * @returns Plain object
+         */
+        public static toObject(message: proto.MinosSignedEpoch, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+        /**
+         * Converts this MinosSignedEpoch to JSON.
+         * @returns JSON object
+         */
+        public toJSON(): { [k: string]: any };
+
+        /**
+         * Gets the default type url for MinosSignedEpoch
+         * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+         * @returns The default type url
+         */
+        public static getTypeUrl(typeUrlPrefix?: string): string;
+    }
+
+    /** Properties of a MinosThreadIdFromActThreadIdInput. */
+    interface IMinosThreadIdFromActThreadIdInput {
+
+        /** MinosThreadIdFromActThreadIdInput actThreadId */
+        actThreadId?: (string|null);
+    }
+
+    /** Represents a MinosThreadIdFromActThreadIdInput. */
+    class MinosThreadIdFromActThreadIdInput implements IMinosThreadIdFromActThreadIdInput {
+
+        /**
+         * Constructs a new MinosThreadIdFromActThreadIdInput.
+         * @param [properties] Properties to set
+         */
+        constructor(properties?: proto.IMinosThreadIdFromActThreadIdInput);
+
+        /** MinosThreadIdFromActThreadIdInput actThreadId. */
+        public actThreadId?: (string|null);
+
+        /**
+         * Creates a new MinosThreadIdFromActThreadIdInput instance using the specified properties.
+         * @param [properties] Properties to set
+         * @returns MinosThreadIdFromActThreadIdInput instance
+         */
+        public static create(properties?: proto.IMinosThreadIdFromActThreadIdInput): proto.MinosThreadIdFromActThreadIdInput;
+
+        /**
+         * Encodes the specified MinosThreadIdFromActThreadIdInput message. Does not implicitly {@link proto.MinosThreadIdFromActThreadIdInput.verify|verify} messages.
+         * @param message MinosThreadIdFromActThreadIdInput message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encode(message: proto.IMinosThreadIdFromActThreadIdInput, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Encodes the specified MinosThreadIdFromActThreadIdInput message, length delimited. Does not implicitly {@link proto.MinosThreadIdFromActThreadIdInput.verify|verify} messages.
+         * @param message MinosThreadIdFromActThreadIdInput message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encodeDelimited(message: proto.IMinosThreadIdFromActThreadIdInput, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Decodes a MinosThreadIdFromActThreadIdInput message from the specified reader or buffer.
+         * @param reader Reader or buffer to decode from
+         * @param [length] Message length if known beforehand
+         * @returns MinosThreadIdFromActThreadIdInput
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): proto.MinosThreadIdFromActThreadIdInput;
+
+        /**
+         * Decodes a MinosThreadIdFromActThreadIdInput message from the specified reader or buffer, length delimited.
+         * @param reader Reader or buffer to decode from
+         * @returns MinosThreadIdFromActThreadIdInput
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): proto.MinosThreadIdFromActThreadIdInput;
+
+        /**
+         * Verifies a MinosThreadIdFromActThreadIdInput message.
+         * @param message Plain object to verify
+         * @returns `null` if valid, otherwise the reason why it is not
+         */
+        public static verify(message: { [k: string]: any }): (string|null);
+
+        /**
+         * Creates a MinosThreadIdFromActThreadIdInput message from a plain object. Also converts values to their respective internal types.
+         * @param object Plain object
+         * @returns MinosThreadIdFromActThreadIdInput
+         */
+        public static fromObject(object: { [k: string]: any }): proto.MinosThreadIdFromActThreadIdInput;
+
+        /**
+         * Creates a plain object from a MinosThreadIdFromActThreadIdInput message. Also converts values to other types if specified.
+         * @param message MinosThreadIdFromActThreadIdInput
+         * @param [options] Conversion options
+         * @returns Plain object
+         */
+        public static toObject(message: proto.MinosThreadIdFromActThreadIdInput, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+        /**
+         * Converts this MinosThreadIdFromActThreadIdInput to JSON.
+         * @returns JSON object
+         */
+        public toJSON(): { [k: string]: any };
+
+        /**
+         * Gets the default type url for MinosThreadIdFromActThreadIdInput
+         * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+         * @returns The default type url
+         */
+        public static getTypeUrl(typeUrlPrefix?: string): string;
+    }
+
+    /** Properties of a MinosThreadIdFromActThreadIdResult. */
+    interface IMinosThreadIdFromActThreadIdResult {
+
+        /** MinosThreadIdFromActThreadIdResult threadId */
+        threadId?: (Uint8Array|null);
+    }
+
+    /** Represents a MinosThreadIdFromActThreadIdResult. */
+    class MinosThreadIdFromActThreadIdResult implements IMinosThreadIdFromActThreadIdResult {
+
+        /**
+         * Constructs a new MinosThreadIdFromActThreadIdResult.
+         * @param [properties] Properties to set
+         */
+        constructor(properties?: proto.IMinosThreadIdFromActThreadIdResult);
+
+        /** MinosThreadIdFromActThreadIdResult threadId. */
+        public threadId?: (Uint8Array|null);
+
+        /**
+         * Creates a new MinosThreadIdFromActThreadIdResult instance using the specified properties.
+         * @param [properties] Properties to set
+         * @returns MinosThreadIdFromActThreadIdResult instance
+         */
+        public static create(properties?: proto.IMinosThreadIdFromActThreadIdResult): proto.MinosThreadIdFromActThreadIdResult;
+
+        /**
+         * Encodes the specified MinosThreadIdFromActThreadIdResult message. Does not implicitly {@link proto.MinosThreadIdFromActThreadIdResult.verify|verify} messages.
+         * @param message MinosThreadIdFromActThreadIdResult message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encode(message: proto.IMinosThreadIdFromActThreadIdResult, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Encodes the specified MinosThreadIdFromActThreadIdResult message, length delimited. Does not implicitly {@link proto.MinosThreadIdFromActThreadIdResult.verify|verify} messages.
+         * @param message MinosThreadIdFromActThreadIdResult message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encodeDelimited(message: proto.IMinosThreadIdFromActThreadIdResult, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Decodes a MinosThreadIdFromActThreadIdResult message from the specified reader or buffer.
+         * @param reader Reader or buffer to decode from
+         * @param [length] Message length if known beforehand
+         * @returns MinosThreadIdFromActThreadIdResult
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): proto.MinosThreadIdFromActThreadIdResult;
+
+        /**
+         * Decodes a MinosThreadIdFromActThreadIdResult message from the specified reader or buffer, length delimited.
+         * @param reader Reader or buffer to decode from
+         * @returns MinosThreadIdFromActThreadIdResult
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): proto.MinosThreadIdFromActThreadIdResult;
+
+        /**
+         * Verifies a MinosThreadIdFromActThreadIdResult message.
+         * @param message Plain object to verify
+         * @returns `null` if valid, otherwise the reason why it is not
+         */
+        public static verify(message: { [k: string]: any }): (string|null);
+
+        /**
+         * Creates a MinosThreadIdFromActThreadIdResult message from a plain object. Also converts values to their respective internal types.
+         * @param object Plain object
+         * @returns MinosThreadIdFromActThreadIdResult
+         */
+        public static fromObject(object: { [k: string]: any }): proto.MinosThreadIdFromActThreadIdResult;
+
+        /**
+         * Creates a plain object from a MinosThreadIdFromActThreadIdResult message. Also converts values to other types if specified.
+         * @param message MinosThreadIdFromActThreadIdResult
+         * @param [options] Conversion options
+         * @returns Plain object
+         */
+        public static toObject(message: proto.MinosThreadIdFromActThreadIdResult, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+        /**
+         * Converts this MinosThreadIdFromActThreadIdResult to JSON.
+         * @returns JSON object
+         */
+        public toJSON(): { [k: string]: any };
+
+        /**
+         * Gets the default type url for MinosThreadIdFromActThreadIdResult
+         * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+         * @returns The default type url
+         */
+        public static getTypeUrl(typeUrlPrefix?: string): string;
+    }
+
+    /** Properties of a MinosThreadIdFromOneToOneThreadInput. */
+    interface IMinosThreadIdFromOneToOneThreadInput {
+
+        /** MinosThreadIdFromOneToOneThreadInput actThreadId */
+        actThreadId?: (string|null);
+
+        /** MinosThreadIdFromOneToOneThreadInput selfFbid */
+        selfFbid?: (string|null);
+    }
+
+    /** Represents a MinosThreadIdFromOneToOneThreadInput. */
+    class MinosThreadIdFromOneToOneThreadInput implements IMinosThreadIdFromOneToOneThreadInput {
+
+        /**
+         * Constructs a new MinosThreadIdFromOneToOneThreadInput.
+         * @param [properties] Properties to set
+         */
+        constructor(properties?: proto.IMinosThreadIdFromOneToOneThreadInput);
+
+        /** MinosThreadIdFromOneToOneThreadInput actThreadId. */
+        public actThreadId?: (string|null);
+
+        /** MinosThreadIdFromOneToOneThreadInput selfFbid. */
+        public selfFbid?: (string|null);
+
+        /**
+         * Creates a new MinosThreadIdFromOneToOneThreadInput instance using the specified properties.
+         * @param [properties] Properties to set
+         * @returns MinosThreadIdFromOneToOneThreadInput instance
+         */
+        public static create(properties?: proto.IMinosThreadIdFromOneToOneThreadInput): proto.MinosThreadIdFromOneToOneThreadInput;
+
+        /**
+         * Encodes the specified MinosThreadIdFromOneToOneThreadInput message. Does not implicitly {@link proto.MinosThreadIdFromOneToOneThreadInput.verify|verify} messages.
+         * @param message MinosThreadIdFromOneToOneThreadInput message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encode(message: proto.IMinosThreadIdFromOneToOneThreadInput, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Encodes the specified MinosThreadIdFromOneToOneThreadInput message, length delimited. Does not implicitly {@link proto.MinosThreadIdFromOneToOneThreadInput.verify|verify} messages.
+         * @param message MinosThreadIdFromOneToOneThreadInput message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encodeDelimited(message: proto.IMinosThreadIdFromOneToOneThreadInput, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Decodes a MinosThreadIdFromOneToOneThreadInput message from the specified reader or buffer.
+         * @param reader Reader or buffer to decode from
+         * @param [length] Message length if known beforehand
+         * @returns MinosThreadIdFromOneToOneThreadInput
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): proto.MinosThreadIdFromOneToOneThreadInput;
+
+        /**
+         * Decodes a MinosThreadIdFromOneToOneThreadInput message from the specified reader or buffer, length delimited.
+         * @param reader Reader or buffer to decode from
+         * @returns MinosThreadIdFromOneToOneThreadInput
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): proto.MinosThreadIdFromOneToOneThreadInput;
+
+        /**
+         * Verifies a MinosThreadIdFromOneToOneThreadInput message.
+         * @param message Plain object to verify
+         * @returns `null` if valid, otherwise the reason why it is not
+         */
+        public static verify(message: { [k: string]: any }): (string|null);
+
+        /**
+         * Creates a MinosThreadIdFromOneToOneThreadInput message from a plain object. Also converts values to their respective internal types.
+         * @param object Plain object
+         * @returns MinosThreadIdFromOneToOneThreadInput
+         */
+        public static fromObject(object: { [k: string]: any }): proto.MinosThreadIdFromOneToOneThreadInput;
+
+        /**
+         * Creates a plain object from a MinosThreadIdFromOneToOneThreadInput message. Also converts values to other types if specified.
+         * @param message MinosThreadIdFromOneToOneThreadInput
+         * @param [options] Conversion options
+         * @returns Plain object
+         */
+        public static toObject(message: proto.MinosThreadIdFromOneToOneThreadInput, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+        /**
+         * Converts this MinosThreadIdFromOneToOneThreadInput to JSON.
+         * @returns JSON object
+         */
+        public toJSON(): { [k: string]: any };
+
+        /**
+         * Gets the default type url for MinosThreadIdFromOneToOneThreadInput
+         * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+         * @returns The default type url
+         */
+        public static getTypeUrl(typeUrlPrefix?: string): string;
+    }
+
+    /** Properties of a MinosThreadIdFromOneToOneThreadResult. */
+    interface IMinosThreadIdFromOneToOneThreadResult {
+
+        /** MinosThreadIdFromOneToOneThreadResult threadId */
+        threadId?: (Uint8Array|null);
+    }
+
+    /** Represents a MinosThreadIdFromOneToOneThreadResult. */
+    class MinosThreadIdFromOneToOneThreadResult implements IMinosThreadIdFromOneToOneThreadResult {
+
+        /**
+         * Constructs a new MinosThreadIdFromOneToOneThreadResult.
+         * @param [properties] Properties to set
+         */
+        constructor(properties?: proto.IMinosThreadIdFromOneToOneThreadResult);
+
+        /** MinosThreadIdFromOneToOneThreadResult threadId. */
+        public threadId?: (Uint8Array|null);
+
+        /**
+         * Creates a new MinosThreadIdFromOneToOneThreadResult instance using the specified properties.
+         * @param [properties] Properties to set
+         * @returns MinosThreadIdFromOneToOneThreadResult instance
+         */
+        public static create(properties?: proto.IMinosThreadIdFromOneToOneThreadResult): proto.MinosThreadIdFromOneToOneThreadResult;
+
+        /**
+         * Encodes the specified MinosThreadIdFromOneToOneThreadResult message. Does not implicitly {@link proto.MinosThreadIdFromOneToOneThreadResult.verify|verify} messages.
+         * @param message MinosThreadIdFromOneToOneThreadResult message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encode(message: proto.IMinosThreadIdFromOneToOneThreadResult, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Encodes the specified MinosThreadIdFromOneToOneThreadResult message, length delimited. Does not implicitly {@link proto.MinosThreadIdFromOneToOneThreadResult.verify|verify} messages.
+         * @param message MinosThreadIdFromOneToOneThreadResult message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encodeDelimited(message: proto.IMinosThreadIdFromOneToOneThreadResult, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Decodes a MinosThreadIdFromOneToOneThreadResult message from the specified reader or buffer.
+         * @param reader Reader or buffer to decode from
+         * @param [length] Message length if known beforehand
+         * @returns MinosThreadIdFromOneToOneThreadResult
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): proto.MinosThreadIdFromOneToOneThreadResult;
+
+        /**
+         * Decodes a MinosThreadIdFromOneToOneThreadResult message from the specified reader or buffer, length delimited.
+         * @param reader Reader or buffer to decode from
+         * @returns MinosThreadIdFromOneToOneThreadResult
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): proto.MinosThreadIdFromOneToOneThreadResult;
+
+        /**
+         * Verifies a MinosThreadIdFromOneToOneThreadResult message.
+         * @param message Plain object to verify
+         * @returns `null` if valid, otherwise the reason why it is not
+         */
+        public static verify(message: { [k: string]: any }): (string|null);
+
+        /**
+         * Creates a MinosThreadIdFromOneToOneThreadResult message from a plain object. Also converts values to their respective internal types.
+         * @param object Plain object
+         * @returns MinosThreadIdFromOneToOneThreadResult
+         */
+        public static fromObject(object: { [k: string]: any }): proto.MinosThreadIdFromOneToOneThreadResult;
+
+        /**
+         * Creates a plain object from a MinosThreadIdFromOneToOneThreadResult message. Also converts values to other types if specified.
+         * @param message MinosThreadIdFromOneToOneThreadResult
+         * @param [options] Conversion options
+         * @returns Plain object
+         */
+        public static toObject(message: proto.MinosThreadIdFromOneToOneThreadResult, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+        /**
+         * Converts this MinosThreadIdFromOneToOneThreadResult to JSON.
+         * @returns JSON object
+         */
+        public toJSON(): { [k: string]: any };
+
+        /**
+         * Gets the default type url for MinosThreadIdFromOneToOneThreadResult
+         * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+         * @returns The default type url
+         */
+        public static getTypeUrl(typeUrlPrefix?: string): string;
+    }
+
+    /** Properties of a MinosValidateEpochInput. */
+    interface IMinosValidateEpochInput {
+
+        /** MinosValidateEpochInput epochPublicData */
+        epochPublicData?: (proto.IEpochPublicData|null);
+
+        /** MinosValidateEpochInput previousEpochPublicData */
+        previousEpochPublicData?: (proto.IEpochPublicData|null);
+
+        /** MinosValidateEpochInput signatures */
+        signatures?: (proto.IEpochSignatures|null);
+    }
+
+    /** Represents a MinosValidateEpochInput. */
+    class MinosValidateEpochInput implements IMinosValidateEpochInput {
+
+        /**
+         * Constructs a new MinosValidateEpochInput.
+         * @param [properties] Properties to set
+         */
+        constructor(properties?: proto.IMinosValidateEpochInput);
+
+        /** MinosValidateEpochInput epochPublicData. */
+        public epochPublicData?: (proto.IEpochPublicData|null);
+
+        /** MinosValidateEpochInput previousEpochPublicData. */
+        public previousEpochPublicData?: (proto.IEpochPublicData|null);
+
+        /** MinosValidateEpochInput signatures. */
+        public signatures?: (proto.IEpochSignatures|null);
+
+        /**
+         * Creates a new MinosValidateEpochInput instance using the specified properties.
+         * @param [properties] Properties to set
+         * @returns MinosValidateEpochInput instance
+         */
+        public static create(properties?: proto.IMinosValidateEpochInput): proto.MinosValidateEpochInput;
+
+        /**
+         * Encodes the specified MinosValidateEpochInput message. Does not implicitly {@link proto.MinosValidateEpochInput.verify|verify} messages.
+         * @param message MinosValidateEpochInput message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encode(message: proto.IMinosValidateEpochInput, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Encodes the specified MinosValidateEpochInput message, length delimited. Does not implicitly {@link proto.MinosValidateEpochInput.verify|verify} messages.
+         * @param message MinosValidateEpochInput message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encodeDelimited(message: proto.IMinosValidateEpochInput, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Decodes a MinosValidateEpochInput message from the specified reader or buffer.
+         * @param reader Reader or buffer to decode from
+         * @param [length] Message length if known beforehand
+         * @returns MinosValidateEpochInput
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): proto.MinosValidateEpochInput;
+
+        /**
+         * Decodes a MinosValidateEpochInput message from the specified reader or buffer, length delimited.
+         * @param reader Reader or buffer to decode from
+         * @returns MinosValidateEpochInput
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): proto.MinosValidateEpochInput;
+
+        /**
+         * Verifies a MinosValidateEpochInput message.
+         * @param message Plain object to verify
+         * @returns `null` if valid, otherwise the reason why it is not
+         */
+        public static verify(message: { [k: string]: any }): (string|null);
+
+        /**
+         * Creates a MinosValidateEpochInput message from a plain object. Also converts values to their respective internal types.
+         * @param object Plain object
+         * @returns MinosValidateEpochInput
+         */
+        public static fromObject(object: { [k: string]: any }): proto.MinosValidateEpochInput;
+
+        /**
+         * Creates a plain object from a MinosValidateEpochInput message. Also converts values to other types if specified.
+         * @param message MinosValidateEpochInput
+         * @param [options] Conversion options
+         * @returns Plain object
+         */
+        public static toObject(message: proto.MinosValidateEpochInput, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+        /**
+         * Converts this MinosValidateEpochInput to JSON.
+         * @returns JSON object
+         */
+        public toJSON(): { [k: string]: any };
+
+        /**
+         * Gets the default type url for MinosValidateEpochInput
+         * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+         * @returns The default type url
+         */
+        public static getTypeUrl(typeUrlPrefix?: string): string;
+    }
+
+    /** Properties of a MinosValidateEpochResult. */
+    interface IMinosValidateEpochResult {
+
+        /** MinosValidateEpochResult valid */
+        valid?: (boolean|null);
+
+        /** MinosValidateEpochResult errorMessage */
+        errorMessage?: (string|null);
+    }
+
+    /** Represents a MinosValidateEpochResult. */
+    class MinosValidateEpochResult implements IMinosValidateEpochResult {
+
+        /**
+         * Constructs a new MinosValidateEpochResult.
+         * @param [properties] Properties to set
+         */
+        constructor(properties?: proto.IMinosValidateEpochResult);
+
+        /** MinosValidateEpochResult valid. */
+        public valid?: (boolean|null);
+
+        /** MinosValidateEpochResult errorMessage. */
+        public errorMessage?: (string|null);
+
+        /** MinosValidateEpochResult result. */
+        public result?: ("valid"|"errorMessage");
+
+        /**
+         * Creates a new MinosValidateEpochResult instance using the specified properties.
+         * @param [properties] Properties to set
+         * @returns MinosValidateEpochResult instance
+         */
+        public static create(properties?: proto.IMinosValidateEpochResult): proto.MinosValidateEpochResult;
+
+        /**
+         * Encodes the specified MinosValidateEpochResult message. Does not implicitly {@link proto.MinosValidateEpochResult.verify|verify} messages.
+         * @param message MinosValidateEpochResult message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encode(message: proto.IMinosValidateEpochResult, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Encodes the specified MinosValidateEpochResult message, length delimited. Does not implicitly {@link proto.MinosValidateEpochResult.verify|verify} messages.
+         * @param message MinosValidateEpochResult message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encodeDelimited(message: proto.IMinosValidateEpochResult, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Decodes a MinosValidateEpochResult message from the specified reader or buffer.
+         * @param reader Reader or buffer to decode from
+         * @param [length] Message length if known beforehand
+         * @returns MinosValidateEpochResult
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): proto.MinosValidateEpochResult;
+
+        /**
+         * Decodes a MinosValidateEpochResult message from the specified reader or buffer, length delimited.
+         * @param reader Reader or buffer to decode from
+         * @returns MinosValidateEpochResult
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): proto.MinosValidateEpochResult;
+
+        /**
+         * Verifies a MinosValidateEpochResult message.
+         * @param message Plain object to verify
+         * @returns `null` if valid, otherwise the reason why it is not
+         */
+        public static verify(message: { [k: string]: any }): (string|null);
+
+        /**
+         * Creates a MinosValidateEpochResult message from a plain object. Also converts values to their respective internal types.
+         * @param object Plain object
+         * @returns MinosValidateEpochResult
+         */
+        public static fromObject(object: { [k: string]: any }): proto.MinosValidateEpochResult;
+
+        /**
+         * Creates a plain object from a MinosValidateEpochResult message. Also converts values to other types if specified.
+         * @param message MinosValidateEpochResult
+         * @param [options] Conversion options
+         * @returns Plain object
+         */
+        public static toObject(message: proto.MinosValidateEpochResult, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+        /**
+         * Converts this MinosValidateEpochResult to JSON.
+         * @returns JSON object
+         */
+        public toJSON(): { [k: string]: any };
+
+        /**
+         * Gets the default type url for MinosValidateEpochResult
+         * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+         * @returns The default type url
+         */
+        public static getTypeUrl(typeUrlPrefix?: string): string;
+    }
+
+    /** Properties of a MinosVerifySingleEpochInput. */
+    interface IMinosVerifySingleEpochInput {
+
+        /** MinosVerifySingleEpochInput epochPublicData */
+        epochPublicData?: (proto.IEpochPublicData|null);
+
+        /** MinosVerifySingleEpochInput signature */
+        signature?: (Uint8Array|null);
+    }
+
+    /** Represents a MinosVerifySingleEpochInput. */
+    class MinosVerifySingleEpochInput implements IMinosVerifySingleEpochInput {
+
+        /**
+         * Constructs a new MinosVerifySingleEpochInput.
+         * @param [properties] Properties to set
+         */
+        constructor(properties?: proto.IMinosVerifySingleEpochInput);
+
+        /** MinosVerifySingleEpochInput epochPublicData. */
+        public epochPublicData?: (proto.IEpochPublicData|null);
+
+        /** MinosVerifySingleEpochInput signature. */
+        public signature?: (Uint8Array|null);
+
+        /**
+         * Creates a new MinosVerifySingleEpochInput instance using the specified properties.
+         * @param [properties] Properties to set
+         * @returns MinosVerifySingleEpochInput instance
+         */
+        public static create(properties?: proto.IMinosVerifySingleEpochInput): proto.MinosVerifySingleEpochInput;
+
+        /**
+         * Encodes the specified MinosVerifySingleEpochInput message. Does not implicitly {@link proto.MinosVerifySingleEpochInput.verify|verify} messages.
+         * @param message MinosVerifySingleEpochInput message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encode(message: proto.IMinosVerifySingleEpochInput, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Encodes the specified MinosVerifySingleEpochInput message, length delimited. Does not implicitly {@link proto.MinosVerifySingleEpochInput.verify|verify} messages.
+         * @param message MinosVerifySingleEpochInput message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encodeDelimited(message: proto.IMinosVerifySingleEpochInput, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Decodes a MinosVerifySingleEpochInput message from the specified reader or buffer.
+         * @param reader Reader or buffer to decode from
+         * @param [length] Message length if known beforehand
+         * @returns MinosVerifySingleEpochInput
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): proto.MinosVerifySingleEpochInput;
+
+        /**
+         * Decodes a MinosVerifySingleEpochInput message from the specified reader or buffer, length delimited.
+         * @param reader Reader or buffer to decode from
+         * @returns MinosVerifySingleEpochInput
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): proto.MinosVerifySingleEpochInput;
+
+        /**
+         * Verifies a MinosVerifySingleEpochInput message.
+         * @param message Plain object to verify
+         * @returns `null` if valid, otherwise the reason why it is not
+         */
+        public static verify(message: { [k: string]: any }): (string|null);
+
+        /**
+         * Creates a MinosVerifySingleEpochInput message from a plain object. Also converts values to their respective internal types.
+         * @param object Plain object
+         * @returns MinosVerifySingleEpochInput
+         */
+        public static fromObject(object: { [k: string]: any }): proto.MinosVerifySingleEpochInput;
+
+        /**
+         * Creates a plain object from a MinosVerifySingleEpochInput message. Also converts values to other types if specified.
+         * @param message MinosVerifySingleEpochInput
+         * @param [options] Conversion options
+         * @returns Plain object
+         */
+        public static toObject(message: proto.MinosVerifySingleEpochInput, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+        /**
+         * Converts this MinosVerifySingleEpochInput to JSON.
+         * @returns JSON object
+         */
+        public toJSON(): { [k: string]: any };
+
+        /**
+         * Gets the default type url for MinosVerifySingleEpochInput
+         * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+         * @returns The default type url
+         */
+        public static getTypeUrl(typeUrlPrefix?: string): string;
+    }
+
+    /** Properties of a MinosVerifySingleEpochResult. */
+    interface IMinosVerifySingleEpochResult {
+
+        /** MinosVerifySingleEpochResult valid */
+        valid?: (boolean|null);
+    }
+
+    /** Represents a MinosVerifySingleEpochResult. */
+    class MinosVerifySingleEpochResult implements IMinosVerifySingleEpochResult {
+
+        /**
+         * Constructs a new MinosVerifySingleEpochResult.
+         * @param [properties] Properties to set
+         */
+        constructor(properties?: proto.IMinosVerifySingleEpochResult);
+
+        /** MinosVerifySingleEpochResult valid. */
+        public valid?: (boolean|null);
+
+        /**
+         * Creates a new MinosVerifySingleEpochResult instance using the specified properties.
+         * @param [properties] Properties to set
+         * @returns MinosVerifySingleEpochResult instance
+         */
+        public static create(properties?: proto.IMinosVerifySingleEpochResult): proto.MinosVerifySingleEpochResult;
+
+        /**
+         * Encodes the specified MinosVerifySingleEpochResult message. Does not implicitly {@link proto.MinosVerifySingleEpochResult.verify|verify} messages.
+         * @param message MinosVerifySingleEpochResult message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encode(message: proto.IMinosVerifySingleEpochResult, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Encodes the specified MinosVerifySingleEpochResult message, length delimited. Does not implicitly {@link proto.MinosVerifySingleEpochResult.verify|verify} messages.
+         * @param message MinosVerifySingleEpochResult message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encodeDelimited(message: proto.IMinosVerifySingleEpochResult, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Decodes a MinosVerifySingleEpochResult message from the specified reader or buffer.
+         * @param reader Reader or buffer to decode from
+         * @param [length] Message length if known beforehand
+         * @returns MinosVerifySingleEpochResult
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): proto.MinosVerifySingleEpochResult;
+
+        /**
+         * Decodes a MinosVerifySingleEpochResult message from the specified reader or buffer, length delimited.
+         * @param reader Reader or buffer to decode from
+         * @returns MinosVerifySingleEpochResult
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): proto.MinosVerifySingleEpochResult;
+
+        /**
+         * Verifies a MinosVerifySingleEpochResult message.
+         * @param message Plain object to verify
+         * @returns `null` if valid, otherwise the reason why it is not
+         */
+        public static verify(message: { [k: string]: any }): (string|null);
+
+        /**
+         * Creates a MinosVerifySingleEpochResult message from a plain object. Also converts values to their respective internal types.
+         * @param object Plain object
+         * @returns MinosVerifySingleEpochResult
+         */
+        public static fromObject(object: { [k: string]: any }): proto.MinosVerifySingleEpochResult;
+
+        /**
+         * Creates a plain object from a MinosVerifySingleEpochResult message. Also converts values to other types if specified.
+         * @param message MinosVerifySingleEpochResult
+         * @param [options] Conversion options
+         * @returns Plain object
+         */
+        public static toObject(message: proto.MinosVerifySingleEpochResult, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+        /**
+         * Converts this MinosVerifySingleEpochResult to JSON.
+         * @returns JSON object
+         */
+        public toJSON(): { [k: string]: any };
+
+        /**
+         * Gets the default type url for MinosVerifySingleEpochResult
+         * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+         * @returns The default type url
+         */
+        public static getTypeUrl(typeUrlPrefix?: string): string;
+    }
+
+    /** Properties of a MmkDistribution. */
+    interface IMmkDistribution {
+
+        /** MmkDistribution toDetachedDevices */
+        toDetachedDevices?: (proto.IMmkDistributionToDetachedDevice[]|null);
+
+        /** MmkDistribution toMailbox */
+        toMailbox?: (proto.IMmkDistributionToMailbox|null);
+
+        /** MmkDistribution version */
+        version?: (number|Long|null);
+    }
+
+    /** Represents a MmkDistribution. */
+    class MmkDistribution implements IMmkDistribution {
+
+        /**
+         * Constructs a new MmkDistribution.
+         * @param [properties] Properties to set
+         */
+        constructor(properties?: proto.IMmkDistribution);
+
+        /** MmkDistribution toDetachedDevices. */
+        public toDetachedDevices: proto.IMmkDistributionToDetachedDevice[];
+
+        /** MmkDistribution toMailbox. */
+        public toMailbox?: (proto.IMmkDistributionToMailbox|null);
+
+        /** MmkDistribution version. */
+        public version?: (number|Long|null);
+
+        /**
+         * Creates a new MmkDistribution instance using the specified properties.
+         * @param [properties] Properties to set
+         * @returns MmkDistribution instance
+         */
+        public static create(properties?: proto.IMmkDistribution): proto.MmkDistribution;
+
+        /**
+         * Encodes the specified MmkDistribution message. Does not implicitly {@link proto.MmkDistribution.verify|verify} messages.
+         * @param message MmkDistribution message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encode(message: proto.IMmkDistribution, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Encodes the specified MmkDistribution message, length delimited. Does not implicitly {@link proto.MmkDistribution.verify|verify} messages.
+         * @param message MmkDistribution message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encodeDelimited(message: proto.IMmkDistribution, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Decodes a MmkDistribution message from the specified reader or buffer.
+         * @param reader Reader or buffer to decode from
+         * @param [length] Message length if known beforehand
+         * @returns MmkDistribution
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): proto.MmkDistribution;
+
+        /**
+         * Decodes a MmkDistribution message from the specified reader or buffer, length delimited.
+         * @param reader Reader or buffer to decode from
+         * @returns MmkDistribution
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): proto.MmkDistribution;
+
+        /**
+         * Verifies a MmkDistribution message.
+         * @param message Plain object to verify
+         * @returns `null` if valid, otherwise the reason why it is not
+         */
+        public static verify(message: { [k: string]: any }): (string|null);
+
+        /**
+         * Creates a MmkDistribution message from a plain object. Also converts values to their respective internal types.
+         * @param object Plain object
+         * @returns MmkDistribution
+         */
+        public static fromObject(object: { [k: string]: any }): proto.MmkDistribution;
+
+        /**
+         * Creates a plain object from a MmkDistribution message. Also converts values to other types if specified.
+         * @param message MmkDistribution
+         * @param [options] Conversion options
+         * @returns Plain object
+         */
+        public static toObject(message: proto.MmkDistribution, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+        /**
+         * Converts this MmkDistribution to JSON.
+         * @returns JSON object
+         */
+        public toJSON(): { [k: string]: any };
+
+        /**
+         * Gets the default type url for MmkDistribution
+         * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+         * @returns The default type url
+         */
+        public static getTypeUrl(typeUrlPrefix?: string): string;
+    }
+
+    /** Properties of a MmkDistributionToDetachedDevice. */
+    interface IMmkDistributionToDetachedDevice {
+
+        /** MmkDistributionToDetachedDevice encryptedMmk */
+        encryptedMmk?: (Uint8Array|null);
+
+        /** MmkDistributionToDetachedDevice recipDeviceHash */
+        recipDeviceHash?: (Uint8Array|null);
+    }
+
+    /** Represents a MmkDistributionToDetachedDevice. */
+    class MmkDistributionToDetachedDevice implements IMmkDistributionToDetachedDevice {
+
+        /**
+         * Constructs a new MmkDistributionToDetachedDevice.
+         * @param [properties] Properties to set
+         */
+        constructor(properties?: proto.IMmkDistributionToDetachedDevice);
+
+        /** MmkDistributionToDetachedDevice encryptedMmk. */
+        public encryptedMmk?: (Uint8Array|null);
+
+        /** MmkDistributionToDetachedDevice recipDeviceHash. */
+        public recipDeviceHash?: (Uint8Array|null);
+
+        /**
+         * Creates a new MmkDistributionToDetachedDevice instance using the specified properties.
+         * @param [properties] Properties to set
+         * @returns MmkDistributionToDetachedDevice instance
+         */
+        public static create(properties?: proto.IMmkDistributionToDetachedDevice): proto.MmkDistributionToDetachedDevice;
+
+        /**
+         * Encodes the specified MmkDistributionToDetachedDevice message. Does not implicitly {@link proto.MmkDistributionToDetachedDevice.verify|verify} messages.
+         * @param message MmkDistributionToDetachedDevice message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encode(message: proto.IMmkDistributionToDetachedDevice, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Encodes the specified MmkDistributionToDetachedDevice message, length delimited. Does not implicitly {@link proto.MmkDistributionToDetachedDevice.verify|verify} messages.
+         * @param message MmkDistributionToDetachedDevice message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encodeDelimited(message: proto.IMmkDistributionToDetachedDevice, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Decodes a MmkDistributionToDetachedDevice message from the specified reader or buffer.
+         * @param reader Reader or buffer to decode from
+         * @param [length] Message length if known beforehand
+         * @returns MmkDistributionToDetachedDevice
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): proto.MmkDistributionToDetachedDevice;
+
+        /**
+         * Decodes a MmkDistributionToDetachedDevice message from the specified reader or buffer, length delimited.
+         * @param reader Reader or buffer to decode from
+         * @returns MmkDistributionToDetachedDevice
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): proto.MmkDistributionToDetachedDevice;
+
+        /**
+         * Verifies a MmkDistributionToDetachedDevice message.
+         * @param message Plain object to verify
+         * @returns `null` if valid, otherwise the reason why it is not
+         */
+        public static verify(message: { [k: string]: any }): (string|null);
+
+        /**
+         * Creates a MmkDistributionToDetachedDevice message from a plain object. Also converts values to their respective internal types.
+         * @param object Plain object
+         * @returns MmkDistributionToDetachedDevice
+         */
+        public static fromObject(object: { [k: string]: any }): proto.MmkDistributionToDetachedDevice;
+
+        /**
+         * Creates a plain object from a MmkDistributionToDetachedDevice message. Also converts values to other types if specified.
+         * @param message MmkDistributionToDetachedDevice
+         * @param [options] Conversion options
+         * @returns Plain object
+         */
+        public static toObject(message: proto.MmkDistributionToDetachedDevice, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+        /**
+         * Converts this MmkDistributionToDetachedDevice to JSON.
+         * @returns JSON object
+         */
+        public toJSON(): { [k: string]: any };
+
+        /**
+         * Gets the default type url for MmkDistributionToDetachedDevice
+         * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+         * @returns The default type url
+         */
+        public static getTypeUrl(typeUrlPrefix?: string): string;
+    }
+
+    /** Properties of a MmkDistributionToMailbox. */
+    interface IMmkDistributionToMailbox {
+
+        /** MmkDistributionToMailbox encryptedMmk */
+        encryptedMmk?: (Uint8Array|null);
+
+        /** MmkDistributionToMailbox recipMailboxHeadHash */
+        recipMailboxHeadHash?: (Uint8Array|null);
+    }
+
+    /** Represents a MmkDistributionToMailbox. */
+    class MmkDistributionToMailbox implements IMmkDistributionToMailbox {
+
+        /**
+         * Constructs a new MmkDistributionToMailbox.
+         * @param [properties] Properties to set
+         */
+        constructor(properties?: proto.IMmkDistributionToMailbox);
+
+        /** MmkDistributionToMailbox encryptedMmk. */
+        public encryptedMmk?: (Uint8Array|null);
+
+        /** MmkDistributionToMailbox recipMailboxHeadHash. */
+        public recipMailboxHeadHash?: (Uint8Array|null);
+
+        /**
+         * Creates a new MmkDistributionToMailbox instance using the specified properties.
+         * @param [properties] Properties to set
+         * @returns MmkDistributionToMailbox instance
+         */
+        public static create(properties?: proto.IMmkDistributionToMailbox): proto.MmkDistributionToMailbox;
+
+        /**
+         * Encodes the specified MmkDistributionToMailbox message. Does not implicitly {@link proto.MmkDistributionToMailbox.verify|verify} messages.
+         * @param message MmkDistributionToMailbox message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encode(message: proto.IMmkDistributionToMailbox, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Encodes the specified MmkDistributionToMailbox message, length delimited. Does not implicitly {@link proto.MmkDistributionToMailbox.verify|verify} messages.
+         * @param message MmkDistributionToMailbox message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encodeDelimited(message: proto.IMmkDistributionToMailbox, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Decodes a MmkDistributionToMailbox message from the specified reader or buffer.
+         * @param reader Reader or buffer to decode from
+         * @param [length] Message length if known beforehand
+         * @returns MmkDistributionToMailbox
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): proto.MmkDistributionToMailbox;
+
+        /**
+         * Decodes a MmkDistributionToMailbox message from the specified reader or buffer, length delimited.
+         * @param reader Reader or buffer to decode from
+         * @returns MmkDistributionToMailbox
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): proto.MmkDistributionToMailbox;
+
+        /**
+         * Verifies a MmkDistributionToMailbox message.
+         * @param message Plain object to verify
+         * @returns `null` if valid, otherwise the reason why it is not
+         */
+        public static verify(message: { [k: string]: any }): (string|null);
+
+        /**
+         * Creates a MmkDistributionToMailbox message from a plain object. Also converts values to their respective internal types.
+         * @param object Plain object
+         * @returns MmkDistributionToMailbox
+         */
+        public static fromObject(object: { [k: string]: any }): proto.MmkDistributionToMailbox;
+
+        /**
+         * Creates a plain object from a MmkDistributionToMailbox message. Also converts values to other types if specified.
+         * @param message MmkDistributionToMailbox
+         * @param [options] Conversion options
+         * @returns Plain object
+         */
+        public static toObject(message: proto.MmkDistributionToMailbox, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+        /**
+         * Converts this MmkDistributionToMailbox to JSON.
+         * @returns JSON object
+         */
+        public toJSON(): { [k: string]: any };
+
+        /**
+         * Gets the default type url for MmkDistributionToMailbox
+         * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+         * @returns The default type url
+         */
+        public static getTypeUrl(typeUrlPrefix?: string): string;
+    }
+
+    /** Properties of a MmkFromDetachedDevice. */
+    interface IMmkFromDetachedDevice {
+
+        /** MmkFromDetachedDevice mmk */
+        mmk?: (proto.IMessagingMailboxPublicData|null);
+
+        /** MmkFromDetachedDevice fromDetachedDevice */
+        fromDetachedDevice?: (proto.IDetachedDevicePublicData|null);
+
+        /** MmkFromDetachedDevice membershipProof */
+        membershipProof?: (proto.IMerkleMembershipProof|null);
+    }
+
+    /** Represents a MmkFromDetachedDevice. */
+    class MmkFromDetachedDevice implements IMmkFromDetachedDevice {
+
+        /**
+         * Constructs a new MmkFromDetachedDevice.
+         * @param [properties] Properties to set
+         */
+        constructor(properties?: proto.IMmkFromDetachedDevice);
+
+        /** MmkFromDetachedDevice mmk. */
+        public mmk?: (proto.IMessagingMailboxPublicData|null);
+
+        /** MmkFromDetachedDevice fromDetachedDevice. */
+        public fromDetachedDevice?: (proto.IDetachedDevicePublicData|null);
+
+        /** MmkFromDetachedDevice membershipProof. */
+        public membershipProof?: (proto.IMerkleMembershipProof|null);
+
+        /**
+         * Creates a new MmkFromDetachedDevice instance using the specified properties.
+         * @param [properties] Properties to set
+         * @returns MmkFromDetachedDevice instance
+         */
+        public static create(properties?: proto.IMmkFromDetachedDevice): proto.MmkFromDetachedDevice;
+
+        /**
+         * Encodes the specified MmkFromDetachedDevice message. Does not implicitly {@link proto.MmkFromDetachedDevice.verify|verify} messages.
+         * @param message MmkFromDetachedDevice message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encode(message: proto.IMmkFromDetachedDevice, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Encodes the specified MmkFromDetachedDevice message, length delimited. Does not implicitly {@link proto.MmkFromDetachedDevice.verify|verify} messages.
+         * @param message MmkFromDetachedDevice message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encodeDelimited(message: proto.IMmkFromDetachedDevice, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Decodes a MmkFromDetachedDevice message from the specified reader or buffer.
+         * @param reader Reader or buffer to decode from
+         * @param [length] Message length if known beforehand
+         * @returns MmkFromDetachedDevice
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): proto.MmkFromDetachedDevice;
+
+        /**
+         * Decodes a MmkFromDetachedDevice message from the specified reader or buffer, length delimited.
+         * @param reader Reader or buffer to decode from
+         * @returns MmkFromDetachedDevice
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): proto.MmkFromDetachedDevice;
+
+        /**
+         * Verifies a MmkFromDetachedDevice message.
+         * @param message Plain object to verify
+         * @returns `null` if valid, otherwise the reason why it is not
+         */
+        public static verify(message: { [k: string]: any }): (string|null);
+
+        /**
+         * Creates a MmkFromDetachedDevice message from a plain object. Also converts values to their respective internal types.
+         * @param object Plain object
+         * @returns MmkFromDetachedDevice
+         */
+        public static fromObject(object: { [k: string]: any }): proto.MmkFromDetachedDevice;
+
+        /**
+         * Creates a plain object from a MmkFromDetachedDevice message. Also converts values to other types if specified.
+         * @param message MmkFromDetachedDevice
+         * @param [options] Conversion options
+         * @returns Plain object
+         */
+        public static toObject(message: proto.MmkFromDetachedDevice, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+        /**
+         * Converts this MmkFromDetachedDevice to JSON.
+         * @returns JSON object
+         */
+        public toJSON(): { [k: string]: any };
+
+        /**
+         * Gets the default type url for MmkFromDetachedDevice
          * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
          * @returns The default type url
          */
@@ -58912,6 +70109,7 @@ export namespace proto {
         BUSINESS_FOLDER_ACTIVATION_ACTION = 96,
         GROUP_HISTORY_TOGGLE_ACTION = 97,
         BB_PRO_PENDING_CUSTOMER_BASE_ACTION = 98,
+        COMMUNITY_NESTING_STATE_ACTION = 99,
         SHARE_OWN_PN = 10001,
         BUSINESS_BROADCAST_ACTION = 10002,
         AI_THREAD_DELETE_ACTION = 10003
@@ -61182,6 +72380,9 @@ export namespace proto {
 
         /** PollAdditionalMetadata pollNameHashHistory */
         pollNameHashHistory?: (proto.PollAdditionalMetadata.IPollNameHashHistoryEntry[]|null);
+
+        /** PollAdditionalMetadata originalOptions */
+        originalOptions?: (proto.Message.PollCreationMessage.IOption[]|null);
     }
 
     /** Represents a PollAdditionalMetadata. */
@@ -61198,6 +72399,9 @@ export namespace proto {
 
         /** PollAdditionalMetadata pollNameHashHistory. */
         public pollNameHashHistory: proto.PollAdditionalMetadata.IPollNameHashHistoryEntry[];
+
+        /** PollAdditionalMetadata originalOptions. */
+        public originalOptions: proto.Message.PollCreationMessage.IOption[];
 
         /**
          * Creates a new PollAdditionalMetadata instance using the specified properties.
@@ -63289,6 +74493,109 @@ export namespace proto {
 
         /**
          * Gets the default type url for RecordStructure
+         * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+         * @returns The default type url
+         */
+        public static getTypeUrl(typeUrlPrefix?: string): string;
+    }
+
+    /** Properties of a RecoverableHistoryConversation. */
+    interface IRecoverableHistoryConversation {
+
+        /** RecoverableHistoryConversation historyChatId */
+        historyChatId?: (string|null);
+
+        /** RecoverableHistoryConversation accountLid */
+        accountLid?: (string|null);
+    }
+
+    /** Represents a RecoverableHistoryConversation. */
+    class RecoverableHistoryConversation implements IRecoverableHistoryConversation {
+
+        /**
+         * Constructs a new RecoverableHistoryConversation.
+         * @param [properties] Properties to set
+         */
+        constructor(properties?: proto.IRecoverableHistoryConversation);
+
+        /** RecoverableHistoryConversation historyChatId. */
+        public historyChatId?: (string|null);
+
+        /** RecoverableHistoryConversation accountLid. */
+        public accountLid?: (string|null);
+
+        /**
+         * Creates a new RecoverableHistoryConversation instance using the specified properties.
+         * @param [properties] Properties to set
+         * @returns RecoverableHistoryConversation instance
+         */
+        public static create(properties?: proto.IRecoverableHistoryConversation): proto.RecoverableHistoryConversation;
+
+        /**
+         * Encodes the specified RecoverableHistoryConversation message. Does not implicitly {@link proto.RecoverableHistoryConversation.verify|verify} messages.
+         * @param message RecoverableHistoryConversation message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encode(message: proto.IRecoverableHistoryConversation, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Encodes the specified RecoverableHistoryConversation message, length delimited. Does not implicitly {@link proto.RecoverableHistoryConversation.verify|verify} messages.
+         * @param message RecoverableHistoryConversation message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encodeDelimited(message: proto.IRecoverableHistoryConversation, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Decodes a RecoverableHistoryConversation message from the specified reader or buffer.
+         * @param reader Reader or buffer to decode from
+         * @param [length] Message length if known beforehand
+         * @returns RecoverableHistoryConversation
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): proto.RecoverableHistoryConversation;
+
+        /**
+         * Decodes a RecoverableHistoryConversation message from the specified reader or buffer, length delimited.
+         * @param reader Reader or buffer to decode from
+         * @returns RecoverableHistoryConversation
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): proto.RecoverableHistoryConversation;
+
+        /**
+         * Verifies a RecoverableHistoryConversation message.
+         * @param message Plain object to verify
+         * @returns `null` if valid, otherwise the reason why it is not
+         */
+        public static verify(message: { [k: string]: any }): (string|null);
+
+        /**
+         * Creates a RecoverableHistoryConversation message from a plain object. Also converts values to their respective internal types.
+         * @param object Plain object
+         * @returns RecoverableHistoryConversation
+         */
+        public static fromObject(object: { [k: string]: any }): proto.RecoverableHistoryConversation;
+
+        /**
+         * Creates a plain object from a RecoverableHistoryConversation message. Also converts values to other types if specified.
+         * @param message RecoverableHistoryConversation
+         * @param [options] Conversion options
+         * @returns Plain object
+         */
+        public static toObject(message: proto.RecoverableHistoryConversation, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+        /**
+         * Converts this RecoverableHistoryConversation to JSON.
+         * @returns JSON object
+         */
+        public toJSON(): { [k: string]: any };
+
+        /**
+         * Gets the default type url for RecoverableHistoryConversation
          * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
          * @returns The default type url
          */
@@ -66064,6 +77371,115 @@ export namespace proto {
         public static getTypeUrl(typeUrlPrefix?: string): string;
     }
 
+    /** Properties of a SignedMmkDistributionFromMailbox. */
+    interface ISignedMmkDistributionFromMailbox {
+
+        /** SignedMmkDistributionFromMailbox mmkDistribution */
+        mmkDistribution?: (proto.IMmkDistribution|null);
+
+        /** SignedMmkDistributionFromMailbox signature */
+        signature?: (Uint8Array|null);
+
+        /** SignedMmkDistributionFromMailbox fromMailbox */
+        fromMailbox?: (proto.IMessagingMailboxPublicData|null);
+    }
+
+    /** Represents a SignedMmkDistributionFromMailbox. */
+    class SignedMmkDistributionFromMailbox implements ISignedMmkDistributionFromMailbox {
+
+        /**
+         * Constructs a new SignedMmkDistributionFromMailbox.
+         * @param [properties] Properties to set
+         */
+        constructor(properties?: proto.ISignedMmkDistributionFromMailbox);
+
+        /** SignedMmkDistributionFromMailbox mmkDistribution. */
+        public mmkDistribution?: (proto.IMmkDistribution|null);
+
+        /** SignedMmkDistributionFromMailbox signature. */
+        public signature?: (Uint8Array|null);
+
+        /** SignedMmkDistributionFromMailbox fromMailbox. */
+        public fromMailbox?: (proto.IMessagingMailboxPublicData|null);
+
+        /**
+         * Creates a new SignedMmkDistributionFromMailbox instance using the specified properties.
+         * @param [properties] Properties to set
+         * @returns SignedMmkDistributionFromMailbox instance
+         */
+        public static create(properties?: proto.ISignedMmkDistributionFromMailbox): proto.SignedMmkDistributionFromMailbox;
+
+        /**
+         * Encodes the specified SignedMmkDistributionFromMailbox message. Does not implicitly {@link proto.SignedMmkDistributionFromMailbox.verify|verify} messages.
+         * @param message SignedMmkDistributionFromMailbox message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encode(message: proto.ISignedMmkDistributionFromMailbox, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Encodes the specified SignedMmkDistributionFromMailbox message, length delimited. Does not implicitly {@link proto.SignedMmkDistributionFromMailbox.verify|verify} messages.
+         * @param message SignedMmkDistributionFromMailbox message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encodeDelimited(message: proto.ISignedMmkDistributionFromMailbox, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Decodes a SignedMmkDistributionFromMailbox message from the specified reader or buffer.
+         * @param reader Reader or buffer to decode from
+         * @param [length] Message length if known beforehand
+         * @returns SignedMmkDistributionFromMailbox
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): proto.SignedMmkDistributionFromMailbox;
+
+        /**
+         * Decodes a SignedMmkDistributionFromMailbox message from the specified reader or buffer, length delimited.
+         * @param reader Reader or buffer to decode from
+         * @returns SignedMmkDistributionFromMailbox
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): proto.SignedMmkDistributionFromMailbox;
+
+        /**
+         * Verifies a SignedMmkDistributionFromMailbox message.
+         * @param message Plain object to verify
+         * @returns `null` if valid, otherwise the reason why it is not
+         */
+        public static verify(message: { [k: string]: any }): (string|null);
+
+        /**
+         * Creates a SignedMmkDistributionFromMailbox message from a plain object. Also converts values to their respective internal types.
+         * @param object Plain object
+         * @returns SignedMmkDistributionFromMailbox
+         */
+        public static fromObject(object: { [k: string]: any }): proto.SignedMmkDistributionFromMailbox;
+
+        /**
+         * Creates a plain object from a SignedMmkDistributionFromMailbox message. Also converts values to other types if specified.
+         * @param message SignedMmkDistributionFromMailbox
+         * @param [options] Conversion options
+         * @returns Plain object
+         */
+        public static toObject(message: proto.SignedMmkDistributionFromMailbox, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+        /**
+         * Converts this SignedMmkDistributionFromMailbox to JSON.
+         * @returns JSON object
+         */
+        public toJSON(): { [k: string]: any };
+
+        /**
+         * Gets the default type url for SignedMmkDistributionFromMailbox
+         * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+         * @returns The default type url
+         */
+        public static getTypeUrl(typeUrlPrefix?: string): string;
+    }
+
     /** Properties of a SignedPreKeyRecordStructure. */
     interface ISignedPreKeyRecordStructure {
 
@@ -68013,6 +79429,9 @@ export namespace proto {
 
         /** SyncActionValue bbProPendingCustomerBaseAction */
         bbProPendingCustomerBaseAction?: (proto.SyncActionValue.IBBProPendingCustomerBaseAction|null);
+
+        /** SyncActionValue communityNestingStateAction */
+        communityNestingStateAction?: (proto.SyncActionValue.ICommunityNestingStateAction|null);
     }
 
     /** Represents a SyncActionValue. */
@@ -68290,6 +79709,9 @@ export namespace proto {
 
         /** SyncActionValue bbProPendingCustomerBaseAction. */
         public bbProPendingCustomerBaseAction?: (proto.SyncActionValue.IBBProPendingCustomerBaseAction|null);
+
+        /** SyncActionValue communityNestingStateAction. */
+        public communityNestingStateAction?: (proto.SyncActionValue.ICommunityNestingStateAction|null);
 
         /**
          * Creates a new SyncActionValue instance using the specified properties.
@@ -70611,6 +82033,113 @@ export namespace proto {
             public static getTypeUrl(typeUrlPrefix?: string): string;
         }
 
+        /** Properties of a CommunityNestingStateAction. */
+        interface ICommunityNestingStateAction {
+
+            /** CommunityNestingStateAction nestingState */
+            nestingState?: (proto.SyncActionValue.CommunityNestingStateAction.NestingState|null);
+        }
+
+        /** Represents a CommunityNestingStateAction. */
+        class CommunityNestingStateAction implements ICommunityNestingStateAction {
+
+            /**
+             * Constructs a new CommunityNestingStateAction.
+             * @param [properties] Properties to set
+             */
+            constructor(properties?: proto.SyncActionValue.ICommunityNestingStateAction);
+
+            /** CommunityNestingStateAction nestingState. */
+            public nestingState?: (proto.SyncActionValue.CommunityNestingStateAction.NestingState|null);
+
+            /**
+             * Creates a new CommunityNestingStateAction instance using the specified properties.
+             * @param [properties] Properties to set
+             * @returns CommunityNestingStateAction instance
+             */
+            public static create(properties?: proto.SyncActionValue.ICommunityNestingStateAction): proto.SyncActionValue.CommunityNestingStateAction;
+
+            /**
+             * Encodes the specified CommunityNestingStateAction message. Does not implicitly {@link proto.SyncActionValue.CommunityNestingStateAction.verify|verify} messages.
+             * @param message CommunityNestingStateAction message or plain object to encode
+             * @param [writer] Writer to encode to
+             * @returns Writer
+             */
+            public static encode(message: proto.SyncActionValue.ICommunityNestingStateAction, writer?: $protobuf.Writer): $protobuf.Writer;
+
+            /**
+             * Encodes the specified CommunityNestingStateAction message, length delimited. Does not implicitly {@link proto.SyncActionValue.CommunityNestingStateAction.verify|verify} messages.
+             * @param message CommunityNestingStateAction message or plain object to encode
+             * @param [writer] Writer to encode to
+             * @returns Writer
+             */
+            public static encodeDelimited(message: proto.SyncActionValue.ICommunityNestingStateAction, writer?: $protobuf.Writer): $protobuf.Writer;
+
+            /**
+             * Decodes a CommunityNestingStateAction message from the specified reader or buffer.
+             * @param reader Reader or buffer to decode from
+             * @param [length] Message length if known beforehand
+             * @returns CommunityNestingStateAction
+             * @throws {Error} If the payload is not a reader or valid buffer
+             * @throws {$protobuf.util.ProtocolError} If required fields are missing
+             */
+            public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): proto.SyncActionValue.CommunityNestingStateAction;
+
+            /**
+             * Decodes a CommunityNestingStateAction message from the specified reader or buffer, length delimited.
+             * @param reader Reader or buffer to decode from
+             * @returns CommunityNestingStateAction
+             * @throws {Error} If the payload is not a reader or valid buffer
+             * @throws {$protobuf.util.ProtocolError} If required fields are missing
+             */
+            public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): proto.SyncActionValue.CommunityNestingStateAction;
+
+            /**
+             * Verifies a CommunityNestingStateAction message.
+             * @param message Plain object to verify
+             * @returns `null` if valid, otherwise the reason why it is not
+             */
+            public static verify(message: { [k: string]: any }): (string|null);
+
+            /**
+             * Creates a CommunityNestingStateAction message from a plain object. Also converts values to their respective internal types.
+             * @param object Plain object
+             * @returns CommunityNestingStateAction
+             */
+            public static fromObject(object: { [k: string]: any }): proto.SyncActionValue.CommunityNestingStateAction;
+
+            /**
+             * Creates a plain object from a CommunityNestingStateAction message. Also converts values to other types if specified.
+             * @param message CommunityNestingStateAction
+             * @param [options] Conversion options
+             * @returns Plain object
+             */
+            public static toObject(message: proto.SyncActionValue.CommunityNestingStateAction, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+            /**
+             * Converts this CommunityNestingStateAction to JSON.
+             * @returns JSON object
+             */
+            public toJSON(): { [k: string]: any };
+
+            /**
+             * Gets the default type url for CommunityNestingStateAction
+             * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+             * @returns The default type url
+             */
+            public static getTypeUrl(typeUrlPrefix?: string): string;
+        }
+
+        namespace CommunityNestingStateAction {
+
+            /** NestingState enum. */
+            enum NestingState {
+                NESTING_STATE_UNKNOWN = 0,
+                NESTING_STATE_NESTED = 1,
+                NESTING_STATE_UNNESTED = 2
+            }
+        }
+
         /** Properties of a ContactAction. */
         interface IContactAction {
 
@@ -70631,6 +82160,9 @@ export namespace proto {
 
             /** ContactAction username */
             username?: (string|null);
+
+            /** ContactAction birthday */
+            birthday?: (string|null);
         }
 
         /** Represents a ContactAction. */
@@ -70659,6 +82191,9 @@ export namespace proto {
 
             /** ContactAction username. */
             public username?: (string|null);
+
+            /** ContactAction birthday. */
+            public birthday?: (string|null);
 
             /**
              * Creates a new ContactAction instance using the specified properties.
@@ -72781,7 +84316,8 @@ export namespace proto {
                 LEAD = 16,
                 MENTIONS_AND_REPLIES = 17,
                 REQUESTS = 18,
-                BUSINESS = 19
+                BUSINESS = 19,
+                ONE_ON_ONE = 20
             }
         }
 
@@ -72990,6 +84526,9 @@ export namespace proto {
 
             /** LidContactAction username */
             username?: (string|null);
+
+            /** LidContactAction birthday */
+            birthday?: (string|null);
         }
 
         /** Represents a LidContactAction. */
@@ -73009,6 +84548,9 @@ export namespace proto {
 
             /** LidContactAction username. */
             public username?: (string|null);
+
+            /** LidContactAction birthday. */
+            public birthday?: (string|null);
 
             /**
              * Creates a new LidContactAction instance using the specified properties.
@@ -81780,720 +93322,6 @@ export namespace proto {
         }
     }
 
-    /** Properties of a VerifyKeyTransparencyForUserMandrakeCommand. */
-    interface IVerifyKeyTransparencyForUserMandrakeCommand {
-
-        /** VerifyKeyTransparencyForUserMandrakeCommand lookupResponse */
-        lookupResponse?: (Uint8Array|null);
-
-        /** VerifyKeyTransparencyForUserMandrakeCommand userFbid */
-        userFbid?: (number|Long|null);
-
-        /** VerifyKeyTransparencyForUserMandrakeCommand auditorSignatureTtlSecs */
-        auditorSignatureTtlSecs?: (number|Long|null);
-
-        /** VerifyKeyTransparencyForUserMandrakeCommand requestedAuditorList */
-        requestedAuditorList?: (string[]|null);
-
-        /** VerifyKeyTransparencyForUserMandrakeCommand isProductionBuild */
-        isProductionBuild?: (boolean|null);
-
-        /** VerifyKeyTransparencyForUserMandrakeCommand localMailboxHead */
-        localMailboxHead?: (Uint8Array|null);
-    }
-
-    /** Represents a VerifyKeyTransparencyForUserMandrakeCommand. */
-    class VerifyKeyTransparencyForUserMandrakeCommand implements IVerifyKeyTransparencyForUserMandrakeCommand {
-
-        /**
-         * Constructs a new VerifyKeyTransparencyForUserMandrakeCommand.
-         * @param [properties] Properties to set
-         */
-        constructor(properties?: proto.IVerifyKeyTransparencyForUserMandrakeCommand);
-
-        /** VerifyKeyTransparencyForUserMandrakeCommand lookupResponse. */
-        public lookupResponse?: (Uint8Array|null);
-
-        /** VerifyKeyTransparencyForUserMandrakeCommand userFbid. */
-        public userFbid?: (number|Long|null);
-
-        /** VerifyKeyTransparencyForUserMandrakeCommand auditorSignatureTtlSecs. */
-        public auditorSignatureTtlSecs?: (number|Long|null);
-
-        /** VerifyKeyTransparencyForUserMandrakeCommand requestedAuditorList. */
-        public requestedAuditorList: string[];
-
-        /** VerifyKeyTransparencyForUserMandrakeCommand isProductionBuild. */
-        public isProductionBuild?: (boolean|null);
-
-        /** VerifyKeyTransparencyForUserMandrakeCommand localMailboxHead. */
-        public localMailboxHead?: (Uint8Array|null);
-
-        /**
-         * Creates a new VerifyKeyTransparencyForUserMandrakeCommand instance using the specified properties.
-         * @param [properties] Properties to set
-         * @returns VerifyKeyTransparencyForUserMandrakeCommand instance
-         */
-        public static create(properties?: proto.IVerifyKeyTransparencyForUserMandrakeCommand): proto.VerifyKeyTransparencyForUserMandrakeCommand;
-
-        /**
-         * Encodes the specified VerifyKeyTransparencyForUserMandrakeCommand message. Does not implicitly {@link proto.VerifyKeyTransparencyForUserMandrakeCommand.verify|verify} messages.
-         * @param message VerifyKeyTransparencyForUserMandrakeCommand message or plain object to encode
-         * @param [writer] Writer to encode to
-         * @returns Writer
-         */
-        public static encode(message: proto.IVerifyKeyTransparencyForUserMandrakeCommand, writer?: $protobuf.Writer): $protobuf.Writer;
-
-        /**
-         * Encodes the specified VerifyKeyTransparencyForUserMandrakeCommand message, length delimited. Does not implicitly {@link proto.VerifyKeyTransparencyForUserMandrakeCommand.verify|verify} messages.
-         * @param message VerifyKeyTransparencyForUserMandrakeCommand message or plain object to encode
-         * @param [writer] Writer to encode to
-         * @returns Writer
-         */
-        public static encodeDelimited(message: proto.IVerifyKeyTransparencyForUserMandrakeCommand, writer?: $protobuf.Writer): $protobuf.Writer;
-
-        /**
-         * Decodes a VerifyKeyTransparencyForUserMandrakeCommand message from the specified reader or buffer.
-         * @param reader Reader or buffer to decode from
-         * @param [length] Message length if known beforehand
-         * @returns VerifyKeyTransparencyForUserMandrakeCommand
-         * @throws {Error} If the payload is not a reader or valid buffer
-         * @throws {$protobuf.util.ProtocolError} If required fields are missing
-         */
-        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): proto.VerifyKeyTransparencyForUserMandrakeCommand;
-
-        /**
-         * Decodes a VerifyKeyTransparencyForUserMandrakeCommand message from the specified reader or buffer, length delimited.
-         * @param reader Reader or buffer to decode from
-         * @returns VerifyKeyTransparencyForUserMandrakeCommand
-         * @throws {Error} If the payload is not a reader or valid buffer
-         * @throws {$protobuf.util.ProtocolError} If required fields are missing
-         */
-        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): proto.VerifyKeyTransparencyForUserMandrakeCommand;
-
-        /**
-         * Verifies a VerifyKeyTransparencyForUserMandrakeCommand message.
-         * @param message Plain object to verify
-         * @returns `null` if valid, otherwise the reason why it is not
-         */
-        public static verify(message: { [k: string]: any }): (string|null);
-
-        /**
-         * Creates a VerifyKeyTransparencyForUserMandrakeCommand message from a plain object. Also converts values to their respective internal types.
-         * @param object Plain object
-         * @returns VerifyKeyTransparencyForUserMandrakeCommand
-         */
-        public static fromObject(object: { [k: string]: any }): proto.VerifyKeyTransparencyForUserMandrakeCommand;
-
-        /**
-         * Creates a plain object from a VerifyKeyTransparencyForUserMandrakeCommand message. Also converts values to other types if specified.
-         * @param message VerifyKeyTransparencyForUserMandrakeCommand
-         * @param [options] Conversion options
-         * @returns Plain object
-         */
-        public static toObject(message: proto.VerifyKeyTransparencyForUserMandrakeCommand, options?: $protobuf.IConversionOptions): { [k: string]: any };
-
-        /**
-         * Converts this VerifyKeyTransparencyForUserMandrakeCommand to JSON.
-         * @returns JSON object
-         */
-        public toJSON(): { [k: string]: any };
-
-        /**
-         * Gets the default type url for VerifyKeyTransparencyForUserMandrakeCommand
-         * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
-         * @returns The default type url
-         */
-        public static getTypeUrl(typeUrlPrefix?: string): string;
-    }
-
-    /** Properties of a VerifyKeyTransparencyForUserMandrakeResult. */
-    interface IVerifyKeyTransparencyForUserMandrakeResult {
-
-        /** VerifyKeyTransparencyForUserMandrakeResult success */
-        success?: (boolean|null);
-
-        /** VerifyKeyTransparencyForUserMandrakeResult error */
-        error?: (string|null);
-    }
-
-    /** Represents a VerifyKeyTransparencyForUserMandrakeResult. */
-    class VerifyKeyTransparencyForUserMandrakeResult implements IVerifyKeyTransparencyForUserMandrakeResult {
-
-        /**
-         * Constructs a new VerifyKeyTransparencyForUserMandrakeResult.
-         * @param [properties] Properties to set
-         */
-        constructor(properties?: proto.IVerifyKeyTransparencyForUserMandrakeResult);
-
-        /** VerifyKeyTransparencyForUserMandrakeResult success. */
-        public success?: (boolean|null);
-
-        /** VerifyKeyTransparencyForUserMandrakeResult error. */
-        public error?: (string|null);
-
-        /**
-         * Creates a new VerifyKeyTransparencyForUserMandrakeResult instance using the specified properties.
-         * @param [properties] Properties to set
-         * @returns VerifyKeyTransparencyForUserMandrakeResult instance
-         */
-        public static create(properties?: proto.IVerifyKeyTransparencyForUserMandrakeResult): proto.VerifyKeyTransparencyForUserMandrakeResult;
-
-        /**
-         * Encodes the specified VerifyKeyTransparencyForUserMandrakeResult message. Does not implicitly {@link proto.VerifyKeyTransparencyForUserMandrakeResult.verify|verify} messages.
-         * @param message VerifyKeyTransparencyForUserMandrakeResult message or plain object to encode
-         * @param [writer] Writer to encode to
-         * @returns Writer
-         */
-        public static encode(message: proto.IVerifyKeyTransparencyForUserMandrakeResult, writer?: $protobuf.Writer): $protobuf.Writer;
-
-        /**
-         * Encodes the specified VerifyKeyTransparencyForUserMandrakeResult message, length delimited. Does not implicitly {@link proto.VerifyKeyTransparencyForUserMandrakeResult.verify|verify} messages.
-         * @param message VerifyKeyTransparencyForUserMandrakeResult message or plain object to encode
-         * @param [writer] Writer to encode to
-         * @returns Writer
-         */
-        public static encodeDelimited(message: proto.IVerifyKeyTransparencyForUserMandrakeResult, writer?: $protobuf.Writer): $protobuf.Writer;
-
-        /**
-         * Decodes a VerifyKeyTransparencyForUserMandrakeResult message from the specified reader or buffer.
-         * @param reader Reader or buffer to decode from
-         * @param [length] Message length if known beforehand
-         * @returns VerifyKeyTransparencyForUserMandrakeResult
-         * @throws {Error} If the payload is not a reader or valid buffer
-         * @throws {$protobuf.util.ProtocolError} If required fields are missing
-         */
-        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): proto.VerifyKeyTransparencyForUserMandrakeResult;
-
-        /**
-         * Decodes a VerifyKeyTransparencyForUserMandrakeResult message from the specified reader or buffer, length delimited.
-         * @param reader Reader or buffer to decode from
-         * @returns VerifyKeyTransparencyForUserMandrakeResult
-         * @throws {Error} If the payload is not a reader or valid buffer
-         * @throws {$protobuf.util.ProtocolError} If required fields are missing
-         */
-        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): proto.VerifyKeyTransparencyForUserMandrakeResult;
-
-        /**
-         * Verifies a VerifyKeyTransparencyForUserMandrakeResult message.
-         * @param message Plain object to verify
-         * @returns `null` if valid, otherwise the reason why it is not
-         */
-        public static verify(message: { [k: string]: any }): (string|null);
-
-        /**
-         * Creates a VerifyKeyTransparencyForUserMandrakeResult message from a plain object. Also converts values to their respective internal types.
-         * @param object Plain object
-         * @returns VerifyKeyTransparencyForUserMandrakeResult
-         */
-        public static fromObject(object: { [k: string]: any }): proto.VerifyKeyTransparencyForUserMandrakeResult;
-
-        /**
-         * Creates a plain object from a VerifyKeyTransparencyForUserMandrakeResult message. Also converts values to other types if specified.
-         * @param message VerifyKeyTransparencyForUserMandrakeResult
-         * @param [options] Conversion options
-         * @returns Plain object
-         */
-        public static toObject(message: proto.VerifyKeyTransparencyForUserMandrakeResult, options?: $protobuf.IConversionOptions): { [k: string]: any };
-
-        /**
-         * Converts this VerifyKeyTransparencyForUserMandrakeResult to JSON.
-         * @returns JSON object
-         */
-        public toJSON(): { [k: string]: any };
-
-        /**
-         * Gets the default type url for VerifyKeyTransparencyForUserMandrakeResult
-         * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
-         * @returns The default type url
-         */
-        public static getTypeUrl(typeUrlPrefix?: string): string;
-    }
-
-    /** Properties of a VerifyKeyTransparencyForUserMinosCommand. */
-    interface IVerifyKeyTransparencyForUserMinosCommand {
-
-        /** VerifyKeyTransparencyForUserMinosCommand lookupResponse */
-        lookupResponse?: (Uint8Array|null);
-
-        /** VerifyKeyTransparencyForUserMinosCommand userFbid */
-        userFbid?: (number|Long|null);
-
-        /** VerifyKeyTransparencyForUserMinosCommand auditorSignatureTtlSecs */
-        auditorSignatureTtlSecs?: (number|Long|null);
-
-        /** VerifyKeyTransparencyForUserMinosCommand requestedAuditorList */
-        requestedAuditorList?: (string[]|null);
-
-        /** VerifyKeyTransparencyForUserMinosCommand isProductionBuild */
-        isProductionBuild?: (boolean|null);
-
-        /** VerifyKeyTransparencyForUserMinosCommand localEpochHead */
-        localEpochHead?: (Uint8Array|null);
-    }
-
-    /** Represents a VerifyKeyTransparencyForUserMinosCommand. */
-    class VerifyKeyTransparencyForUserMinosCommand implements IVerifyKeyTransparencyForUserMinosCommand {
-
-        /**
-         * Constructs a new VerifyKeyTransparencyForUserMinosCommand.
-         * @param [properties] Properties to set
-         */
-        constructor(properties?: proto.IVerifyKeyTransparencyForUserMinosCommand);
-
-        /** VerifyKeyTransparencyForUserMinosCommand lookupResponse. */
-        public lookupResponse?: (Uint8Array|null);
-
-        /** VerifyKeyTransparencyForUserMinosCommand userFbid. */
-        public userFbid?: (number|Long|null);
-
-        /** VerifyKeyTransparencyForUserMinosCommand auditorSignatureTtlSecs. */
-        public auditorSignatureTtlSecs?: (number|Long|null);
-
-        /** VerifyKeyTransparencyForUserMinosCommand requestedAuditorList. */
-        public requestedAuditorList: string[];
-
-        /** VerifyKeyTransparencyForUserMinosCommand isProductionBuild. */
-        public isProductionBuild?: (boolean|null);
-
-        /** VerifyKeyTransparencyForUserMinosCommand localEpochHead. */
-        public localEpochHead?: (Uint8Array|null);
-
-        /**
-         * Creates a new VerifyKeyTransparencyForUserMinosCommand instance using the specified properties.
-         * @param [properties] Properties to set
-         * @returns VerifyKeyTransparencyForUserMinosCommand instance
-         */
-        public static create(properties?: proto.IVerifyKeyTransparencyForUserMinosCommand): proto.VerifyKeyTransparencyForUserMinosCommand;
-
-        /**
-         * Encodes the specified VerifyKeyTransparencyForUserMinosCommand message. Does not implicitly {@link proto.VerifyKeyTransparencyForUserMinosCommand.verify|verify} messages.
-         * @param message VerifyKeyTransparencyForUserMinosCommand message or plain object to encode
-         * @param [writer] Writer to encode to
-         * @returns Writer
-         */
-        public static encode(message: proto.IVerifyKeyTransparencyForUserMinosCommand, writer?: $protobuf.Writer): $protobuf.Writer;
-
-        /**
-         * Encodes the specified VerifyKeyTransparencyForUserMinosCommand message, length delimited. Does not implicitly {@link proto.VerifyKeyTransparencyForUserMinosCommand.verify|verify} messages.
-         * @param message VerifyKeyTransparencyForUserMinosCommand message or plain object to encode
-         * @param [writer] Writer to encode to
-         * @returns Writer
-         */
-        public static encodeDelimited(message: proto.IVerifyKeyTransparencyForUserMinosCommand, writer?: $protobuf.Writer): $protobuf.Writer;
-
-        /**
-         * Decodes a VerifyKeyTransparencyForUserMinosCommand message from the specified reader or buffer.
-         * @param reader Reader or buffer to decode from
-         * @param [length] Message length if known beforehand
-         * @returns VerifyKeyTransparencyForUserMinosCommand
-         * @throws {Error} If the payload is not a reader or valid buffer
-         * @throws {$protobuf.util.ProtocolError} If required fields are missing
-         */
-        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): proto.VerifyKeyTransparencyForUserMinosCommand;
-
-        /**
-         * Decodes a VerifyKeyTransparencyForUserMinosCommand message from the specified reader or buffer, length delimited.
-         * @param reader Reader or buffer to decode from
-         * @returns VerifyKeyTransparencyForUserMinosCommand
-         * @throws {Error} If the payload is not a reader or valid buffer
-         * @throws {$protobuf.util.ProtocolError} If required fields are missing
-         */
-        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): proto.VerifyKeyTransparencyForUserMinosCommand;
-
-        /**
-         * Verifies a VerifyKeyTransparencyForUserMinosCommand message.
-         * @param message Plain object to verify
-         * @returns `null` if valid, otherwise the reason why it is not
-         */
-        public static verify(message: { [k: string]: any }): (string|null);
-
-        /**
-         * Creates a VerifyKeyTransparencyForUserMinosCommand message from a plain object. Also converts values to their respective internal types.
-         * @param object Plain object
-         * @returns VerifyKeyTransparencyForUserMinosCommand
-         */
-        public static fromObject(object: { [k: string]: any }): proto.VerifyKeyTransparencyForUserMinosCommand;
-
-        /**
-         * Creates a plain object from a VerifyKeyTransparencyForUserMinosCommand message. Also converts values to other types if specified.
-         * @param message VerifyKeyTransparencyForUserMinosCommand
-         * @param [options] Conversion options
-         * @returns Plain object
-         */
-        public static toObject(message: proto.VerifyKeyTransparencyForUserMinosCommand, options?: $protobuf.IConversionOptions): { [k: string]: any };
-
-        /**
-         * Converts this VerifyKeyTransparencyForUserMinosCommand to JSON.
-         * @returns JSON object
-         */
-        public toJSON(): { [k: string]: any };
-
-        /**
-         * Gets the default type url for VerifyKeyTransparencyForUserMinosCommand
-         * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
-         * @returns The default type url
-         */
-        public static getTypeUrl(typeUrlPrefix?: string): string;
-    }
-
-    /** Properties of a VerifyKeyTransparencyForUserMinosResult. */
-    interface IVerifyKeyTransparencyForUserMinosResult {
-
-        /** VerifyKeyTransparencyForUserMinosResult success */
-        success?: (boolean|null);
-
-        /** VerifyKeyTransparencyForUserMinosResult error */
-        error?: (string|null);
-    }
-
-    /** Represents a VerifyKeyTransparencyForUserMinosResult. */
-    class VerifyKeyTransparencyForUserMinosResult implements IVerifyKeyTransparencyForUserMinosResult {
-
-        /**
-         * Constructs a new VerifyKeyTransparencyForUserMinosResult.
-         * @param [properties] Properties to set
-         */
-        constructor(properties?: proto.IVerifyKeyTransparencyForUserMinosResult);
-
-        /** VerifyKeyTransparencyForUserMinosResult success. */
-        public success?: (boolean|null);
-
-        /** VerifyKeyTransparencyForUserMinosResult error. */
-        public error?: (string|null);
-
-        /**
-         * Creates a new VerifyKeyTransparencyForUserMinosResult instance using the specified properties.
-         * @param [properties] Properties to set
-         * @returns VerifyKeyTransparencyForUserMinosResult instance
-         */
-        public static create(properties?: proto.IVerifyKeyTransparencyForUserMinosResult): proto.VerifyKeyTransparencyForUserMinosResult;
-
-        /**
-         * Encodes the specified VerifyKeyTransparencyForUserMinosResult message. Does not implicitly {@link proto.VerifyKeyTransparencyForUserMinosResult.verify|verify} messages.
-         * @param message VerifyKeyTransparencyForUserMinosResult message or plain object to encode
-         * @param [writer] Writer to encode to
-         * @returns Writer
-         */
-        public static encode(message: proto.IVerifyKeyTransparencyForUserMinosResult, writer?: $protobuf.Writer): $protobuf.Writer;
-
-        /**
-         * Encodes the specified VerifyKeyTransparencyForUserMinosResult message, length delimited. Does not implicitly {@link proto.VerifyKeyTransparencyForUserMinosResult.verify|verify} messages.
-         * @param message VerifyKeyTransparencyForUserMinosResult message or plain object to encode
-         * @param [writer] Writer to encode to
-         * @returns Writer
-         */
-        public static encodeDelimited(message: proto.IVerifyKeyTransparencyForUserMinosResult, writer?: $protobuf.Writer): $protobuf.Writer;
-
-        /**
-         * Decodes a VerifyKeyTransparencyForUserMinosResult message from the specified reader or buffer.
-         * @param reader Reader or buffer to decode from
-         * @param [length] Message length if known beforehand
-         * @returns VerifyKeyTransparencyForUserMinosResult
-         * @throws {Error} If the payload is not a reader or valid buffer
-         * @throws {$protobuf.util.ProtocolError} If required fields are missing
-         */
-        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): proto.VerifyKeyTransparencyForUserMinosResult;
-
-        /**
-         * Decodes a VerifyKeyTransparencyForUserMinosResult message from the specified reader or buffer, length delimited.
-         * @param reader Reader or buffer to decode from
-         * @returns VerifyKeyTransparencyForUserMinosResult
-         * @throws {Error} If the payload is not a reader or valid buffer
-         * @throws {$protobuf.util.ProtocolError} If required fields are missing
-         */
-        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): proto.VerifyKeyTransparencyForUserMinosResult;
-
-        /**
-         * Verifies a VerifyKeyTransparencyForUserMinosResult message.
-         * @param message Plain object to verify
-         * @returns `null` if valid, otherwise the reason why it is not
-         */
-        public static verify(message: { [k: string]: any }): (string|null);
-
-        /**
-         * Creates a VerifyKeyTransparencyForUserMinosResult message from a plain object. Also converts values to their respective internal types.
-         * @param object Plain object
-         * @returns VerifyKeyTransparencyForUserMinosResult
-         */
-        public static fromObject(object: { [k: string]: any }): proto.VerifyKeyTransparencyForUserMinosResult;
-
-        /**
-         * Creates a plain object from a VerifyKeyTransparencyForUserMinosResult message. Also converts values to other types if specified.
-         * @param message VerifyKeyTransparencyForUserMinosResult
-         * @param [options] Conversion options
-         * @returns Plain object
-         */
-        public static toObject(message: proto.VerifyKeyTransparencyForUserMinosResult, options?: $protobuf.IConversionOptions): { [k: string]: any };
-
-        /**
-         * Converts this VerifyKeyTransparencyForUserMinosResult to JSON.
-         * @returns JSON object
-         */
-        public toJSON(): { [k: string]: any };
-
-        /**
-         * Gets the default type url for VerifyKeyTransparencyForUserMinosResult
-         * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
-         * @returns The default type url
-         */
-        public static getTypeUrl(typeUrlPrefix?: string): string;
-    }
-
-    /** Properties of a VerifyKeyTransparencyForUserSignalCommand. */
-    interface IVerifyKeyTransparencyForUserSignalCommand {
-
-        /** VerifyKeyTransparencyForUserSignalCommand rootHash */
-        rootHash?: (Uint8Array|null);
-
-        /** VerifyKeyTransparencyForUserSignalCommand currentEpoch */
-        currentEpoch?: (number|Long|null);
-
-        /** VerifyKeyTransparencyForUserSignalCommand userFbid */
-        userFbid?: (number|Long|null);
-
-        /** VerifyKeyTransparencyForUserSignalCommand historyProof */
-        historyProof?: (Uint8Array|null);
-
-        /** VerifyKeyTransparencyForUserSignalCommand metaSignature */
-        metaSignature?: (Uint8Array|null);
-
-        /** VerifyKeyTransparencyForUserSignalCommand cloudflareSignature */
-        cloudflareSignature?: (Uint8Array|null);
-
-        /** VerifyKeyTransparencyForUserSignalCommand cloudflareMessage */
-        cloudflareMessage?: (Uint8Array|null);
-
-        /** VerifyKeyTransparencyForUserSignalCommand cloudflarePubKey */
-        cloudflarePubKey?: (Uint8Array|null);
-
-        /** VerifyKeyTransparencyForUserSignalCommand auditorSignatureTtlSecs */
-        auditorSignatureTtlSecs?: (number|Long|null);
-
-        /** VerifyKeyTransparencyForUserSignalCommand localDeviceKeys */
-        localDeviceKeys?: ({ [k: string]: Uint8Array }|null);
-    }
-
-    /** Represents a VerifyKeyTransparencyForUserSignalCommand. */
-    class VerifyKeyTransparencyForUserSignalCommand implements IVerifyKeyTransparencyForUserSignalCommand {
-
-        /**
-         * Constructs a new VerifyKeyTransparencyForUserSignalCommand.
-         * @param [properties] Properties to set
-         */
-        constructor(properties?: proto.IVerifyKeyTransparencyForUserSignalCommand);
-
-        /** VerifyKeyTransparencyForUserSignalCommand rootHash. */
-        public rootHash?: (Uint8Array|null);
-
-        /** VerifyKeyTransparencyForUserSignalCommand currentEpoch. */
-        public currentEpoch?: (number|Long|null);
-
-        /** VerifyKeyTransparencyForUserSignalCommand userFbid. */
-        public userFbid?: (number|Long|null);
-
-        /** VerifyKeyTransparencyForUserSignalCommand historyProof. */
-        public historyProof?: (Uint8Array|null);
-
-        /** VerifyKeyTransparencyForUserSignalCommand metaSignature. */
-        public metaSignature?: (Uint8Array|null);
-
-        /** VerifyKeyTransparencyForUserSignalCommand cloudflareSignature. */
-        public cloudflareSignature?: (Uint8Array|null);
-
-        /** VerifyKeyTransparencyForUserSignalCommand cloudflareMessage. */
-        public cloudflareMessage?: (Uint8Array|null);
-
-        /** VerifyKeyTransparencyForUserSignalCommand cloudflarePubKey. */
-        public cloudflarePubKey?: (Uint8Array|null);
-
-        /** VerifyKeyTransparencyForUserSignalCommand auditorSignatureTtlSecs. */
-        public auditorSignatureTtlSecs?: (number|Long|null);
-
-        /** VerifyKeyTransparencyForUserSignalCommand localDeviceKeys. */
-        public localDeviceKeys: { [k: string]: Uint8Array };
-
-        /**
-         * Creates a new VerifyKeyTransparencyForUserSignalCommand instance using the specified properties.
-         * @param [properties] Properties to set
-         * @returns VerifyKeyTransparencyForUserSignalCommand instance
-         */
-        public static create(properties?: proto.IVerifyKeyTransparencyForUserSignalCommand): proto.VerifyKeyTransparencyForUserSignalCommand;
-
-        /**
-         * Encodes the specified VerifyKeyTransparencyForUserSignalCommand message. Does not implicitly {@link proto.VerifyKeyTransparencyForUserSignalCommand.verify|verify} messages.
-         * @param message VerifyKeyTransparencyForUserSignalCommand message or plain object to encode
-         * @param [writer] Writer to encode to
-         * @returns Writer
-         */
-        public static encode(message: proto.IVerifyKeyTransparencyForUserSignalCommand, writer?: $protobuf.Writer): $protobuf.Writer;
-
-        /**
-         * Encodes the specified VerifyKeyTransparencyForUserSignalCommand message, length delimited. Does not implicitly {@link proto.VerifyKeyTransparencyForUserSignalCommand.verify|verify} messages.
-         * @param message VerifyKeyTransparencyForUserSignalCommand message or plain object to encode
-         * @param [writer] Writer to encode to
-         * @returns Writer
-         */
-        public static encodeDelimited(message: proto.IVerifyKeyTransparencyForUserSignalCommand, writer?: $protobuf.Writer): $protobuf.Writer;
-
-        /**
-         * Decodes a VerifyKeyTransparencyForUserSignalCommand message from the specified reader or buffer.
-         * @param reader Reader or buffer to decode from
-         * @param [length] Message length if known beforehand
-         * @returns VerifyKeyTransparencyForUserSignalCommand
-         * @throws {Error} If the payload is not a reader or valid buffer
-         * @throws {$protobuf.util.ProtocolError} If required fields are missing
-         */
-        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): proto.VerifyKeyTransparencyForUserSignalCommand;
-
-        /**
-         * Decodes a VerifyKeyTransparencyForUserSignalCommand message from the specified reader or buffer, length delimited.
-         * @param reader Reader or buffer to decode from
-         * @returns VerifyKeyTransparencyForUserSignalCommand
-         * @throws {Error} If the payload is not a reader or valid buffer
-         * @throws {$protobuf.util.ProtocolError} If required fields are missing
-         */
-        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): proto.VerifyKeyTransparencyForUserSignalCommand;
-
-        /**
-         * Verifies a VerifyKeyTransparencyForUserSignalCommand message.
-         * @param message Plain object to verify
-         * @returns `null` if valid, otherwise the reason why it is not
-         */
-        public static verify(message: { [k: string]: any }): (string|null);
-
-        /**
-         * Creates a VerifyKeyTransparencyForUserSignalCommand message from a plain object. Also converts values to their respective internal types.
-         * @param object Plain object
-         * @returns VerifyKeyTransparencyForUserSignalCommand
-         */
-        public static fromObject(object: { [k: string]: any }): proto.VerifyKeyTransparencyForUserSignalCommand;
-
-        /**
-         * Creates a plain object from a VerifyKeyTransparencyForUserSignalCommand message. Also converts values to other types if specified.
-         * @param message VerifyKeyTransparencyForUserSignalCommand
-         * @param [options] Conversion options
-         * @returns Plain object
-         */
-        public static toObject(message: proto.VerifyKeyTransparencyForUserSignalCommand, options?: $protobuf.IConversionOptions): { [k: string]: any };
-
-        /**
-         * Converts this VerifyKeyTransparencyForUserSignalCommand to JSON.
-         * @returns JSON object
-         */
-        public toJSON(): { [k: string]: any };
-
-        /**
-         * Gets the default type url for VerifyKeyTransparencyForUserSignalCommand
-         * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
-         * @returns The default type url
-         */
-        public static getTypeUrl(typeUrlPrefix?: string): string;
-    }
-
-    /** Properties of a VerifyKeyTransparencyForUserSignalResult. */
-    interface IVerifyKeyTransparencyForUserSignalResult {
-
-        /** VerifyKeyTransparencyForUserSignalResult success */
-        success?: (boolean|null);
-
-        /** VerifyKeyTransparencyForUserSignalResult error */
-        error?: (string|null);
-    }
-
-    /** Represents a VerifyKeyTransparencyForUserSignalResult. */
-    class VerifyKeyTransparencyForUserSignalResult implements IVerifyKeyTransparencyForUserSignalResult {
-
-        /**
-         * Constructs a new VerifyKeyTransparencyForUserSignalResult.
-         * @param [properties] Properties to set
-         */
-        constructor(properties?: proto.IVerifyKeyTransparencyForUserSignalResult);
-
-        /** VerifyKeyTransparencyForUserSignalResult success. */
-        public success?: (boolean|null);
-
-        /** VerifyKeyTransparencyForUserSignalResult error. */
-        public error?: (string|null);
-
-        /**
-         * Creates a new VerifyKeyTransparencyForUserSignalResult instance using the specified properties.
-         * @param [properties] Properties to set
-         * @returns VerifyKeyTransparencyForUserSignalResult instance
-         */
-        public static create(properties?: proto.IVerifyKeyTransparencyForUserSignalResult): proto.VerifyKeyTransparencyForUserSignalResult;
-
-        /**
-         * Encodes the specified VerifyKeyTransparencyForUserSignalResult message. Does not implicitly {@link proto.VerifyKeyTransparencyForUserSignalResult.verify|verify} messages.
-         * @param message VerifyKeyTransparencyForUserSignalResult message or plain object to encode
-         * @param [writer] Writer to encode to
-         * @returns Writer
-         */
-        public static encode(message: proto.IVerifyKeyTransparencyForUserSignalResult, writer?: $protobuf.Writer): $protobuf.Writer;
-
-        /**
-         * Encodes the specified VerifyKeyTransparencyForUserSignalResult message, length delimited. Does not implicitly {@link proto.VerifyKeyTransparencyForUserSignalResult.verify|verify} messages.
-         * @param message VerifyKeyTransparencyForUserSignalResult message or plain object to encode
-         * @param [writer] Writer to encode to
-         * @returns Writer
-         */
-        public static encodeDelimited(message: proto.IVerifyKeyTransparencyForUserSignalResult, writer?: $protobuf.Writer): $protobuf.Writer;
-
-        /**
-         * Decodes a VerifyKeyTransparencyForUserSignalResult message from the specified reader or buffer.
-         * @param reader Reader or buffer to decode from
-         * @param [length] Message length if known beforehand
-         * @returns VerifyKeyTransparencyForUserSignalResult
-         * @throws {Error} If the payload is not a reader or valid buffer
-         * @throws {$protobuf.util.ProtocolError} If required fields are missing
-         */
-        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): proto.VerifyKeyTransparencyForUserSignalResult;
-
-        /**
-         * Decodes a VerifyKeyTransparencyForUserSignalResult message from the specified reader or buffer, length delimited.
-         * @param reader Reader or buffer to decode from
-         * @returns VerifyKeyTransparencyForUserSignalResult
-         * @throws {Error} If the payload is not a reader or valid buffer
-         * @throws {$protobuf.util.ProtocolError} If required fields are missing
-         */
-        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): proto.VerifyKeyTransparencyForUserSignalResult;
-
-        /**
-         * Verifies a VerifyKeyTransparencyForUserSignalResult message.
-         * @param message Plain object to verify
-         * @returns `null` if valid, otherwise the reason why it is not
-         */
-        public static verify(message: { [k: string]: any }): (string|null);
-
-        /**
-         * Creates a VerifyKeyTransparencyForUserSignalResult message from a plain object. Also converts values to their respective internal types.
-         * @param object Plain object
-         * @returns VerifyKeyTransparencyForUserSignalResult
-         */
-        public static fromObject(object: { [k: string]: any }): proto.VerifyKeyTransparencyForUserSignalResult;
-
-        /**
-         * Creates a plain object from a VerifyKeyTransparencyForUserSignalResult message. Also converts values to other types if specified.
-         * @param message VerifyKeyTransparencyForUserSignalResult
-         * @param [options] Conversion options
-         * @returns Plain object
-         */
-        public static toObject(message: proto.VerifyKeyTransparencyForUserSignalResult, options?: $protobuf.IConversionOptions): { [k: string]: any };
-
-        /**
-         * Converts this VerifyKeyTransparencyForUserSignalResult to JSON.
-         * @returns JSON object
-         */
-        public toJSON(): { [k: string]: any };
-
-        /**
-         * Gets the default type url for VerifyKeyTransparencyForUserSignalResult
-         * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
-         * @returns The default type url
-         */
-        public static getTypeUrl(typeUrlPrefix?: string): string;
-    }
-
     /** Properties of a VirtualDeviceOutput. */
     interface IVirtualDeviceOutput {
 
@@ -83332,6 +94160,9 @@ export namespace proto {
 
         /** WebMessageInfo decisionSources */
         decisionSources?: (string[]|null);
+
+        /** WebMessageInfo eventInviteAdditionalMetadata */
+        eventInviteAdditionalMetadata?: (proto.IEventInviteAdditionalMetadata|null);
     }
 
     /** Represents a WebMessageInfo. */
@@ -83558,6 +94389,9 @@ export namespace proto {
 
         /** WebMessageInfo decisionSources. */
         public decisionSources: string[];
+
+        /** WebMessageInfo eventInviteAdditionalMetadata. */
+        public eventInviteAdditionalMetadata?: (proto.IEventInviteAdditionalMetadata|null);
 
         /**
          * Creates a new WebMessageInfo instance using the specified properties.
@@ -83895,9 +94729,25 @@ export namespace proto {
             EPHEMERAL_CHANGED_FOR_COEX = 248,
             UGC_BOT_PROFILE_UPDATED = 249,
             ORDER_EPHEMERAL_EXEMPTION = 250,
+            GROUP_DEFAULT_SUB_GROUP_DEMOTE = 251,
+            BIZ_BUSINESS_BROADCAST_ENTRY_POINT = 252,
+            BOT_INLINE_TOS_CHAT = 253,
             CAMEO_CHAT_CREATED = 254,
+            SENDER_SIDE_CONTACT_INFO = 255,
             CAMEO_TRANSITIONED = 256,
-            SENDER_SIDE_CONTACT_INFO = 255
+            CAMEO_REGISTERED_WITH_NEW_CHAT = 257,
+            PRIVACY_SYSTEM_MESSAGE = 258,
+            BIZ_AI_LEARNING_ENABLED_DISCLOSURE = 259,
+            BIZ_AI_LEARNING_DISABLED_DISCLOSURE = 260,
+            BIZ_AI_REPLIES_MUTED_HISTORICAL_CHAT = 261,
+            INVITE_FROM_IG = 262,
+            GROUP_ADMIN_FIRST_JOIN_VIA_LINK = 263,
+            GROUP_ADMIN_FLOOD_JOIN_VIA_LINK = 264,
+            BIZ_AI_REPLIES_MUTED_IRRELEVANT_HISTORICAL_CHAT = 265,
+            PENDING_INVITE_CREATED = 266,
+            CAMEO_CHAT_EXPIRED = 267,
+            GROUP_PUSHNAME_SHARED = 270,
+            BIZ_POST_SEND_OPT_OUT = 271
         }
     }
 
@@ -84113,6 +94963,394 @@ export namespace proto {
 
         /**
          * Gets the default type url for WebNotificationsInfo
+         * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+         * @returns The default type url
+         */
+        public static getTypeUrl(typeUrlPrefix?: string): string;
+    }
+
+    /** Properties of a WrapTransportSigningPublicKeyInput. */
+    interface IWrapTransportSigningPublicKeyInput {
+
+        /** WrapTransportSigningPublicKeyInput keyBytes */
+        keyBytes?: (Uint8Array|null);
+    }
+
+    /** Represents a WrapTransportSigningPublicKeyInput. */
+    class WrapTransportSigningPublicKeyInput implements IWrapTransportSigningPublicKeyInput {
+
+        /**
+         * Constructs a new WrapTransportSigningPublicKeyInput.
+         * @param [properties] Properties to set
+         */
+        constructor(properties?: proto.IWrapTransportSigningPublicKeyInput);
+
+        /** WrapTransportSigningPublicKeyInput keyBytes. */
+        public keyBytes?: (Uint8Array|null);
+
+        /**
+         * Creates a new WrapTransportSigningPublicKeyInput instance using the specified properties.
+         * @param [properties] Properties to set
+         * @returns WrapTransportSigningPublicKeyInput instance
+         */
+        public static create(properties?: proto.IWrapTransportSigningPublicKeyInput): proto.WrapTransportSigningPublicKeyInput;
+
+        /**
+         * Encodes the specified WrapTransportSigningPublicKeyInput message. Does not implicitly {@link proto.WrapTransportSigningPublicKeyInput.verify|verify} messages.
+         * @param message WrapTransportSigningPublicKeyInput message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encode(message: proto.IWrapTransportSigningPublicKeyInput, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Encodes the specified WrapTransportSigningPublicKeyInput message, length delimited. Does not implicitly {@link proto.WrapTransportSigningPublicKeyInput.verify|verify} messages.
+         * @param message WrapTransportSigningPublicKeyInput message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encodeDelimited(message: proto.IWrapTransportSigningPublicKeyInput, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Decodes a WrapTransportSigningPublicKeyInput message from the specified reader or buffer.
+         * @param reader Reader or buffer to decode from
+         * @param [length] Message length if known beforehand
+         * @returns WrapTransportSigningPublicKeyInput
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): proto.WrapTransportSigningPublicKeyInput;
+
+        /**
+         * Decodes a WrapTransportSigningPublicKeyInput message from the specified reader or buffer, length delimited.
+         * @param reader Reader or buffer to decode from
+         * @returns WrapTransportSigningPublicKeyInput
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): proto.WrapTransportSigningPublicKeyInput;
+
+        /**
+         * Verifies a WrapTransportSigningPublicKeyInput message.
+         * @param message Plain object to verify
+         * @returns `null` if valid, otherwise the reason why it is not
+         */
+        public static verify(message: { [k: string]: any }): (string|null);
+
+        /**
+         * Creates a WrapTransportSigningPublicKeyInput message from a plain object. Also converts values to their respective internal types.
+         * @param object Plain object
+         * @returns WrapTransportSigningPublicKeyInput
+         */
+        public static fromObject(object: { [k: string]: any }): proto.WrapTransportSigningPublicKeyInput;
+
+        /**
+         * Creates a plain object from a WrapTransportSigningPublicKeyInput message. Also converts values to other types if specified.
+         * @param message WrapTransportSigningPublicKeyInput
+         * @param [options] Conversion options
+         * @returns Plain object
+         */
+        public static toObject(message: proto.WrapTransportSigningPublicKeyInput, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+        /**
+         * Converts this WrapTransportSigningPublicKeyInput to JSON.
+         * @returns JSON object
+         */
+        public toJSON(): { [k: string]: any };
+
+        /**
+         * Gets the default type url for WrapTransportSigningPublicKeyInput
+         * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+         * @returns The default type url
+         */
+        public static getTypeUrl(typeUrlPrefix?: string): string;
+    }
+
+    /** Properties of a WrapTransportSigningPublicKeyResult. */
+    interface IWrapTransportSigningPublicKeyResult {
+
+        /** WrapTransportSigningPublicKeyResult prefixedKey */
+        prefixedKey?: (Uint8Array|null);
+    }
+
+    /** Represents a WrapTransportSigningPublicKeyResult. */
+    class WrapTransportSigningPublicKeyResult implements IWrapTransportSigningPublicKeyResult {
+
+        /**
+         * Constructs a new WrapTransportSigningPublicKeyResult.
+         * @param [properties] Properties to set
+         */
+        constructor(properties?: proto.IWrapTransportSigningPublicKeyResult);
+
+        /** WrapTransportSigningPublicKeyResult prefixedKey. */
+        public prefixedKey?: (Uint8Array|null);
+
+        /**
+         * Creates a new WrapTransportSigningPublicKeyResult instance using the specified properties.
+         * @param [properties] Properties to set
+         * @returns WrapTransportSigningPublicKeyResult instance
+         */
+        public static create(properties?: proto.IWrapTransportSigningPublicKeyResult): proto.WrapTransportSigningPublicKeyResult;
+
+        /**
+         * Encodes the specified WrapTransportSigningPublicKeyResult message. Does not implicitly {@link proto.WrapTransportSigningPublicKeyResult.verify|verify} messages.
+         * @param message WrapTransportSigningPublicKeyResult message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encode(message: proto.IWrapTransportSigningPublicKeyResult, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Encodes the specified WrapTransportSigningPublicKeyResult message, length delimited. Does not implicitly {@link proto.WrapTransportSigningPublicKeyResult.verify|verify} messages.
+         * @param message WrapTransportSigningPublicKeyResult message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encodeDelimited(message: proto.IWrapTransportSigningPublicKeyResult, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Decodes a WrapTransportSigningPublicKeyResult message from the specified reader or buffer.
+         * @param reader Reader or buffer to decode from
+         * @param [length] Message length if known beforehand
+         * @returns WrapTransportSigningPublicKeyResult
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): proto.WrapTransportSigningPublicKeyResult;
+
+        /**
+         * Decodes a WrapTransportSigningPublicKeyResult message from the specified reader or buffer, length delimited.
+         * @param reader Reader or buffer to decode from
+         * @returns WrapTransportSigningPublicKeyResult
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): proto.WrapTransportSigningPublicKeyResult;
+
+        /**
+         * Verifies a WrapTransportSigningPublicKeyResult message.
+         * @param message Plain object to verify
+         * @returns `null` if valid, otherwise the reason why it is not
+         */
+        public static verify(message: { [k: string]: any }): (string|null);
+
+        /**
+         * Creates a WrapTransportSigningPublicKeyResult message from a plain object. Also converts values to their respective internal types.
+         * @param object Plain object
+         * @returns WrapTransportSigningPublicKeyResult
+         */
+        public static fromObject(object: { [k: string]: any }): proto.WrapTransportSigningPublicKeyResult;
+
+        /**
+         * Creates a plain object from a WrapTransportSigningPublicKeyResult message. Also converts values to other types if specified.
+         * @param message WrapTransportSigningPublicKeyResult
+         * @param [options] Conversion options
+         * @returns Plain object
+         */
+        public static toObject(message: proto.WrapTransportSigningPublicKeyResult, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+        /**
+         * Converts this WrapTransportSigningPublicKeyResult to JSON.
+         * @returns JSON object
+         */
+        public toJSON(): { [k: string]: any };
+
+        /**
+         * Gets the default type url for WrapTransportSigningPublicKeyResult
+         * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+         * @returns The default type url
+         */
+        public static getTypeUrl(typeUrlPrefix?: string): string;
+    }
+
+    /** Properties of a WrapTransportSigningSecretKeyInput. */
+    interface IWrapTransportSigningSecretKeyInput {
+
+        /** WrapTransportSigningSecretKeyInput keyBytes */
+        keyBytes?: (Uint8Array|null);
+    }
+
+    /** Represents a WrapTransportSigningSecretKeyInput. */
+    class WrapTransportSigningSecretKeyInput implements IWrapTransportSigningSecretKeyInput {
+
+        /**
+         * Constructs a new WrapTransportSigningSecretKeyInput.
+         * @param [properties] Properties to set
+         */
+        constructor(properties?: proto.IWrapTransportSigningSecretKeyInput);
+
+        /** WrapTransportSigningSecretKeyInput keyBytes. */
+        public keyBytes?: (Uint8Array|null);
+
+        /**
+         * Creates a new WrapTransportSigningSecretKeyInput instance using the specified properties.
+         * @param [properties] Properties to set
+         * @returns WrapTransportSigningSecretKeyInput instance
+         */
+        public static create(properties?: proto.IWrapTransportSigningSecretKeyInput): proto.WrapTransportSigningSecretKeyInput;
+
+        /**
+         * Encodes the specified WrapTransportSigningSecretKeyInput message. Does not implicitly {@link proto.WrapTransportSigningSecretKeyInput.verify|verify} messages.
+         * @param message WrapTransportSigningSecretKeyInput message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encode(message: proto.IWrapTransportSigningSecretKeyInput, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Encodes the specified WrapTransportSigningSecretKeyInput message, length delimited. Does not implicitly {@link proto.WrapTransportSigningSecretKeyInput.verify|verify} messages.
+         * @param message WrapTransportSigningSecretKeyInput message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encodeDelimited(message: proto.IWrapTransportSigningSecretKeyInput, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Decodes a WrapTransportSigningSecretKeyInput message from the specified reader or buffer.
+         * @param reader Reader or buffer to decode from
+         * @param [length] Message length if known beforehand
+         * @returns WrapTransportSigningSecretKeyInput
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): proto.WrapTransportSigningSecretKeyInput;
+
+        /**
+         * Decodes a WrapTransportSigningSecretKeyInput message from the specified reader or buffer, length delimited.
+         * @param reader Reader or buffer to decode from
+         * @returns WrapTransportSigningSecretKeyInput
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): proto.WrapTransportSigningSecretKeyInput;
+
+        /**
+         * Verifies a WrapTransportSigningSecretKeyInput message.
+         * @param message Plain object to verify
+         * @returns `null` if valid, otherwise the reason why it is not
+         */
+        public static verify(message: { [k: string]: any }): (string|null);
+
+        /**
+         * Creates a WrapTransportSigningSecretKeyInput message from a plain object. Also converts values to their respective internal types.
+         * @param object Plain object
+         * @returns WrapTransportSigningSecretKeyInput
+         */
+        public static fromObject(object: { [k: string]: any }): proto.WrapTransportSigningSecretKeyInput;
+
+        /**
+         * Creates a plain object from a WrapTransportSigningSecretKeyInput message. Also converts values to other types if specified.
+         * @param message WrapTransportSigningSecretKeyInput
+         * @param [options] Conversion options
+         * @returns Plain object
+         */
+        public static toObject(message: proto.WrapTransportSigningSecretKeyInput, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+        /**
+         * Converts this WrapTransportSigningSecretKeyInput to JSON.
+         * @returns JSON object
+         */
+        public toJSON(): { [k: string]: any };
+
+        /**
+         * Gets the default type url for WrapTransportSigningSecretKeyInput
+         * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+         * @returns The default type url
+         */
+        public static getTypeUrl(typeUrlPrefix?: string): string;
+    }
+
+    /** Properties of a WrapTransportSigningSecretKeyResult. */
+    interface IWrapTransportSigningSecretKeyResult {
+
+        /** WrapTransportSigningSecretKeyResult prefixedKey */
+        prefixedKey?: (Uint8Array|null);
+    }
+
+    /** Represents a WrapTransportSigningSecretKeyResult. */
+    class WrapTransportSigningSecretKeyResult implements IWrapTransportSigningSecretKeyResult {
+
+        /**
+         * Constructs a new WrapTransportSigningSecretKeyResult.
+         * @param [properties] Properties to set
+         */
+        constructor(properties?: proto.IWrapTransportSigningSecretKeyResult);
+
+        /** WrapTransportSigningSecretKeyResult prefixedKey. */
+        public prefixedKey?: (Uint8Array|null);
+
+        /**
+         * Creates a new WrapTransportSigningSecretKeyResult instance using the specified properties.
+         * @param [properties] Properties to set
+         * @returns WrapTransportSigningSecretKeyResult instance
+         */
+        public static create(properties?: proto.IWrapTransportSigningSecretKeyResult): proto.WrapTransportSigningSecretKeyResult;
+
+        /**
+         * Encodes the specified WrapTransportSigningSecretKeyResult message. Does not implicitly {@link proto.WrapTransportSigningSecretKeyResult.verify|verify} messages.
+         * @param message WrapTransportSigningSecretKeyResult message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encode(message: proto.IWrapTransportSigningSecretKeyResult, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Encodes the specified WrapTransportSigningSecretKeyResult message, length delimited. Does not implicitly {@link proto.WrapTransportSigningSecretKeyResult.verify|verify} messages.
+         * @param message WrapTransportSigningSecretKeyResult message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encodeDelimited(message: proto.IWrapTransportSigningSecretKeyResult, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Decodes a WrapTransportSigningSecretKeyResult message from the specified reader or buffer.
+         * @param reader Reader or buffer to decode from
+         * @param [length] Message length if known beforehand
+         * @returns WrapTransportSigningSecretKeyResult
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): proto.WrapTransportSigningSecretKeyResult;
+
+        /**
+         * Decodes a WrapTransportSigningSecretKeyResult message from the specified reader or buffer, length delimited.
+         * @param reader Reader or buffer to decode from
+         * @returns WrapTransportSigningSecretKeyResult
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): proto.WrapTransportSigningSecretKeyResult;
+
+        /**
+         * Verifies a WrapTransportSigningSecretKeyResult message.
+         * @param message Plain object to verify
+         * @returns `null` if valid, otherwise the reason why it is not
+         */
+        public static verify(message: { [k: string]: any }): (string|null);
+
+        /**
+         * Creates a WrapTransportSigningSecretKeyResult message from a plain object. Also converts values to their respective internal types.
+         * @param object Plain object
+         * @returns WrapTransportSigningSecretKeyResult
+         */
+        public static fromObject(object: { [k: string]: any }): proto.WrapTransportSigningSecretKeyResult;
+
+        /**
+         * Creates a plain object from a WrapTransportSigningSecretKeyResult message. Also converts values to other types if specified.
+         * @param message WrapTransportSigningSecretKeyResult
+         * @param [options] Conversion options
+         * @returns Plain object
+         */
+        public static toObject(message: proto.WrapTransportSigningSecretKeyResult, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+        /**
+         * Converts this WrapTransportSigningSecretKeyResult to JSON.
+         * @returns JSON object
+         */
+        public toJSON(): { [k: string]: any };
+
+        /**
+         * Gets the default type url for WrapTransportSigningSecretKeyResult
          * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
          * @returns The default type url
          */
