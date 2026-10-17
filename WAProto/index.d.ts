@@ -6105,7 +6105,8 @@ export namespace proto {
             HATCH_BROWSER_TASK_CARD_ENABLED = 78,
             HATCH_ARTIFACT_CARD_ENABLED = 79,
             AI_STUDY_CENTER_ENABLED = 80,
-            AI_MUSE_JARVIS_SCHEMA_ENABLED = 81
+            AI_MUSE_JARVIS_SCHEMA_ENABLED = 81,
+            AI_STUDY_QUIZ_ENABLED = 82
         }
     }
 
@@ -8690,7 +8691,8 @@ export namespace proto {
 
         /** BotMessageOriginType enum. */
         enum BotMessageOriginType {
-            BOT_MESSAGE_ORIGIN_TYPE_AI_INITIATED = 0
+            BOT_MESSAGE_ORIGIN_TYPE_AI_INITIATED = 0,
+            BOT_MESSAGE_ORIGIN_TYPE_META_AI_THREAD_WELCOME = 1
         }
     }
 
@@ -9300,7 +9302,8 @@ export namespace proto {
         CHATLIST_SEARCH = 55,
         NEW_CHAT_LIST = 56,
         CONTACTS_TAB = 57,
-        NEW_3P_AGENT_CREATION = 58
+        NEW_3P_AGENT_CREATION = 58,
+        SHARE = 59
     }
 
     /** Properties of a BotMetricsMetadata. */
@@ -15508,7 +15511,8 @@ export namespace proto {
                 AR_WRIST = 37,
                 WAIL = 38,
                 WORK_ANDROID = 39,
-                WORK_IOS = 40
+                WORK_IOS = 40,
+                AUTOMOTIVE = 41
             }
 
             /** ReleaseChannel enum. */
@@ -26886,6 +26890,9 @@ export namespace proto {
 
         /** DeviceCapabilities newsletterChatsMigration */
         newsletterChatsMigration?: (proto.DeviceCapabilities.INewsletterChatsMigration|null);
+
+        /** DeviceCapabilities hostWriteMutationSupport */
+        hostWriteMutationSupport?: (proto.DeviceCapabilities.IHostWriteMutationSupport|null);
     }
 
     /** Represents a DeviceCapabilities. */
@@ -26929,6 +26936,9 @@ export namespace proto {
 
         /** DeviceCapabilities newsletterChatsMigration. */
         public newsletterChatsMigration?: (proto.DeviceCapabilities.INewsletterChatsMigration|null);
+
+        /** DeviceCapabilities hostWriteMutationSupport. */
+        public hostWriteMutationSupport?: (proto.DeviceCapabilities.IHostWriteMutationSupport|null);
 
         /**
          * Creates a new DeviceCapabilities instance using the specified properties.
@@ -27542,6 +27552,103 @@ export namespace proto {
 
             /**
              * Gets the default type url for ContactRefresh
+             * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+             * @returns The default type url
+             */
+            public static getTypeUrl(typeUrlPrefix?: string): string;
+        }
+
+        /** Properties of a HostWriteMutationSupport. */
+        interface IHostWriteMutationSupport {
+
+            /** HostWriteMutationSupport mutationNames */
+            mutationNames?: (string[]|null);
+        }
+
+        /** Represents a HostWriteMutationSupport. */
+        class HostWriteMutationSupport implements IHostWriteMutationSupport {
+
+            /**
+             * Constructs a new HostWriteMutationSupport.
+             * @param [properties] Properties to set
+             */
+            constructor(properties?: proto.DeviceCapabilities.IHostWriteMutationSupport);
+
+            /** HostWriteMutationSupport mutationNames. */
+            public mutationNames: string[];
+
+            /**
+             * Creates a new HostWriteMutationSupport instance using the specified properties.
+             * @param [properties] Properties to set
+             * @returns HostWriteMutationSupport instance
+             */
+            public static create(properties?: proto.DeviceCapabilities.IHostWriteMutationSupport): proto.DeviceCapabilities.HostWriteMutationSupport;
+
+            /**
+             * Encodes the specified HostWriteMutationSupport message. Does not implicitly {@link proto.DeviceCapabilities.HostWriteMutationSupport.verify|verify} messages.
+             * @param message HostWriteMutationSupport message or plain object to encode
+             * @param [writer] Writer to encode to
+             * @returns Writer
+             */
+            public static encode(message: proto.DeviceCapabilities.IHostWriteMutationSupport, writer?: $protobuf.Writer): $protobuf.Writer;
+
+            /**
+             * Encodes the specified HostWriteMutationSupport message, length delimited. Does not implicitly {@link proto.DeviceCapabilities.HostWriteMutationSupport.verify|verify} messages.
+             * @param message HostWriteMutationSupport message or plain object to encode
+             * @param [writer] Writer to encode to
+             * @returns Writer
+             */
+            public static encodeDelimited(message: proto.DeviceCapabilities.IHostWriteMutationSupport, writer?: $protobuf.Writer): $protobuf.Writer;
+
+            /**
+             * Decodes a HostWriteMutationSupport message from the specified reader or buffer.
+             * @param reader Reader or buffer to decode from
+             * @param [length] Message length if known beforehand
+             * @returns HostWriteMutationSupport
+             * @throws {Error} If the payload is not a reader or valid buffer
+             * @throws {$protobuf.util.ProtocolError} If required fields are missing
+             */
+            public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): proto.DeviceCapabilities.HostWriteMutationSupport;
+
+            /**
+             * Decodes a HostWriteMutationSupport message from the specified reader or buffer, length delimited.
+             * @param reader Reader or buffer to decode from
+             * @returns HostWriteMutationSupport
+             * @throws {Error} If the payload is not a reader or valid buffer
+             * @throws {$protobuf.util.ProtocolError} If required fields are missing
+             */
+            public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): proto.DeviceCapabilities.HostWriteMutationSupport;
+
+            /**
+             * Verifies a HostWriteMutationSupport message.
+             * @param message Plain object to verify
+             * @returns `null` if valid, otherwise the reason why it is not
+             */
+            public static verify(message: { [k: string]: any }): (string|null);
+
+            /**
+             * Creates a HostWriteMutationSupport message from a plain object. Also converts values to their respective internal types.
+             * @param object Plain object
+             * @returns HostWriteMutationSupport
+             */
+            public static fromObject(object: { [k: string]: any }): proto.DeviceCapabilities.HostWriteMutationSupport;
+
+            /**
+             * Creates a plain object from a HostWriteMutationSupport message. Also converts values to other types if specified.
+             * @param message HostWriteMutationSupport
+             * @param [options] Conversion options
+             * @returns Plain object
+             */
+            public static toObject(message: proto.DeviceCapabilities.HostWriteMutationSupport, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+            /**
+             * Converts this HostWriteMutationSupport to JSON.
+             * @returns JSON object
+             */
+            public toJSON(): { [k: string]: any };
+
+            /**
+             * Gets the default type url for HostWriteMutationSupport
              * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
              * @returns The default type url
              */
@@ -28886,7 +28993,8 @@ export namespace proto {
             WASS = 26,
             BUSINESS_BACK_OFFICE = 27,
             WAIL_WAI = 28,
-            WAIL_ALEXA = 29
+            WAIL_ALEXA = 29,
+            AUTOMOTIVE = 30
         }
     }
 
@@ -29068,6 +29176,10 @@ export namespace proto {
         FB_PROFILE_DIRECTORY_ITEM = 1013,
         FB_FEED_POST_REACTION_REPLY = 1014,
         FB_QUICKSNAP_REPLY = 1015,
+        MSG_STATUS_REPLY = 1016,
+        FB_GROUP_POST = 1017,
+        FB_DAILY_GAME_CHALLENGE = 1018,
+        FB_QUICKSNAP_REACTION_REPLY = 1019,
         MSG_EXTERNAL_LINK_SHARE = 2000,
         MSG_P2P_PAYMENT = 2001,
         MSG_LOCATION_SHARING = 2002,
@@ -29104,6 +29216,10 @@ export namespace proto {
         MSG_MOMENT_LINK = 2061,
         MSG_HORIZON_WEEL = 2062,
         MSG_MOMENT_ADDED = 2063,
+        MSG_STORYTELLING_PROMPT = 2067,
+        MSG_SUPERVISION_INVITE = 2068,
+        MSG_SOCIAL_CUE_MLE = 2069,
+        MSG_SOCIAL_CUE_POST = 2070,
         RTC_AUDIO_CALL = 3000,
         RTC_VIDEO_CALL = 3001,
         RTC_MISSED_AUDIO_CALL = 3002,
@@ -37573,6 +37689,239 @@ export namespace proto {
     /** MENTION_MENTION_TYPE enum. */
     enum MENTION_MENTION_TYPE {
         PROFILE = 0
+    }
+
+    /** Properties of a MandrakeCreateMmkInput. */
+    interface IMandrakeCreateMmkInput {
+
+        /** MandrakeCreateMmkInput exportRootKey */
+        exportRootKey?: (Uint8Array|null);
+
+        /** MandrakeCreateMmkInput epochNumber */
+        epochNumber?: (number|Long|null);
+
+        /** MandrakeCreateMmkInput epochHead */
+        epochHead?: (Uint8Array|null);
+
+        /** MandrakeCreateMmkInput prevMmk */
+        prevMmk?: (proto.IMessagingMailboxPublicData|null);
+
+        /** MandrakeCreateMmkInput currentPeers */
+        currentPeers?: (proto.IDetachedDevicePublicData[]|null);
+
+        /** MandrakeCreateMmkInput newPeers */
+        newPeers?: (proto.IDetachedDevicePublicData[]|null);
+    }
+
+    /** Represents a MandrakeCreateMmkInput. */
+    class MandrakeCreateMmkInput implements IMandrakeCreateMmkInput {
+
+        /**
+         * Constructs a new MandrakeCreateMmkInput.
+         * @param [properties] Properties to set
+         */
+        constructor(properties?: proto.IMandrakeCreateMmkInput);
+
+        /** MandrakeCreateMmkInput exportRootKey. */
+        public exportRootKey?: (Uint8Array|null);
+
+        /** MandrakeCreateMmkInput epochNumber. */
+        public epochNumber?: (number|Long|null);
+
+        /** MandrakeCreateMmkInput epochHead. */
+        public epochHead?: (Uint8Array|null);
+
+        /** MandrakeCreateMmkInput prevMmk. */
+        public prevMmk?: (proto.IMessagingMailboxPublicData|null);
+
+        /** MandrakeCreateMmkInput currentPeers. */
+        public currentPeers: proto.IDetachedDevicePublicData[];
+
+        /** MandrakeCreateMmkInput newPeers. */
+        public newPeers: proto.IDetachedDevicePublicData[];
+
+        /**
+         * Creates a new MandrakeCreateMmkInput instance using the specified properties.
+         * @param [properties] Properties to set
+         * @returns MandrakeCreateMmkInput instance
+         */
+        public static create(properties?: proto.IMandrakeCreateMmkInput): proto.MandrakeCreateMmkInput;
+
+        /**
+         * Encodes the specified MandrakeCreateMmkInput message. Does not implicitly {@link proto.MandrakeCreateMmkInput.verify|verify} messages.
+         * @param message MandrakeCreateMmkInput message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encode(message: proto.IMandrakeCreateMmkInput, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Encodes the specified MandrakeCreateMmkInput message, length delimited. Does not implicitly {@link proto.MandrakeCreateMmkInput.verify|verify} messages.
+         * @param message MandrakeCreateMmkInput message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encodeDelimited(message: proto.IMandrakeCreateMmkInput, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Decodes a MandrakeCreateMmkInput message from the specified reader or buffer.
+         * @param reader Reader or buffer to decode from
+         * @param [length] Message length if known beforehand
+         * @returns MandrakeCreateMmkInput
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): proto.MandrakeCreateMmkInput;
+
+        /**
+         * Decodes a MandrakeCreateMmkInput message from the specified reader or buffer, length delimited.
+         * @param reader Reader or buffer to decode from
+         * @returns MandrakeCreateMmkInput
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): proto.MandrakeCreateMmkInput;
+
+        /**
+         * Verifies a MandrakeCreateMmkInput message.
+         * @param message Plain object to verify
+         * @returns `null` if valid, otherwise the reason why it is not
+         */
+        public static verify(message: { [k: string]: any }): (string|null);
+
+        /**
+         * Creates a MandrakeCreateMmkInput message from a plain object. Also converts values to their respective internal types.
+         * @param object Plain object
+         * @returns MandrakeCreateMmkInput
+         */
+        public static fromObject(object: { [k: string]: any }): proto.MandrakeCreateMmkInput;
+
+        /**
+         * Creates a plain object from a MandrakeCreateMmkInput message. Also converts values to other types if specified.
+         * @param message MandrakeCreateMmkInput
+         * @param [options] Conversion options
+         * @returns Plain object
+         */
+        public static toObject(message: proto.MandrakeCreateMmkInput, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+        /**
+         * Converts this MandrakeCreateMmkInput to JSON.
+         * @returns JSON object
+         */
+        public toJSON(): { [k: string]: any };
+
+        /**
+         * Gets the default type url for MandrakeCreateMmkInput
+         * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+         * @returns The default type url
+         */
+        public static getTypeUrl(typeUrlPrefix?: string): string;
+    }
+
+    /** Properties of a MandrakeCreateMmkResult. */
+    interface IMandrakeCreateMmkResult {
+
+        /** MandrakeCreateMmkResult success */
+        success?: (proto.ISignedMmkDistributionFromMailbox|null);
+
+        /** MandrakeCreateMmkResult errorMessage */
+        errorMessage?: (string|null);
+    }
+
+    /** Represents a MandrakeCreateMmkResult. */
+    class MandrakeCreateMmkResult implements IMandrakeCreateMmkResult {
+
+        /**
+         * Constructs a new MandrakeCreateMmkResult.
+         * @param [properties] Properties to set
+         */
+        constructor(properties?: proto.IMandrakeCreateMmkResult);
+
+        /** MandrakeCreateMmkResult success. */
+        public success?: (proto.ISignedMmkDistributionFromMailbox|null);
+
+        /** MandrakeCreateMmkResult errorMessage. */
+        public errorMessage?: (string|null);
+
+        /** MandrakeCreateMmkResult result. */
+        public result?: ("success"|"errorMessage");
+
+        /**
+         * Creates a new MandrakeCreateMmkResult instance using the specified properties.
+         * @param [properties] Properties to set
+         * @returns MandrakeCreateMmkResult instance
+         */
+        public static create(properties?: proto.IMandrakeCreateMmkResult): proto.MandrakeCreateMmkResult;
+
+        /**
+         * Encodes the specified MandrakeCreateMmkResult message. Does not implicitly {@link proto.MandrakeCreateMmkResult.verify|verify} messages.
+         * @param message MandrakeCreateMmkResult message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encode(message: proto.IMandrakeCreateMmkResult, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Encodes the specified MandrakeCreateMmkResult message, length delimited. Does not implicitly {@link proto.MandrakeCreateMmkResult.verify|verify} messages.
+         * @param message MandrakeCreateMmkResult message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encodeDelimited(message: proto.IMandrakeCreateMmkResult, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Decodes a MandrakeCreateMmkResult message from the specified reader or buffer.
+         * @param reader Reader or buffer to decode from
+         * @param [length] Message length if known beforehand
+         * @returns MandrakeCreateMmkResult
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): proto.MandrakeCreateMmkResult;
+
+        /**
+         * Decodes a MandrakeCreateMmkResult message from the specified reader or buffer, length delimited.
+         * @param reader Reader or buffer to decode from
+         * @returns MandrakeCreateMmkResult
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): proto.MandrakeCreateMmkResult;
+
+        /**
+         * Verifies a MandrakeCreateMmkResult message.
+         * @param message Plain object to verify
+         * @returns `null` if valid, otherwise the reason why it is not
+         */
+        public static verify(message: { [k: string]: any }): (string|null);
+
+        /**
+         * Creates a MandrakeCreateMmkResult message from a plain object. Also converts values to their respective internal types.
+         * @param object Plain object
+         * @returns MandrakeCreateMmkResult
+         */
+        public static fromObject(object: { [k: string]: any }): proto.MandrakeCreateMmkResult;
+
+        /**
+         * Creates a plain object from a MandrakeCreateMmkResult message. Also converts values to other types if specified.
+         * @param message MandrakeCreateMmkResult
+         * @param [options] Conversion options
+         * @returns Plain object
+         */
+        public static toObject(message: proto.MandrakeCreateMmkResult, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+        /**
+         * Converts this MandrakeCreateMmkResult to JSON.
+         * @returns JSON object
+         */
+        public toJSON(): { [k: string]: any };
+
+        /**
+         * Gets the default type url for MandrakeCreateMmkResult
+         * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+         * @returns The default type url
+         */
+        public static getTypeUrl(typeUrlPrefix?: string): string;
     }
 
     /** Properties of a MandrakeDecryptMekInput. */
@@ -53981,7 +54330,9 @@ export namespace proto {
             /** MusicMessageStyle enum. */
             enum MusicMessageStyle {
                 UNKNOWN = 0,
-                VINYL = 1
+                VINYL = 1,
+                MESSAGE_BUBBLE = 2,
+                LYRICS = 3
             }
         }
 
@@ -66277,6 +66628,9 @@ export namespace proto {
 
         /** MinosCommand mandrakeValidateAndDecryptSelfMmk */
         mandrakeValidateAndDecryptSelfMmk?: (proto.IMandrakeValidateAndDecryptSelfMmkInput|null);
+
+        /** MinosCommand mandrakeCreateMmk */
+        mandrakeCreateMmk?: (proto.IMandrakeCreateMmkInput|null);
     }
 
     /** Represents a MinosCommand. */
@@ -66378,8 +66732,11 @@ export namespace proto {
         /** MinosCommand mandrakeValidateAndDecryptSelfMmk. */
         public mandrakeValidateAndDecryptSelfMmk?: (proto.IMandrakeValidateAndDecryptSelfMmkInput|null);
 
+        /** MinosCommand mandrakeCreateMmk. */
+        public mandrakeCreateMmk?: (proto.IMandrakeCreateMmkInput|null);
+
         /** MinosCommand commandInput. */
-        public commandInput?: ("encryptAndSignMessage"|"decryptAndVerifyMessage"|"generateMek"|"generateMekRosterHash"|"encryptMekForDistribution"|"decryptMekForDistribution"|"encryptMeksForDistributionFromTransportSender"|"decryptMekForDistributionFromTransportSender"|"wrapTransportSigningPublicKey"|"wrapTransportSigningSecretKey"|"deriveMailboxSigningKeypair"|"deriveMailboxEncryptionKeypair"|"deriveMailboxAuthKeypair"|"deriveAttachmentAccessTokenSecret"|"deriveAttachmentPrimaryKeySecret"|"minosOpenInitialEpoch"|"minosOpenEpoch"|"minosValidateEpoch"|"minosVerifySingleEpoch"|"minosThreadIdFromOneToOneThread"|"minosThreadIdFromActThreadId"|"mandrakeOpenEpoch"|"mandrakeEncryptMek"|"mandrakeDecryptMek"|"mandrakeOpenInitialEpoch"|"mandrakeValidateNewMmkFromMailbox"|"mandrakeValidateNewMmkFromDetachedDevice"|"deriveMessagingMailboxKeypairs"|"decryptSelfMmkDistribution"|"mandrakeValidateAndDecryptSelfMmk");
+        public commandInput?: ("encryptAndSignMessage"|"decryptAndVerifyMessage"|"generateMek"|"generateMekRosterHash"|"encryptMekForDistribution"|"decryptMekForDistribution"|"encryptMeksForDistributionFromTransportSender"|"decryptMekForDistributionFromTransportSender"|"wrapTransportSigningPublicKey"|"wrapTransportSigningSecretKey"|"deriveMailboxSigningKeypair"|"deriveMailboxEncryptionKeypair"|"deriveMailboxAuthKeypair"|"deriveAttachmentAccessTokenSecret"|"deriveAttachmentPrimaryKeySecret"|"minosOpenInitialEpoch"|"minosOpenEpoch"|"minosValidateEpoch"|"minosVerifySingleEpoch"|"minosThreadIdFromOneToOneThread"|"minosThreadIdFromActThreadId"|"mandrakeOpenEpoch"|"mandrakeEncryptMek"|"mandrakeDecryptMek"|"mandrakeOpenInitialEpoch"|"mandrakeValidateNewMmkFromMailbox"|"mandrakeValidateNewMmkFromDetachedDevice"|"deriveMessagingMailboxKeypairs"|"decryptSelfMmkDistribution"|"mandrakeValidateAndDecryptSelfMmk"|"mandrakeCreateMmk");
 
         /**
          * Creates a new MinosCommand instance using the specified properties.
@@ -69200,6 +69557,9 @@ export namespace proto {
 
         /** MsgOpaqueData qrUrl */
         qrUrl?: (string|null);
+
+        /** MsgOpaqueData musicData */
+        musicData?: (proto.MsgOpaqueData.IMusicData|null);
     }
 
     /** Represents a MsgOpaqueData. */
@@ -69381,6 +69741,9 @@ export namespace proto {
 
         /** MsgOpaqueData qrUrl. */
         public qrUrl?: (string|null);
+
+        /** MsgOpaqueData musicData. */
+        public musicData?: (proto.MsgOpaqueData.IMusicData|null);
 
         /**
          * Creates a new MsgOpaqueData instance using the specified properties.
@@ -69583,6 +69946,205 @@ export namespace proto {
 
             /**
              * Gets the default type url for EventLocation
+             * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+             * @returns The default type url
+             */
+            public static getTypeUrl(typeUrlPrefix?: string): string;
+        }
+
+        /** Properties of a MusicData. */
+        interface IMusicData {
+
+            /** MusicData musicContentMediaId */
+            musicContentMediaId?: (string|null);
+
+            /** MusicData songId */
+            songId?: (string|null);
+
+            /** MusicData author */
+            author?: (string|null);
+
+            /** MusicData title */
+            title?: (string|null);
+
+            /** MusicData songUri */
+            songUri?: (string|null);
+
+            /** MusicData artworkUri */
+            artworkUri?: (string|null);
+
+            /** MusicData style */
+            style?: (number|null);
+
+            /** MusicData songStartTimeMs */
+            songStartTimeMs?: (number|null);
+
+            /** MusicData clipDurationMs */
+            clipDurationMs?: (number|null);
+
+            /** MusicData isExplicit */
+            isExplicit?: (boolean|null);
+
+            /** MusicData countryBlocklist */
+            countryBlocklist?: (Uint8Array|null);
+
+            /** MusicData artistAttribution */
+            artistAttribution?: (string|null);
+
+            /** MusicData artworkDirectPath */
+            artworkDirectPath?: (string|null);
+
+            /** MusicData artworkSha256 */
+            artworkSha256?: (Uint8Array|null);
+
+            /** MusicData artworkEncSha256 */
+            artworkEncSha256?: (Uint8Array|null);
+
+            /** MusicData artworkMediaKey */
+            artworkMediaKey?: (Uint8Array|null);
+
+            /** MusicData consumptionCheckedAtS */
+            consumptionCheckedAtS?: (number|Long|null);
+
+            /** MusicData isAvailableForConsumption */
+            isAvailableForConsumption?: (boolean|null);
+        }
+
+        /** Represents a MusicData. */
+        class MusicData implements IMusicData {
+
+            /**
+             * Constructs a new MusicData.
+             * @param [properties] Properties to set
+             */
+            constructor(properties?: proto.MsgOpaqueData.IMusicData);
+
+            /** MusicData musicContentMediaId. */
+            public musicContentMediaId?: (string|null);
+
+            /** MusicData songId. */
+            public songId?: (string|null);
+
+            /** MusicData author. */
+            public author?: (string|null);
+
+            /** MusicData title. */
+            public title?: (string|null);
+
+            /** MusicData songUri. */
+            public songUri?: (string|null);
+
+            /** MusicData artworkUri. */
+            public artworkUri?: (string|null);
+
+            /** MusicData style. */
+            public style?: (number|null);
+
+            /** MusicData songStartTimeMs. */
+            public songStartTimeMs?: (number|null);
+
+            /** MusicData clipDurationMs. */
+            public clipDurationMs?: (number|null);
+
+            /** MusicData isExplicit. */
+            public isExplicit?: (boolean|null);
+
+            /** MusicData countryBlocklist. */
+            public countryBlocklist?: (Uint8Array|null);
+
+            /** MusicData artistAttribution. */
+            public artistAttribution?: (string|null);
+
+            /** MusicData artworkDirectPath. */
+            public artworkDirectPath?: (string|null);
+
+            /** MusicData artworkSha256. */
+            public artworkSha256?: (Uint8Array|null);
+
+            /** MusicData artworkEncSha256. */
+            public artworkEncSha256?: (Uint8Array|null);
+
+            /** MusicData artworkMediaKey. */
+            public artworkMediaKey?: (Uint8Array|null);
+
+            /** MusicData consumptionCheckedAtS. */
+            public consumptionCheckedAtS?: (number|Long|null);
+
+            /** MusicData isAvailableForConsumption. */
+            public isAvailableForConsumption?: (boolean|null);
+
+            /**
+             * Creates a new MusicData instance using the specified properties.
+             * @param [properties] Properties to set
+             * @returns MusicData instance
+             */
+            public static create(properties?: proto.MsgOpaqueData.IMusicData): proto.MsgOpaqueData.MusicData;
+
+            /**
+             * Encodes the specified MusicData message. Does not implicitly {@link proto.MsgOpaqueData.MusicData.verify|verify} messages.
+             * @param message MusicData message or plain object to encode
+             * @param [writer] Writer to encode to
+             * @returns Writer
+             */
+            public static encode(message: proto.MsgOpaqueData.IMusicData, writer?: $protobuf.Writer): $protobuf.Writer;
+
+            /**
+             * Encodes the specified MusicData message, length delimited. Does not implicitly {@link proto.MsgOpaqueData.MusicData.verify|verify} messages.
+             * @param message MusicData message or plain object to encode
+             * @param [writer] Writer to encode to
+             * @returns Writer
+             */
+            public static encodeDelimited(message: proto.MsgOpaqueData.IMusicData, writer?: $protobuf.Writer): $protobuf.Writer;
+
+            /**
+             * Decodes a MusicData message from the specified reader or buffer.
+             * @param reader Reader or buffer to decode from
+             * @param [length] Message length if known beforehand
+             * @returns MusicData
+             * @throws {Error} If the payload is not a reader or valid buffer
+             * @throws {$protobuf.util.ProtocolError} If required fields are missing
+             */
+            public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): proto.MsgOpaqueData.MusicData;
+
+            /**
+             * Decodes a MusicData message from the specified reader or buffer, length delimited.
+             * @param reader Reader or buffer to decode from
+             * @returns MusicData
+             * @throws {Error} If the payload is not a reader or valid buffer
+             * @throws {$protobuf.util.ProtocolError} If required fields are missing
+             */
+            public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): proto.MsgOpaqueData.MusicData;
+
+            /**
+             * Verifies a MusicData message.
+             * @param message Plain object to verify
+             * @returns `null` if valid, otherwise the reason why it is not
+             */
+            public static verify(message: { [k: string]: any }): (string|null);
+
+            /**
+             * Creates a MusicData message from a plain object. Also converts values to their respective internal types.
+             * @param object Plain object
+             * @returns MusicData
+             */
+            public static fromObject(object: { [k: string]: any }): proto.MsgOpaqueData.MusicData;
+
+            /**
+             * Creates a plain object from a MusicData message. Also converts values to other types if specified.
+             * @param message MusicData
+             * @param [options] Conversion options
+             * @returns Plain object
+             */
+            public static toObject(message: proto.MsgOpaqueData.MusicData, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+            /**
+             * Converts this MusicData to JSON.
+             * @returns JSON object
+             */
+            public toJSON(): { [k: string]: any };
+
+            /**
+             * Gets the default type url for MusicData
              * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
              * @returns The default type url
              */
@@ -70110,6 +70672,7 @@ export namespace proto {
         GROUP_HISTORY_TOGGLE_ACTION = 97,
         BB_PRO_PENDING_CUSTOMER_BASE_ACTION = 98,
         COMMUNITY_NESTING_STATE_ACTION = 99,
+        SHARED_DEVICE_SECRET_ACTION = 100,
         SHARE_OWN_PN = 10001,
         BUSINESS_BROADCAST_ACTION = 10002,
         AI_THREAD_DELETE_ACTION = 10003
@@ -79432,6 +79995,9 @@ export namespace proto {
 
         /** SyncActionValue communityNestingStateAction */
         communityNestingStateAction?: (proto.SyncActionValue.ICommunityNestingStateAction|null);
+
+        /** SyncActionValue sharedDeviceSecretAction */
+        sharedDeviceSecretAction?: (proto.SyncActionValue.ISharedDeviceSecretAction|null);
     }
 
     /** Represents a SyncActionValue. */
@@ -79712,6 +80278,9 @@ export namespace proto {
 
         /** SyncActionValue communityNestingStateAction. */
         public communityNestingStateAction?: (proto.SyncActionValue.ICommunityNestingStateAction|null);
+
+        /** SyncActionValue sharedDeviceSecretAction. */
+        public sharedDeviceSecretAction?: (proto.SyncActionValue.ISharedDeviceSecretAction|null);
 
         /**
          * Creates a new SyncActionValue instance using the specified properties.
@@ -88129,6 +88698,109 @@ export namespace proto {
             public static getTypeUrl(typeUrlPrefix?: string): string;
         }
 
+        /** Properties of a SharedDeviceSecretAction. */
+        interface ISharedDeviceSecretAction {
+
+            /** SharedDeviceSecretAction secret */
+            secret?: (Uint8Array|null);
+
+            /** SharedDeviceSecretAction ttlMs */
+            ttlMs?: (number|Long|null);
+        }
+
+        /** Represents a SharedDeviceSecretAction. */
+        class SharedDeviceSecretAction implements ISharedDeviceSecretAction {
+
+            /**
+             * Constructs a new SharedDeviceSecretAction.
+             * @param [properties] Properties to set
+             */
+            constructor(properties?: proto.SyncActionValue.ISharedDeviceSecretAction);
+
+            /** SharedDeviceSecretAction secret. */
+            public secret?: (Uint8Array|null);
+
+            /** SharedDeviceSecretAction ttlMs. */
+            public ttlMs?: (number|Long|null);
+
+            /**
+             * Creates a new SharedDeviceSecretAction instance using the specified properties.
+             * @param [properties] Properties to set
+             * @returns SharedDeviceSecretAction instance
+             */
+            public static create(properties?: proto.SyncActionValue.ISharedDeviceSecretAction): proto.SyncActionValue.SharedDeviceSecretAction;
+
+            /**
+             * Encodes the specified SharedDeviceSecretAction message. Does not implicitly {@link proto.SyncActionValue.SharedDeviceSecretAction.verify|verify} messages.
+             * @param message SharedDeviceSecretAction message or plain object to encode
+             * @param [writer] Writer to encode to
+             * @returns Writer
+             */
+            public static encode(message: proto.SyncActionValue.ISharedDeviceSecretAction, writer?: $protobuf.Writer): $protobuf.Writer;
+
+            /**
+             * Encodes the specified SharedDeviceSecretAction message, length delimited. Does not implicitly {@link proto.SyncActionValue.SharedDeviceSecretAction.verify|verify} messages.
+             * @param message SharedDeviceSecretAction message or plain object to encode
+             * @param [writer] Writer to encode to
+             * @returns Writer
+             */
+            public static encodeDelimited(message: proto.SyncActionValue.ISharedDeviceSecretAction, writer?: $protobuf.Writer): $protobuf.Writer;
+
+            /**
+             * Decodes a SharedDeviceSecretAction message from the specified reader or buffer.
+             * @param reader Reader or buffer to decode from
+             * @param [length] Message length if known beforehand
+             * @returns SharedDeviceSecretAction
+             * @throws {Error} If the payload is not a reader or valid buffer
+             * @throws {$protobuf.util.ProtocolError} If required fields are missing
+             */
+            public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): proto.SyncActionValue.SharedDeviceSecretAction;
+
+            /**
+             * Decodes a SharedDeviceSecretAction message from the specified reader or buffer, length delimited.
+             * @param reader Reader or buffer to decode from
+             * @returns SharedDeviceSecretAction
+             * @throws {Error} If the payload is not a reader or valid buffer
+             * @throws {$protobuf.util.ProtocolError} If required fields are missing
+             */
+            public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): proto.SyncActionValue.SharedDeviceSecretAction;
+
+            /**
+             * Verifies a SharedDeviceSecretAction message.
+             * @param message Plain object to verify
+             * @returns `null` if valid, otherwise the reason why it is not
+             */
+            public static verify(message: { [k: string]: any }): (string|null);
+
+            /**
+             * Creates a SharedDeviceSecretAction message from a plain object. Also converts values to their respective internal types.
+             * @param object Plain object
+             * @returns SharedDeviceSecretAction
+             */
+            public static fromObject(object: { [k: string]: any }): proto.SyncActionValue.SharedDeviceSecretAction;
+
+            /**
+             * Creates a plain object from a SharedDeviceSecretAction message. Also converts values to other types if specified.
+             * @param message SharedDeviceSecretAction
+             * @param [options] Conversion options
+             * @returns Plain object
+             */
+            public static toObject(message: proto.SyncActionValue.SharedDeviceSecretAction, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+            /**
+             * Converts this SharedDeviceSecretAction to JSON.
+             * @returns JSON object
+             */
+            public toJSON(): { [k: string]: any };
+
+            /**
+             * Gets the default type url for SharedDeviceSecretAction
+             * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+             * @returns The default type url
+             */
+            public static getTypeUrl(typeUrlPrefix?: string): string;
+        }
+
         /** Properties of a StarAction. */
         interface IStarAction {
 
@@ -94747,7 +95419,17 @@ export namespace proto {
             PENDING_INVITE_CREATED = 266,
             CAMEO_CHAT_EXPIRED = 267,
             GROUP_PUSHNAME_SHARED = 270,
-            BIZ_POST_SEND_OPT_OUT = 271
+            BIZ_POST_SEND_OPT_OUT = 271,
+            BB_PRO_BROADCAST_CHAT_CARD = 272,
+            BOT_PROACTIVE_MESSAGE_ENABLED = 273,
+            BOT_PROACTIVE_MESSAGE_DISABLED = 274,
+            BOT_PROACTIVE_MESSAGE_FIRST_TIME = 275,
+            DYNAMIC_AUDIENCE_LIST_CREATE = 276,
+            DYNAMIC_AUDIENCE_LIST_UPDATE_LINK = 277,
+            CHAT_WITH_BUSINESS_IN_DIRECTORY = 283,
+            META_AI_THREAD_CREATED = 284,
+            META_AI_CONNECTOR_LINKED = 285,
+            SPLIT_PAYMENT_MARKED_AS_PAID = 289
         }
     }
 

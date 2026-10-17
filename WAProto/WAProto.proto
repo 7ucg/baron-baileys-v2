@@ -1,7 +1,7 @@
 syntax = "proto3";
 package proto;
 
-/// WhatsApp Version: 2.3000.1049983640
+/// WhatsApp Version: 2.3000.1050701434
 
 message ACP2Setting {
     optional bool enabled = 1;
@@ -509,6 +509,7 @@ message BotCapabilityMetadata {
         HATCH_ARTIFACT_CARD_ENABLED = 79;
         AI_STUDY_CENTER_ENABLED = 80;
         AI_MUSE_JARVIS_SCHEMA_ENABLED = 81;
+        AI_STUDY_QUIZ_ENABLED = 82;
     }
 }
 
@@ -703,6 +704,7 @@ message BotMessageOrigin {
     optional BotMessageOriginType type = 1;
     enum BotMessageOriginType {
         BOT_MESSAGE_ORIGIN_TYPE_AI_INITIATED = 0;
+        BOT_MESSAGE_ORIGIN_TYPE_META_AI_THREAD_WELCOME = 1;
     }
 }
 
@@ -813,6 +815,7 @@ enum BotMetricsEntryPoint {
     NEW_CHAT_LIST = 56;
     CONTACTS_TAB = 57;
     NEW_3P_AGENT_CREATION = 58;
+    SHARE = 59;
 }
 message BotMetricsMetadata {
     optional string destinationId = 1;
@@ -1442,6 +1445,7 @@ message ClientPayload {
             WAIL = 38;
             WORK_ANDROID = 39;
             WORK_IOS = 40;
+            AUTOMOTIVE = 41;
         }
         enum ReleaseChannel {
             RELEASE = 0;
@@ -2329,6 +2333,7 @@ message DeviceCapabilities {
     optional ContactRefresh contactRefresh = 9;
     optional ReverseHistorySync reverseHistorySync = 10;
     optional NewsletterChatsMigration newsletterChatsMigration = 11;
+    optional HostWriteMutationSupport hostWriteMutationSupport = 12;
     message AiFbidMigration {
         optional uint64 chatDbMigrationTimestamp = 1;
         optional uint32 supportVersion = 2;
@@ -2363,6 +2368,10 @@ message DeviceCapabilities {
     }
     message ContactRefresh {
         optional bool refreshSupported = 1;
+    }
+    
+    message HostWriteMutationSupport {
+        repeated string mutationNames = 1;
     }
     
     message LIDMigration {
@@ -2498,6 +2507,7 @@ message DeviceProps {
         BUSINESS_BACK_OFFICE = 27;
         WAIL_WAI = 28;
         WAIL_ALEXA = 29;
+        AUTOMOTIVE = 30;
     }
 }
 
@@ -2561,6 +2571,10 @@ enum EXTENDED_CONTENT_MESSAGE_EXTENDED_CONTENT_TYPE {
     FB_PROFILE_DIRECTORY_ITEM = 1013;
     FB_FEED_POST_REACTION_REPLY = 1014;
     FB_QUICKSNAP_REPLY = 1015;
+    MSG_STATUS_REPLY = 1016;
+    FB_GROUP_POST = 1017;
+    FB_DAILY_GAME_CHALLENGE = 1018;
+    FB_QUICKSNAP_REACTION_REPLY = 1019;
     MSG_EXTERNAL_LINK_SHARE = 2000;
     MSG_P2P_PAYMENT = 2001;
     MSG_LOCATION_SHARING = 2002;
@@ -2597,6 +2611,10 @@ enum EXTENDED_CONTENT_MESSAGE_EXTENDED_CONTENT_TYPE {
     MSG_MOMENT_LINK = 2061;
     MSG_HORIZON_WEEL = 2062;
     MSG_MOMENT_ADDED = 2063;
+    MSG_STORYTELLING_PROMPT = 2067;
+    MSG_SUPERVISION_INVITE = 2068;
+    MSG_SOCIAL_CUE_MLE = 2069;
+    MSG_SOCIAL_CUE_POST = 2070;
     RTC_AUDIO_CALL = 3000;
     RTC_VIDEO_CALL = 3001;
     RTC_MISSED_AUDIO_CALL = 3002;
@@ -3255,6 +3273,22 @@ message Location {
 enum MENTION_MENTION_TYPE {
     PROFILE = 0;
 }
+message MandrakeCreateMmkInput {
+    optional bytes exportRootKey = 1;
+    optional uint64 epochNumber = 2;
+    optional bytes epochHead = 3;
+    optional MessagingMailboxPublicData prevMmk = 4;
+    repeated DetachedDevicePublicData currentPeers = 5;
+    repeated DetachedDevicePublicData newPeers = 6;
+}
+
+message MandrakeCreateMmkResult {
+    oneof result {
+        SignedMmkDistributionFromMailbox success = 1;
+        string errorMessage = 2;
+    }
+}
+
 message MandrakeDecryptMekInput {
     optional bytes encryptedMek = 1;
     optional bytes recipientsHash = 4;
@@ -4568,6 +4602,8 @@ message Message {
         enum MusicMessageStyle {
             UNKNOWN = 0;
             VINYL = 1;
+            MESSAGE_BUBBLE = 2;
+            LYRICS = 3;
         }
     }
     
@@ -5637,6 +5673,7 @@ message MinosCommand {
         DeriveMessagingMailboxKeypairsInput deriveMessagingMailboxKeypairs = 29;
         DecryptSelfMmkDistributionInput decryptSelfMmkDistribution = 30;
         MandrakeValidateAndDecryptSelfMmkInput mandrakeValidateAndDecryptSelfMmk = 31;
+        MandrakeCreateMmkInput mandrakeCreateMmk = 32;
     }
 }
 
@@ -5837,6 +5874,7 @@ message MsgOpaqueData {
     optional string sharableEventInviteCallLink = 60;
     optional string mediaPngThumbnail = 61;
     optional string qrUrl = 62;
+    optional MusicData musicData = 63;
     message EventLocation {
         optional double degreesLatitude = 1;
         optional double degreesLongitude = 2;
@@ -5844,6 +5882,27 @@ message MsgOpaqueData {
         optional string address = 4;
         optional string url = 5;
         optional bytes jpegThumbnail = 6;
+    }
+    
+    message MusicData {
+        optional string musicContentMediaId = 1;
+        optional string songId = 2;
+        optional string author = 3;
+        optional string title = 4;
+        optional string songUri = 5;
+        optional string artworkUri = 6;
+        optional int32 style = 7;
+        optional int32 songStartTimeMs = 8;
+        optional int32 clipDurationMs = 9;
+        optional bool isExplicit = 10;
+        optional bytes countryBlocklist = 11;
+        optional string artistAttribution = 12;
+        optional string artworkDirectPath = 13;
+        optional bytes artworkSha256 = 14;
+        optional bytes artworkEncSha256 = 15;
+        optional bytes artworkMediaKey = 16;
+        optional int64 consumptionCheckedAtS = 17;
+        optional bool isAvailableForConsumption = 18;
     }
     
     enum PollContentType {
@@ -5971,6 +6030,7 @@ enum MutationProps {
     GROUP_HISTORY_TOGGLE_ACTION = 97;
     BB_PRO_PENDING_CUSTOMER_BASE_ACTION = 98;
     COMMUNITY_NESTING_STATE_ACTION = 99;
+    SHARED_DEVICE_SECRET_ACTION = 100;
     SHARE_OWN_PN = 10001;
     BUSINESS_BROADCAST_ACTION = 10002;
     AI_THREAD_DELETE_ACTION = 10003;
@@ -6757,6 +6817,7 @@ message SyncActionValue {
     optional GroupHistoryToggleAction groupHistoryToggleAction = 97;
     optional BBProPendingCustomerBaseAction bbProPendingCustomerBaseAction = 98;
     optional CommunityNestingStateAction communityNestingStateAction = 99;
+    optional SharedDeviceSecretAction sharedDeviceSecretAction = 100;
     message AgentAction {
         optional string name = 1;
         optional int32 deviceId = 2;
@@ -7338,6 +7399,11 @@ message SyncActionValue {
     
     message SharedDeviceAllowlistAction {
         optional bool allowed = 1;
+    }
+    
+    message SharedDeviceSecretAction {
+        optional bytes secret = 1;
+        optional int64 ttlMs = 2;
     }
     
     message StarAction {
@@ -8079,6 +8145,16 @@ message WebMessageInfo {
         CAMEO_CHAT_EXPIRED = 267;
         GROUP_PUSHNAME_SHARED = 270;
         BIZ_POST_SEND_OPT_OUT = 271;
+        BB_PRO_BROADCAST_CHAT_CARD = 272;
+        BOT_PROACTIVE_MESSAGE_ENABLED = 273;
+        BOT_PROACTIVE_MESSAGE_DISABLED = 274;
+        BOT_PROACTIVE_MESSAGE_FIRST_TIME = 275;
+        DYNAMIC_AUDIENCE_LIST_CREATE = 276;
+        DYNAMIC_AUDIENCE_LIST_UPDATE_LINK = 277;
+        CHAT_WITH_BUSINESS_IN_DIRECTORY = 283;
+        META_AI_THREAD_CREATED = 284;
+        META_AI_CONNECTOR_LINKED = 285;
+        SPLIT_PAYMENT_MARKED_AS_PAID = 289;
     }
 }
 
