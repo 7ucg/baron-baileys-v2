@@ -222,7 +222,7 @@ const tokenizeCode = (codeStr, language = 'javascript') => {
 	return blocks
 }
 
-const buildRichContextInfo = (quoted, options) => {
+const buildRichContextInfo = (quoted, options = {}) => {
 	const ctxInfo = {
 		forwardingScore: 1,
 		isForwarded: true,
