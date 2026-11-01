@@ -1,5 +1,8 @@
 # baron-baileys-v2
 
+> **This repository is no longer maintained.** Development continues at
+> [github.com/7ucg/velowa](https://github.com/7ucg/velowa) — see that repository for more information.
+
 A high-performance WhatsApp Web library built on [Baileys](https://github.com/WhiskeySockets/Baileys), with critical paths accelerated via a [Rust WASM bridge](https://github.com/7ucg/whatsapp-rust-bridge).
 
 ---
